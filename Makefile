@@ -1,6 +1,7 @@
 PY?=python3
 PELICAN?=pelican
 PELICANOPTS=
+DATE=$(shell date '+%Y-%m-%d %H:%M:%S')
 
 BASEDIR=$(CURDIR)
 INPUTDIR=$(BASEDIR)/content
@@ -126,7 +127,7 @@ cf_upload: publish
 
 github: publish
 	du -hs $(OUTPUTDIR)
-	ghp-import -m "Site $(date '+%Y-%m-%d %H:%M:%S')" -b $(GITHUB_PAGES_BRANCH) $(OUTPUTDIR)
+	ghp-import -m "Site $(DATE)" -b $(GITHUB_PAGES_BRANCH) $(OUTPUTDIR)
 	git push origin $(GITHUB_PAGES_BRANCH)
 
 .PHONY: html help clean regenerate serve serve-global devserver stopserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload cf_upload github
