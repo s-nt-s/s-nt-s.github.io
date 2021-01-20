@@ -20,7 +20,7 @@ SITENAME = 'Apuntes'
 SITESUBTITLE = '(mejor aquí que en un txt perdido)'
 SITEURL = 'https://s-nt-s.github.io'
 GITHUB_URL = 'https://github.com/s-nt-s/s-nt-s.github.io'
-SOURCE_URL = GITHUB_URL+'/tree/source'
+SOURCE_URL = GITHUB_URL+'/tree/main'
 MAPA_URL = 'mapa'
 
 '''
