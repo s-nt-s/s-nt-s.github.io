@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}{{ SITENAME }} - Mapa{% endblock %}
+
+{% block header %}
+<h1><a href="{{ SITEURL }}/">{{ SITENAME }}</a> » Mapa</h1>
+{%endblock%}
+
+{% block content %}
+
+<section id="content" class="body grid-container">
+    <div class="grid-item">
+        <h2>Categorías:</h2>
+        <ul>
+        {% for tag, articles in categories|sort %}
+            <li><a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a> ({{ articles|count }})</li>
+        {% endfor %}
+        </ul>
+        <h3>Páginas</h3>
+        <ul>
+            <li><a href="{{ SITEURL }}">HOME</a></li>
+        {% for page in pages|sort %}
+            <li><a href="{{ SITEURL }}/{{ page.url }}">{{ page.title }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="grid-item">
+        <h2>Etiquetas</h2>
+        <ul>
+        {% for tag, articles in tags|sort %}
+            {% set total = articles|count %}
+            {% if total > 1 %}
+            <li><a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a> ({{ total }})</li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </div>
+</section>
+
+{% endblock %}

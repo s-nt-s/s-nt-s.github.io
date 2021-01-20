@@ -1,0 +1,24 @@
+<div class="post-info">
+    <p>
+    <time class="published" datetime="{{ article.date.isoformat() }}"  title="Publicado el {{ article.locale_date }}">{{ article.locale_date }}</time>
+    {% if article.modified %}
+    <time class="modified" datetime="{{ article.modified.isoformat() }}"  title="Modificado el {{ article.modified }}">{{ article.locale_modified }}</time>
+    {% endif %}
+
+    {% if article.category.count > 1 %}
+        <a title="Hay {{ article.category.count -1 }} entrada{% if article.category.count > 2 %}s{% endif %} más sobre {{ article.category }}" class="bubble category ct_{{article.category | escape | plain}}" href="{{ SITEURL }}/{{ article.category.url }}">
+    {% else %}
+        <span title="No hay más entradas en esta categoría" class="bubble category ct_{{article.category | escape | plain}}">{% endif %}{{ article.category | escape }}{% if article.category.count > 1 %}</a> {% else %}</span> {% endif %}
+
+    {% for tag in article.tags %}
+        {% if tag.count > 1 %}
+            <a title="Hay {{ tag.count -1 }} entrada{% if tag.count > 2 %}s{% endif %}  más sobre {{tag | escape }}" class="bubble tag tg_{{tag | escape | plain}}" href="{{ SITEURL }}/{{ tag.url }}">
+        {% else %}
+            <span title="No hay más entradas con esta etiqueta" class="bubble tag tg_{{tag | escape | plain}}">{% endif %}{{ tag | escape }}{% if tag.count > 1 %}</a> {% else %}</span> {% endif %}
+    {% endfor %}
+    {% set lines, words, letters = article.content|wc %}
+    </p>
+    <p>
+    <span class="bubble">{{lines | millar}} lineas</span>  <span class="bubble wc">{{words | millar}} palabras</span>  <span class="bubble wc">{{letters | millar}} letras</span>
+    </p>
+</div><!-- /.post-info -->
