@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Permitir contraseñas simples en Linux Mint 15</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/permitir-contrasenas-simples" rel="bookmark" title="Permalink to Permitir contraseñas simples en Linux Mint 15">Permitir contraseñas simples en Linux Mint 15</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2013-10-03T21:26:00+02:00" title="Publicado el 2013-10-03">2013-10-03</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 18 entradas  más sobre linux">
+linux</a> <a class="bubble tag tg_mint" href="/tag/mint.html" title="Hay 2 entradas  más sobre mint">
+mint</a> </p>
+<p>
+<span class="bubble">28 lineas</span> <span class="bubble wc">130 palabras</span> <span class="bubble wc">1.054 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Problema</strong>: Nos cansa tener que definir contraseñas de 8 caracteres
+para nuestros usuarios</p>
+<p><strong>Solución</strong>: Editar /etc/pam.d/common-password para permitir
+contraseñas simples</p>
+<ol>
+<li>Editar como administrador /etc/pam.d/common-password</li>
+<li>Buscar una linea que empiece por <code>password</code> y contenga
+    <code>pam_unix.so</code></li>
+<li>Borrar la palabra obscure y añadir <code>nullok min_len=3</code></li>
+</ol>
+<div class="highlight"><pre><span></span><span class="gp">user@mint ~ $</span> gksudo gedit /etc/pam.d/common-password
+</pre></div>
+<p>Antes:</p>
+<div class="highlight"><pre><span></span>...
+# here are the per-package modules (the "Primary" block)
+password    [success=2 default=ignore]  pam_unix.so obscure sha512
+password    [success=1 default=ignore]  pam_winbind.so use_authtok
+...
+</pre></div>
+<p>Después:</p>
+<div class="highlight"><pre><span></span>...
+# here are the per-package modules (the "Primary" block)
+password    [success=2 default=ignore]  pam_unix.so nullok minlen=3 sha512
+password    [success=1 default=ignore]  pam_winbind.so use_authtok
+...
+</pre></div>
+<p>Reiniciar</p>
+<div class="highlight"><pre><span></span><span class="gp">user@mint ~ $</span> passwd
+<span class="go">Cambiando la contraseña de user.</span>
+<span class="go">(actual) contraseña de UNIX: ********</span>
+<span class="go">Introduzca la nueva contraseña de UNIX: ***</span>
+<span class="go">Vuelva a escribir la nueva contraseña de UNIX: ***</span>
+<span class="go">passwd: contraseña actualizada correctamente</span>
+</pre></div>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2013-10-03_permitir-contrasenas-simples.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/permitir-contrasenas-simples" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

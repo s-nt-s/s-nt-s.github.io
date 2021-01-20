@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Extraer texto e información básica de una web</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/graby" rel="bookmark" title="Permalink to Extraer texto e información básica de una web">Extraer texto e información básica de una web</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2018-09-26T00:00:00+02:00" title="Publicado el 2018-09-26">2018-09-26</time>
+<a class="bubble category ct_programacion" href="/category/programacion.html" title="Hay 5 entradas más sobre Programación">
+Programación</a>
+<span class="bubble tag tg_graby" title="No hay más entradas con esta etiqueta">graby</span> <span class="bubble tag tg_internet" title="No hay más entradas con esta etiqueta">internet</span> <a class="bubble tag tg_php" href="/tag/php.html" title="Hay 1 entrada  más sobre php">
+php</a> <span class="bubble tag tg_php-download" title="No hay más entradas con esta etiqueta">php-download</span> <span class="bubble tag tg_rss" title="No hay más entradas con esta etiqueta">rss</span> </p>
+<p>
+<span class="bubble">96 lineas</span> <span class="bubble wc">1.727 palabras</span> <span class="bubble wc">20.635 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p>Para muchos proyectos he buscado algo que me extraiga el contenido de una
+web, y si de paso me da información útil como su idioma mejor.</p>
+<p>Estos proyectos con cosas como:</p>
+<ul>
+<li>Un bot <code>xmpp</code> que le mandes una url y te devuelva el texto</li>
+<li>Un recolector de enlaces que luego con ellos forme un rss con contenido completo</li>
+<li>Un agregador que necesita saber el idioma de las páginas que esta agregando</li>
+<li>etc</li>
+</ul>
+<p>Pues bien, parece que <code>graby</code> es lo que estaba buscando.
+Ver <a href="https://github.com/j0k3r/graby" target="_blank">https://github.com/j0k3r/graby</a></p>
+<p>Mi interés no es usarla en <code>php</code>, así que haré una instalación y un pequeño
+<code>php</code> para usar como comando externo para otras aplicaciones.</p>
+<p><strong>1- Instalo graby</strong></p>
+<p>La manera habitual sería usar <code>compose</code>, pero como no estoy interesado
+en un proyecto <code>php</code> y además en la <code>raspberry</code> el intento de instalar
+con <code>compose</code> se ha llevado toda la memoria hasta petar... usare <code>php-download.com</code></p>
+<p>Y para obtener automáticamente la última versión usare este script:</p>
+<div class="highlight"><pre><span></span><span class="gp">#</span>!/bin/bash
+<span class="go">LAST=$(curl -sS "https://php-download.com/package/j0k3r/graby" | grep "selected=\"selected\"" | cut -d'"' -f2)</span>
+<span class="gp">URL="https://php-download.com/downloads/j0k3r/graby/${LAST}/j0k3r_graby_$</span><span class="o">{</span>LAST<span class="o">}</span>_require.zip<span class="s2">"</span>
+<span class="go">wget -O graby.zip "$URL"</span>
+<span class="go">unzip -o -q graby.zip 'vendor/*'</span>
+<span class="go">rm graby.zip</span>
+</pre></div>
+<p>y lo ejecuto:</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~/wks/my-graby $</span> ./get-graby.sh 
+<span class="go">--2018-09-26 19:06:12--  https://php-download.com/downloads/j0k3r/graby/1.13.6.0/j0k3r_graby_1.13.6.0_require.zip</span>
+<span class="go">Resolviendo php-download.com (php-download.com)... 104.18.41.212, 104.18.40.212, 2606:4700:30::6812:28d4, ...</span>
+<span class="go">Conectando con php-download.com (php-download.com)[104.18.41.212]:443... conectado.</span>
+<span class="go">Petición HTTP enviada, esperando respuesta... 200 OK</span>
+<span class="go">Longitud: 37589435 (36M) [application/zip]</span>
+<span class="go">Grabando a: “graby.zip”</span>
+
+<span class="go">graby.zip                                  100%[========================================================================================&gt;]  35,85M  1011KB/s   en 41s    </span>
+
+<span class="go">2018-09-26 19:06:55 (906 KB/s) - “graby.zip” guardado [37589435/37589435]</span>
+<span class="gp">pi@bot ~/wks/my-graby $</span> ls
+<span class="go">get-graby.sh  vendor</span>
+</pre></div>
+<p><strong>1- Creo el comando</strong></p>
+<div class="highlight"><pre><span></span><span class="x">#!/usr/bin/env php</span>
+<span class="cp">&lt;?php</span>
+<span class="k">require_once</span><span class="p">(</span><span class="s2">"vendor/autoload.php"</span><span class="p">);</span>
+
+<span class="k">use</span> <span class="nx">Graby\Graby</span><span class="p">;</span>
+
+<span class="nv">$article</span> <span class="o">=</span> <span class="nv">$argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+<span class="nv">$graby</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Graby</span><span class="p">();</span>
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$graby</span><span class="o">-&gt;</span><span class="na">fetchContent</span><span class="p">(</span><span class="nv">$article</span><span class="p">);</span>
+
+<span class="k">echo</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+<p>Ejemplo de ejecución:</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~/wks/my-graby $</span> ./graby.php https://s-nt-s.github.io/extension_markdown_pelican/
+<span class="go">{"status":200,"html":"&lt;p&gt;Seg\u00fan la documentaci\u00f3n de &lt;code&gt;pelican&lt;\/code&gt; la manera de incluir un plugin &lt;code&gt;markdown&lt;\/code&gt;\nes poniendo en &lt;code&gt;pelicanconf.py&lt;\/code&gt; lo siguiente:&lt;\/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;MARKDOWN = {\n    'extensions': [ &amp;lt;&amp;lt;aqu\u00ed van las extensiones&amp;gt;&amp;gt; ],\n    'extension_configs': {\n        'markdown.extensions.codehilite': {'css_class': 'highlight'},\n        'markdown.extensions.extra': {},\n        'markdown.extensions.meta': {},\n    },\n    'output_format': 'html5',\n}\n&lt;\/pre&gt;&lt;\/div&gt;&lt;p&gt;donde la parte relevante es el array &lt;code&gt;extensions&lt;\/code&gt; ya que lo dem\u00e1s solo se pone\npara preservar el valor por defecto de la variable &lt;code&gt;MARKDOWN&lt;\/code&gt;&lt;\/p&gt;&lt;p&gt;Si estamos incluyendo extensiones de terceros probablemente esto sea lo mejor,\npero si la extensi\u00f3n la estamos haciendo nosotros puede que queramos evitarnos\ntener que escribir este bloque y as\u00ed mantener m\u00e1s limpio nuestro fichero\n&lt;code&gt;pelicanconf.py&lt;\/code&gt; y de este modo solo pensar en &lt;code&gt;plugins&lt;\/code&gt; en general, sin hacer\ndistinci\u00f3n si son &lt;code&gt;plugins de pelican&lt;\/code&gt; o &lt;code&gt;extensiones de markdown&lt;\/code&gt;.&lt;\/p&gt;&lt;p&gt;En definitiva, la idea es es crear la extensi\u00f3n dentro de un plugin.\nEsto tambi\u00e9n es \u00fatil cuando queremos configurar la extensi\u00f3n en base a\nvariables de &lt;code&gt;pelicanconf.py&lt;\/code&gt; evitando tener que pasarlas por par\u00e1metro una a una.&lt;\/p&gt;&lt;p&gt;Este ser\u00eda un ejemplo para poder usar variables en &lt;code&gt;markdown&lt;\/code&gt;&lt;\/p&gt;&lt;p&gt;En &lt;code&gt;pelicanconf.py&lt;\/code&gt;:&lt;\/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;import os\nsys.path.append('.') #### 1\nfrom plugins import replacements #### 2\nabspath = os.path.abspath(__file__)\ncur_dir = os.path.dirname(abspath)\nREPLACEMENTS_CONFIG = cur_dir+\"\/config\/replacements.yml\" #### 3\nPLUGINS=[replacements] #### 4\nGITHUB_URL = 'https:\/\/github.com\/s-nt-s\/s-nt-s.github.io'\nDEFAULT_PAGINATION = 10\n&lt;\/pre&gt;&lt;\/div&gt;&lt;ul&gt;&lt;li&gt;Con &lt;code&gt;1&lt;\/code&gt; y &lt;code&gt;2&lt;\/code&gt; incluimos el &lt;code&gt;plugin&lt;\/code&gt; que esta en &lt;code&gt;plugins\/replacements.py&lt;\/code&gt;&lt;\/li&gt;\n&lt;li&gt;Con &lt;code&gt;3&lt;\/code&gt; definimos la variable que se usara para obtener el fichero de configuraci\u00f3n&lt;\/li&gt;\n&lt;li&gt;Con &lt;code&gt;4&lt;\/code&gt; incluimos el &lt;code&gt;plugin&lt;\/code&gt;&lt;\/li&gt;\n&lt;\/ul&gt;&lt;p&gt;En &lt;code&gt;plugins\/replacements.py&lt;\/code&gt; tenemos:&lt;\/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;from markdown.preprocessors import Preprocessor\nfrom markdown.extensions import Extension\nfrom pelican import signals\nimport yaml\nclass MkReplace(Preprocessor):\n    def __init__(self, delimiter, replacements):\n        self.replacements = replacements\n        self.delimiter = delimiter\n    def run(self, lines):\n        txt = \"\\n\".join(lines)\n        for key, value in self.replacements.items():\n            txt = txt.replace(self.delimiter+key+self.delimiter, value)\n        return txt.split(\"\\n\")\nclass ExReplace(Extension):\n    def __init__(self, delimiter, replacements, **config):\n        self.replacements = replacements\n        self.delimiter = delimiter\n        super(ExReplace, self).__init__(**config)\n    def extendMarkdown(self, md, md_globals):\n        md.preprocessors.add('replacements', MkReplace(self.delimiter, self.replacements), \"&amp;gt;html_block\")\ndef process_settings(pelican_object):\n    config_file = pelican_object.settings['REPLACEMENTS_CONFIG'] #### 1\n    with open(config_file, 'r') as stream:\n        replacements = yaml.load(stream)\n    if 'PELICAN_SETTINGS' in replacements:\n        pSettings = replacements['PELICAN_SETTINGS']\n        del replacements['PELICAN_SETTINGS']\n        if isinstance(pSettings, str):\n            pSettings = pSettings.strip().split()\n        if isinstance(pSettings, list):\n            for s in pSettings:\n                if s not in replacements and s in pelican_object.settings:\n                    replacements[s]=str(pelican_object.settings[s]) #### 2\n    delimiter = replacements.pop('DELIMITER', '::')\n    return delimiter, replacements\ndef replacements_markdown_extension(pelicanobj, delimiter, replacements):\n    \"\"\"Instantiates a customized Markdown extension\"\"\"\n    pelicanobj.settings['MARKDOWN'].setdefault('extensions', []).append(ExReplace(delimiter, replacements))\ndef replacements_init(pelicanobj):\n    \"\"\"Loads settings and instantiates the Python Markdown extension\"\"\"\n    # Process settings\n    delimiter, replacements = process_settings(pelicanobj)\n    # Configure Markdown Extension\n    replacements_markdown_extension(pelicanobj, delimiter, replacements)\ndef register():\n    \"\"\"Plugin registration\"\"\"\n    signals.initialized.connect(replacements_init)\n&lt;\/pre&gt;&lt;\/div&gt;&lt;ul&gt;&lt;li&gt;&lt;code&gt;register&lt;\/code&gt; registra el &lt;code&gt;plugin&lt;\/code&gt;&lt;\/li&gt;\n&lt;li&gt;&lt;code&gt;replacements_init&lt;\/code&gt; usa &lt;code&gt;pelicanobj&lt;\/code&gt; para preparar las opciones a trav\u00e9s de &lt;code&gt;process_settings&lt;\/code&gt; y pasarselas a &lt;code&gt;replacements_markdown_extension&lt;\/code&gt;&lt;\/li&gt;\n&lt;li&gt;&lt;code&gt;replacements_markdown_extension&lt;\/code&gt; include la extensi\u00f3n de &lt;code&gt;markdown&lt;\/code&gt; en el &lt;code&gt;pelican&lt;\/code&gt; sin machacar los valores por defecto de la variable &lt;code&gt;MARKDOWN&lt;\/code&gt;&lt;\/li&gt;\n&lt;li&gt;El resto es el contenido habitual de una extensi\u00f3n &lt;code&gt;markdown&lt;\/code&gt;&lt;\/li&gt;\n&lt;\/ul&gt;&lt;p&gt;En &lt;code&gt;process_settings&lt;\/code&gt; vemos como nos es de ayuda tener el objeto &lt;code&gt;pelican&lt;\/code&gt; disponible,\nde manera que tenemos disponible &lt;code&gt;REPLACEMENTS_CONFIG&lt;\/code&gt; para encontrar el &lt;code&gt;yaml&lt;\/code&gt; de configuraci\u00f3n (en &lt;code&gt;1&lt;\/code&gt;)\ny a su vez podemos usar otras variables (en &lt;code&gt;2&lt;\/code&gt;) de manera que si el &lt;code&gt;yaml&lt;\/code&gt; es:&lt;\/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;DELIMITER: '::'\nPELICAN_SETTINGS: GITHUB_URL DEFAULT_PAGINATION\nLOREM: Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...\n&lt;\/pre&gt;&lt;\/div&gt;&lt;p&gt;y tenemos un &lt;code&gt;markdown&lt;\/code&gt; tal que as\u00ed:&lt;\/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;Este blog usa una imaginaci\u00f3n de **::DEFAULT_PAGINATION::** items por hoja y\npuedes encontrar el c\u00f3digo en [github](::GITHUB_URL::)\n::LOREN::\n&lt;\/pre&gt;&lt;\/div&gt;&lt;p&gt;se transformara justo antes de ser pasado a &lt;code&gt;html&lt;\/code&gt; en:&lt;\/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;Este blog usa una imaginaci\u00f3n de **10** items por hoja y\npuedes encontrar el c\u00f3digo en [github](https:\/\/github.com\/s-nt-s\/s-nt-s.github.io)\nNeque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...\n&lt;\/pre&gt;&lt;\/div&gt;&lt;p&gt;y finalmente en el &lt;code&gt;html&lt;\/code&gt;&lt;\/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;&amp;lt;p&amp;gt;Este blog usa una imaginaci\u00f3n de &amp;lt;b&amp;gt;10&amp;lt;\/b&amp;gt; items por hoja y\npuedes encontrar el c\u00f3digo en &amp;lt;a href='https:\/\/github.com\/s-nt-s\/s-nt-s.github.io'&amp;gt;github&amp;lt;\/a&amp;gt;&amp;lt;\/p&amp;gt;\n&amp;lt;p&amp;gt;Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...&amp;lt;\/p&amp;gt;\n&lt;\/pre&gt;&lt;\/div&gt;&lt;p&gt;Resumo las ventajas:&lt;\/p&gt;&lt;ul&gt;&lt;li&gt;menos lineas en &lt;code&gt;pelicanconf.py&lt;\/code&gt;&lt;\/li&gt;\n&lt;li&gt;no hay peligro de machacar valores por defecto de &lt;code&gt;MARKDOWN&lt;\/code&gt; necesarios&lt;\/li&gt;\n&lt;li&gt;la extensi\u00f3n tiene acceso al objeto &lt;code&gt;pelican&lt;\/code&gt; y por lo tanto a sus variables de configuraci\u00f3n&lt;\/li&gt;\n&lt;li&gt;la extensi\u00f3n es m\u00e1s f\u00e1cil de configurar&lt;\/li&gt;\n&lt;li&gt;no hace falta diferencia entre &lt;code&gt;extensiones markdown&lt;\/code&gt; y &lt;code&gt;plugins pelican&lt;\/code&gt;&lt;\/li&gt;\n&lt;\/ul&gt;&lt;p&gt;Fuentes:\n&lt;a href=\"http:\/\/docs.getpelican.com\/en\/stable\/settings.html#settings\" target=\"_blank\"&gt;docs.getpelican.com - settings&lt;\/a&gt;,\n&lt;a href=\"http:\/\/docs.getpelican.com\/en\/stable\/plugins.html#how-to-create-plugins\" target=\"_blank\"&gt;docs.getpelican.com - plugins&lt;\/a&gt;,\n&lt;a href=\"https:\/\/github.com\/s-nt-s\/s-nt-s.github.io\" target=\"_blank\"&gt;mi github :P&lt;\/a&gt;&lt;\/p&gt;","title":"Crear extensi\u00f3n markdown para usar en pelican","language":"es","date":null,"authors":[],"url":"https:\/\/s-nt-s.github.io\/extension_markdown_pelican\/","content_type":"text\/html","open_graph":[],"native_ad":false,"all_headers":{"server":"GitHub.com","content-type":"text\/html; charset=utf-8","last-modified":"Wed, 26 Sep 2018 08:59:31 GMT","etag":"W\/\"5bab4a73-538d\"","access-control-allow-origin":"*","expires":"Wed, 26 Sep 2018 17:01:49 GMT","cache-control":"max-age=600","content-encoding":"gzip","x-github-request-id":"4272:358F:3836627:4B61346:5BABB923","content-length":"4138","accept-ranges":"bytes","date":"Wed, 26 Sep 2018 17:13:51 GMT","via":"1.1 varnish","age":"0","connection":"keep-alive","x-served-by":"cache-mad9442-MAD","x-cache":"HIT","x-cache-hits":"1","x-timer":"S1537982031.486043,VS0,VE110","vary":"Accept-Encoding","x-fastly-request-id":"15e8bf8ca5b6dd90d6f63a1d0d5c5b8c50e349d7"},"summary":"Seg\u00fan la documentaci\u00f3n de pelican la manera de incluir un plugin markdown es poniendo en pelicanconf.py lo siguiente: MARKDOWN = { 'extensions': [ &amp;lt;&amp;lt;aqu\u00ed van las extensiones&amp;gt;&amp;gt; ], 'extension_configs': { 'markdown.extensions.codehilite': {'css_class': &amp;hellip;"}</span>
+</pre></div>
+<p>es decir, devuelve el <code>json</code>:</p>
+<div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">"all_headers"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"accept-ranges"</span><span class="p">:</span> <span class="s2">"bytes"</span><span class="p">,</span>
+        <span class="nt">"access-control-allow-origin"</span><span class="p">:</span> <span class="s2">"*"</span><span class="p">,</span>
+        <span class="nt">"age"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+        <span class="nt">"cache-control"</span><span class="p">:</span> <span class="s2">"max-age=600"</span><span class="p">,</span>
+        <span class="nt">"connection"</span><span class="p">:</span> <span class="s2">"keep-alive"</span><span class="p">,</span>
+        <span class="nt">"content-encoding"</span><span class="p">:</span> <span class="s2">"gzip"</span><span class="p">,</span>
+        <span class="nt">"content-length"</span><span class="p">:</span> <span class="s2">"4138"</span><span class="p">,</span>
+        <span class="nt">"content-type"</span><span class="p">:</span> <span class="s2">"text/html; charset=utf-8"</span><span class="p">,</span>
+        <span class="nt">"date"</span><span class="p">:</span> <span class="s2">"Wed, 26 Sep 2018 17:27:48 GMT"</span><span class="p">,</span>
+        <span class="nt">"etag"</span><span class="p">:</span> <span class="s2">"W/\"5bab4a73-538d\""</span><span class="p">,</span>
+        <span class="nt">"expires"</span><span class="p">:</span> <span class="s2">"Wed, 26 Sep 2018 17:01:49 GMT"</span><span class="p">,</span>
+        <span class="nt">"last-modified"</span><span class="p">:</span> <span class="s2">"Wed, 26 Sep 2018 08:59:31 GMT"</span><span class="p">,</span>
+        <span class="nt">"server"</span><span class="p">:</span> <span class="s2">"GitHub.com"</span><span class="p">,</span>
+        <span class="nt">"vary"</span><span class="p">:</span> <span class="s2">"Accept-Encoding"</span><span class="p">,</span>
+        <span class="nt">"via"</span><span class="p">:</span> <span class="s2">"1.1 varnish"</span><span class="p">,</span>
+        <span class="nt">"x-cache"</span><span class="p">:</span> <span class="s2">"HIT"</span><span class="p">,</span>
+        <span class="nt">"x-cache-hits"</span><span class="p">:</span> <span class="s2">"1"</span><span class="p">,</span>
+        <span class="nt">"x-fastly-request-id"</span><span class="p">:</span> <span class="s2">"e3088257cb9a3cd8805bc44ee055908f3c01be54"</span><span class="p">,</span>
+        <span class="nt">"x-github-request-id"</span><span class="p">:</span> <span class="s2">"4272:358F:3836627:4B61346:5BABB923"</span><span class="p">,</span>
+        <span class="nt">"x-served-by"</span><span class="p">:</span> <span class="s2">"cache-mad9442-MAD"</span><span class="p">,</span>
+        <span class="nt">"x-timer"</span><span class="p">:</span> <span class="s2">"S1537982868.240513,VS0,VE107"</span>
+    <span class="p">},</span>
+    <span class="nt">"authors"</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="nt">"content_type"</span><span class="p">:</span> <span class="s2">"text/html"</span><span class="p">,</span>
+    <span class="nt">"date"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nt">"html"</span><span class="p">:</span> <span class="s2">"&lt;p&gt;Seg\u00fan la documentaci\u00f3n de &lt;code&gt;pelican&lt;/code&gt; la manera de incluir un plugin &lt;code&gt;markdown&lt;/code&gt;\nes poniendo en &lt;code&gt;pelicanconf.py&lt;/code&gt; lo siguiente:&lt;/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;MARKDOWN = {\n    'extensions': [ &amp;lt;&amp;lt;aqu\u00ed van las extensiones&amp;gt;&amp;gt; ],\n    'extension_configs': {\n        'markdown.extensions.codehilite': {'css_class': 'highlight'},\n        'markdown.extensions.extra': {},\n        'markdown.extensions.meta': {},\n    },\n    'output_format': 'html5',\n}\n&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;donde la parte relevante es el array &lt;code&gt;extensions&lt;/code&gt; ya que lo dem\u00e1s solo se pone\npara preservar el valor por defecto de la variable &lt;code&gt;MARKDOWN&lt;/code&gt;&lt;/p&gt;&lt;p&gt;Si estamos incluyendo extensiones de terceros probablemente esto sea lo mejor,\npero si la extensi\u00f3n la estamos haciendo nosotros puede que queramos evitarnos\ntener que escribir este bloque y as\u00ed mantener m\u00e1s limpio nuestro fichero\n&lt;code&gt;pelicanconf.py&lt;/code&gt; y de este modo solo pensar en &lt;code&gt;plugins&lt;/code&gt; en general, sin hacer\ndistinci\u00f3n si son &lt;code&gt;plugins de pelican&lt;/code&gt; o &lt;code&gt;extensiones de markdown&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;En definitiva, la idea es es crear la extensi\u00f3n dentro de un plugin.\nEsto tambi\u00e9n es \u00fatil cuando queremos configurar la extensi\u00f3n en base a\nvariables de &lt;code&gt;pelicanconf.py&lt;/code&gt; evitando tener que pasarlas por par\u00e1metro una a una.&lt;/p&gt;&lt;p&gt;Este ser\u00eda un ejemplo para poder usar variables en &lt;code&gt;markdown&lt;/code&gt;&lt;/p&gt;&lt;p&gt;En &lt;code&gt;pelicanconf.py&lt;/code&gt;:&lt;/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;import os\nsys.path.append('.') #### 1\nfrom plugins import replacements #### 2\nabspath = os.path.abspath(__file__)\ncur_dir = os.path.dirname(abspath)\nREPLACEMENTS_CONFIG = cur_dir+\"/config/replacements.yml\" #### 3\nPLUGINS=[replacements] #### 4\nGITHUB_URL = 'https://github.com/s-nt-s/s-nt-s.github.io'\nDEFAULT_PAGINATION = 10\n&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;&lt;li&gt;Con &lt;code&gt;1&lt;/code&gt; y &lt;code&gt;2&lt;/code&gt; incluimos el &lt;code&gt;plugin&lt;/code&gt; que esta en &lt;code&gt;plugins/replacements.py&lt;/code&gt;&lt;/li&gt;\n&lt;li&gt;Con &lt;code&gt;3&lt;/code&gt; definimos la variable que se usara para obtener el fichero de configuraci\u00f3n&lt;/li&gt;\n&lt;li&gt;Con &lt;code&gt;4&lt;/code&gt; incluimos el &lt;code&gt;plugin&lt;/code&gt;&lt;/li&gt;\n&lt;/ul&gt;&lt;p&gt;En &lt;code&gt;plugins/replacements.py&lt;/code&gt; tenemos:&lt;/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;from markdown.preprocessors import Preprocessor\nfrom markdown.extensions import Extension\nfrom pelican import signals\nimport yaml\nclass MkReplace(Preprocessor):\n    def __init__(self, delimiter, replacements):\n        self.replacements = replacements\n        self.delimiter = delimiter\n    def run(self, lines):\n        txt = \"\\n\".join(lines)\n        for key, value in self.replacements.items():\n            txt = txt.replace(self.delimiter+key+self.delimiter, value)\n        return txt.split(\"\\n\")\nclass ExReplace(Extension):\n    def __init__(self, delimiter, replacements, **config):\n        self.replacements = replacements\n        self.delimiter = delimiter\n        super(ExReplace, self).__init__(**config)\n    def extendMarkdown(self, md, md_globals):\n        md.preprocessors.add('replacements', MkReplace(self.delimiter, self.replacements), \"&amp;gt;html_block\")\ndef process_settings(pelican_object):\n    config_file = pelican_object.settings['REPLACEMENTS_CONFIG'] #### 1\n    with open(config_file, 'r') as stream:\n        replacements = yaml.load(stream)\n    if 'PELICAN_SETTINGS' in replacements:\n        pSettings = replacements['PELICAN_SETTINGS']\n        del replacements['PELICAN_SETTINGS']\n        if isinstance(pSettings, str):\n            pSettings = pSettings.strip().split()\n        if isinstance(pSettings, list):\n            for s in pSettings:\n                if s not in replacements and s in pelican_object.settings:\n                    replacements[s]=str(pelican_object.settings[s]) #### 2\n    delimiter = replacements.pop('DELIMITER', '::')\n    return delimiter, replacements\ndef replacements_markdown_extension(pelicanobj, delimiter, replacements):\n    \"\"\"Instantiates a customized Markdown extension\"\"\"\n    pelicanobj.settings['MARKDOWN'].setdefault('extensions', []).append(ExReplace(delimiter, replacements))\ndef replacements_init(pelicanobj):\n    \"\"\"Loads settings and instantiates the Python Markdown extension\"\"\"\n    # Process settings\n    delimiter, replacements = process_settings(pelicanobj)\n    # Configure Markdown Extension\n    replacements_markdown_extension(pelicanobj, delimiter, replacements)\ndef register():\n    \"\"\"Plugin registration\"\"\"\n    signals.initialized.connect(replacements_init)\n&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;&lt;li&gt;&lt;code&gt;register&lt;/code&gt; registra el &lt;code&gt;plugin&lt;/code&gt;&lt;/li&gt;\n&lt;li&gt;&lt;code&gt;replacements_init&lt;/code&gt; usa &lt;code&gt;pelicanobj&lt;/code&gt; para preparar las opciones a trav\u00e9s de &lt;code&gt;process_settings&lt;/code&gt; y pasarselas a &lt;code&gt;replacements_markdown_extension&lt;/code&gt;&lt;/li&gt;\n&lt;li&gt;&lt;code&gt;replacements_markdown_extension&lt;/code&gt; include la extensi\u00f3n de &lt;code&gt;markdown&lt;/code&gt; en el &lt;code&gt;pelican&lt;/code&gt; sin machacar los valores por defecto de la variable &lt;code&gt;MARKDOWN&lt;/code&gt;&lt;/li&gt;\n&lt;li&gt;El resto es el contenido habitual de una extensi\u00f3n &lt;code&gt;markdown&lt;/code&gt;&lt;/li&gt;\n&lt;/ul&gt;&lt;p&gt;En &lt;code&gt;process_settings&lt;/code&gt; vemos como nos es de ayuda tener el objeto &lt;code&gt;pelican&lt;/code&gt; disponible,\nde manera que tenemos disponible &lt;code&gt;REPLACEMENTS_CONFIG&lt;/code&gt; para encontrar el &lt;code&gt;yaml&lt;/code&gt; de configuraci\u00f3n (en &lt;code&gt;1&lt;/code&gt;)\ny a su vez podemos usar otras variables (en &lt;code&gt;2&lt;/code&gt;) de manera que si el &lt;code&gt;yaml&lt;/code&gt; es:&lt;/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;DELIMITER: '::'\nPELICAN_SETTINGS: GITHUB_URL DEFAULT_PAGINATION\nLOREM: Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...\n&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;y tenemos un &lt;code&gt;markdown&lt;/code&gt; tal que as\u00ed:&lt;/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;Este blog usa una imaginaci\u00f3n de **::DEFAULT_PAGINATION::** items por hoja y\npuedes encontrar el c\u00f3digo en [github](::GITHUB_URL::)\n::LOREN::\n&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;se transformara justo antes de ser pasado a &lt;code&gt;html&lt;/code&gt; en:&lt;/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;Este blog usa una imaginaci\u00f3n de **10** items por hoja y\npuedes encontrar el c\u00f3digo en [github](https://github.com/s-nt-s/s-nt-s.github.io)\nNeque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...\n&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;y finalmente en el &lt;code&gt;html&lt;/code&gt;&lt;/p&gt;&lt;div class=\"highlight\"&gt;&lt;pre&gt;&amp;lt;p&amp;gt;Este blog usa una imaginaci\u00f3n de &amp;lt;b&amp;gt;10&amp;lt;/b&amp;gt; items por hoja y\npuedes encontrar el c\u00f3digo en &amp;lt;a href='https://github.com/s-nt-s/s-nt-s.github.io'&amp;gt;github&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;\n&amp;lt;p&amp;gt;Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...&amp;lt;/p&amp;gt;\n&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Resumo las ventajas:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;menos lineas en &lt;code&gt;pelicanconf.py&lt;/code&gt;&lt;/li&gt;\n&lt;li&gt;no hay peligro de machacar valores por defecto de &lt;code&gt;MARKDOWN&lt;/code&gt; necesarios&lt;/li&gt;\n&lt;li&gt;la extensi\u00f3n tiene acceso al objeto &lt;code&gt;pelican&lt;/code&gt; y por lo tanto a sus variables de configuraci\u00f3n&lt;/li&gt;\n&lt;li&gt;la extensi\u00f3n es m\u00e1s f\u00e1cil de configurar&lt;/li&gt;\n&lt;li&gt;no hace falta diferencia entre &lt;code&gt;extensiones markdown&lt;/code&gt; y &lt;code&gt;plugins pelican&lt;/code&gt;&lt;/li&gt;\n&lt;/ul&gt;&lt;p&gt;Fuentes:\n&lt;a href=\"http://docs.getpelican.com/en/stable/settings.html#settings\" target=\"_blank\"&gt;docs.getpelican.com - settings&lt;/a&gt;,\n&lt;a href=\"http://docs.getpelican.com/en/stable/plugins.html#how-to-create-plugins\" target=\"_blank\"&gt;docs.getpelican.com - plugins&lt;/a&gt;,\n&lt;a href=\"https://github.com/s-nt-s/s-nt-s.github.io\" target=\"_blank\"&gt;mi github :P&lt;/a&gt;&lt;/p&gt;"</span><span class="p">,</span>
+    <span class="nt">"language"</span><span class="p">:</span> <span class="s2">"es"</span><span class="p">,</span>
+    <span class="nt">"native_ad"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">"open_graph"</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="nt">"status"</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="nt">"summary"</span><span class="p">:</span> <span class="s2">"Seg\u00fan la documentaci\u00f3n de pelican la manera de incluir un plugin markdown es poniendo en pelicanconf.py lo siguiente: MARKDOWN = { 'extensions': [ &amp;lt;&amp;lt;aqu\u00ed van las extensiones&amp;gt;&amp;gt; ], 'extension_configs': { 'markdown.extensions.codehilite': {'css_class': &amp;hellip;"</span><span class="p">,</span>
+    <span class="nt">"title"</span><span class="p">:</span> <span class="s2">"Crear extensi\u00f3n markdown para usar en pelican"</span><span class="p">,</span>
+    <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"https://s-nt-s.github.io/extension_markdown_pelican/"</span>
+<span class="p">}</span>
+</pre></div>
+<p><strong>3- Lo uso desde python</strong></p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_output</span><span class="p">,</span> <span class="n">STDOUT</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">js</span> <span class="o">=</span> <span class="n">check_output</span><span class="p">([</span><span class="s1">'./graby.php'</span><span class="p">,</span> <span class="n">url</span><span class="p">],</span> <span class="n">stderr</span><span class="o">=</span><span class="n">STDOUT</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'UTF-8'</span><span class="p">)</span>
+<span class="n">js</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">js</span><span class="p">)</span>
+<span class="n">js</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">js</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">js</span><span class="p">)</span>
+</pre></div>
+<p>Fuentes: <a href="https://github.com/j0k3r/graby" target="_blank">github.com - j0k3r/graby</a>, 
+<a href="https://php-download.com/package/j0k3r/graby" target="_blank">php-download.com - j0k3r/graby</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2018-09-26_graby.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/graby" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Usar aircrack en NEXX con OpenWrt</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/drafts/nexx_openwer_aircrack.html" rel="bookmark" title="Permalink to Usar aircrack en NEXX con OpenWrt">Usar aircrack en NEXX con OpenWrt</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2020-01-23T00:00:00+01:00" title="Publicado el 2020-01-23">2020-01-23</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<span class="bubble tag tg_openwrt" title="No hay más entradas con esta etiqueta">OpenWrt</span> <span class="bubble tag tg_aircrack" title="No hay más entradas con esta etiqueta">aircrack</span> </p>
+<p>
+<span class="bubble">59 lineas</span> <span class="bubble wc">315 palabras</span> <span class="bubble wc">2.510 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>1-</strong> Base</p>
+<ul>
+<li>Router usado: <a href="https://wikidevi.com/wiki/Nexx_WT3020" target="_blank"><code>NEXX WT3020</code></a></li>
+<li>Instalación de OpenWrt: <a href="https://openwrt.org/toh/nexx/wt3020" target="_blank">OpenWrt</a></li>
+</ul>
+<p><strong>2-</strong> Instalación paquetes necesarios</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> ssh root@192.168.8.1
+<span class="gp">root@OpenWrt:~#</span> opkg update
+<span class="gp">root@OpenWrt:~#</span> opkg install aircrack-ng airmon-ng kmod-usb-storage kmod-fs-ext4 kmod-usb-storage-extras block-mount kmod-scsi-core screen reaver
+</pre></div>
+<p>Esto instala <code>aircrack</code>, <code>reaver</code>, los paquetes para montar memorias usb y la utilidad <code>screen</code>.</p>
+<p>Hoy por hoy, <code>reaver</code> y sobre todo su utilidad <code>wash</code> no funciona con la
+librería <code>libpcap</code> que trae <code>OpenWrt</code> (la <code>1.9.1-1</code> en el momento de escribir esto),
+por ello puede hacer falta hacerla un downgrade:</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> /tmp
+<span class="go">/tmp $ wget http://www.revolucionsocial.com/wp-content/uploads/2017/02/libpcap_1.3.0-1_ramips_24kec.ipk_.zip</span>
+<span class="go">/tmp $ unzip libpcap_1.3.0-1_ramips_24kec.ipk_.zip</span>
+<span class="go">/tmp $ scp ./libpcap_1.3.0-1_ramips_24kec.ipk root@192.168.8.1:/tmp/</span>
+<span class="go">/tmp $ ssh root@192.168.8.1</span>
+<span class="gp">root@OpenWrt:~#</span> opkg remove libpcap --force-depends
+<span class="gp">root@OpenWrt:~#</span> opkg install /tmp/libpcap_1.3.0-1_ramips_24kec.ipk --force-downgrade
+</pre></div>
+<p><strong>3-</strong> Montar usb</p>
+<p>Algunos tutoriales hace directamente <a href="https://openwrt.org/docs/guide-user/additional-software/extroot_configuration" target="_blank"><code>extroot</code></a>
+(mover el <code>root-fs</code> al usb),
+pero como con el espacio interno de <code>NEXX</code> hemos conseguido instalar
+todo lo que queríamos (aunque por los pelos) nosotros solo usaremos
+el pendrive para dar más memoria en forma de <code>swap</code> y más espacio
+para guardar los paquetes capturados por <code>aircrack</code>.</p>
+<p>Para ello habremos particionado previamente nuestro pendrive
+en dos particiones <code>ext4</code>.</p>
+<div class="highlight"><pre><span></span><span class="gp">root@OpenWrt:~#</span> mkdir /mnt/usb
+<span class="gp">root@OpenWrt:~#</span> touch /mnt/usb/NO_MOUNT
+<span class="gp">root@OpenWrt:~#</span> mkswap /dev/sda1
+<span class="gp">root@OpenWrt:~#</span> swapon /dev/sda1
+<span class="gp">root@OpenWrt:~#</span> mount -t ext4 /dev/sda2 /mnt/usb -o rw,async
+</pre></div>
+<p><strong>4-</strong> Poner interfaz en mono monitor</p>
+<div class="highlight"><pre><span></span><span class="gp">root@OpenWrt:~#</span> iw phy phy0 interface add mon0 <span class="nb">type</span> monitor
+<span class="gp">root@OpenWrt:~#</span> ifconfig mon0 up
+</pre></div>
+<p><strong>5-</strong> Capturar paquetes</p>
+<div class="highlight"><pre><span></span><span class="gp">root@OpenWrt:~#</span> screen
+<span class="gp">root@OpenWrt:~#</span> airodump-ng --ivs --write capture --beacons mon0
+<span class="go">^Ctrl+A+D</span>
+<span class="gp">root@OpenWrt:~#</span> <span class="nb">exit</span>
+</pre></div>
+<p><code>screen</code> se usa para poder abandonar el terminal sin peder el trabajo en curso.</p>
+<p><strong>6-</strong> Recoger los datos</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> ssh root@192.168.8.1
+<span class="gp">root@OpenWrt:~#</span> screen -ls
+<span class="go">There is a screen on:</span>
+<span class="go">    1614.pts-0.OpenWrt  (Detached)</span>
+<span class="go">1 Socket in /tmp/screens/S-root.</span>
+<span class="gp">root@OpenWrt:~#</span> screen -r <span class="m">1614</span>
+<span class="go">^Ctrl+C</span>
+<span class="gp">root@OpenWrt:~#</span> <span class="nb">exit</span>
+<span class="gp">root@OpenWrt:~#</span> swapoff /dev/sda1
+<span class="gp">root@OpenWrt:~#</span> umount /mnt/usb
+<span class="gp">root@OpenWrt:~#</span> <span class="nb">exit</span>
+</pre></div>
+<p>Sacamos el pendrive y nos lo llevamos a un ordenador más potente donde analizar
+los datos</p>
+<p><strong>7-</strong> Analizar los datos</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> aircrack-ng capture-01.ivs
+</pre></div>
+<hr/>
+<p><strong>Fuentes</strong>: <a href="https://openwrt.org/es/doc/howto/usb.storage" target="_blank">openwrt.org - usb.storage</a>,
+<a href="https://openwrt.org/docs/guide-user/network/wifi/wireless-tool/aircrack-ng" target="_blank">openwrt.org - aircrack-ng</a>, <a href="https://linuxize.com/post/how-to-use-linux-screen/" target="_blank">linuxize.com - screen</a>, <a href="http://www.revolucionsocial.com/reaver-wps-fork-t6x-en-amper-26555-con-openwrt/" target="_blank">www.revolucionsocial.com</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2020-01-23_nexx_openwer_aircrack.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/drafts/nexx_openwer_aircrack.html" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

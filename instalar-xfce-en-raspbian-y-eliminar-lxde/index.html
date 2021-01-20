@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Instalar XFCE en Raspbian y eliminar LXDE</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/instalar-xfce-en-raspbian-y-eliminar-lxde" rel="bookmark" title="Permalink to Instalar XFCE en Raspbian y eliminar LXDE">Instalar XFCE en Raspbian y eliminar LXDE</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2014-09-18T14:27:00+02:00" title="Publicado el 2014-09-18">2014-09-18</time>
+<a class="bubble category ct_escritorio" href="/category/escritorio.html" title="Hay 5 entradas más sobre Escritorio">
+Escritorio</a>
+<a class="bubble tag tg_raspberrypi" href="/tag/raspberry-pi.html" title="Hay 9 entradas  más sobre Raspberry Pi">
+Raspberry Pi</a> <span class="bubble tag tg_lxde" title="No hay más entradas con esta etiqueta">lxde</span> <a class="bubble tag tg_xfce" href="/tag/xfce.html" title="Hay 1 entrada  más sobre xfce">
+xfce</a> </p>
+<p>
+<span class="bubble">42 lineas</span> <span class="bubble wc">169 palabras</span> <span class="bubble wc">1.908 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>1-</strong> Instalar XFCE</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get install xfce4
+</pre></div>
+<p><strong>2-</strong> Eliminar LXDE</p>
+<p>Primero listamos los paquetes de LXDE, luego desinstalamos todos los
+resultados y finalmente desintalamos los paquetes que han quedado
+huérfanos</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo dpkg --get-selections <span class="p">|</span> grep <span class="s2">"^lx"</span>
+<span class="go">lxappearance                                    install</span>
+<span class="go">lxde                                            install</span>
+<span class="go">lxde-common                                     install</span>
+<span class="go">lxde-core                                       install</span>
+<span class="go">lxde-icon-theme                                 install</span>
+<span class="go">lxinput                                         install</span>
+<span class="go">lxmenu-data                                     install</span>
+<span class="go">lxmusic                                         install</span>
+<span class="go">lxpanel                                         install</span>
+<span class="go">lxpolkit                                        install</span>
+<span class="go">lxrandr                                         install</span>
+<span class="go">lxsession                                       install</span>
+<span class="go">lxsession-edit                                  install</span>
+<span class="go">lxshortcut                                      install</span>
+<span class="go">lxtask                                          install</span>
+<span class="go">lxterminal                                      install</span>
+<span class="gp">pi@bot ~ $</span> sudo apt-get remove lxappearance lxde lxde-* lxinput lxmenu-data lxmusic lxpanel lxpolkit lxrandr lxsession* lxsession lxshortcut lxtask lxterminal
+<span class="go">...</span>
+<span class="gp">pi@bot ~ $</span> sudo apt-get autoremove <span class="o">&amp;&amp;</span> sudo apt-get autoclean
+</pre></div>
+<p><strong>4-</strong> Instalar paquetes extra para el audio</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get install alsa-base alsa-utils gstreamer0.10-alsa gstreamer0.10-plugins-base xfce4-mixer
+<span class="go">...</span>
+<span class="gp">pi@bot ~ $</span> sudo apt-get install gstreamer0.10-plugins-good gstreamer0.10-plugins-bad gstreamer0.10-ffmpeg
+</pre></div>
+<p><strong>5-</strong> Reiniciar y arrancar XFCE</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo reboot
+<span class="go">...</span>
+<span class="gp">pi@bot ~ $</span> startx
+</pre></div>
+<p>El primer arranque puede tardar varios minutos pero es normal, luego
+arrancara mucho más rápido.</p>
+<p>Fuentes:
+<a href="http://www.etcwiki.org/wiki/XFCE_desktop_on_raspberry_pi" target="_blank">www.etcwiki.org</a>,
+raspberrypi.stackexchange.com
+[<a href="http://raspberrypi.stackexchange.com/questions/10053/changing-to-xfce-from-lxde" target="_blank">1</a>]
+[<a href="http://raspberrypi.stackexchange.com/questions/4745/how-to-uninstall-x-server-and-desktop-manager-when-running-as-headless-server" target="_blank">2</a>],
+<a href="http://mike632t.wordpress.com/2014/02/04/installing-xfce/" target="_blank">mike632t.wordpress.com</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2014-09-18_instalar-xfce-en-raspbian-y-eliminar-lxde.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/instalar-xfce-en-raspbian-y-eliminar-lxde" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

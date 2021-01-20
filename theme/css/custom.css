@@ -1,0 +1,71 @@
+/*
+.post-info a.bubble.category {
+    display: none;
+}
+*/
+
+.post-info .bubble {
+    background-color: green;
+}
+
+.post-info .bubble.category {
+    background-color: blue;
+}
+
+.post-info .bubble.tag {
+    background-color: grey;
+}
+
+.post-info .bubble.category.ct_programacion {
+    background-color: orange;
+}
+.post-info .bubble.category.ct_sistemas {
+    background-color: magenta;
+}
+.post-info .bubble.category.ct_utilidades {
+    background-color: MidnightBlue;
+}
+.post-info .bubble.category.ct_web {
+    background-color: SaddleBrown;
+}
+.post-info .bubble.category.ct_datos {
+    background-color: red;
+}
+.post-info .bubble.category.ct_offtopic {
+    background-color: darkkhaki;
+}
+
+p.rnota {
+  text-align: right;
+  background-color: gainsboro;
+  padding-top: 2px;
+  font-size: 0.85em;
+  padding-right: 5px;
+  padding-left: 5px;
+  padding-bottom: 2px;
+}
+
+code {
+    font-size: 1.3em;
+}
+
+body {
+    background-image: url('../images/logo.gif') !important;
+    background-repeat: no-repeat !important;
+    background-position: bottom left !important;
+    background-attachment: scroll !important;
+}
+
+.overgraph div.rootpanel {
+  width: 750px !important;
+}
+
+article q {
+  quotes: initial;
+}
+article q:before {
+  content: open-quote;
+}
+article q:after {
+  content: close-quote;
+}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Descargas en Raspberry Pi</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/descargas-en-raspberry-pi-torrent" rel="bookmark" title="Permalink to Descargas en Raspberry Pi">Descargas en Raspberry Pi</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2013-10-18T18:21:00+02:00" title="Publicado el 2013-10-18">2013-10-18</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<a class="bubble tag tg_raspberrypi" href="/tag/raspberry-pi.html" title="Hay 9 entradas  más sobre Raspberry Pi">
+Raspberry Pi</a> <a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 18 entradas  más sobre linux">
+linux</a> <span class="bubble tag tg_pyload" title="No hay más entradas con esta etiqueta">pyload</span> <a class="bubble tag tg_python" href="/tag/python.html" title="Hay 5 entradas  más sobre python">
+python</a> <a class="bubble tag tg_redes" href="/tag/redes.html" title="Hay 6 entradas  más sobre redes">
+redes</a> <a class="bubble tag tg_transmission" href="/tag/transmission.html" title="Hay 1 entrada  más sobre transmission">
+transmission</a> </p>
+<p>
+<span class="bubble">90 lineas</span> <span class="bubble wc">387 palabras</span> <span class="bubble wc">2.747 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>1-</strong> Crear carpetas donde se almacenaran las descargas</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> <span class="nb">cd</span> /
+<span class="gp">pi@bot / $</span> sudo mkdir dwn
+<span class="gp">pi@bot / $</span> <span class="nb">cd</span> dwn
+<span class="gp">pi@bot /dwn $</span> sudo mkdir cmp
+<span class="gp">pi@bot /dwn $</span> sudo mkdir tmp
+<span class="gp">pi@bot /dwn $</span> sudo chmod <span class="m">777</span> cmp
+<span class="gp">pi@bot /dwn $</span> sudo chmod <span class="m">777</span> tmp
+</pre></div>
+<p><strong>2-</strong> Instalar transmission (para torrents)</p>
+<p>Nada más instalarlo pararemos el servicio (daemon) que nos crea.</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get -y install transmission-daemon
+<span class="go">...</span>
+<span class="go">[ ok ] Starting bittorrent daemon: trasnsmision-daemon.</span>
+<span class="go">...</span>
+<span class="gp">pi@bot ~ $</span> sudo /etc/init.d/transmission-daemon stop
+<span class="go">[ ok ] Stopping bittorrent daemon: trasnsmision-daemon.</span>
+</pre></div>
+<p><strong>3-</strong> Configurar transmission</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo nano /var/lib/transmission-daemon/info/settings.json
+</pre></div>
+<div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="err">...</span>
+<span class="nt">"download-dir"</span><span class="p">:</span> <span class="s2">"/dwn/cmp"</span><span class="p">,</span>
+<span class="nt">"incomplete-dir-enabled"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="nt">"incomplete-dir"</span><span class="p">:</span> <span class="s2">"/dwn/tmp"</span><span class="p">,</span>
+<span class="nt">"rpc-enabled"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="nt">"rpc-bind-address"</span><span class="p">:</span> <span class="s2">"0.0.0.0"</span><span class="p">,</span>
+<span class="nt">"rpc-username"</span><span class="p">:</span> <span class="s2">"descargas"</span><span class="p">,</span>
+<span class="nt">"rpc-password"</span><span class="p">:</span> <span class="s2">"12345"</span><span class="p">,</span>
+<span class="nt">"rpc-whitelist-enabled"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+<span class="err">...</span>
+<span class="p">}</span>
+</pre></div>
+<p>Con esto hacemos que las descargas se almacenen en /dwn/tmp hasta que
+están completas y entonces pasan a /dwn/cmp, y también hacemos que
+podamos gestionar las descargas a traves de http://nuestra-ip:9091
+validándonos con el usuario 'descargas' y contraseña '12345'</p>
+<p><strong>4-</strong> Arrancamos transmission</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo /etc/init.d/transmission-daemon start
+<span class="go">[ ok ] Starting bittorrent daemon: trasnsmision-daemon.</span>
+</pre></div>
+<p><strong>Bonus</strong>: <a href="http://apuntes.pusku.com/914" target="_blank">Notificaciones</a> cuando se
+finaliza una descarga</p>
+<p><strong>5-</strong> Instalar pyLoad (para descargas directas)</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo aptitude install liblept3
+<span class="go">...</span>
+<span class="gp">pi@bot ~ $</span> sudo aptitude install python python-crypto python-pycurl python-imaging python-openssl tesseract-ocr python-qt4 spidermonkey-bin zip unzip unrar-free
+<span class="go">...</span>
+<span class="gp">pi@bot ~ $</span> wget http://download.pyload.org/pyload-v0.4.9-all.deb
+<span class="go">...</span>
+<span class="gp">pi@bot ~ $</span> sudo dpkg -i pyload-v0.4.9-all.deb
+</pre></div>
+<p><strong>6-</strong> Configurar pyLoad</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> pyLoadCore -s
+<span class="go">...</span>
+<span class="gp">#</span><span class="c1"># Revisión del sistema ##</span>
+<span class="go">Versión de Python: OK</span>
+<span class="go">pycurl: OK</span>
+<span class="go">sqlite3: OK</span>
+<span class="go">pycrypto: OK</span>
+<span class="go">py-OpenSSL: OK</span>
+<span class="go">py-imaging: OK</span>
+<span class="go">tesseract: OK</span>
+<span class="go">PyQt4: OK</span>
+<span class="go">jinja2: OK</span>
+<span class="go">beaker: OK</span>
+<span class="go">Motor JS: OK</span>
+<span class="go">...</span>
+</pre></div>
+<p>Si no da todo OK revisar que todos los paquetes del paso 5 se han
+instalado y/o intentar instalarlos individualmente.</p>
+<div class="highlight"><pre><span></span><span class="go">...</span>
+<span class="go">¿Realizar el ajuste básico? ([s]/n): s</span>
+<span class="go">...</span>
+<span class="go">Nombre de usuario [User]: descargas</span>
+<span class="go">Contraseña:  12345</span>
+<span class="go">...</span>
+<span class="go">Activar acceso remoto ([s]/n): s</span>
+<span class="go">Idioma ([en], de, fr, it, es, nl, sv, ru, pl, cs, sr, pt_BR): es</span>
+<span class="go">Directorio de descargas [Downloads]: /dwn/cmp</span>
+<span class="go">...</span>
+<span class="go">¿Configurar la interfaz web? ([s]/n): s</span>
+<span class="go">¿Activar interfaz web? ([s]/n): s</span>
+<span class="go">Dirección de escucha, si usas 127.0.0.1 o localhost, la interfaz web solo podrá ser accesible localmente.</span>
+<span class="go">Dirección [0.0.0.0]: 0.0.0.0</span>
+<span class="go">Puerto [8000]: 8000</span>
+</pre></div>
+<p><strong>7-</strong> Crear arranque automático</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> crontab -e
+</pre></div>
+<p>Añadir la siguiente linea</p>
+<div class="highlight"><pre><span></span>@reboot pyLoadCore --daemon
+</pre></div>
+<p>Fuente:
+<a href="http://www.electroensaimada.com/torrent.html" target="_blank">electroensaimada.com</a>,
+<a href="http://foro.androidpc.es/showthread.php?tid=1009" target="_blank">foro.androidpc.es</a>,
+<a href="http://jankarres.de/2013/06/raspberry-pi-how-to-install-pyload-downloadmanager/" target="_blank">jankarres.de</a>
+y
+<a href="http://www.megaleecher.net/Free_download_manager_for_Raspberry_Pi" target="_blank">megaleecher.net</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2013-10-18_descargas-en-raspberry-pi-torrent.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/descargas-en-raspberry-pi-torrent" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

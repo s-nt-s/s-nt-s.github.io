@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Mover procesos entre terminales y planos</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/mover-procesos-entre-terminales-y-planos" rel="bookmark" title="Permalink to Mover procesos entre terminales y planos">Mover procesos entre terminales y planos</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2014-10-03T16:14:00+02:00" title="Publicado el 2014-10-03">2014-10-03</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<span class="bubble tag tg_procesos" title="No hay más entradas con esta etiqueta">procesos</span> </p>
+<p>
+<span class="bubble">38 lineas</span> <span class="bubble wc">193 palabras</span> <span class="bubble wc">1.107 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Problema</strong>: Tenemos que ejecutar un proceso desde un terminal que va a
+dejar de estar disponible y no queremos que se cancele al cerrar dicho
+terminal</p>
+<p><strong>Solución</strong>:  Depende de si ya hemos arrancado el proceso o no.</p>
+<p><strong>A) Procesos sin arrancar</strong></p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> nohup ./script.sh <span class="p">&amp;</span>
+<span class="gp">pi@bot ~ $</span> <span class="nb">exit</span>
+</pre></div>
+<p>Esto arrancara script.sh sin que sea asociado a nuestro terminal, y
+generar un fichero nohup.out donde se guardara la salida del script.</p>
+<p><strong>B) Procesos ya arrancados</strong></p>
+<p>Si el proceso nos tiene ocupado el terminal tecleamos Control+Z para
+dormirlo</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> ./script.sh
+<span class="go">....</span>
+<span class="go">^Z</span>
+<span class="go">[1]+ Stopped</span>
+<span class="gp">pi@bot ~ $</span> <span class="nb">jobs</span>
+<span class="go">[1]+ Stopped ./script.sh</span>
+<span class="gp">pi@bot ~ $</span> <span class="nb">bg</span> <span class="m">1</span>
+<span class="go">[1]+ ./script.sh &amp;</span>
+<span class="gp">pi@bot ~ $</span> <span class="nb">disown</span> -h %1
+<span class="gp">pi@bot ~ $</span> <span class="nb">exit</span>
+</pre></div>
+<p>Como de esta manera no tenemos disponible ningún nohup.out desde el que
+ver la salida la podemos consultar de la siguiente manera:</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> ps -e <span class="p">|</span> grep script.sh
+<span class="go">12194 ? 04:11:47 script.sh</span>
+<span class="gp">pi@bot ~ $</span> tail -f /proc/12194/fd/1
+<span class="go">...</span>
+</pre></div>
+<p><strong>C) Recuperar proceso en otro terminal</strong></p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> ps -e <span class="p">|</span> grep script.sh
+<span class="go">12194 ? 04:11:47 script.sh</span>
+<span class="gp">pi@bot ~ $</span> reptyr -s <span class="m">12194</span>
+<span class="go">...</span>
+</pre></div>
+<p>Fuente:
+<a href="http://askubuntu.com/questions/10547/how-to-clean-launch-a-gui-app-via-the-terminal-so-it-doesnt-wait-for-terminati" target="_blank">askubuntu.com</a>,
+<a href="http://raspi.tv/2012/using-screen-with-raspberry-pi-to-avoid-leaving-ssh-sessions-open" target="_blank">raspi.tv</a>,
+<a href="http://monkeypatch.me/blog/move-a-running-process-to-a-new-screen-shell.html" target="_blank">monkeypatch.me</a>,
+<a href="http://askubuntu.com/questions/192798/reading-the-output-from-any-process-using-its-pid" target="_blank">askubuntu.com</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2014-10-03_mover-procesos-entre-terminales-y-planos.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/mover-procesos-entre-terminales-y-planos" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

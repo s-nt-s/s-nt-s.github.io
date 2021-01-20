@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>OpenWrt en Nexx WT3020F</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home ulcompact" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/openwrt_nexx_wt3020f" rel="bookmark" title="Permalink to OpenWrt en Nexx WT3020F">OpenWrt en Nexx WT3020F</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2020-01-30T00:00:00+01:00" title="Publicado el 2020-01-30">2020-01-30</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<span class="bubble tag tg_openwrt" title="No hay más entradas con esta etiqueta">OpenWrt</span> <a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 18 entradas  más sobre linux">
+linux</a> <span class="bubble tag tg_nexxwt3020f" title="No hay más entradas con esta etiqueta">nexx wt3020f</span> <a class="bubble tag tg_redes" href="/tag/redes.html" title="Hay 6 entradas  más sobre redes">
+redes</a> </p>
+<p>
+<span class="bubble">83 lineas</span> <span class="bubble wc">565 palabras</span> <span class="bubble wc">3.956 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<h2>Objetvio</h2>
+<p>Crear una imagen <code>OpenWrt</code> para el router <a href="https://wikidevi.wi-cat.ru/Nexx_WT3020" target="_blank"><code>Nexx WT3020F</code></a> con los paquetes básicos,
+ahorrando el máximo espacio y evitando tener que hacer <a href="https://openwrt.org/docs/guide-user/additional-software/extroot_configuration" target="_blank"><code>extroot</code></a></p>
+<h3>¿Por qué?</h3>
+<ul>
+<li>Tal como esta hecho <code>OpenWrt</code> es mejor crear una imagen con los paquetes deseados,
+que quemar <a href="https://openwrt.org/toh/nexx/wt3020" target="_blank">la imagen por defecto</a> e instalar/desintalar
+paquetes a posteriori. Ver:<ul>
+<li><a href="https://www.reddit.com/r/openwrt/comments/9zyn09/what_can_i_safely_remove_from_this_list_to_save/ead6b8o/" target="_blank">reddit.com - What can i safely remove from this list to save space?</a></li>
+<li><a href="https://openwrt.org/faq/no_space_left_on_device" target="_blank">openwrt.org - No space left on device</a></li>
+</ul>
+</li>
+<li>Hacer <a href="https://openwrt.org/docs/guide-user/additional-software/extroot_configuration" target="_blank"><code>extroot</code></a>
+provoca que necesitemos dedicar permanentemente un pendrive al router. Prefiero tener
+el sistema enteramente en el router, y usar el usb solo para almacenamiento de datos y memoria <code>swap</code> de manera que sea fácil prescindir de él o sustituirlo por otro.</li>
+</ul>
+<h2>Realización</h2>
+<h3>Guía rápida</h3>
+<ul>
+<li>Usar <a href="https://openwrt.org/docs/guide-user/additional-software/imagebuilder" target="_blank"><code>image builder</code></a></li>
+<li><a href="https://openwrt.org/faq/which_packages_can_i_safely_remove_to_save_space" target="_blank">Eliminar paquetes</a> no deseados</li>
+<li><s>Comprimir los <code>css</code>, <code>js</code> y <code>html</code></s> (ya no hace falta, viene por defecto)</li>
+<li>Instalar paquetes extra, por ejemplo <code>nano</code> y <code>aircrack</code></li>
+<li>Cambiar la ip a <code>192.168.8.1</code> para que coincida con la de la pegatina del router y para que no colisione con otros routers</li>
+<li>Habilitar la contraseña <code>root</code></li>
+<li>Automontar USB con una partición paras <code>swap</code> y otra para datos <code>ext4</code></li>
+<li>Añadir <code>alias</code> y <code>prompt</code> al gusto</li>
+<li>Añadir un comando para obtener la ip pública</li>
+<li>Poner el router en la misma zona horaria que la del ordenador donde se esta generando la imagen</li>
+<li>Configurar redes inalámbricas:<ul>
+<li>Poner contraseña a la red principal</li>
+<li>Crear una red para invitados protegida con <code>nodogsplash</code></li>
+</ul>
+</li>
+</ul>
+<h3>Preparar entorno</h3>
+<p>Siguiendo <a href="https://openwrt.org/docs/guide-user/additional-software/imagebuilder" target="_blank">openwrt.org - imagebuilder</a></p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get install build-essential libncurses5-dev libncursesw5-dev zlib1g-dev gawk git gettext libssl-dev xsltproc wget unzip python
+</pre></div>
+<p>Navegando por openwrt.org:</p>
+<ul>
+<li><a href="https://openwrt.org/toh/hwdata/nexx/nexx_wt3020f" target="_blank">nexx_wt3020f</a></li>
+<li><a href="http://downloads.openwrt.org/releases/19.07.0/targets/ramips/mt7620/openwrt-19.07.0-ramips-mt7620-wt3020-8M-squashfs-factory.bin" target="_blank">19.07.0 - Firmware OpenWrt Install</a></li>
+<li><a href="http://downloads.openwrt.org/releases/19.07.0/targets/ramips/mt7620/" target="_blank">19.07.0 - Carpeta de ramips/mt7620</a></li>
+<li><a href="http://downloads.openwrt.org/releases/19.07.0/targets/ramips/mt7620/openwrt-imagebuilder-19.07.0-ramips-mt7620.Linux-x86_64.tar.xz" target="_blank">19.07.0 - imagebuilder</a></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="gp">$</span> wget <span class="s2">"http://downloads.openwrt.org/releases/19.07.0/targets/ramips/mt7620/openwrt-imagebuilder-19.07.0-ramips-mt7620.Linux-x86_64.tar.xz"</span>
+<span class="gp">$</span> tar xf *.tar.xz
+</pre></div>
+<p>o lo que es lo mismo, pero automatizado, <a href="https://github.com/s-nt-s/OpenWrt-Nexx_WT3020F/raw/master/dwn_build.sh" target="_blank"><code>./dwn_build.sh</code></a></p>
+<p>Haciendo <code>make info</code> vemos que el <code>profile</code> que nos corresponde es <code>wt3020-8M</code></p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> make info
+<span class="go">...</span>
+<span class="go">wt3020-8M:</span>
+<span class="go">    Nexx WT3020 (8MB)</span>
+<span class="go">    Packages: kmod-usb2 kmod-usb-ohci</span>
+<span class="go">    hasImageMetadata: 1</span>
+<span class="go">    SupportedDevices: wt3020-8M wt3020</span>
+<span class="go">...</span>
+</pre></div>
+<p>Creamos los ficheros que queremos que se añadan a la imagen.<br/>
+Sirva de ejemplo este extracto donde:</p>
+<ul>
+<li>se crea un alias para obtener la ip pública</li>
+<li>se define <code>nano</code> como editor por defecto</li>
+<li>se añade la clave pública de la clave privada con la que queremos hacer <code>ssh</code> al rotuer:</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="gp">$</span> mkdir files
+<span class="gp">$</span> <span class="nb">cd</span> openwrt*/
+<span class="gp">$</span> ln -s ../files
+<span class="gp">$</span> <span class="nb">cd</span> ..
+<span class="gp">$</span> mkdir -p files/etc/profile.d/
+<span class="gp">$</span> <span class="nb">echo</span> <span class="s1">'alias getip="wget -q ifconfig.me -O -"'</span> &gt; files/etc/profile.d/alias.sh
+<span class="gp">$</span> <span class="nb">echo</span> <span class="s1">'export EDITOR="nano"'</span> &gt; files/etc/profile.d/export.sh
+<span class="gp">$</span> mkdir -p files/etc/dropbear/
+<span class="gp">$</span> cp ~/.ssh/nexx.pub files/etc/dropbear/authorized_keys
+</pre></div>
+<p>Y usando <a href="https://openwrt.org/docs/guide-developer/uci-defaults" target="_blank">UCI defaults</a>
+afinamos la configuración.<br/>
+Sirva de ejemplo este extracto donde:</p>
+<ul>
+<li>se cambia la ip</li>
+<li>se elimina el <code>banner</code> que se muestra al logarse en el router</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="gp">$</span> mkdir -p files/etc/uci-defaults/
+<span class="gp">$</span> cat &lt;&lt; EOF_cat &gt; files/etc/uci-defaults/99_customizations.sh
+<span class="gp">#</span><span class="c1">#!/bin/sh</span>
+<span class="gp">#</span><span class="c1"># Cambiar IP</span>
+<span class="go">sed 's/\b192\.168\.1\.1\b/192.168.8.1/g' -i /etc/config/network</span>
+<span class="gp">#</span><span class="c1"># Borrar banner</span>
+<span class="go">rm /etc/banner</span>
+<span class="go">EOF_cat</span>
+</pre></div>
+<p>Ver <a href="https://github.com/s-nt-s/OpenWrt-Nexx_WT3020F/raw/master/files/" target="_blank"><code>files</code> del repositorio</a> para observar el resultado final.</p>
+<h3>Creación de imagen</h3>
+<p>Ejemplo:</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> mkdir bin
+<span class="gp">$</span> <span class="nb">cd</span> openwrt*/
+<span class="gp">$</span> make image <span class="nv">PROFILE</span><span class="o">=</span><span class="s2">"wt3020-8M"</span> <span class="nv">PACKAGES</span><span class="o">=</span><span class="s2">"aircrack-ng airmon-ng kmod-usb-storage kmod-fs-ext4 kmod-usb-storage-extras block-mount kmod-scsi-core screen reaver nano uhttpd uhttpd-mod-ubus libiwinfo-lua luci-base luci-app-firewall luci-mod-admin-full luci-theme-bootstrap nodogsplash tcpdump luci-app-opkg luci-proto-ipv6 luci-proto-ppp luci rpcd-mod-rrdns luci shadow-chpasswd ipset"</span> <span class="nv">FILES</span><span class="o">=</span>files/ <span class="nv">BIN_DIR</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>realpath ..<span class="k">)</span><span class="s2">/bin"</span>
+</pre></div>
+<p>Para no tener que escribir esto cada vez, lo meto en el script <a href="https://github.com/s-nt-s/OpenWrt-Nexx_WT3020F/raw/master/build.sh" target="_blank"><code>build.sh</code></a> que
+además se encarga de crear los ficheros de configuración para definir las claves para <code>root</code> y la red inalámbrica principal (en caso de que exista el fichero <code>env.sh</code>).</p>
+<hr/>
+<p>Repositorio con todo el código en <a href="https://github.com/s-nt-s/OpenWrt-Nexx_WT3020F" target="_blank">github.com/s-nt-s</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2020-01-30_openwrt_nexx_wt3020f.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/openwrt_nexx_wt3020f" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

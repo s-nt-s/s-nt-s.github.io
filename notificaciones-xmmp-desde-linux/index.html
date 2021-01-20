@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Notificaciones xmmp desde Linux</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/notificaciones-xmmp-desde-linux" rel="bookmark" title="Permalink to Notificaciones xmmp desde Linux">Notificaciones xmmp desde Linux</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2014-08-01T15:11:00+02:00" title="Publicado el 2014-08-01">2014-08-01</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 18 entradas  más sobre linux">
+linux</a> <a class="bubble tag tg_transmission" href="/tag/transmission.html" title="Hay 1 entrada  más sobre transmission">
+transmission</a> <a class="bubble tag tg_xmpp" href="/tag/xmpp.html" title="Hay 1 entrada  más sobre xmpp">
+xmpp</a> </p>
+<p>
+<span class="bubble">60 lineas</span> <span class="bubble wc">331 palabras</span> <span class="bubble wc">2.253 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p>Tags: linux, transmission, xmpp, ssh</p>
+<p><strong>Problema</strong>: Queremos tener un comando sencillo que usar en nuestros
+script para mandarnos notificaciones</p>
+<p><strong>Solución</strong>: usar xmpp y crear un grupo con permisos para usar este
+comando</p>
+<p><strong>1-</strong> Instalar sendxmpp y crear comando</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get install sendxmpp
+<span class="go">...</span>
+<span class="gp">pi@bot ~ $</span> sudo touch /usr/local/bin/say
+<span class="gp">pi@bot ~ $</span> sudo chmod <span class="m">710</span> /usr/local/bin/say
+<span class="gp">pi@bot ~ $</span> sudo nano /usr/local/bin/say
+</pre></div>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$*</span><span class="s2">"</span> <span class="p">|</span> sendxmpp -u usuario -p contraseña -j servidor_jabber -o dominio -t destinatario
+
+<span class="c1">#Ejemplo con gmail:</span>
+<span class="c1">#sendxmpp -t -u mygmailuser -o gmail.com -p mygmailpassword another@jabber.com</span>
+</pre></div>
+<p><strong>Nota</strong>: Creamos este script como root (sudo) ya que contiene el
+usuario y contraseña de la cuenta que usamos para enviar y la derección
+de a quien queremos que se le envíen los mensajes que usen este comando.
+Ahora bien, probablemente queremos que el comando este disponible para
+usuarios que no queremos que sean sudo ni puedan leer el codigo del
+script, para ello veremos los siguientes pasos</p>
+<p><strong>2-</strong> Crear grupo que podrá enviar mensajes y darle permisos para
+ejecutar el comando</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo groupadd snd
+<span class="gp">pi@bot ~ $</span> sudo visudo
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">[...]</span>
+<span class="na">%snd    ALL</span> <span class="o">=</span> <span class="s">NOPASSWD: /usr/local/bin/say</span>
+</pre></div>
+<p><strong>3-</strong> Ejemplo con transmission: aviso de descarga finalizada.</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo adduser debian-transmission snd
+<span class="gp">pi@bot ~ $</span> nano /dwn/complete.sh
+</pre></div>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+sudo say DECARGADO: <span class="s2">"</span><span class="nv">$TR_TORRENT_NAME</span><span class="s2">"</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo service transmission-daemon stop
+<span class="gp">pi@bot ~ $</span> sudo nano /var/lib/transmission-daemon/info/settings.json
+</pre></div>
+<div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="err">...</span>
+    <span class="nt">"script-torrent-done-filename"</span><span class="p">:</span> <span class="s2">"/dwn/complete.sh"</span><span class="p">,</span>
+<span class="err">...</span>
+<span class="p">}</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo service transmission-daemon start
+</pre></div>
+<p><strong>4-</strong> Ejemplo con PAM: aviso de usuario conectado por ssh.</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~/wks/scripts $</span> touch notif-login.sh
+<span class="gp">pi@bot ~/wks/scripts $</span> chmod +x notif-login.sh
+<span class="gp">pi@bot ~/wks/scripts $</span> nano notif-login.sh
+</pre></div>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$PAM_TYPE</span><span class="s2">"</span> !<span class="o">=</span> <span class="s2">"open_session"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">exit</span> <span class="m">0</span>
+<span class="k">fi</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="si">${</span><span class="nv">PAM_RHOST</span><span class="p">:</span><span class="nv">0</span><span class="p">:</span><span class="nv">10</span><span class="si">}</span><span class="s2">"</span> <span class="o">=</span> <span class="s2">"192.168.1."</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">exit</span> <span class="m">0</span>
+<span class="k">fi</span>
+
+<span class="nv">USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PAM_USER</span><span class="s2">@</span><span class="nv">$PAM_RHOST</span><span class="s2">"</span>
+<span class="k">if</span> <span class="o">[</span> -z <span class="s2">"</span><span class="nv">$PAM_RHOST</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nv">USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PAM_USER</span><span class="s2">"</span>
+<span class="k">fi</span>
+
+sudo say <span class="k">$(</span>date <span class="s2">"+%d/%m/%Y %H:%M"</span><span class="k">)</span><span class="s2">" &gt; </span><span class="nv">$USER</span><span class="s2"> inicia </span><span class="nv">$PAM_SERVICE</span><span class="s2"> en TTY </span><span class="nv">$PAM_TTY</span><span class="s2">"</span> <span class="p">&amp;</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo nano /etc/pam.d/sshd
+</pre></div>
+<div class="highlight"><pre><span></span># PAM configuration for the Secure Shell service
+# ...
+session optional pam_exec.so /home/pi/wks/scripts/notif-login.sh
+</pre></div>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2014-08-01_notificaciones-xmmp-desde-linux.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/notificaciones-xmmp-desde-linux" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

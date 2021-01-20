@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>VPN a través de docker</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home ulcompact" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/vpn_a_traves_de_docker" rel="bookmark" title="Permalink to VPN a través de docker">VPN a través de docker</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2020-08-27T00:00:00+02:00" title="Publicado el 2020-08-27">2020-08-27</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<span class="bubble tag tg_docker" title="No hay más entradas con esta etiqueta">docker</span> <span class="bubble tag tg_vpn" title="No hay más entradas con esta etiqueta">vpn</span> <span class="bubble tag tg_vpnc" title="No hay más entradas con esta etiqueta">vpnc</span> </p>
+<p>
+<span class="bubble">54 lineas</span> <span class="bubble wc">341 palabras</span> <span class="bubble wc">2.224 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<h2>Objetivo</h2>
+<p>Necesitamos pasar por una VPN para acceder a algunos servicios, pero para el
+resto de nuestras conexiones queremos evitar dicha VPN.</p>
+<p>Una posible solución seria usar <a href="https://www.niftiestsoftware.com/2011/08/28/making-all-network-traffic-for-a-linux-user-use-a-specific-network-interface/" target="_blank">IPTABLES con discriminación por usuario</a>
+pero puede resultar demasiado complejo.</p>
+<p>Por ello aquí se presenta una alternativa que consiste en crear una imagen
+docker con un servidor SSH levantado y con la VPN configurada y activada
+de manera que podamos hacer conexiones a través de la imagen solo cuando nos
+interese ir a través de la VPN.</p>
+<p>Nota: Este desarrollo esta montado sobre VPNC (Cisco VPN) porque es lo que
+actualmente tengo que usar en el curro, pero sería fácilmente modificable para usar con OpenVPN
+u otra alternativa.</p>
+<h2>Piezas</h2>
+<ul>
+<li><a href="https://github.com/s-nt-s/docker-vpnc/raw/master/config/default.example.conf" target="_blank"><code>config/default.conf</code></a> debe contener la configuración de nuestra VPNC</li>
+<li><a href="https://github.com/s-nt-s/docker-vpnc/raw/master/config/authorized_keys.example" target="_blank"><code>config/authorized_keys</code></a> debe incluir la clave pública con la que nos
+queremos poder conectar a la máquina docker</li>
+<li><a href="https://github.com/s-nt-s/docker-vpnc/raw/master/config/init.sh" target="_blank"><code>config/init.sh</code></a> es el script que arrancara el servidor SSH y conectara la VPNC
+al iniciar la imagen docker</li>
+<li><a href="https://github.com/s-nt-s/docker-vpnc/raw/master/Dockerfile" target="_blank"><code>Dockerfile</code></a> es la definición de nuestra imagen docker</li>
+<li><a href="https://github.com/s-nt-s/docker-vpnc/raw/master/install.sh" target="_blank"><code>install.sh</code></a> es un pequeño script que crea una imagen y configura un servicio
+<code>systemd</code> para manejarla</li>
+</ul>
+<h2>Pasos</h2>
+<h3>Clave SSH</h3>
+<p>Para crear la clave ssh podemos hacer:</p>
+<div class="highlight"><pre><span></span>$ ssh-keygen -t rsa -f ~/.ssh/docker-vpnc -C <span class="s2">"docker-vpnc"</span>
+$ cp ~/.ssh/docker-vpnc.pub config/authorized_keys
+</pre></div>
+<h3>Instalar imagen y servicio</h3>
+<p>Para crear la imagen y arrancarla:</p>
+<div class="highlight"><pre><span></span>$ sudo ./install.sh
+$ sudo systemctl daemon-reload
+$ sudo systemctl start dvpnc.service
+</pre></div>
+<h3>Ejemplo de uso (~/.ssh/config)</h3>
+<p>Como ejemplo, podemos configurar muestro <code>~/.ssh/config</code> de esta manera:</p>
+<div class="highlight"><pre><span></span>Host docker-vpnc
+    HostName localhost
+    User vpnc
+    Port 52022
+    IdentityFile ~/.ssh/docker-vpnc
+
+Host in
+    HostName 10.2.42.162
+    IdentityFile ~/.ssh/in
+    User myuser
+    ProxyJump docker-vpnc
+
+Host out
+    HostName 10.2.42.162
+    IdentityFile ~/.ssh/out
+    User myuser
+</pre></div>
+<p>y cuando queramos entrar a la máquina <code>10.2.42.162</code> que es solo accesible a
+través de la VPN nos bastara con hacer <code>ssh in</code>, mientras que si queremos
+entrar en la máquina <code>10.2.42.162</code> que esta fuera de la VPN podremos hacer
+<code>ssh out</code>. Así ambas máquinas serán accesibles a la vez.</p>
+<p>Nota: Si se quiere usar un puerto distinto a <code>52022</code> hay que editar <code>./install.sh</code>
+y <code>~/.ssh/config</code></p>
+<hr/>
+<p>Repositorio con todo el código en <a href="https://github.com/s-nt-s/docker-vpnc" target="_blank">github.com/s-nt-s</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2020-08-27_vpn_a_traves_de_docker.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/vpn_a_traves_de_docker" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

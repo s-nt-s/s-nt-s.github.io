@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Usar gamepad Xbox en Raspbian</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/xbox-gamepad-en-raspbian" rel="bookmark" title="Permalink to Usar gamepad Xbox en Raspbian">Usar gamepad Xbox en Raspbian</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2014-10-14T20:00:00+02:00" title="Publicado el 2014-10-14">2014-10-14</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<a class="bubble tag tg_raspberrypi" href="/tag/raspberry-pi.html" title="Hay 9 entradas  más sobre Raspberry Pi">
+Raspberry Pi</a> <span class="bubble tag tg_videojuegos" title="No hay más entradas con esta etiqueta">videojuegos</span> </p>
+<p>
+<span class="bubble">38 lineas</span> <span class="bubble wc">427 palabras</span> <span class="bubble wc">2.809 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p>1- Instalar los dirvers</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get install xboxdrv
+</pre></div>
+<p>2- Conectar el receptor wireless</p>
+<p>3- Comprobar que se ha detectado</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> dmesg <span class="p">|</span> grep Xbox
+<span class="go">[ 5217.724011] usb 1-1.2: Product: Xbox 360 Wireless Receiver for Windows</span>
+<span class="go">[ 5218.106219] input: Xbox 360 Wireless Receiver as /devices/platform/bcm2708_usb/usb1/1-1/1-1.2/1-1.2:1.0/input/input2</span>
+<span class="go">[ 5218.118192] input: Xbox 360 Wireless Receiver as /devices/platform/bcm2708_usb/usb1/1-1/1-1.2/1-1.2:1.2/input/input3</span>
+<span class="go">[ 5218.121125] input: Xbox 360 Wireless Receiver as /devices/platform/bcm2708_usb/usb1/1-1/1-1.2/1-1.2:1.4/input/input4</span>
+<span class="go">[ 5218.131507] input: Xbox 360 Wireless Receiver as /devices/platform/bcm2708_usb/usb1/1-1/1-1.2/1-1.2:1.6/input/input5</span>
+</pre></div>
+<p>4- Conectar gamepad</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bo ~ $</span> sudo xboxdrv --trigger-as-button --wid <span class="m">0</span> --led <span class="m">2</span> --deadzone <span class="m">4000</span>
+<span class="go">xboxdrv 0.8.4 - http://pingus.seul.org/~grumbel/xboxdrv/ </span>
+<span class="go">Copyright © 2008-2011 Ingo Ruhnke &lt;grumbel@gmx.de&gt; </span>
+<span class="go">Licensed under GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt; </span>
+<span class="go">This program comes with ABSOLUTELY NO WARRANTY. </span>
+<span class="go">This is free software, and you are welcome to redistribute it under certain conditions; see the file COPYING for details. </span>
+
+<span class="go">Controller:        Microsoft Xbox 360 Wireless Controller (PC)</span>
+<span class="go">Vendor/Product:    045e:0719</span>
+<span class="go">USB Path:          001:010</span>
+<span class="go">Wireless Port:     0</span>
+<span class="go">Controller Type:   Xbox360 (wireless)</span>
+
+<span class="go">Your Xbox/Xbox360 controller should now be available as:</span>
+<span class="go">  /dev/input/js1</span>
+<span class="go">  /dev/input/event2</span>
+
+<span class="go">Press Ctrl-c to quit, use '--silent' to suppress the event output</span>
+<span class="go">X1: -5440 Y1:  2337  X2:  1148 Y2:  1617  du:0 dd:0 dl:0 dr:0  back:0 guide:0 start:0  TL:0 TR:0  A:1 B:0 X:0 Y:0  LB:0 RB:0  LT:  0 RT:  0</span>
+<span class="go">X1: -5440 Y1:  2337  X2:  1148 Y2:  1617  du:0 dd:0 dl:0 dr:0  back:0 guide:0 start:0  TL:0 TR:0  A:0 B:0 X:0 Y:0  LB:0 RB:0  LT:  0 RT:  0</span>
+<span class="go">X1: -5440 Y1:  2337  X2:  1148 Y2:  1617  du:0 dd:0 dl:0 dr:0  back:0 guide:0 start:0  TL:0 TR:0  A:0 B:0 X:1 Y:0  LB:0 RB:0  LT:  0 RT:  0</span>
+<span class="go">X1: -5440 Y1:  2337  X2:  1148 Y2:  1617  du:0 dd:0 dl:0 dr:0  back:0 guide:0 start:0  TL:0 TR:0  A:0 B:0 X:0 Y:0  LB:0 RB:0  LT:  0 RT:  0</span>
+<span class="go">X1: -5440 Y1:  2337  X2:  1148 Y2:  1617  du:0 dd:0 dl:0 dr:0  back:0 guide:0 start:0  TL:0 TR:0  A:0 B:0 X:0 Y:1  LB:0 RB:0  LT:  0 RT:  0</span>
+<span class="go">X1: -5440 Y1:  2337  X2:  1148 Y2:  1617  du:0 dd:0 dl:0 dr:0  back:0 guide:0 start:0  TL:0 TR:0  A:0 B:0 X:0 Y:0  LB:0 RB:0  LT:  0 RT:  0</span>
+<span class="go">X1: -5440 Y1:  2337  X2:  1148 Y2:  1617  du:0 dd:0 dl:0 dr:0  back:0 guide:0 start:0  TL:0 TR:0  A:0 B:1 X:0 Y:0  LB:0 RB:0  LT:  0 RT:  0</span>
+<span class="go">X1: -5440 Y1:  2337  X2:  1148 Y2:  1617  du:0 dd:0 dl:0 dr:0  back:0 guide:0 start:0  TL:0 TR:0  A:0 B:0 X:0 Y:0  LB:0 RB:0  LT:  0 RT:  0</span>
+</pre></div>
+<p>Nota: Las lineas que empieza por X1 son producidas por loe eventos
+lanzado al pulsar los botones del gamepad</p>
+<p>Si al ejecutar el primer comando falla, ejecutar <em>sudo rmmod xpad</em> y
+volver a probar.</p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2014-10-14_xbox-gamepad-en-raspbian.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/xbox-gamepad-en-raspbian" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Añadir resolución con xrandr</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/anadir-resolucion-con-xrandr" rel="bookmark" title="Permalink to Añadir resolución con xrandr">Añadir resolución con xrandr</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2013-10-03T17:14:00+02:00" title="Publicado el 2013-10-03">2013-10-03</time>
+<a class="bubble category ct_escritorio" href="/category/escritorio.html" title="Hay 5 entradas más sobre Escritorio">
+Escritorio</a>
+<a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 18 entradas  más sobre linux">
+linux</a> <span class="bubble tag tg_xrandr" title="No hay más entradas con esta etiqueta">xrandr</span> </p>
+<p>
+<span class="bubble">52 lineas</span> <span class="bubble wc">320 palabras</span> <span class="bubble wc">2.099 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p>Usando el terminal de linux:</p>
+<ol>
+<li>Ver las resoluciones disponibles que hay (xrandr)</li>
+<li>Obtener los valores (modeline) de la resolución que queremos
+    añadir (cvt)</li>
+<li>Añadir con la resolución que queremos al listado de disponibles</li>
+<li>Asignar la resolución al monitor deseado</li>
+<li>Poner el monitor en dicha resolución</li>
+</ol>
+<p>Ejemplo: Añadir la resolución 1368x768 al monitor VGA1</p>
+<div class="highlight"><pre><span></span><span class="gp">user@bot ~ $</span> xrandr
+<span class="go">Screen 0: minimum 320 x 200, current 2390 x 768, maximum 32767 x 32767</span>
+<span class="go">LVDS1 connected 1366x768+0+0 (normal left inverted right x axis y axis) 256mm x 144mm</span>
+<span class="go">   1366x768       60.1*+</span>
+<span class="go">   1360x768       59.8     60.0</span>
+<span class="go">   1024x768       60.0</span>
+<span class="go">   800x600        60.3     56.2</span>
+<span class="go">   640x480        59.9</span>
+<span class="go">VGA1 connected 1024x768+1366+0 (normal left inverted right x axis y axis) 0mm x 0mm</span>
+<span class="go">   1024x768       60.0*</span>
+<span class="go">   800x600        60.3     56.2</span>
+<span class="go">   848x480        60.0</span>
+<span class="go">   640x480        59.9</span>
+<span class="gp">user@bot ~ $</span> cvt <span class="m">1366</span> <span class="m">768</span>
+<span class="gp">#</span> 1368x768 <span class="m">59</span>.88 Hz <span class="o">(</span>CVT<span class="o">)</span> hsync: <span class="m">47</span>.79 kHz<span class="p">;</span> pclk: <span class="m">85</span>.25 MHz
+<span class="go">Modeline "1368x768_60.00"   85.25  1368 1440 1576 1784  768 771 781 798 -hsync +vsync</span>
+<span class="gp">user@bot ~ $</span> xrandr --newmode 1368x768 <span class="m">85</span>.25  <span class="m">1368</span> <span class="m">1440</span> <span class="m">1576</span> <span class="m">1784</span>  <span class="m">768</span> <span class="m">771</span> <span class="m">781</span> <span class="m">798</span> -hsync +vsync
+<span class="gp">user@bot ~ $</span> xrandr --addmode VGA1 1368x768
+<span class="gp">user@bot ~ $</span> xrandr --output VGA1 --mode 1368x768
+<span class="gp">user@bot ~ $</span> xrandr
+<span class="go">Screen 0: minimum 320 x 200, current 2390 x 768, maximum 32767 x 32767</span>
+<span class="go">LVDS1 connected 1366x768+0+0 (normal left inverted right x axis y axis) 256mm x 144mm</span>
+<span class="go">   1366x768       60.1*+</span>
+<span class="go">   1360x768       59.8     60.0</span>
+<span class="go">   1024x768       60.0</span>
+<span class="go">   800x600        60.3     56.2</span>
+<span class="go">   640x480        59.9</span>
+<span class="go">VGA1 connected 1368x768+0+0 (normal left inverted right x axis y axis) 0mm x 0mm</span>
+<span class="go">   1024x768       60.0</span>
+<span class="go">   800x600        60.3     56.2</span>
+<span class="go">   848x480        60.0</span>
+<span class="go">   640x480        59.9</span>
+<span class="go">   1368x768       59.9*</span>
+</pre></div>
+<p><strong>Bonus</strong>: Hacer que el comando se repita cada vez que inicia el sistema
+para que no haya que hacerlo a mano cada vez</p>
+<div class="highlight"><pre><span></span><span class="gp">user@bot ~ $</span> sudo gedit /etc/mdm/Init/Default
+</pre></div>
+<p>Agregamos las nuevas lineas debajo de donde se define el path</p>
+<div class="highlight"><pre><span></span>...
+<span class="nv">PATH</span><span class="o">=</span>/usr/bin:<span class="nv">$PATH</span>
+<span class="nv">OLD_IFS</span><span class="o">=</span><span class="nv">$IFS</span>
+
+xrandr --newmode 1368x768 <span class="m">85</span>.25  <span class="m">1368</span> <span class="m">1440</span> <span class="m">1576</span> <span class="m">1784</span>  <span class="m">768</span> <span class="m">771</span> <span class="m">781</span> <span class="m">798</span> -hsync +vsync
+xrandr --addmode VGA1 1368x768
+xrandr --output VGA1 --mode 1368x768
+
+mdmwhich <span class="o">()</span> <span class="o">{</span>...
+</pre></div>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2013-10-03_anadir-resolucion-con-xrandr.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/anadir-resolucion-con-xrandr" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

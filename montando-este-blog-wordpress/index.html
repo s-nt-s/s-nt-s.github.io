@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Montando este blog (wordpress)</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/montando-este-blog-wordpress" rel="bookmark" title="Permalink to Montando este blog (wordpress)">Montando este blog (wordpress)</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2013-10-03T08:51:00+02:00" title="Publicado el 2013-10-03">2013-10-03</time>
+<a class="bubble category ct_web" href="/category/web.html" title="Hay 4 entradas más sobre Web">
+Web</a>
+<a class="bubble tag tg_css" href="/tag/css.html" title="Hay 1 entrada  más sobre css">
+css</a> <a class="bubble tag tg_php" href="/tag/php.html" title="Hay 1 entrada  más sobre php">
+php</a> <span class="bubble tag tg_suffusion" title="No hay más entradas con esta etiqueta">suffusion</span> <span class="bubble tag tg_wordpress" title="No hay más entradas con esta etiqueta">wordpress</span> </p>
+<p>
+<span class="bubble">258 lineas</span> <span class="bubble wc">1.011 palabras</span> <span class="bubble wc">8.930 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>NOTA:</strong> Esto es de cuando el blog estaba en wordpress.</p>
+<p><strong>1-</strong> Poner Wordpress en español</p>
+<ul>
+<li>Editar wp-config.php y cambiar define('WPLANG', ''); por
+    define('WPLANG', 'es_ES');</li>
+<li>Dashboard -&gt; Updates</li>
+</ul>
+<p><strong>2-</strong> Instalar y activar estos plugins y temas:</p>
+<ul>
+<li>Plugins -&gt; Añadir nuevo: <a href="http://wordpress.org/plugins/custom-sidebars/" target="_blank">Custom
+    sidebars</a></li>
+<li>Plugins -&gt; Añadir nuevo: <a href="http://wordpress.org/extend/plugins/jetpack/" target="_blank">Jetpack por
+    WordPress.com</a></li>
+<li>Plugins -&gt; Añadir nuevo: <a href="https://www.0x539.se/wordpress/ultimate-tag-cloud-widget/" target="_blank">Ultimate Tag Cloud
+    Widget</a></li>
+<li>Plugins -&gt; Añadir
+    nuevo: <a href="https://wordpress.org/plugins/wp-pagenavi/" target="_blank">WP-PageNavi</a></li>
+<li>Plugins -&gt; Añadir nuevo: <a href="https://wordpress.org/plugins/crayon-syntax-highlighter/" target="_blank">Crayon Syntax
+    Highlighter</a></li>
+<li>Apariencia -&gt; Temas -&gt; Instalar temas:
+    <a href="http://wordpress.org/themes/suffusion" target="_blank">Suffusion</a></li>
+</ul>
+<p><strong>3-</strong> Cambiar ajustes básicos</p>
+<ul>
+<li>Apariencia -&gt; Fondo -&gt; Color de fondo: #66cdaa</li>
+<li>Ajustes -&gt; General -&gt; Título del sitio: Blog de apuntes</li>
+<li>Ajustes -&gt; General -&gt; Descripción corta -&gt; mejor aquí que
+    en un txt perdido</li>
+<li>Ajustes -&gt; General -&gt; Formato de Fecha: 03/10/2013</li>
+<li>Ajustes -&gt; General -&gt; Formato de Hora: 16:30</li>
+<li>Ajustes -&gt; General -&gt; La semana comienza el: Lunes</li>
+<li>Ajustes -&gt; Comentarios -&gt; Desactivar "Activar los comentarios
+    anidados hasta 5 niveles"</li>
+<li>Ajustes -&gt; Enlaces permanentes -&gt; Estructura personalizada:
+    /%post_id%</li>
+<li>Ajustes -&gt; Medios -&gt; Desactivar "Organizar mis archivos
+    subidos en carpetas basadas en mes y año"</li>
+<li>Ajustes -&gt; PageNavi -&gt; Texto para el Número de Páginas, Texto
+    para la Página Anterior, Texto para la Página Siguiente: <em>lo dejamos
+    en blanco</em></li>
+<li>Ajustes -&gt; PageNavi -&gt; Texto para la Primera página: 1</li>
+<li>Ajustes -&gt; PageNavi -&gt; Texto para la Última Página:
+    %TOTAL_PAGES%</li>
+<li>Ajustes -&gt; PageNavi -&gt; Número de Páginas a Mostrar: 20</li>
+<li>Ajustes -&gt; PageNavi -&gt; Números Grandes en la Paginación: 0</li>
+<li>Ajustes -&gt; PageNavi -&gt; Mostrar Numeros Grandes que sean
+    Multiplos de: 0</li>
+</ul>
+<p><strong>4-</strong> Configurar Suffusion [Apariencia -&gt; Suffusion options]</p>
+<ul>
+<li>Typography -&gt; Body Fonts -&gt; Deafult or custom font styles:
+    Custom styles</li>
+<li>Typography -&gt; Body Fonts -&gt; Link color: 008080</li>
+<li>Other Graphical Elements -&gt; Header -&gt; Description / Sub-Header
+    Alignment: Left</li>
+<li>Other Graphical Elements -&gt; Header -&gt; Description / Sub-Header
+    Vertical Alignment, relative to header: Below the header text</li>
+<li>Back-end -&gt; Custom includes -&gt; First Additional Stylesheet
+    link: http://apuntes.pusku.com/my/css.css</li>
+</ul>
+<p><strong>5-</strong> Configurar Ultimate tag Cloud [Apariencia -&gt; Widgets -&gt;
+Sidebar 1]</p>
+<ul>
+<li>Data -&gt; Order by: Count (reverse order)</li>
+<li>Data -&gt; Post max age -&gt; 90</li>
+<li>Basic Apparence -&gt; Title: Temas recientes</li>
+<li>Basic Apparence -&gt; Tag Size: from 12px to 12px</li>
+<li>Basic Apparence -&gt; Max tag: 4</li>
+<li>Advance Apparence -&gt; Tag separator -&gt; Separator: - (tres
+    espacios antes del guión y uno después)</li>
+</ul>
+<p><strong>6-</strong> Crear listado de entradas</p>
+<ul>
+<li>Páginas -&gt; Añadir nueva -&gt; Título: entradas</li>
+<li>Atributos de página -&gt; Plantilla: Page of Post</li>
+</ul>
+<p><strong>7-</strong> Creando página principal</p>
+<ul>
+<li>Páginas -&gt; Añadir nueva -&gt; Título: inicio</li>
+<li>Páginas -&gt; Atributos de página -&gt; Plantilla: Custom Layout
+    (darle a guardar antes de continuar)</li>
+<li>Páginas -&gt; Additional Options for Suffusion -&gt; Marcar "No
+    enlazar a esta página en la barra de navegación"</li>
+<li>Páginas -&gt; Additional Options for Suffusion -&gt; Marcar "Do not
+    display the page title"</li>
+<li>Páginas -&gt; Additional Options for Suffusion -&gt; Custom Template
+    -&gt; Number of colums: 1, 2, 1, 3, 2 consecutivamente</li>
+<li>Ajustes -&gt; Lectura -&gt; Página frontal muestra -&gt; Una página
+    estática -&gt;Página inicial: inicio</li>
+</ul>
+<p><strong>8-</strong> Configurar página de inicio [Apariencia -&gt; Widgets]</p>
+<ul>
+<li>Custom Layout Widget Area 1 &lt;- La dejamos vacía para usarla
+    esporádicamente (avisos y cosas así)</li>
+<li>Custom Layout Widget Area 2 -&gt; Un "Query post" por cada categoría
+    con:<ul>
+<li>Titulo: Ultimas &lt;&lt;categoría&gt;&gt;</li>
+<li>Select category to show: &lt;&lt;categoría&gt;&gt;</li>
+</ul>
+</li>
+<li>Custom Layout Widget Area 2 -&gt; Widget Texto: &lt;center&gt;&lt;a
+    href="entradas"&gt;ver todas las entradas en orden cronológico
+    &lt;/a&gt;&lt;/center&gt;</li>
+</ul>
+<p><strong>9-</strong> Crear lenguaje y tema Terminal para Crayon</p>
+<p><code>wp-content/uploads/crayon-syntax-highlighter/themes/terminal-plain/terminal-plain.css</code></p>
+<div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">{</span>
+    <span class="k">border-width</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-style</span><span class="p">:</span> <span class="kc">solid</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">text-shadow</span><span class="p">:</span> <span class="kc">none</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">background</span><span class="p">:</span> <span class="mh">#000000</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-radius</span><span class="p">:</span> <span class="mi">5</span><span class="kt">px</span> <span class="mi">5</span><span class="kt">px</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">border-color</span><span class="p">:</span> <span class="kc">grey</span><span class="p">;</span>
+    <span class="k">opacity</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain-inline</span> <span class="p">{</span>
+    <span class="k">border-width</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-color</span><span class="p">:</span> <span class="mh">#000000</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-style</span><span class="p">:</span> <span class="kc">solid</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">background</span><span class="p">:</span> <span class="mh">#000103</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-table</span> <span class="p">{</span>
+    <span class="k">margin</span><span class="p">:</span> <span class="mi">6</span><span class="kt">px</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-table</span> <span class="p">.</span><span class="nc">crayon-nums</span> <span class="p">{</span>
+    <span class="k">background</span><span class="p">:</span> <span class="mh">#000000</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#000000</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-right-width</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-right-color</span><span class="p">:</span> <span class="mh">#ffffff</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="o">*</span><span class="p">::</span><span class="nd">selection</span> <span class="p">{</span>
+    <span class="k">background</span><span class="p">:</span> <span class="kc">transparent</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-code</span> <span class="o">*</span><span class="p">::</span><span class="nd">selection</span> <span class="p">{</span>
+    <span class="k">background</span><span class="p">:</span> <span class="mh">#ddeeff</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#316ba5</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-striped-line</span> <span class="p">{</span>
+    <span class="k">background</span><span class="p">:</span> <span class="mh">#000000</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-striped-num</span> <span class="p">{</span>
+    <span class="k">background</span><span class="p">:</span> <span class="mh">#000000</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#000000</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-marked-line</span> <span class="p">{</span>
+    <span class="k">background</span><span class="p">:</span> <span class="mh">#3b3b3b</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-width</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-color</span><span class="p">:</span> <span class="mh">#3a3a47</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-marked-num</span> <span class="p">{</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#000000</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">background</span><span class="p">:</span> <span class="mh">#000000</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-width</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-color</span><span class="p">:</span> <span class="mh">#000000</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-marked-line</span><span class="p">.</span><span class="nc">crayon-striped-line</span> <span class="p">{</span>
+    <span class="k">background</span><span class="p">:</span> <span class="mh">#3b3b3b</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-marked-num</span><span class="p">.</span><span class="nc">crayon-striped-num</span> <span class="p">{</span>
+    <span class="k">background</span><span class="p">:</span> <span class="mh">#000000</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#000000</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-marked-line</span><span class="p">.</span><span class="nc">crayon-top</span> <span class="p">{</span>
+    <span class="k">border-top-style</span><span class="p">:</span> <span class="kc">solid</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-marked-num</span><span class="p">.</span><span class="nc">crayon-top</span> <span class="p">{</span>
+    <span class="k">border-top-style</span><span class="p">:</span> <span class="kc">solid</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-marked-line</span><span class="p">.</span><span class="nc">crayon-bottom</span> <span class="p">{</span>
+    <span class="k">border-bottom-style</span><span class="p">:</span> <span class="kc">solid</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-marked-num</span><span class="p">.</span><span class="nc">crayon-bottom</span> <span class="p">{</span>
+    <span class="k">border-bottom-style</span><span class="p">:</span> <span class="kc">solid</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-info</span> <span class="p">{</span>
+    <span class="k">background</span><span class="p">:</span> <span class="mh">#faf9d7</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-bottom-width</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-bottom-color</span><span class="p">:</span> <span class="mh">#b1af5e</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-bottom-style</span><span class="p">:</span> <span class="kc">solid</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#7e7d34</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-toolbar</span> <span class="p">{</span>
+    <span class="k">border-bottom-width</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-bottom-color</span><span class="p">:</span> <span class="mh">#2e2e2e</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">border-bottom-style</span><span class="p">:</span> <span class="kc">solid</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="p">:</span><span class="kc">grey</span><span class="p">;</span>
+    <span class="k">text-align</span><span class="p">:</span> <span class="kc">center</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-toolbar</span> <span class="o">&gt;</span> <span class="nt">div</span> <span class="p">{</span>
+    <span class="k">float</span><span class="p">:</span> <span class="kc">left</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-toolbar</span> <span class="p">.</span><span class="nc">crayon-tools</span> <span class="p">{</span>
+    <span class="k">float</span><span class="p">:</span> <span class="kc">right</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">right</span><span class="p">:</span> <span class="mi">5</span><span class="kt">px</span><span class="p">;</span>
+    <span class="k">top</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-tools</span><span class="p">:</span><span class="nd">before</span> <span class="p">{</span>
+    <span class="k">content</span><span class="p">:</span> <span class="s2">"- + x"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-title</span> <span class="p">{</span>
+    <span class="k">float</span><span class="p">:</span> <span class="kc">none</span><span class="p">;</span>
+    <span class="k">padding-bottom</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span><span class="p">;</span>
+    <span class="k">padding-top</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-title</span><span class="p">:</span><span class="nd">before</span> <span class="p">{</span>
+    <span class="k">content</span><span class="p">:</span> <span class="s2">"bash - Terminal"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-language</span> <span class="p">{</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#494949</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-tools</span> <span class="p">.</span><span class="nc">crayon-button</span> <span class="p">{</span>
+    <span class="k">display</span><span class="p">:</span><span class="kc">none</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-button</span><span class="p">:</span><span class="nd">hover</span> <span class="p">{</span>
+    <span class="k">background-color</span><span class="p">:</span> <span class="mh">#bcbcbc</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#666</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-button</span><span class="p">.</span><span class="nc">crayon-pressed</span><span class="p">:</span><span class="nd">hover</span> <span class="p">{</span>
+    <span class="k">background-color</span><span class="p">:</span> <span class="mh">#bcbcbc</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#666</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-button</span><span class="p">.</span><span class="nc">crayon-pressed</span> <span class="p">{</span>
+    <span class="k">background-color</span><span class="p">:</span> <span class="mh">#626262</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#FFF</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-button</span><span class="p">.</span><span class="nc">crayon-pressed</span><span class="p">:</span><span class="nd">active</span> <span class="p">{</span>
+    <span class="k">background-color</span><span class="p">:</span> <span class="mh">#626262</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#FFF</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-button</span><span class="p">:</span><span class="nd">active</span> <span class="p">{</span>
+    <span class="k">background-color</span><span class="p">:</span> <span class="mh">#bcbcbc</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#FFF</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-pre</span> <span class="p">{</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#ffffff</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-nums-content</span> <span class="p">{</span>
+    <span class="k">display</span><span class="p">:</span><span class="kc">none</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="nt">td</span><span class="p">.</span><span class="nc">crayon-code</span> <span class="o">&gt;</span> <span class="nt">div</span><span class="p">.</span><span class="nc">crayon-pre</span> <span class="o">*</span> <span class="p">{</span>
+    <span class="k">font-family</span><span class="p">:</span> <span class="s2">"Droid Sans Mono"</span><span class="p">,</span><span class="s2">"Consolas"</span><span class="p">,</span><span class="kc">monospace</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">line-height</span><span class="p">:</span> <span class="mf">1.5</span><span class="kt">em</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">font-size</span><span class="p">:</span> <span class="mi">13</span><span class="kt">px</span> <span class="cp">!important</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-toolbar</span> <span class="p">.</span><span class="nc">crayon-language</span> <span class="p">{</span>
+    <span class="k">display</span><span class="p">:</span><span class="kc">none</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-pre</span> <span class="p">.</span><span class="nc">crayon-prompt</span> <span class="p">{</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#00ff00</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">font-weight</span><span class="p">:</span> <span class="kc">bold</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-pre</span> <span class="p">.</span><span class="nc">crayon-prompt</span> <span class="o">+</span> <span class="p">.</span><span class="nc">crayon-path</span><span class="o">,</span> <span class="p">.</span><span class="nc">crayon-theme-terminal-plain</span> <span class="p">.</span><span class="nc">crayon-pre</span> <span class="p">.</span><span class="nc">crayon-prompt</span> <span class="o">+</span> <span class="p">.</span><span class="nc">crayon-h</span> <span class="o">+</span> <span class="p">.</span><span class="nc">crayon-path</span> <span class="p">{</span>
+    <span class="k">color</span><span class="p">:</span> <span class="mh">#3366ff</span><span class="p">;</span> <span class="err">!important</span><span class="p">;</span>
+    <span class="k">font-weight</span><span class="p">:</span> <span class="kc">bold</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p><code>wp-content/uploads/crayon-syntax-highlighter/langs/terminal/terminal.txt</code>:</p>
+<div class="highlight"><pre><span></span>### VOID LANGUAGE ###
+
+#   ELEMENT_NAME [optional-css-class] REGULAR_EXPRESSION
+
+    NAME                
+    VERSION             1.0.0
+
+    STATEMENT   [prompt]    ^([a-z]+@[a-z]+)
+    ENTITY      [path]      ((~|\/[^\$ ]+|\/) \$)
+</pre></div>
+<p>Ir a Ajustes --&gt; Crayon --&gt; Languages --&gt; Mostrar lenguajes</p>
+<p><strong>10-</strong> Cambiar algunos comportamientos por defecto</p>
+<ul>
+<li>Deshabilitar el autoembebido de contenidos multimedia: Ver
+    <a href="http://wpengineer.com/2487/disable-oembed-wordpress/" target="_blank">wpengineer.com/2487</a></li>
+<li>Evitar remplazar -- por <code class="string">—</code>: Ver
+    <a href="http://www.jorisvandijk.com/2014/04/08/disable-auto-formatting-of-dashes-in-wordpress/" target="_blank">www.jorisvandijk.com/2014/04/08/disable-auto-formatting-of-dashes-in-wordpress</a></li>
+</ul>
+<p>El resultado es este plugin:</p>
+<p><code>wp-content/plugins/no-embeds-no-dash/no-embeds-no-dash.php</code>:</p>
+<div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="nx">remove_filter</span><span class="p">(</span><span class="s1">'the_content'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span> <span class="nv">$GLOBALS</span><span class="p">[</span><span class="s1">'wp_embed'</span><span class="p">],</span> <span class="s1">'autoembed'</span> <span class="p">),</span> <span class="mi">8</span> <span class="p">);</span>
+<span class="nx">remove_filter</span><span class="p">(</span><span class="s1">'the_content'</span><span class="p">,</span> <span class="s1">'wptexturize'</span><span class="p">);</span>
+<span class="nx">remove_filter</span><span class="p">(</span><span class="s1">'the_excerpt'</span><span class="p">,</span> <span class="s1">'wptexturize'</span><span class="p">);</span>
+<span class="nx">remove_filter</span><span class="p">(</span><span class="s1">'comment_text'</span><span class="p">,</span> <span class="s1">'wptexturize'</span><span class="p">);</span>
+<span class="nx">remove_filter</span><span class="p">(</span><span class="s1">'the_title'</span><span class="p">,</span> <span class="s1">'wptexturize'</span><span class="p">);</span>
+</pre></div>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2013-10-03_montando-este-blog-wordpress.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/montando-este-blog-wordpress" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Notificación de correo nuevo en OWA</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/notificacion-de-correo-nuevo-en-owa" rel="bookmark" title="Permalink to Notificación de correo nuevo en OWA">Notificación de correo nuevo en OWA</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2014-08-01T15:57:00+02:00" title="Publicado el 2014-08-01">2014-08-01</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 18 entradas  más sobre linux">
+linux</a> <a class="bubble tag tg_owa" href="/tag/owa.html" title="Hay 1 entrada  más sobre owa">
+owa</a> </p>
+<p>
+<span class="bubble">79 lineas</span> <span class="bubble wc">288 palabras</span> <span class="bubble wc">1.758 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Problema</strong>: Estamos en la situación ya detallada en el anterior post
+"<a href="http://apuntes.pusku.com/251" target="_blank">Acceder a OWA a través de otra cuenta de
+correo</a>" pero no nos vale la solución
+porque han deshabilitado desde el servidor el acceso EWS</p>
+<p><strong>Solución</strong>: Para reducir las veces que nos vemos obligados a entrar a
+OWA construiremos un script que nos avise de cuando hay un correo nuevo</p>
+<p><strong>1-</strong> Crear el script que visitara OWA por nosotros</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> <span class="nb">cd</span> ~/.owa
+<span class="gp">pi@bot ~ $</span> touch inbox.txt
+<span class="gp">pi@bot ~ $</span> touch notif.awk
+<span class="gp">pi@bot ~ $</span> touch notif.sh
+<span class="gp">pi@bot ~ $</span> chmod +x notif.sh
+<span class="gp">pi@bot ~ $</span> nano notif.sh
+<span class="gp">pi@bot ~ $</span> nano notif.awk
+</pre></div>
+<p><code>~/.owa/notif.sh</code>:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="nv">usr1</span><span class="o">=</span>origen@outloock.com
+<span class="nv">pas1</span><span class="o">=</span>passorigen
+<span class="nv">url</span><span class="o">=</span>https://mail.ejemplo.com
+
+<span class="nv">out</span><span class="o">=</span><span class="k">$(</span>lynx -auth<span class="o">=</span><span class="nv">$usr1</span>:<span class="nv">$pas1</span> <span class="nv">$url</span> -dump -crawl<span class="k">)</span>
+
+<span class="k">if</span> <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span> <span class="p">|</span> grep -q <span class="s2">"THE_TITLE:Error"</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span>
+    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="nv">CWD</span><span class="o">=</span><span class="k">$(</span>dirname <span class="nv">$0</span><span class="k">)</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"--show"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span> <span class="p">|</span> awk -f <span class="nv">$CWD</span>/notif.awk
+    <span class="nb">exit</span>
+<span class="k">fi</span>
+
+<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span> <span class="p">|</span> awk -f <span class="nv">$CWD</span>/notif.awk <span class="p">|</span> <span class="k">while</span> <span class="nb">read</span> ln<span class="p">;</span> <span class="k">do</span>
+    <span class="k">if</span> grep -q <span class="s2">"</span><span class="nv">$ln</span><span class="s2">"</span> <span class="nv">$CWD</span>/inbox.txt<span class="p">;</span> <span class="k">then</span>
+        <span class="k">continue</span>
+    <span class="k">fi</span>
+    <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$ln</span><span class="s2">"</span> &gt;&gt; <span class="nv">$CWD</span>/inbox.txt
+    sudo say <span class="s2">"</span><span class="nv">$ln</span><span class="s2">"</span>
+<span class="k">done</span>
+</pre></div>
+<p><strong>Nota</strong>: El comando <code>say</code> es el implementado en "<a href="http://apuntes.pusku.com/914" target="_blank">Notificaciones xmmp
+desde linux</a>" y podría ser sustituido por
+algún otro método de notificación que deseemos</p>
+<p><code>"~/.owa/notif.awk</code>:</p>
+<div class="highlight"><pre><span></span><span class="nb">BEGIN</span> <span class="p">{</span>
+        <span class="nx">m</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="nx">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="nx">s</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">ath</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">i</span><span class="o">=</span><span class="kr">index</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span><span class="s2">"[_]"</span><span class="p">);</span>
+        <span class="nx">s</span><span class="o">=</span><span class="kr">substr</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">3</span><span class="p">,</span><span class="kr">length</span><span class="p">(</span><span class="nx">s</span><span class="p">));</span>
+        <span class="kr">sub</span><span class="p">(</span><span class="sr">/^ +/</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="nx">s</span><span class="p">);</span>
+        <span class="kr">sub</span><span class="p">(</span><span class="sr">/ +$/</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="nx">s</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">s</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="sr">/\[msg-rd\.png\]/</span> <span class="p">{</span>
+        <span class="nx">m</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+        <span class="nx">a</span><span class="o">=</span><span class="nx">ath</span><span class="p">(</span><span class="o">$</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="sr">/\[msg-unrd\.png\]/</span> <span class="p">{</span>
+        <span class="nx">m</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>
+        <span class="nx">a</span><span class="o">=</span><span class="nx">ath</span><span class="p">(</span><span class="o">$</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="sr">/\[msg-rpl\.gif\]/</span> <span class="p">{</span>
+        <span class="nx">m</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span>
+        <span class="nx">a</span><span class="o">=</span><span class="nx">ath</span><span class="p">(</span><span class="o">$</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="sr">/^[A-Z]/</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">m</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="nx">s</span><span class="o">=$</span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">$</span><span class="mi">1</span><span class="o">~</span><span class="sr">/[0-9]+\/[0-9]+\/20[0-9]+/</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">m</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kr">print</span> <span class="o">$</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="kr">length</span><span class="p">(</span><span class="o">$</span><span class="mi">2</span><span class="p">)</span><span class="o">==</span><span class="mi">4</span><span class="err">?</span> <span class="p">(</span><span class="s2">"0"</span> <span class="o">$</span><span class="mi">2</span><span class="p">)</span> <span class="err">:</span> <span class="o">$</span><span class="mi">2</span><span class="p">),</span> <span class="nx">a</span> <span class="p">,</span> <span class="s2">"-&gt;"</span> <span class="p">,</span> <span class="nx">s</span><span class="p">;</span>
+                <span class="nx">m</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+                <span class="nx">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+                <span class="nx">s</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p><strong>2-</strong> Crear tarea programada</p>
+<p>Repetimos el paso homologo del post "<a href="http://apuntes.pusku.com/251" target="_blank">Acceder a OWA a través de otra
+cuenta de correo</a>" pero con el script
+<code>~/.owa/notif.sh</code></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2014-08-01_notificacion-de-correo-nuevo-en-owa.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/notificacion-de-correo-nuevo-en-owa" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

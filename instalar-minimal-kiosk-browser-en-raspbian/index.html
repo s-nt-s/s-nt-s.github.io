@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Instalar Minimal Kiosk Browser en Raspbian</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/instalar-minimal-kiosk-browser-en-raspbian" rel="bookmark" title="Permalink to Instalar Minimal Kiosk Browser en Raspbian">Instalar Minimal Kiosk Browser en Raspbian</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2014-09-19T13:16:00+02:00" title="Publicado el 2014-09-19">2014-09-19</time>
+<a class="bubble category ct_utilidades" href="/category/utilidades.html" title="Hay 1 entrada más sobre Utilidades">
+Utilidades</a>
+<a class="bubble tag tg_raspberrypi" href="/tag/raspberry-pi.html" title="Hay 9 entradas  más sobre Raspberry Pi">
+Raspberry Pi</a> </p>
+<p>
+<span class="bubble">25 lineas</span> <span class="bubble wc">99 palabras</span> <span class="bubble wc">747 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Problema</strong>: Queremos ver webs y alguna cosilla más desde nuestra
+Raspbery pero no queremos arrancar un entorno de escritorio completo</p>
+<p><strong>Solución</strong>: Instalar Minimal Kiosk Browser</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> <span class="nb">cd</span> /tmp
+<span class="go">pi@bot /tmp wget http://steinerdatenbank.de/software/kweb-1.5.4.1.tar.gz</span>
+<span class="go">...</span>
+<span class="go">pi@bot /tmp tar -xzf kweb-1.5.4.1.tar.gz</span>
+<span class="go">pi@bot /tmp/kweb-1.5.4.1 ./prepare</span>
+<span class="go">Nos dirá que paquetes nos falta</span>
+<span class="go">pi@bot /tmp/kweb-1.5.4.1 sudo apt-get install paquetes que nos faltan</span>
+<span class="go">...</span>
+<span class="go">pi@bot /tmp/kweb-1.5.4.1 sudo ./install</span>
+</pre></div>
+<p>Para ejecutar sin tener que arrancar el entorno de escritorio:</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> xinit ./ktop
+</pre></div>
+<p>O para facilitar su uso podemos <a href="http://felinfo.blogspot.com.es/2011/12/creacion-y-uso-de-alias-de-comandos.html" target="_blank">crear un
+alias</a></p>
+<p><code>~/.bashrc</code></p>
+<div class="highlight"><pre><span></span>alias ktop="xinit ~/ktop"
+</pre></div>
+<p>Documentación: <a href="http://steinerdatenbank.de/software/kweb_manual.pdf" target="_blank">kweb
+manual</a>,
+<a href="http://steinerdatenbank.de/software/omxplayerGUI_manual.pdf" target="_blank">omxplayerGUI
+manual</a>,
+<a href="http://steinerdatenbank.de/software/kweb_changelog.html" target="_blank">changelog</a></p>
+<p>Fuente:
+<a href="http://www.raspberrypi.org/forums/viewtopic.php?t=40860" target="_blank">www.raspberrypi.org</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2014-09-19_instalar-minimal-kiosk-browser-en-raspbian.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/instalar-minimal-kiosk-browser-en-raspbian" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

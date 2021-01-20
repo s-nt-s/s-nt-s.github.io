@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Configurar IP fija en Linux</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/configurar-ip-fija-en-raspbian" rel="bookmark" title="Permalink to Configurar IP fija en Linux">Configurar IP fija en Linux</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2013-10-14T16:30:00+02:00" title="Publicado el 2013-10-14">2013-10-14</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<a class="bubble tag tg_raspberrypi" href="/tag/raspberry-pi.html" title="Hay 9 entradas  más sobre Raspberry Pi">
+Raspberry Pi</a> <a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 18 entradas  más sobre linux">
+linux</a> <a class="bubble tag tg_redes" href="/tag/redes.html" title="Hay 6 entradas  más sobre redes">
+redes</a> </p>
+<p>
+<span class="bubble">131 lineas</span> <span class="bubble wc">662 palabras</span> <span class="bubble wc">4.225 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Problema</strong>: Queremos conectarnos remotamente a nuestro equipo sin
+tener que consultar antes su IP</p>
+<p><strong>Solución</strong>: Configurar una IP estática para la red LAN, obtener una IP
+estática en internet a través de un servicio externo (no-ip) y/o
+automatizar una notificación para que se nos avise cada vez que cambie
+la IP</p>
+<p><strong>A) IP fija en la red local</strong></p>
+<p><strong>1-</strong> Definimos la IP que queremos usar:</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo nano /etc/network/interfaces
+</pre></div>
+<p><code>interfaces</code> ANTES:</p>
+<div class="highlight"><pre><span></span>auto lo
+
+iface lo inet loopback
+iface eth0 inet dhcp
+
+allow-hotplug wlan0
+iface wlan0 inet manual
+wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
+iface default inet dhcp
+</pre></div>
+<p>Comentamos la linea 4 para deshabilitar la IP dinámica y añadimos las
+lineas de la 6 a la 9 para configurar nuestra IP estática siendo
+192.168.1.69 el valor elegido.</p>
+<p><code>interfaces</code> DESPUES:</p>
+<div class="highlight"><pre><span></span>auto lo
+
+iface lo inet loopback
+#iface eth0 inet dhcp
+
+iface eth0 inet static
+ address 192.168.1.69
+ netmask 255.255.255.0
+ gateway 192.168.1.1
+
+allow-hotplug wlan0
+iface wlan0 inet manual
+wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
+iface default inet dhcp
+</pre></div>
+<p><strong>2-</strong> Configuramos el servidor DNS</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo nano /etc/resolv.conf
+</pre></div>
+<p>Si en él ya aparece un "nameserver" entonces no es necesario editarlo,
+en caso contrario hay que añadir un servidor DNS (el 8.8.8.8 de Google,
+la del router - "DNS Server Configuration" en <a href="http://192.168.1.1" target="_blank">http://192.168.1.1</a> - o
+la de tu ISP) para que quede, por ejemplo, así:</p>
+<div class="highlight"><pre><span></span>domain Home
+search Home
+nameserver 87.216.1.65
+nameserver 87.216.1.66
+</pre></div>
+<p><strong>B) IP fija en internet</strong></p>
+<p><strong>1-</strong> Registrar una cuenta en <a href="http://www.noip.com/" target="_blank">noip.com</a>y añadir
+un Host a nuestra cuenta.</p>
+<p>Menú -&gt; Hosts/Redirects -&gt; Add a Host</p>
+<p><img alt="noip" src="/images/noip1.png"/></p>
+<p><strong>2-</strong> Instalar el paquete NO-IP en Raspberry Pi</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> wget http://www.no-ip.com/client/linux/noip-duc-linux.tar.gz
+<span class="go">...</span>
+<span class="gp">pi@bot ~ $</span> tar -zxf noip-duc-linux.tar.gz
+<span class="gp">pi@bot ~ $</span> <span class="nb">cd</span> noip-2.1.9-1/
+<span class="gp">pi@bot ~/noip-2.1.9-1 $</span> make
+<span class="go">...</span>
+<span class="gp">pi@bot ~/noip-2.1.9-1 $</span> sudo make install
+<span class="go">...</span>
+<span class="go">Please enter the login/email string for no-ip.com nuestro_usuario_noip</span>
+<span class="go">Please enter the password for user 'nuestro_usuario_noip' ******</span>
+</pre></div>
+<p>Una vez instalado, si necesitas repetir la configuración del paquete
+NO-IP (por ejemplo, porque has añadido nuevos dominios a tu cuenta)
+ejecuta:</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo /usr/local/bin/noip2 -C
+</pre></div>
+<p><strong>3-</strong> Configurar arranque automático de no-ip</p>
+<p>Creamos el archivo noip2 con el contenido detallado más abajo</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo touch /etc/init.d/noip2
+<span class="gp">pi@bot ~ $</span> sudo chmod +x /etc/init.d/noip2
+<span class="gp">pi@bot ~ $</span> sudo nano /etc/init.d/noip2
+</pre></div>
+<div class="highlight"><pre><span></span><span class="ch">#! /bin/bash</span>
+<span class="c1">### BEGIN INIT INFO</span>
+<span class="c1"># Provides: Servicio No-IP</span>
+<span class="c1"># Required-Start: $syslog</span>
+<span class="c1"># Required-Stop: $syslog</span>
+<span class="c1"># Default-Start: 2 3 4 5</span>
+<span class="c1"># Default-Stop: 0 1 6</span>
+<span class="c1"># Short-Description: arranque automatico para no-ip</span>
+<span class="c1"># Description:</span>
+<span class="c1">#</span>
+<span class="c1">### END INIT INFO</span>
+sudo /usr/local/bin/noip2
+</pre></div>
+<p>Le damos permisos de ejecución y lo ponemos en la cola de ejecución y
+reiniciamos</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo update-rc.d noip2 defaults
+<span class="gp">pi@bot ~ $</span> sudo reboot
+</pre></div>
+<p><strong>Nota</strong>: Algunos routers no permiten acceder a la red local desde ellos
+mismos pasando por internet (<a href="http://en.wikipedia.org/wiki/Network_address_translation#NAT_loopback" target="_blank">NAT
+Loopback</a>),
+es decir, si parece que tu dirección no-ip no funciona prueba a usarla
+desde una conexión a internet distinta a la del router al que estas
+intentando acceder.</p>
+<p><strong>C) Notificar IP real cada vez que cambie<br/>
+</strong></p>
+<p><strong>1</strong>- Crear comando que nos devuelva nuestra ip</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo touch /usr/local/bin/getip
+<span class="gp">pi@bot ~ $</span> sudo chmod <span class="m">777</span> /usr/local/bin/getip
+<span class="gp">pi@bot ~ $</span> sudo nano /usr/local/bin/getip
+</pre></div>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>curl -s icanhazip.com<span class="k">)</span>
+<span class="k">if</span> <span class="o">[</span> -z <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>curl -s ifconfig.me<span class="k">)</span>
+<span class="k">fi</span>
+<span class="k">if</span> <span class="o">[</span> -z <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span>
+<span class="nb">exit</span> <span class="m">0</span>
+</pre></div>
+<p><strong>2</strong>- Crear script en /etc/network/if-up.d/</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo touch /etc/network/if-up.d/sendip
+<span class="gp">pi@bot ~ $</span> sudo chmod +x /etc/network/if-up.d/sendip
+<span class="gp">pi@bot ~ $</span> sudo nano /etc/network/if-up.d/sendip
+</pre></div>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>getip<span class="k">)</span>
+<span class="k">if</span> <span class="o">[</span> -z <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+<span class="k">if</span> <span class="o">[</span> -f /tmp/lastip <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nv">LAST</span><span class="o">=</span><span class="k">$(</span>cat /tmp/lastip<span class="k">)</span>
+        <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$LAST</span><span class="s2">"</span> <span class="o">=</span> <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+                <span class="nb">exit</span> <span class="m">0</span>
+        <span class="k">fi</span>
+<span class="k">fi</span>
+<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span> &gt; /tmp/lastip
+say <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span>
+<span class="nb">exit</span> <span class="m">0</span>
+</pre></div>
+<p><strong>Nota</strong>: El comando “say” es el implementado en “<a href="http://apuntes.pusku.com/914" target="_blank">Notificaciones xmmp
+desde linux</a>” y podría ser sustituido por
+algún otro método de notificación que deseemos, por ejemplo mandarnos un
+mail</p>
+<p><strong>BONUS</strong>: Si queremos que nuestro equipo este disponible contra viento
+y marea quizá nos interese que sea capaz de <a href="http://apuntes.pusku.com/646" target="_blank">reconectar
+automáticamente</a> en caso de caida.</p>
+<p><strong>Fuentes del punto c:</strong>
+<a href="http://antonio-mario.com/tag/if-up-d/" target="_blank">antonio-mario.com</a>,
+<a href="http://www.mathworks.es/es/help/simulink/ug/configure-raspberry-pi-hardware-to-email-ip-address-changes.html" target="_blank">www.mathworks.es</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2013-10-14_configurar-ip-fija-en-raspbian.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/configurar-ip-fija-en-raspbian" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Separar css para javascript del css normal</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/separar-css-para-javascript-del-css-normal" rel="bookmark" title="Permalink to Separar css para javascript del css normal">Separar css para javascript del css normal</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2013-10-04T08:05:00+02:00" title="Publicado el 2013-10-04">2013-10-04</time>
+<a class="bubble category ct_web" href="/category/web.html" title="Hay 4 entradas más sobre Web">
+Web</a>
+<a class="bubble tag tg_css" href="/tag/css.html" title="Hay 1 entrada  más sobre css">
+css</a> <span class="bubble tag tg_javascript" title="No hay más entradas con esta etiqueta">javascript</span> </p>
+<p>
+<span class="bubble">41 lineas</span> <span class="bubble wc">252 palabras</span> <span class="bubble wc">1.728 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Situación</strong>: Tenemos componentes que se han de mostrar de una manera u
+otra dependiendo de si hay javascript o no</p>
+<p><strong>Ejemplos típicos</strong>:</p>
+<ul>
+<li>Un menú que se despliega con javascript, por lo tanto si no hay js
+    ha de aparecer ya desplegado para que se pueda usar</li>
+<li>Un botón que da funcionalidad con javascript, por lo tanto si no hay
+    js no tiene sentido que aparezca</li>
+<li>Un link que  da funcionalidad necesaria cuando no hay javascript,
+    por lo tanto si hay js no es necesario que aparezca</li>
+</ul>
+<p><strong>Solución tradicional</strong>:</p>
+<ul>
+<li>El menú se pinta desplegado y luego un método javascript lo colapsa</li>
+<li>El botón no viene en el html si no que se añade posteriormente por
+    medio de javascript</li>
+<li>Se pinta el link y posteriormente se elimina por javascript</li>
+</ul>
+<p><strong>Problema</strong>: Si el explorador o la conexión es un poco lenta o la web
+es muy pesada podemos ver como los componentes aparecen y desaparecen
+delante de nuestras narices</p>
+<p><strong>Solución elegante</strong>: Tener separado un css para uso general y un css
+para uso con javascript que solo estará disponible cuando haya js de
+manera que la página se renderice como queremos a la primera</p>
+<p><code>css/main.css</code>:</p>
+<div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">displayIfJS</span><span class="p">{</span><span class="k">display</span><span class="p">:</span><span class="kc">none</span><span class="p">;}</span>
+</pre></div>
+<p><code>css/javascript.css</code>:</p>
+<div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">hiddenIfJS</span><span class="p">{</span><span class="k">display</span><span class="p">:</span><span class="kc">none</span><span class="p">;}</span>
+<span class="p">.</span><span class="nc">displayIfJS</span><span class="p">{</span><span class="k">display</span><span class="p">:</span><span class="kc">inline</span> <span class="cp">!important</span><span class="p">}</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">"css/main.css"</span> <span class="na">rel</span><span class="o">=</span><span class="s">"stylesheet"</span> <span class="na">media</span><span class="o">=</span><span class="s">"screen"</span> <span class="na">type</span><span class="o">=</span><span class="s">"text/css"</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">"text/javascript"</span><span class="p">&gt;</span>
+    <span class="c1">// &lt;![CDATA[</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'&lt;link media="screen" href="css/javascript.css" rel="stylesheet" type="text/css"/&gt;'</span><span class="p">);</span>
+    <span class="c1">// ]]&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">class</span><span class="o">=</span><span class="s">"displayIfJS"</span> <span class="na">onclick</span><span class="o">=</span><span class="s">"do()"</span> <span class="na">type</span><span class="o">=</span><span class="s">"button"</span> <span class="na">name</span><span class="o">=</span><span class="s">"Bóton JS"</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">class</span><span class="o">=</span><span class="s">"hiddenIfJS"</span> <span class="na">href</span><span class="o">=</span><span class="s">"#do"</span><span class="p">&gt;</span>Link sin JS<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</pre></div>
+<p>El caso del menú desplegable es similar, simplemente la clase o clases
+que lo muestran colapsado estaría en javascript.css</p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2013-10-04_separar-css-para-javascript-del-css-normal.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/separar-css-para-javascript-del-css-normal" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

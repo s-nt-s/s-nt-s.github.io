@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Acceder a OWA a través de otra cuenta de correo</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/acceder-a-owa-a-traves-de-otra-cuenta-de-correo" rel="bookmark" title="Permalink to Acceder a OWA a través de otra cuenta de correo">Acceder a OWA a través de otra cuenta de correo</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2013-12-17T15:01:00+01:00" title="Publicado el 2013-12-17">2013-12-17</time>
+<a class="bubble category ct_utilidades" href="/category/utilidades.html" title="Hay 1 entrada más sobre Utilidades">
+Utilidades</a>
+<a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 18 entradas  más sobre linux">
+linux</a> <a class="bubble tag tg_owa" href="/tag/owa.html" title="Hay 1 entrada  más sobre owa">
+owa</a> <a class="bubble tag tg_perl" href="/tag/perl.html" title="Hay 3 entradas  más sobre perl">
+perl</a> </p>
+<p>
+<span class="bubble">121 lineas</span> <span class="bubble wc">622 palabras</span> <span class="bubble wc">4.127 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Problema</strong>: Nos vemos obligados a utilizar una cuenta que permite
+únicamente acceso por OWA (outlook web access) cuyos servidores tienen
+deshabilitado el acceso POP y además tampoco funcionan las reglas de
+reenvió</p>
+<p><strong>Solución 1º</strong>: Usar
+<a href="http://davmail.sourceforge.net/serversetup.html" target="_blank">davmail</a> para crear un
+acceso pop o imap</p>
+<p><strong>Problema de la solucón 1º</strong>:  La cuenta que va a leer desde ese acceso
+pop nos va a pedir que usemos un certificado SSL no auto firmado y ni
+queremos pagarlo ni queremos dar acceso a nuestra cuenta sin encriptar</p>
+<p><strong>Solución</strong>:
+<a href="http://davmail.sourceforge.net/serversetup.html" target="_blank">davmail</a> +
+<a href="http://www.linux-france.org/prj/pop2imap/" target="_blank">pop2imap</a> + cuenta
+intermedia + nuestra cuenta final</p>
+<p><strong>1-</strong> Crear directorio para el script e instalar las herramientas
+necesarias</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> mkdir .owa
+<span class="gp">pi@bot ~ $</span> <span class="nb">cd</span> .owa
+<span class="gp">pi@bot ~/.owa $</span> wget http://downloads.sourceforge.net/project/davmail/davmail/4.4.0/davmail-4.4.0-2198.zip
+<span class="gp">pi@bot ~/.owa $</span> unzip davmail-*.zip
+<span class="gp">pi@bot ~/.owa $</span> rm davmail-*.zip
+<span class="gp">pi@bot ~/.owa $</span> aptitude install libmail-pop3client-perl libmail-imapclient-perl libdigest-hmac-perl libemail-simple-perl libdate-manip-perl
+<span class="gp">pi@bot ~/.owa $</span> wget http://www.linux-france.org/prj/pop2imap/dist/pop2imap-1.21.tgz
+<span class="gp">pi@bot ~/.owa $</span> tar -xzvf pop2imap-*.tgz
+<span class="gp">pi@bot ~/.owa $</span> <span class="nb">cd</span> pop2imap*
+<span class="gp">pi@bot ~/.owa/pop2imap-1.21 $</span> make install
+<span class="gp">pi@bot ~/.owa/pop2imap-1.21 $</span> <span class="nb">cd</span> ..
+<span class="gp">pi@bot ~/.owa $</span> rm -R pop2imap*
+<span class="gp">pi@bot ~/.owa $</span> touch owa.sh
+<span class="gp">pi@bot ~/.owa $</span> chmod +x owa.sh
+</pre></div>
+<p><strong>2-</strong> Configurar DavMail</p>
+<p><code>davmail.properties</code>:</p>
+<div class="highlight"><pre><span></span><span class="err">...</span>
+<span class="c"># Modo servidor</span>
+<span class="na">davmail.server</span><span class="o">=</span><span class="s">true</span>
+<span class="c"># Exchange OWA o EWS url</span>
+<span class="na">davmail.url</span><span class="o">=</span><span class="s">https://mail.ejemplo.com</span>
+<span class="c"># Puerto para el acceso POP</span>
+<span class="na">davmail.popPort</span><span class="o">=</span><span class="s">1110</span>
+<span class="c"># El resto de servicios no nos interesan</span>
+<span class="na">davmail.caldavPort</span><span class="o">=</span>
+<span class="na">davmail.imapPort</span><span class="o">=</span>
+<span class="na">davmail.ldapPort</span><span class="o">=</span>
+<span class="na">davmail.smtpPort</span><span class="o">=</span>
+<span class="c"># No permitir acceso remoto (solo lo vamos a usar en local)</span>
+<span class="na">davmail.allowRemote</span><span class="o">=</span><span class="s">false</span>
+<span class="c"># Lo dejamos vacio para que escriba el log en la misma carpeta del script</span>
+<span class="na">davmail.logFilePath</span><span class="o">=</span>
+<span class="err">...</span>
+</pre></div>
+<p><strong>3-</strong> Crear script de ejecución</p>
+<p><code>owa.sh</code>:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="c1">#Editar con nuestros datos</span>
+<span class="nv">usr1</span><span class="o">=</span>origen@outloock.com
+<span class="nv">pas1</span><span class="o">=</span>passorigen
+<span class="nv">imp</span><span class="o">=</span>imap.gmail.com
+<span class="nv">prt</span><span class="o">=</span><span class="m">993</span>
+<span class="nv">usr2</span><span class="o">=</span>destino.intermedio@gmail.com
+<span class="nv">pas2</span><span class="o">=</span>passdestino
+<span class="c1">#Crear previmanete una etiqueta en nuestra cuenta destino con este nombre</span>
+<span class="nv">fld</span><span class="o">=</span>owa
+
+log<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+    <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> &gt;&gt; owa.log
+<span class="o">}</span>
+
+<span class="nv">pi2</span><span class="o">=</span><span class="k">$(</span>ps -ef <span class="p">|</span> grep pop2imap <span class="p">|</span> sed <span class="s1">'/ grep /d'</span> <span class="p">|</span> awk <span class="s1">'{print $2}'</span><span class="k">)</span>
+<span class="nv">pid</span><span class="o">=</span><span class="k">$(</span>ps -ef <span class="p">|</span> grep davmail  <span class="p">|</span> sed <span class="s1">'/ grep /d'</span> <span class="p">|</span> awk <span class="s1">'{print $2}'</span><span class="k">)</span>
+
+<span class="nv">START_TIME</span><span class="o">=</span><span class="nv">$SECONDS</span>
+
+<span class="nb">cd</span> ~/.owa
+
+<span class="nv">dat</span><span class="o">=</span><span class="k">$(</span>date <span class="s2">"+%d/%m/%Y %H:%M:%S"</span><span class="k">)</span>
+log <span class="s2">"==== </span><span class="nv">$dat</span><span class="s2"> ===="</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$pid</span><span class="s2">"</span> !<span class="o">=</span> <span class="s2">""</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$pi2</span><span class="s2">"</span> !<span class="o">=</span> <span class="s2">""</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+            log <span class="s2">"OWA ya esta corriendo (davmail=</span><span class="nv">$pid</span><span class="s2"> y pop2imap=</span><span class="nv">$pi2</span><span class="s2">)"</span>
+            <span class="nb">exit</span> <span class="m">1</span>
+    <span class="k">else</span> 
+        log <span class="s2">"Davmail ya esta corriendo con pid=</span><span class="nv">$pid</span><span class="s2">"</span>
+    <span class="k">fi</span>
+<span class="k">else</span>
+        <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$pi2</span><span class="s2">"</span> !<span class="o">=</span> <span class="s2">""</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+                log <span class="s2">"Detenemos pop2imap colgado (</span><span class="nv">$pi2</span><span class="s2">)"</span>
+        <span class="nb">kill</span> <span class="s2">"</span><span class="nv">$pi2</span><span class="s2">"</span>
+        <span class="k">fi</span>
+    ./davmail.sh davmail.properties &gt; /dev/null <span class="p">&amp;</span>
+    <span class="nv">pid</span><span class="o">=</span><span class="nv">$!</span>
+    log <span class="s2">"Davmail iniciado con pid=</span><span class="nv">$pid</span><span class="s2">"</span>
+    sleep <span class="m">2</span>
+<span class="k">fi</span>
+
+log <span class="s2">"Iniciando pop2imap"</span>
+pop2imap --host1 localhost --port1 <span class="m">1110</span> --user1 <span class="nv">$usr1</span> --password1 <span class="nv">$pas1</span> --host2 <span class="nv">$imp</span> --port2 <span class="nv">$prt</span> --user2 <span class="nv">$usr2</span> --password2 <span class="nv">$pas2</span> --folder <span class="nv">$fld</span> --ssl2 &gt; pop2imap.log
+log <span class="s2">"pop2imap parado (pid=</span><span class="nv">$!</span><span class="s2">)"</span>
+
+<span class="nb">kill</span> <span class="s2">"</span><span class="nv">$pid</span><span class="s2">"</span>
+log <span class="s2">"Davmail parado"</span>
+
+<span class="nv">int</span><span class="o">=</span><span class="k">$((</span><span class="nv">$SECONDS</span> <span class="o">-</span> <span class="nv">$START_TIME</span><span class="k">))</span>
+<span class="nv">mig</span><span class="o">=</span><span class="k">$(</span>grep <span class="s2">"No Message-ID Need Transfer"</span> pop2imap.log <span class="p">|</span> wc -l<span class="k">)</span>
+<span class="nv">msg</span><span class="o">=</span><span class="s2">"</span><span class="nv">$mig</span><span class="s2"> mails subidos en </span><span class="nv">$int</span><span class="s2"> segundos"</span>
+
+log <span class="s2">"</span><span class="nv">$msg</span><span class="s2">"</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$mig</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$dat</span><span class="s2"> - </span><span class="nv">$msg</span><span class="s2">"</span> &gt;&gt; summary.log
+<span class="k">fi</span>
+</pre></div>
+<p><strong>4-</strong> Crear tarea programada</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> crontab -e
+</pre></div>
+<p>Añadir las siguientes lineas para que el script se ejecute
+periódicamente</p>
+<div class="highlight"><pre><span></span># Cada hora en horario laboral
+0 7-20 * * 1,2,3,4  /bin/bash ~/.owa/owa.sh
+0 7-18 * * 5  /bin/bash ~/.owa/owa.sh
+# Cada 4 horas fuera de horario laboral y entre semana
+0 23,3 * * 1,2,3,4  /bin/bash ~/.owa/owa.sh
+# Cada 8 horas en fin de semana
+0 */8 * 6,7 /bin/bash ~/.owa/owa.sh
+</pre></div>
+<p><strong>5-</strong> Configurar nuestra cuenta final</p>
+<p>Ahora nuestra cuenta final puede leer vía pop de la cuenta intermedia
+(que funciona como espejo del owa) sin problemas.</p>
+<hr/>
+<p><strong>Notas</strong>: Se podría usar la salida imap que da davmail para <a href="http://imapsync.lamiral.info/" target="_blank">migrar de
+imap a imap</a> pero según la documentación
+de davmail su acceso pop es más eficiente. También se podría pensar en
+prescindir de la cuenta intermedia y cargarlo todo en la cuenta final
+pero entonces no se ejecutarían nuestros filtros sobre este correo
+entrante y además si borrásemos un mail este volvería a aparecer en la
+próxima sincronización.</p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2013-12-17_acceder-a-owa-a-traves-de-otra-cuenta-de-correo.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/acceder-a-owa-a-traves-de-otra-cuenta-de-correo" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

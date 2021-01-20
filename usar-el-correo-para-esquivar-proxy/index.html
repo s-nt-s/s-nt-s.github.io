@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Usar el correo para esquivar proxy</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/usar-el-correo-para-esquivar-proxy" rel="bookmark" title="Permalink to Usar el correo para esquivar proxy">Usar el correo para esquivar proxy</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2014-05-15T18:04:00+02:00" title="Publicado el 2014-05-15">2014-05-15</time>
+<a class="bubble category ct_programacion" href="/category/programacion.html" title="Hay 5 entradas más sobre Programación">
+Programación</a>
+<a class="bubble tag tg_perl" href="/tag/perl.html" title="Hay 3 entradas  más sobre perl">
+perl</a> <a class="bubble tag tg_proxy" href="/tag/proxy.html" title="Hay 1 entrada  más sobre proxy">
+proxy</a> <a class="bubble tag tg_redes" href="/tag/redes.html" title="Hay 6 entradas  más sobre redes">
+redes</a> </p>
+<p>
+<span class="bubble">187 lineas</span> <span class="bubble wc">1.072 palabras</span> <span class="bubble wc">6.779 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Problema 1</strong>: Necesitamos descargar o copiar unos archivos en un
+equipo con puertos usb capados, sin lectora de cds y conectado a una red
+cuyo proxy impone una cuota máxima de descarga e impide entrar en según
+que dominios.</p>
+<p><strong>Solución 1</strong>: Buscar algún dominio de correo electrónico que figure
+como excepción del proxy, para mandarse los archivos a ese correo e
+irlos bajándolos</p>
+<p><strong>Problema 2</strong>: Subir los correos a mano es tedioso y dependemos de la
+cuota del correo, si esta es menor de lo que necesitamos tendremos que
+hacer el proceso en varias tandas y eso puede suponer hacer varios
+viajes entre nuestro equipo libre (desde el que mandamos archivos) y el
+equipo enjaulado (el del proxy)</p>
+<p><strong>Solución 2</strong>: Automatizar la subida de archivos al correo sin
+necesidad de enviar - o autoenviar - un mail, simplemente dejamos en un
+solo paso el archivo en una carpeta imap del servidor de correo.</p>
+<p><strong>1-</strong> Preparar en nuestro equipo libre los archivos</p>
+<p>Creamos un zip por volúmenes según el tamaño máximo permitido por la
+cuenta de correo que vamos a usar</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> zip -r -s 40m -0 -Pmailzip /tmp/mail.zip /data
+</pre></div>
+<p>El parámetro -Pmailzip define "mailzip" como contraseña del zip
+resultante, con esto evitamos que el servidor rechace el mail por alguno
+de sus contenidos (por ejemplo, un ejecutable).</p>
+<p><strong>2-</strong> Creamos el script y su archivo de configuración en nuestro equipo
+libre (<code>mail.pl</code>)</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/perl -w</span>
+<span class="k">use</span> <span class="nn">Mail::IMAPClient</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">MIME::Lite</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">Cwd</span> <span class="s">'abs_path'</span><span class="p">;</span>
+
+<span class="nb">local</span> <span class="vg">$|</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="nv">$imap</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$quota</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">%cfg</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$seg</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="c1">#seguimiento</span>
+
+<span class="k">sub</span> <span class="nf">save</span> <span class="p">{</span>
+    <span class="k">my</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span><span class="nv">$txt</span><span class="p">,</span><span class="nv">$total</span><span class="p">,</span><span class="nv">$count</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+    <span class="k">my</span> <span class="nv">$name</span><span class="o">=</span><span class="nv">$file</span><span class="p">;</span>
+    <span class="nv">$name</span><span class="o">=~</span> <span class="sr">s/^.+\///</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span><span class="k">print</span> <span class="s">"Subiendo $name ... "</span><span class="p">;}</span>
+    <span class="k">else</span> <span class="p">{</span><span class="k">print</span> <span class="s">"Subiendo $count de $total: $name ... "</span><span class="p">;}</span>
+    <span class="k">my</span> <span class="nv">$msg</span> <span class="o">=</span> <span class="nn">MIME::Lite</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span>
+            <span class="n">From</span>    <span class="o">=&gt;</span><span class="s">'up@bot.com'</span><span class="p">,</span>
+            <span class="n">To</span>      <span class="o">=&gt;</span><span class="s">'down@bot.com'</span><span class="p">,</span>
+            <span class="n">Subject</span> <span class="o">=&gt;</span><span class="s">'Up ['</span> <span class="o">.</span><span class="nv">$count</span> <span class="o">.</span> <span class="s">'/'</span> <span class="o">.</span> <span class="nv">$total</span> <span class="o">.</span> <span class="s">']: '</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">,</span>
+            <span class="n">Type</span>    <span class="o">=&gt;</span><span class="s">'multipart/mixed'</span>
+    <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$txt</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$msg</span><span class="o">-&gt;</span><span class="n">attach</span><span class="p">(</span><span class="n">Type</span> <span class="o">=&gt;</span> <span class="s">'TEXT'</span><span class="p">,</span> <span class="n">Data</span> <span class="o">=&gt;</span> <span class="nv">$txt</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nv">$msg</span><span class="o">-&gt;</span><span class="n">attach</span><span class="p">(</span>
+            <span class="n">Type</span>        <span class="o">=&gt;</span><span class="s">'application/zip'</span><span class="p">,</span>
+            <span class="n">Path</span>        <span class="o">=&gt;</span> <span class="nv">$file</span><span class="p">,</span>
+            <span class="n">Filename</span>    <span class="o">=&gt;</span> <span class="nv">$name</span><span class="p">,</span>
+            <span class="n">Disposition</span> <span class="o">=&gt;</span> <span class="s">'attachment'</span>
+    <span class="p">);</span>
+    <span class="k">my</span> <span class="nv">$id</span><span class="o">=</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">append_string</span><span class="p">(</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Folder</span><span class="p">(),</span><span class="nv">$msg</span><span class="o">-&gt;</span><span class="n">as_string</span><span class="p">);</span>
+    <span class="k">print</span> <span class="s">"OK\n"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">sub</span> <span class="nf">space</span> <span class="p">{</span>
+    <span class="k">my</span> <span class="p">(</span><span class="nv">$file</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+    <span class="k">my</span> <span class="nv">$size</span><span class="o">=</span><span class="p">((</span><span class="o">-</span><span class="n">s</span> <span class="nv">$file</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="p">);</span>
+    <span class="k">my</span> <span class="nv">$free</span><span class="o">=</span><span class="nv">$quota</span><span class="o">-</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">quota_usage</span><span class="p">();</span>
+    <span class="k">return</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$size</span><span class="o">&lt;</span><span class="nv">$free</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$seg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">print</span> <span class="s">"Esperando a que el usuario libere "</span> <span class="o">.</span> <span class="nb">int</span><span class="p">((</span><span class="nv">$size</span><span class="o">-</span><span class="nv">$free</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span> <span class="o">+</span> <span class="mf">0.99</span><span class="p">)</span> <span class="o">.</span> <span class="s">"MB del servidor... "</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="nv">$size</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">$quota</span><span class="o">-</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">quota_usage</span><span class="p">()))</span> <span class="p">{</span><span class="nb">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">);}</span>
+        <span class="k">print</span> <span class="s">"OK\n"</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">print</span> <span class="s">"Pulse enter para purgar "</span><span class="o">.</span> <span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Folder</span><span class="p">()</span> <span class="o">.</span> <span class="s">" ..."</span><span class="p">;</span>
+        <span class="sr">&lt;STDIN&gt;</span><span class="p">;</span>
+        <span class="n">purge</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">sub</span> <span class="nf">purge</span> <span class="p">{</span>
+    <span class="k">my</span> <span class="nv">@dvs</span><span class="o">=</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">messages</span>  <span class="ow">or</span> <span class="nb">die</span> <span class="s">"Could not messages: $@\n"</span><span class="p">;</span>
+    <span class="k">foreach</span> <span class="k">my</span> <span class="nv">$dv</span> <span class="p">(</span><span class="nv">@dvs</span><span class="p">){</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">delete_message</span><span class="p">(</span><span class="nv">$dv</span><span class="p">);}</span>
+    <span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">expunge</span><span class="p">(</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Folder</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="k">sub</span> <span class="nf">setCfg</span> <span class="p">{</span>
+    <span class="k">my</span> <span class="nv">$fl</span><span class="o">=</span><span class="nv">$_</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$fl</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$fl</span><span class="o">=</span><span class="nv">$0</span><span class="p">;</span>
+        <span class="nv">$fl</span><span class="o">=~</span> <span class="sr">s/^.+\/|\..+$//g</span><span class="p">;</span>
+        <span class="nv">$fl</span><span class="o">=</span> <span class="nv">$ENV</span><span class="p">{</span><span class="s">"HOME"</span><span class="p">}</span> <span class="o">.</span> <span class="s">"/."</span> <span class="o">.</span> <span class="nv">$fl</span> <span class="o">.</span> <span class="s">".cnf"</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nb">open</span> <span class="p">(</span><span class="n">CFG</span><span class="p">,</span> <span class="nv">$fl</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">die</span> <span class="s">"No se pueo abrir el fichero e configuracion: $fl\n"</span> <span class="o">.</span> <span class="vg">$@</span><span class="p">;</span>
+    <span class="nv">%cfg</span><span class="o">=</span><span class="p">();</span>
+    <span class="k">while</span> <span class="p">(</span><span class="k">my</span> <span class="nv">$line</span><span class="o">=</span><span class="sr">&lt;CFG&gt;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$line</span><span class="o">=~</span> <span class="sr">s/^\s+|\s+$|\s+#.*$//g</span><span class="p">;</span>
+        <span class="k">next</span> <span class="k">if</span> <span class="p">(</span><span class="nb">substr</span><span class="p">(</span><span class="nv">$line</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">eq</span> <span class="s">"#"</span><span class="p">);</span>
+        <span class="p">(</span><span class="k">my</span> <span class="nv">$k</span><span class="p">,</span><span class="k">my</span> <span class="nv">$v</span><span class="p">)</span> <span class="o">=</span> <span class="nb">split</span> <span class="sr">/\s*=\s*/</span><span class="p">,</span> <span class="nv">$line</span><span class="p">;</span>
+        <span class="nv">$cfg</span><span class="p">{</span><span class="nv">$k</span><span class="p">}</span> <span class="o">=</span> <span class="nv">$v</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nb">close</span><span class="p">(</span><span class="n">CFG</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">sub</span> <span class="nf">imap</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$imap</span> <span class="o">||</span> <span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">IsUnconnected</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">%cfg</span><span class="p">)</span> <span class="p">{</span><span class="n">setCfg</span><span class="p">()};</span>
+        <span class="k">print</span> <span class="s">"Conectando a $cfg{User}/$cfg{Folder} ... "</span> <span class="p">;</span>
+        <span class="nv">$imap</span> <span class="o">=</span> <span class="nn">Mail::IMAPClient</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span><span class="nv">%cfg</span><span class="p">)</span> <span class="o">||</span> <span class="nb">die</span> <span class="s">"\n$@\n"</span><span class="p">;</span>
+        <span class="nv">$imap</span><span class="o">-&gt;</span><span class="nb">select</span><span class="p">(</span><span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">Folder</span><span class="p">());</span>
+        <span class="k">print</span> <span class="s">"OK\n"</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nv">$imap</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">my</span> <span class="nv">$purge</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">@files</span><span class="o">=</span><span class="p">();</span>
+<span class="k">foreach</span> <span class="k">my</span> <span class="nv">$a</span> <span class="p">(</span><span class="nv">@ARGV</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$a</span> <span class="ow">eq</span> <span class="s">"--key"</span><span class="p">)</span> <span class="p">{</span><span class="nv">$seg</span><span class="o">=</span><span class="mi">0</span><span class="p">;}</span>
+    <span class="k">elsif</span> <span class="p">(</span><span class="nv">$a</span> <span class="ow">eq</span> <span class="s">"--purge"</span><span class="p">)</span> <span class="p">{</span><span class="nv">$purge</span><span class="o">=</span><span class="mi">1</span><span class="p">;}</span>
+    <span class="k">next</span> <span class="k">unless</span> <span class="p">(</span><span class="o">-</span><span class="n">f</span> <span class="nv">$a</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$a</span> <span class="o">=~</span><span class="sr"> /.+\.z(ip|\d+)$/</span><span class="p">)</span> <span class="p">{</span><span class="nb">push</span> <span class="p">(</span><span class="nv">@files</span><span class="p">,</span> <span class="n">abs_path</span><span class="p">(</span><span class="nv">$a</span><span class="p">));}</span>
+    <span class="k">elsif</span> <span class="p">(</span><span class="nv">$a</span> <span class="o">=~</span><span class="sr"> /.+\.cnf$/</span><span class="p">)</span> <span class="p">{</span><span class="n">setCfg</span><span class="p">(</span><span class="nv">$a</span><span class="p">);}</span>
+<span class="p">}</span>
+
+<span class="k">my</span> <span class="nv">$t</span><span class="o">=</span><span class="nb">scalar</span> <span class="p">(</span><span class="nv">@files</span><span class="p">);</span>
+
+<span class="nb">die</span> <span class="s">"Debe pasar una lista de ficheros zip\n"</span> <span class="k">unless</span> <span class="nv">$t</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$purge</span><span class="p">)</span> <span class="p">{</span><span class="n">purge</span><span class="p">();}</span>
+
+<span class="nv">$quota</span><span class="o">=</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">quota</span><span class="p">()</span><span class="o">-</span><span class="p">(</span><span class="mi">1024</span><span class="o">*</span><span class="mi">5</span><span class="p">);</span>
+<span class="k">my</span> <span class="nv">$free</span><span class="o">=</span><span class="p">(</span><span class="nv">$quota</span><span class="o">-</span><span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">quota_usage</span><span class="p">());</span>
+
+<span class="k">my</span> <span class="nv">$aux</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$max</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="k">foreach</span> <span class="k">my</span> <span class="nv">$f</span> <span class="p">(</span><span class="nv">@files</span><span class="p">){</span>
+    <span class="nv">$aux</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">s</span> <span class="nv">$f</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="p">;</span>
+    <span class="nb">die</span> <span class="s">"El fichero $f ["</span> <span class="o">.</span> <span class="nb">int</span><span class="p">((</span><span class="nv">$aux</span><span class="sr">/1024) + 0.99) . "MB] ocupa más de lo que el servidor puede almacenar [". int($quota/</span><span class="mi">1024</span><span class="p">)</span> <span class="o">.</span> <span class="s">"MB]\n"</span> <span class="k">unless</span> <span class="nv">$aux</span><span class="o">&lt;</span><span class="nv">$quota</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$aux</span><span class="o">&gt;</span><span class="nv">$max</span><span class="p">)</span> <span class="p">{</span><span class="nv">$max</span><span class="o">=</span><span class="nv">$aux</span><span class="p">};</span>
+<span class="p">}</span>
+<span class="nb">die</span> <span class="s">"Necesita liberar al menos "</span> <span class="o">.</span> <span class="nb">int</span><span class="p">((</span><span class="nv">$max</span><span class="o">/</span><span class="mi">1024</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.99</span><span class="p">)</span> <span class="o">.</span> <span class="s">"MB antes de empezar\n"</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$max</span><span class="o">&gt;</span><span class="nv">$free</span><span class="p">);</span>
+
+<span class="k">my</span> <span class="nv">$c</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$m</span><span class="o">=</span><span class="nb">join</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span><span class="nv">@ARGV</span><span class="p">);</span>
+
+<span class="k">foreach</span> <span class="k">my</span> <span class="nv">$f</span> <span class="p">(</span><span class="nv">@files</span><span class="p">){</span>
+    <span class="n">space</span><span class="p">(</span><span class="nv">$f</span><span class="p">);</span>
+    <span class="n">save</span><span class="p">(</span><span class="nv">$f</span><span class="p">,</span><span class="nv">$m</span><span class="p">,</span><span class="nv">$t</span><span class="p">,</span><span class="nv">$c</span><span class="o">++</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$imap</span> <span class="o">&amp;&amp;</span> <span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">IsConnected</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">disconnect</span> <span class="ow">or</span> <span class="nb">die</span> <span class="s">"Could not disconnect: $@\n"</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p><code>.up.cnf</code>:</p>
+<div class="highlight"><pre><span></span>Server    = imap.cep.correos.es
+Port      = 993
+User      = BARTOLO.PIROLO.57658Z@correos.es
+Password  = 123456
+Peek      = 1
+Uid       = 1
+Ssl       = 1
+Folder    = dv
+</pre></div>
+<p>dv (el valor del campo "Folder") es el nombre de la carpeta que hemos
+creado en nuestra cuenta de correo para servir a este propósito, de
+manera que nuestros mails "esquiva-proxy" no se mezclen con nuestro
+correo normal.</p>
+<p><strong>3-</strong> Arrancamos el script</p>
+<p>El script ira subiendo un volumen detrás de otro hasta llenar la cuenta
+de correo y esperará a que nosotros, desde el equipo enjaulado y tras
+haber descargado los adjuntos, liberemos espacio para continuar
+automáticamente.</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> ./mail.pl /tmp/mail.z*
+<span class="go">Conectando a BARTOLO.PIROLO.57658Z@correos.es/dv ... OK</span>
+<span class="go">Subiendo 1 de 4: mail.z01 ... OK</span>
+<span class="go">Subiendo 2 de 4: mail.z02 ... OK</span>
+<span class="go">Esperando a que el usuario libere 20MB del servidor... OK</span>
+<span class="go">Subiendo 3 de 4: mail.z03 ... OK</span>
+<span class="go">Subiendo 4 de 4: mail.zip ... OK</span>
+</pre></div>
+<p>Nuestro correo antes de empezar el proceso tenia 100MB libres. En el
+primer paso el script llena 40MB, en el segundo llena otros 40MB, en el
+tercer paso ve que necesita al menos otros 20MB para subir el tercer
+paquete así que para hasta que estén disponibles. Mientras tanto
+nosotros, desde el equipo enjaulado, descargamos los dos primeros
+adjuntos y borramos los dos correos. Finalmente el script ve que vuelve
+a haber espacio y continua con la carga hasta finalizar.</p>
+<p><strong>4-</strong> Ampliación</p>
+<p>Hacer un script que pasándole una url descargue el contenido enlazado,
+lo comprima en los volúmenes deseados y lo deje en nuestro correo, de
+manera que aún surgiendo una necesidad imprevista ya estando en frente
+del equipo enjaulado podamos con un móvil y un cliente ssh (o algún
+servicio web creado para la ocasión) hacernos fácilmente con los
+archivos que pudiéramos necesitar en un momento dado y que no son
+accesibles a través del proxy.</p>
+<p><strong>5-</strong> Apéndice</p>
+<p>El script puede ser ejecutado con el parámetro --key para que en vez de
+esperar a que se libere espacio lo que haga es pedirnos que pulsemos
+enter cuando hayamos acabado de descargar el fichero y así él mismo se
+encargue de liberar el espacio. Esto puede ser útil cuando lanzamos el
+script desde el movil (vía ssh, por ejemplo) y nos es más rápido pedirle
+al script que borre él los mails que hacerlo nosotros a mano desde la
+interfaz de nuestro correo electrónico.</p>
+<p>También admite el parámetro --purge para eliminar todo lo que haya en la
+carpeta de intercambio (dv) antes de empezar a subir el primer volumen.
+Útil para cuando sabemos que puede haber quedado algo de un anterior
+envío.</p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2014-05-15_usar-el-correo-para-esquivar-proxy.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/usar-el-correo-para-esquivar-proxy" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

@@ -1,0 +1,2090 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Apuntes LFCS</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home ulcompact" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/apuntes_lfcs" rel="bookmark" title="Permalink to Apuntes LFCS">Apuntes LFCS</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2016-07-28T00:00:00+02:00" title="Publicado el 2016-07-28">2016-07-28</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<span class="bubble tag tg_lfcs" title="No hay más entradas con esta etiqueta">LFCS</span> <span class="bubble tag tg_lfs201" title="No hay más entradas con esta etiqueta">LFS201</span> <a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 18 entradas  más sobre linux">
+linux</a> <a class="bubble tag tg_proxy" href="/tag/proxy.html" title="Hay 1 entrada  más sobre proxy">
+proxy</a> <a class="bubble tag tg_redes" href="/tag/redes.html" title="Hay 6 entradas  más sobre redes">
+redes</a> </p>
+<p>
+<span class="bubble">1.757 lineas</span> <span class="bubble wc">10.988 palabras</span> <span class="bubble wc">77.626 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p>Estos apuntes pertenecen al proyecto <a href="https://github.com/s-nt-s/LFS201" target="_blank">LFS201</a> que, a parte de tener estas notas de estudio, alberga el código necesario para generar una versión offline del curso <code>LFS201</code> de la <code>Linux Foundation</code>.</p>
+<hr/>
+<h2>Introdución</h2>
+<p>Estos apuntes seguiran el esquema de apartado <strong>Overview of Domains and Competencies</strong>
+de <a href="https://training.linuxfoundation.org/certification/lfcs#examDetails" target="_blank">training.linuxfoundation.org/certification/lfcs</a>
+ya que el contenido del curso <strong>LFS201</strong> no esta siendo (en mi opinión) suficiente
+para presentarse al examen <strong>LFCS</strong></p>
+<p>Gracias por adelantado a:</p>
+<ul>
+<li><a href="https://pablox.co/obteniendo-la-linux-foundation-certified-system-administrator-lfcs/" target="_blank">pablox.co</a></li>
+<li><a href="http://blog.leonelatencio.com/notas-de-preparacion-para-el-examen-de-certificacion-de-linux-foundation/" target="_blank">leonelatencio.com</a></li>
+<li><a href="http://daemons.cf/cgit/apuntes-LFS201" target="_blank">daemons.cf</a></li>
+</ul>
+<h3>Instalación</h3>
+<p>Tengo registrado el examen para hacerlo sobre Ubuntu, por lo tanto usare
+una maquina virtual de <a href="https://www.virtualbox.org/" target="_blank">Virtual Box</a> con
+<a href="http://cdimage.ubuntu.com/lubuntu/releases/14.04/release/" target="_blank"><strong>Lubuntu 14.04.4</strong></a>,
+en concreto la versión <code>32-bit PC (i386) desktop image</code></p>
+<p>Para agilizar el uso de este entorno realizare las siguientes configuraciones:</p>
+<p><strong>1- Facilitar acceso por ssh</strong></p>
+<p>Primero, instalo ssh en lubuntu con <code>sudo apt-get install openssh-server</code>.</p>
+<p>Segundo, configuro Virtual Box para que redirija el puerto 2222 local al
+puerto 22 de la máquina virtual</p>
+<p>Propiedades máquina virtual -&gt; Red -&gt; Adaptador 1 -&gt; Avanzadas -&gt;
+Reenvio de puertos -&gt; Nombre: ssh, Protocolo: TCP, Puerto anfritión: 2222
+Puerto invitado: 22</p>
+<p>Tercero, creo una clave publica/privada para entrar directamente
+(como es para esto me puedo permitir crearla sin contraseña)</p>
+<div class="highlight"><pre><span></span><span class="gp">me@local ~ $</span> ssh-keygen -C vbox
+<span class="go">Generating public/private rsa key pair.</span>
+<span class="go">Enter file in which to save the key (/home/me/.ssh/id_rsa): /home/me/.ssh/vbox</span>
+<span class="go">Enter passphrase (empty for no passphrase):</span>
+<span class="go">Enter same passphrase again:</span>
+<span class="go">Your identification has been saved in /home/me/.ssh/vbox.</span>
+<span class="go">Your public key has been saved in /home/me/.ssh/vbox.pub.</span>
+<span class="go">...</span>
+<span class="gp">me@local ~ $</span> ssh-copy-id -i /home/me/.ssh/vbox.pub -p <span class="m">2222</span> me@localhost
+</pre></div>
+<p>Cuarto, configuro <code>~/.ssh/config</code> para que todo se más facil aún:</p>
+<div class="highlight"><pre><span></span>Host lubuntu
+HostName 127.0.0.1
+IdentityFile /home/me/.ssh/vbox
+User me
+Port 2222
+</pre></div>
+<p><strong>2- Arranque en modo consola por defecto</strong></p>
+<p><code>sudo nano /etc/default/grub</code> y cambio</p>
+<div class="highlight"><pre><span></span>GRUB_HIDDEN_TIMEOUT=0
+GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash”
+GRUB_CMLDLINE_LINUX=""
+##GRUB_TERMINAL=console
+</pre></div>
+<p>por</p>
+<div class="highlight"><pre><span></span>##GRUB_HIDDEN_TIMEOUT=0
+##GRUB_CMDLINE_LINUX_DEFAULT=”quiet splash”
+GRUB_CMLDLINE_LINUX="text"
+GRUB_TERMINAL=console
+</pre></div>
+<p>* De paso comento la linea de GRUB_HIDDEN_TIMEOUT para que aparezca
+el menú de grub ya que lo necesitare para algunas pruebas</p>
+<p>Guardo los cambios y actualizo con <code>sudo update-grub</code></p>
+<p><strong>3- Autologin</strong></p>
+<p><code>sudo nano /etc/init/tty1.conf</code> para añadir la linea:</p>
+<div class="highlight"><pre><span></span>exec /sbin/getty -8 38400 tty1 -a me
+</pre></div>
+<p><strong>4- Configuro sudo para que no pida contraseña</strong></p>
+<p>Hago <code>sudo visudo</code> para añadir la linea:</p>
+<div class="highlight"><pre><span></span>me ALL = NOPASSWD : ALL
+</pre></div>
+<p><strong>5- Ejecuto  ready-for.sh</strong></p>
+<div class="highlight"><pre><span></span><span class="gp">me@vbx:~$</span> <span class="nb">cd</span> /tmp
+<span class="gp">me@vbx:/tmp$</span> wget -q https://training.linuxfoundation.org/cm/prep/ready-for.sh
+<span class="gp">me@vbx:/tmp$</span> chmod +x ready-for.sh
+<span class="gp">me@vbx:/tmp$</span> ./ready-for.sh --install LFS201
+<span class="go">Checking that this computer is suitable for LFS201: Essentials of System Administration</span>
+<span class="go">...</span>
+<span class="go">Is that okay? [y/N] y</span>
+<span class="go">...</span>
+</pre></div>
+<p><strong>BONUS: Debian 8</strong></p>
+<p>Adicionalmente, para algunos casos usare
+<a href="http://cdimage.debian.org/debian-cd/current-live/i386/iso-hybrid/debian-live-8.4.0-i386-lxde-desktop.iso" target="_blank">Debian 8.4.0</a>
+en otra maquina virtual y con una configuración similar a la ya
+detallada en los pasos anteriores</p>
+<p><strong>BONUS: Red interna</strong></p>
+<p>Para algunos ejercicios en los que quiero conectar varias maquinas
+virtuales entre si hago esto: <a href="https://www.youtube.com/watch?v=lhOY-KilEeE" target="_blank">youtube - Linux Leech
+</a>
+<a href="http://superuser.com/questions/119732/how-to-do-networking-between-virtual-machines-in-virtualbox" target="_blank">superuser.com/questions/119732</a>
+(<em>con debian 8 no funcionaba, he tenido que hacerlo entre un ubuntu y un lubuntu</em>)</p>
+<h2>Temario</h2>
+<p>Fuente: <a href="https://training.linuxfoundation.org/certification/lfcs#examDetails" target="_blank">training.linuxfoundation.org/certification/lfcs</a></p>
+<h3>Essential Commands - 25%</h3>
+<h4>Log into graphical and text mode consoles</h4>
+<p>Si estamos en modo texto y queremos ir a modo grafico tenemos dos opciones:</p>
+<ul>
+<li><code>startx</code> (para esto en lubuntu antes necesitamos <code>sudo apt-get install lxde-common &amp;&amp; echo "exec startlxde" &gt; ~/.xinitrc</code>)</li>
+<li><code>telinit 5</code> (en lubuntu no funciona pero en debian si)</li>
+</ul>
+<p>Si se trata de que antes de que se ejecute el arranque por defecto en modo
+grafico lo abortemos y entremos en mode texto tenemos que:</p>
+<ol>
+<li>Posicionarnos en la opción de grub deseada</li>
+<li>Pulsar <code>e</code> para que nos deje editarla</li>
+<li>Buscar la linea donde se carga el kernel y escribir al final de todo <code>text</code>
+(en otras distribuciones seria escribir <code>3</code>, es decir, el runlevel al que
+queremos ir).</li>
+</ol>
+<h4>Search for files</h4>
+<p><code>find</code> con:</p>
+<ul>
+<li><code>-name</code></li>
+<li><code>-iname</code></li>
+<li><code>-type</code></li>
+<li><code>-mtime</code></li>
+<li><code>-size</code></li>
+<li><code>-user</code></li>
+<li><code>-not</code> o <code>!</code></li>
+<li><code>-perm 755</code></li>
+</ul>
+<p>y para ejecutar algo sobre los resultados <code>-exec</code>. Ejemplos:</p>
+<div class="highlight"><pre><span></span>find / -name "test.txt" -exec chmmod 700 {} \;
+</pre></div>
+<p>Tambien podemos usar:</p>
+<ul>
+<li><code>which</code> busca ejecutables en el PATH</li>
+<li><code>locate</code> busca en base de datos del sistema de ficheros (que se puede actualizar con <code>sudo updatedb</code>)</li>
+</ul>
+<p>Más: <a href="http://www.tecmint.com/compress-files-and-finding-files-in-linux/" target="_blank">tecmint.com - compress files</a></p>
+<h4>Evaluate and compare the basic file system features and options</h4>
+<p><em>no tengo claro a que se refiere</em></p>
+<h4>Compare, create and edit text files</h4>
+<ul>
+<li>Crear fichero vacio: <code>touch fichero.txt</code></li>
+<li>Editar fichero: <code>nano fichero.txt</code></li>
+<li>Comparar ficheros: <code>diff fichero1.txt fichero2.txt</code></li>
+<li>Cambiar el editor de texto por defecto: <code>update-alternatives --config editor</code></li>
+</ul>
+<p>Más: <a href="http://www.tecmint.com/vi-editor-usage/" target="_blank">tecmint.com - vi</a>
+<a href="http://www.elarraydejota.com/como-cambiar-el-editor-de-texto-por-defecto-en-linux/" target="_blank">elarraydejota.com - editor por defecto</a></p>
+<h4>Compare binary files</h4>
+<p><code>cmp</code> o <code>diff</code></p>
+<h4>Use input-output redirection (e.g. &gt;, &gt;&gt;, |, 2&gt;)</h4>
+<ul>
+<li>Entrada estanadar = tipo 0</li>
+<li>Salida estanadar = tipo 1</li>
+<li>Error estandar = tipo 2</li>
+</ul>
+<p>Ejemplos:</p>
+<ul>
+<li><code>comando 2&gt;&amp;1</code> redirigir errores a salida estandar</li>
+<li><code>wc &lt; archivo.txt</code> alimenta la entrada estandar de <code>wc</code> con <code>archivo.txt</code></li>
+<li><code>comando 2&gt; /dev/null</code> desecha la salida de errores</li>
+<li><code>ps -a | sort</code> redireciona la salida de <code>ps</code> a la entrada de <code>sort</code></li>
+</ul>
+<p>Más: <a href="http://hipertextual.com/archivo/2014/07/redirecciones-y-tuberias-bash/" target="_blank">hipertextual.com - tuberias</a></p>
+<h4>Analyze text using basic regular expressions</h4>
+<ul>
+<li><code>grep -e</code></li>
+<li><code>awk</code></li>
+<li><code>sed</code></li>
+</ul>
+<p>Más: <a href="http://www.tecmint.com/sed-command-to-create-edit-and-manipulate-files-in-linux/" target="_blank">tecmint.com - sed</a></p>
+<h4>Archive, backup, compress, unpack, and uncompress files</h4>
+<ul>
+<li><code>tar cvf file.tar *</code> comprimir</li>
+<li><code>tar xvf file.tar</code> descomprimir</li>
+<li><code>tar xpvf file.tar</code> descomprimir presrvando permisos</li>
+<li><code>tar tf file.tar</code> listar contenido</li>
+<li>Para comprimir a la vez que se empaqueta añadir la opción:</li>
+<li><code>z</code> para comprimir con <code>gzip</code></li>
+<li><code>j</code> para comprimir con <code>bz2</code></li>
+<li><code>J</code> para comprimir con <code>xz</code></li>
+</ul>
+<p>Otras opciones para backup:</p>
+<ul>
+<li><code>dd if=/dev/sda of=/system_images/sda.img</code></li>
+<li><code>rsync -av source_directory destination directory</code></li>
+</ul>
+<p>Más: <a href="http://www.tecmint.com/compress-files-and-finding-files-in-linux/" target="_blank">tecmint.com - compress</a><br/>
+<a href="https://www.youtube.com/watch?v=ZxVyhZEYEAU" target="_blank">youtube</a><br/>
+<a href="http://www.tecmint.com/creating-and-managing-raid-backups-in-linux/" target="_blank">tecmint.com - raid</a></p>
+<h4>Create, delete, copy, and move files and directories</h4>
+<p><code>touch</code>, <code>cp</code>, <code>mv</code>, <code>rm</code> ...</p>
+<p><code>dd if=input-file of=output-file options</code> crear <code>output-file</code> usando <code>input-file</code> según las opciones pasadas:</p>
+<ul>
+<li><code>dd if=/dev/zero of=outfile bs=1M count=10</code> crea un archivo de 10 MB lleno con ceros</li>
+<li><code>dd if=/dev/sda of=/dev/sdb</code> crea una copia de <code>/dev/sda</code> en <code>/dev/sdb</code> (datos en bruto)</li>
+<li><code>dd if=/dev/sda of=sdadisk.img</code> crea una imagen del disco duro <code>/dev/sda</code></li>
+<li><code>dd if=/dev/sda1 of=partition1.img</code> respaldar una partición</li>
+<li><code>dd if=ndata conv=swab count=1024 | uniq &gt; ofile</code></li>
+</ul>
+<h4>Create hard and soft links</h4>
+<p>Enlaces simbolicos:</p>
+<ul>
+<li>Es parecido a un acceso directo de windows</li>
+<li>El enlace y el fichero original no comparten inodo</li>
+<li>Borrar el enlace no borra el fichero original</li>
+<li>Borrar el fichero original no borra el enlace, pero lo deja <em>roto</em></li>
+<li>Se crean con <code>ln -s fichero_original enlace_simbolico</code></li>
+</ul>
+<p>Enlaces duros:</p>
+<ul>
+<li>El enlace y el fichero original comparten inodo</li>
+<li>No puede haber enlaces duros entre distintos sitemas de ficheros</li>
+<li>No se puede hacer enlaces duros a directorios</li>
+<li>Los cambios en un enlace duro (permisos, contenidos, etc) se propagan
+al fichero original y los demás enlaces duros</li>
+<li>Si se borra el fichero original no se pierde la información porque
+tambien la tiene el enlace duro</li>
+<li>Se crean con <code>ln fichero_original enlace_duro</code></li>
+</ul>
+<p>Se puede comprobar si dos ficeros tienen el mismo inodo o no con <code>ls -li</code> o <code>stat fichero</code></p>
+<p>Más: <a href="http://rm-rf.es/diferencias-entre-soft-symbolic-y-hard-links/" target="_blank">rm-rf.es - ln</a></p>
+<h4>List, set, and change standard file permissions</h4>
+<ul>
+<li><code>ls</code>, <code>ll</code> ... muestra los ficheros con sus permisos</li>
+<li><code>chmod 755</code> pone los permisos a <code>-rwxr--r-x</code></li>
+<li><code>chmod u+rwx,g+wx,o-rx</code> da los permisos indicados y no modifica los no indicados
+(es decir, el valor de lectura de grupo y el de escritura de otros se queda como estuvieran antes)</li>
+<li><code>chmod a+rwx</code> da los permisos indicados a todo el mundo (<code>a</code> de <code>all</code>)</li>
+</ul>
+<h4>Read, and use system documentation</h4>
+<ul>
+<li><code>man comando</code></li>
+<li><code>comando --help</code></li>
+<li><code>help comando</code></li>
+</ul>
+<p><a href="http://www.tecmint.com/explore-linux-installed-help-documentation-and-tools/" target="_blank">tecmint.com - documentation</a></p>
+<h4>Manage access to the root account</h4>
+<ul>
+<li><code>sudo comando</code> ejecutar comando como root</li>
+<li><code>sudo -u you comando</code> ejecuta el comando como el usuario you</li>
+<li><code>su xxx</code> cambiar a usuario xxx (pide contraseña de xxx)</li>
+<li><code>sudo su xxx</code> cambiar a usuario xxx (no pide contraseña)</li>
+<li><code>sudo su -</code> cambiar a usuario root (el <code>-</code> simula que te logueas directamente, por ejemplo, en vez de dejarte en el directorio donde estas te llevara a la home de root)</li>
+<li><code>visudo</code> edita <code>/etc/sudoers</code></li>
+<li><code>visudo -f /etc/sudoers.d/loqquesea</code> edita <code>/etc/sudoers.d/loqquesea</code>
+(para que tenga efecto asegurarse de que la linea <code>includedir /etc/sudoers.d</code> de <code>/etc/sudoers</code> este descomentada)</li>
+</ul>
+<p>En <code>/etc/sudoers</code> la cadena <code>ALL=(ALL:ALL) ALL</code> significa:</p>
+<ul>
+<li><code>ALL=</code> En todos los host por si ponemos este mismo fichero en varias máquinas.</li>
+<li><code>(ALL:ALL)</code> Puede escalar privilegios a cualquier usuario (primer ALL) y cualquier grupo (segundo ALL).</li>
+<li><code>ALL</code> Puede ejecutar cualquier comando.</li>
+</ul>
+<p>otros ejemplos:</p>
+<ul>
+<li><code>ALL = NOPASSWD: ALL</code> no pide autenticarse al usar <code>sudo</code></li>
+<li><code>ALL = /bin/ls</code> solo puede usar <code>sudo</code> con <code>ls</code></li>
+</ul>
+<p>Más: <a href="http://www.linuxtotal.com.mx/?cont=info_admon_014" target="_blank">linuxtotal.com.mx - sudo</a>
+y <a href="http://www.formandome.es/linux/configuracion-fichero-sudoers-en-ubuntu/" target="_blank">formandome.es - sudo</a>
+<a href="http://www.tecmint.com/su-vs-sudo-and-how-to-configure-sudo-in-linux/" target="_blank">tecmint.com - su vs sudo</a></p>
+<h3>Operation of Running Systems - 20%</h3>
+<h4>Boot, reboot, and shut down a system safely</h4>
+<ul>
+<li><code>sudo shutdown -h +1 "Power Failure imminent"</code> apagar en un minúto y avisar a los usarios con el mensaje "Power Failure imminent"</li>
+<li><code>sudo shutdown -h now</code> = <code>halt</code> apaga ahora mismo</li>
+<li><code>sudo shutdown -p now</code> = <code>poweroff</code> apaga ahora mismo</li>
+<li><code>sudo shutdown -r now</code> = <code>reboot</code> reinicia ahora mismo</li>
+</ul>
+<p>La diferencia entre <code>poweroff</code> y <code>halt</code> es que <code>halt</code> detiene el sistema
+y <code>poweroff</code> detiene el sistema y lo apaga.</p>
+<h4>Boot systems into different runlevels manually</h4>
+<p>Editamos la entrada de grub y en la linea de carga del kernel ponemos el número del runlevel en el que queremos iniciar</p>
+<h4>Install, configure and troubleshoot the bootloader</h4>
+<p><code>sudo grub-install /dev/sda</code> instala grub 2 en <code>/dev/sda</code>.
+La configuración se hace modificando los ficheros de <code>/etc/grub.d</code> y
+<code>/etc/default/grub</code>, ejecutando tras esto <code>update-grub</code> para que se
+actualice el fichero <code>/boot/grub/grub.cfg</code> que no debemos tocar a mano.</p>
+<p>Ejemplo 1 de reparación:</p>
+<ol>
+<li><code>sudo dd if=/dev/zero of=/dev/sda bs=446 count=1</code> eliminamos el MBR</li>
+<li>Reinicamos y peta</li>
+<li>Reinicamos con un live cd</li>
+<li><code>sudo mount /dev/sda1 /mnt</code> montamos el disco duro</li>
+<li>Asociamos los directorios que grub necesita:<ul>
+<li><code>sudo mount --bind /dev /mnt/dev</code></li>
+<li><code>sudo mount --bind /dev/pts /mnt/dev/pts</code></li>
+<li><code>sudo mount --bind /proc /mnt/proc</code></li>
+<li><code>sudo mount --bind /sys /mnt/sys</code></li>
+</ul>
+</li>
+<li><code>sudo chroot /mnt</code> cambiamos el directorio /</li>
+<li><code>grub-install /dev/sda &amp;&amp; grub-install --recheck /dev/sda &amp;&amp; update-grub</code> instalamos grub</li>
+<li>Desmontamos todo:<ul>
+<li><code>exit</code></li>
+<li><code>sudo umount /mnt/sys</code></li>
+<li><code>sudo umount /mnt/proc</code></li>
+<li><code>sudo umount /mnt/dev/pts</code></li>
+<li><code>sudo umount /mnt/dev</code></li>
+<li><code>sudo umount /mnt</code></li>
+</ul>
+</li>
+<li>Reiniciamos y funciona</li>
+</ol>
+<p>Ejemplo 2 de reparación:</p>
+<ol>
+<li><code>sudo rm /boot/grub/grub.cfg /etc/default/grub /etc/grub.d/*</code> eliminamos los ficheros de configuración</li>
+<li>Reinicamos y peta</li>
+<li>Reinicamos con un live cd</li>
+<li><code>sudo mount /dev/sda1 /mnt</code> montamos el disco duro</li>
+<li>Asocciamos los directorios que necesitamos para tener internet:<ul>
+<li><code>sudo mount --bind /dev /mnt/dev</code></li>
+<li><code>sudo mount --bind /tmp /mnt/tmp</code></li>
+<li><code>sudo mount --bind /proc /mnt/proc</code></li>
+<li><code>sudo mount --bind /etc/resolv.conf /mnt/etc/resolv.conf</code></li>
+</ul>
+</li>
+<li>Asociamos los directorios que grub necesita:<ul>
+<li><code>sudo mount --bind /dev/pts /mnt/dev/pts</code></li>
+<li><code>sudo mount --bind /sys /mnt/sys</code></li>
+</ul>
+</li>
+<li>Recuperamos los archivos perdidos:<ul>
+<li><code>sudo cp /etc/grub.d/* /mnt/etc/grub.d/</code></li>
+<li><code>sudo cp /boot/grub/grub.cfg /mnt/boot/grub</code></li>
+</ul>
+</li>
+<li><code>sudo chroot /mnt</code> cambiamos el directorio /</li>
+<li><code>dpkg --get-selections | grep "grub"</code> consultamos que paquetes de grub estan instalados</li>
+<li><code>dpkg -V grub-common</code> comprobamos paquete a paquete cual es el que esta mal</li>
+<li><code>apt --reinstall install grub-common</code> reinstalamos el paquete roto</li>
+<li><code>update-grub</code> reconfiguramos grub</li>
+<li>Desmontamos todo:<ul>
+<li><code>exit</code></li>
+<li><code>sudo umount /mnt/sys</code></li>
+<li><code>sudo umount /mnt/proc</code></li>
+<li><code>sudo umount /mnt/dev/pts</code></li>
+<li><code>sudo umount /mnt/dev</code></li>
+<li><code>sudo umount /mnt/tmp</code></li>
+<li><code>sudo umount /mnt/etc/resolv.conf</code></li>
+<li><code>sudo umount /mnt</code></li>
+</ul>
+</li>
+<li>Reiniciamos y funciona</li>
+</ol>
+<p>Más: <a href="http://howtoubuntu.org/how-to-repair-restore-reinstall-grub-2-with-a-ubuntu-live-cd" target="_blank">howtoubuntu.org - grub</a>
+<a href="http://lukeplant.me.uk/blog/posts/sharing-internet-connection-to-chroot/" target="_blank">lukeplant.me.uk - chroot</a>
+<a href="http://ubuntuforums.org/showthread.php?t=1467147" target="_blank">ubuntuforums.org - grub</a>
+<a href="https://debian-handbook.info/browse/es-ES/stable/sect.apt-get.html" target="_blank">debian-handbook.info - apt-get</a>
+<a href="http://www.tecmint.com/configure-and-troubleshoot-grub-boot-loader-linux/" target="_blank">tecmint.com - grub</a></p>
+<h4>Change the priority of a process</h4>
+<p><code>nice</code> es lo opuesto a la prioridad: un proceso con <code>nice</code> -20 tienen
+la máxima prioridad, y otro con <code>nice</code> 19 tienen la mínima prioridad.</p>
+<ul>
+<li><code>nice -n 5 cat</code> o <code>nice -5 cat</code> ejecuta cat con un valor <code>nice</code> incrementado en 5 unidades.</li>
+<li><code>nice cat</code> usa el valor 10 por defecto, por lo tanto es igual a <code>nice -n 10 cat</code> o <code>nice -10 cat</code></li>
+<li><code>nice</code> nos da el valor <code>nice</code> actual</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> nice
+<span class="go">0</span>
+<span class="gp">me@lub ~ $</span> nice bash
+<span class="gp">me@lub ~ $</span> nice
+<span class="go">10</span>
+<span class="gp">me@lub ~ $</span> nice -20 bash
+<span class="gp">me@lub ~ $</span> nice
+<span class="go">19</span>
+<span class="gp">me@lub ~ $</span> <span class="nb">exit</span>
+<span class="go">exit</span>
+<span class="gp">me@lub ~ $</span> nice
+<span class="go">10</span>
+<span class="gp">me@lub ~ $</span> <span class="nb">exit</span>
+<span class="go">exit</span>
+<span class="gp">me@lub ~ $</span> nice
+<span class="go">0</span>
+<span class="gp">me@lub ~ $</span> nice -3 cat <span class="p">&amp;</span>
+<span class="go">[1] 1797</span>
+<span class="gp">me@lub ~ $</span> ps -l
+<span class="go">F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD</span>
+<span class="go">0 S  1000  1740  1739  0  80   0 -  2110 wait   pts/1    00:00:00 bash</span>
+<span class="go">0 T  1000  1797  1740  1  83   3 -  1369 signal pts/1    00:00:00 cat</span>
+<span class="go">0 R  1000  1798  1740  0  80   0 -  1569 -      pts/1    00:00:00 ps</span>
+</pre></div>
+<p><code>renice</code> cambia el valor nice de un proceso en ejecución.
+Por defecto solo root puede disminuirlo, sin embargo editando
+<code>/etc/security/limits.conf</code> se puede determinar por usuario unos limites
+en los que dicho usuario si puede variar el valor <code>nice</code> de sus procesos.</p>
+<div class="highlight"><pre><span></span><span class="go">e@lub ~ $ cat &amp;</span>
+<span class="go">[1] 1813</span>
+<span class="gp">me@lub ~ $</span> renice -n <span class="m">1</span> <span class="m">1813</span>
+<span class="go">1813 (ID de proceso) prioridad antigua 0, prioridad nueva 1</span>
+<span class="gp">me@lub ~ $</span> renice -n <span class="m">0</span> <span class="m">1813</span>
+<span class="go">renice: fallo al establecer la prioridad para 1813 (ID de proceso): Permiso denegado</span>
+<span class="gp">me@lub ~ $</span> sudo renice -n <span class="m">0</span> <span class="m">1813</span>
+<span class="go">1813 (ID de proceso) prioridad antigua 1, prioridad nueva 0</span>
+</pre></div>
+<p>Añado la línea <code>me - nice -20</code> en <code>/etc/security/limits.conf</code>, salgo y
+vuelvo a entrar con el usuario me</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> cat <span class="p">&amp;</span>
+<span class="go">[1] 1872</span>
+<span class="gp">me@lub ~ $</span> renice -n <span class="m">1</span> <span class="m">1872</span>
+<span class="go">1872 (ID de proceso) prioridad antigua 0, prioridad nueva 1</span>
+<span class="gp">me@lub ~ $</span> renice -n <span class="m">0</span> <span class="m">1872</span>
+<span class="go">1872 (ID de proceso) prioridad antigua 1, prioridad nueva 0</span>
+</pre></div>
+<p><a href="http://www.tecmint.com/monitor-linux-processes-and-set-process-limits-per-user/" target="_blank">tecmint.com - processes</a></p>
+<h4>Identify resource utilization by process</h4>
+<ul>
+<li><code>top</code> muestra la actividad de los procesos</li>
+<li><code>ps</code> da información detallada de cada proceso</li>
+<li><code>pstree</code> muestra un arbol de procesos y sus conexiones</li>
+<li><code>strace</code> da información de las llamadas a sistema de un proceos</li>
+</ul>
+<p>En <code>/proc</code> hay un directorio por cada proceso ( el cual se llama como
+el PID de su proceso) donde aparece información sobre él.</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> cat <span class="p">&amp;</span>
+<span class="go">[1] 2205</span>
+<span class="gp">me@lub ~ $</span> cat /proc/2205/cmdline
+<span class="go">cat</span>
+<span class="gp">me@lub ~ $</span> cat /proc/2205/status
+<span class="go">Name:   cat</span>
+<span class="go">State:  T (stopped)</span>
+<span class="go">Tgid:   2205</span>
+<span class="go">Ngid:   0</span>
+<span class="go">Pid:    2205</span>
+<span class="go">...</span>
+<span class="gp">me@lub ~ $</span> realpath /proc/2205/cwd/
+<span class="go">/home/me</span>
+</pre></div>
+<p>En <code>/proc/PID/fd/1</code> se puede ver la salida estanadar de haberla.</p>
+<p><a href="http://www.tecmint.com/monitor-linux-processes-and-set-process-limits-per-user/" target="_blank">tecmint.com - processes</a></p>
+<h4>Locate and analyze system log files</h4>
+<ul>
+<li><code>/var/log/</code> contine los logs</li>
+<li><code>head</code> muestra el principio de un fichero</li>
+<li><code>tail</code> muestra el final de un fichero (con la opción <code>-f</code> actualiza la salida según se incrementa el fichero)</li>
+<li><code>dmesg</code> lista el buffer de mensajes del núcleo ( = <code>/var/log/dmesg</code>)</li>
+<li><code>zcat</code>, <code>zgrep</code>, etc sirve para usarse con ficheros <code>.gz</code> como si fuera de texto plano</li>
+<li><code>/var/log/cron</code> (<code>grep -i cron /var/log/syslog</code> si esta desactivadoe) para ver la actividad del <code>cron</code></li>
+<li><code>/var/log/boot.log</code> mensajes de arranque del sistema</li>
+<li><code>last</code> da los accesos de cada usuario, <code>lastlog</code> da el último acceso de cada usuario y <code>lastb</code> los accesos fallidos</li>
+<li><code>/var/log/messages</code> mensajes principales del sistema</li>
+<li><code>/var/log/auth.log</code> información sobre el sistema de autorización de usuarios y permisos</li>
+</ul>
+<p>Más: <a href="http://www.securityartwork.es/2012/05/30/analisis-forense-en-sistemas-linux-obteniendo-informacion-parte-2/" target="_blank">securityartwork.es - análisis forense</a></p>
+<h4>Schedule tasks to run at a set date and time</h4>
+<ul>
+<li><code>/etc/crontab</code> y <code>/etc/cron.d/*</code> son ficheros crontab "multiusuario" (en cada linea se dice con que usuario se ejecuta la tarea)</li>
+<li><code>/etc/cron.hourly/</code> y similares son ficheros ejecutables que lanzara root en los periodos que indican el nombre de la carpeta</li>
+<li><code>contab -e</code> edita el fichero contrab del usuario</li>
+</ul>
+<p>Ejemplo</p>
+<div class="highlight"><pre><span></span>## Cada hora en horario laboral
+0 7-20 * * 1,2,3,4  /bin/bash ~/.owa/owa.sh
+0 7-18 * * 5  /bin/bash ~/.owa/owa.sh
+## Cada 4 horas fuera de horario laboral y entre semana
+0 23,3 * * 1,2,3,4  /bin/bash ~/.owa/owa.sh
+## Cada 8 horas en fin de semana
+0 */8 * 6,7 /bin/bash ~/.owa/owa.sh
+
+## Notificacion cada 2 o 3 horas entre semana de 7 a 20
+0 7,9,11,14,17,20 * * 1,2,3,4,5  /bin/bash ~/.owa/notif.sh
+## Notificacion cada 12 horas en fin de semana
+0 */12 * 6,7 /bin/bash ~/.owa/notif.sh
+
+@hourly /bin/bash /home/pi/wks/segundamano/run.sh
+@weekly /bin/bash ~/wks/emvs/mail.sh
+</pre></div>
+<p>Más: <a href="http://www.alcancelibre.org/staticpages/index.php/configuracion-uso-crond" target="_blank">alcancelibre.org - crond</a></p>
+<h4>Verify completion of scheduled jobs</h4>
+<ul>
+<li><code>cron</code> manda un email a la dirección del campo <code>MAILTO</code> o al usuario
+que ejecuta el comando</li>
+<li>La linea <code>EXTRA_OPTS="-L 0"</code> en <code>/etc/default/cron</code>, o la linea <code>exec cron -L 0</code> en /etc/init/cron.conf, define el nivel de log: 
+siendo 0 nada de log, 1 log normal y 2 log detallado</li>
+<li>Si no sabemos en que log escribe lo podemos buscar con <code>sudo grep -icr CRON /var/log/* | grep -v :0</code></li>
+<li>En <code>ubuntu</code> probablemente nos interese <code>/var/log/syslog</code></li>
+</ul>
+<p>Si descomentamos la linea <code>#cron.*              /var/log/cron.log</code> de <code>/etc/rsyslog.d/50-default.conf</code> el log de cron estara
+en <code>/var/log/cron.log</code></p>
+<p>Más: <a href="http://bencane.com/2011/11/02/did-my-cronjob-run/" target="_blank">bencane.com - cronjob</a>
+<a href="https://help.ubuntu.com/community/CronHowto#Troubleshooting_and_Common_Problems" target="_blank">help.ubuntu.com - common problems</a>
+<a href="http://askubuntu.com/questions/56683/where-is-the-cron-crontab-log" target="_blank">askubuntu.com/questions/56683</a></p>
+<h4>Update software to provide required functionality and security</h4>
+<p><code>sudo apt-get update</code> +:</p>
+<ul>
+<li><code>sudo apt-get upgrade</code> actualiza todo lo que se pueda actualizar sin tener que resolver conflictos (nunca eliminara paquetes)</li>
+<li><code>sudo apt-get dist-upgrade</code> actualiza intentando resolver conflictos si los hubiera (puede que elimine algún paquete)</li>
+</ul>
+<p>Más: <a href="http://www.tecmint.com/linux-package-management/" target="_blank">tecmint.com - packages</a>
+<a href="http://www.tecmint.com/useful-basic-commands-of-apt-get-and-apt-cache-for-package-management/" target="_blank">tecmint.com - apt-get</a>
+<a href="http://www.tecmint.com/dpkg-command-examples/" target="_blank">tecmint.com - dpkg</a></p>
+<h4>Verify the integrity and availability of resources</h4>
+<p><code>dpkg -V</code> comprueba la integridad de todos los paquetes (o de alguno en concreto si se pasa como parametro).
+Solo ofrece salida cuando ha habido alguna información que mostrar.</p>
+<p>Los caracteres mostrados significan:</p>
+<ul>
+<li>.: prueba pasada</li>
+<li>?: la prueba no se ha podido realizar</li>
+<li>S: el tamaño de archivo difiere</li>
+<li>M: los permisos del archivo y/o tipo difieren</li>
+<li>5: el checksum MD5 difiere</li>
+<li>D: discrepancia entre los números mayor/menor</li>
+<li>L: discrepancia de ruta de enlace simbólico</li>
+<li>U: el usuario propietario difiere</li>
+<li>G: el grupo propietario difiere</li>
+<li>T: el tiempo de modificación difiere</li>
+<li>P: las capacidades difieren</li>
+<li>c: se trata de un fichero de configuración que ha sido modificado de forma legitima</li>
+</ul>
+<p>Un mensaje no siempre es un error (por ejemplo, un fichero de configuración modificado).</p>
+<h4>Verify the integrity and availability of key processes</h4>
+<ul>
+<li><code>mpstat</code> muestra el uso de los procesadores. Ejemplo: <code>mpstat -P ALL -u 2 3</code></li>
+<li><code>ps</code> da información detallada de cada proceso. Elmplo <code>ps -eo pid,ppid,cmd,%cpu,%mem --sort=-%cpu</code></li>
+<li><code>kill</code> y <code>pkill</code> para matar procesos</li>
+<li><code>pgrep</code> para buscar procesos al estilo de <code>pkill</code> pero sin matarlos</li>
+<li><code>sar</code> da estadisticas del sistema (ver en <code>/etc/default/sysstat</code> si esta activada la recoleción automatica de estadisticas)</li>
+</ul>
+<p>Más: <a href="http://www.tecmint.com/monitor-linux-processes-and-set-process-limits-per-user/" target="_blank">tecmint.com - processes</a></p>
+<h4>Change kernel runtime parameters, persistent and non-persistent</h4>
+<p><code>/proc/sys</code> y <code>sysctl</code> muestran y permiten editar opciones del sistema</p>
+<ul>
+<li><code>sysctl dev.cdrom.autoclose</code> = <code>cat /proc/sys/dev/cdrom/autoclose</code></li>
+<li><code>echo 0 &gt; /proc/sys/net/ipv4/ip_forward</code> = <code>sysctl -w net.ipv4.ip_forward=0</code></li>
+<li>Para que el cambio sea persistente añadir la linea <code>net.ipv4.ip_forward=0</code> en <code>/etc/sysctl.conf</code>
+(o usar ficheros .conf en <code>/etc/sysctl.d</code>)</li>
+<li><code>sysctl -p</code> aplica los valores de <code>/etc/sysctl.conf</code></li>
+</ul>
+<p><code>sudo modprobe -a ip_tables</code> carga iptables de manera no persistente.
+Para hacerlo persistente añadir una linea que diga <code>ip_tables</code> en el
+fichero <code>/etc/modules</code></p>
+<p><a href="http://www.tecmint.com/change-modify-linux-kernel-runtime-parameters/" target="_blank">tecmint.com - kernel</a></p>
+<h4>Use scripting to automate system maintenance tasks</h4>
+<ul>
+<li><code>shebang</code> es la primera linea de un script, la cual empieza por <code>#!</code>, 
+que indica el interprete con que ejecutar dicho script. Ejemplo: <code>#!/bin/bash</code></li>
+<li><code>chmod 755 myscript.sh</code> para que el script sea ejecutable</li>
+<li><code>$?</code> da el código de salida del último comando ejecutado (0 = OK)</li>
+</ul>
+<p><a href="http://www.tecmint.com/linux-basic-shell-scripting-and-linux-filesystem-troubleshooting/" target="_blank">tecmint.com - shell</a></p>
+<h4>Manage the startup process and services</h4>
+<p>MBR:</p>
+<ul>
+<li>Backup <code>dd if=/dev/sda of=mbr.bkp bs=512 count=1</code></li>
+<li>Restaurar <code>dd if=mbr.bkp of=/dev/sda bs=512 count=1</code></li>
+</ul>
+<p>GRUB:</p>
+<ul>
+<li>Editar <code>/etc/default/grub</code></li>
+<li>Actualizar <code>update-grub</code></li>
+</ul>
+<p>SysVinit:</p>
+<ul>
+<li>Runleves de 0 a 5</li>
+<li>Runlevel por defecto en <code>/etc/inittab</code></li>
+<li>Scripts ejecutacos en cada runlevel <code>ls /etc/rc*.d</code> (<code>S</code> de start y <code>K</code> de kill)</li>
+<li>Configurar con <code>chkconfig</code> o <code>sysv-rc-conf</code></li>
+<li><code>service [servicio] start|stop|status</code> arranca, para y muestra estado de un servicio</li>
+</ul>
+<p>systemd:</p>
+<ul>
+<li><code>systemctl</code> sin parametros lista los servicios y cia. (unidades)</li>
+<li><code>systemctl status [unit]</code> muestra el estado de una unidad</li>
+<li><code>systemctl start [unit]</code> arranca una unidad</li>
+<li><code>systemctl stop [unit]</code> para una unidad</li>
+<li><code>systemctl restart [unit]</code> reinicia una unidad</li>
+<li><code>systemctl enable [unit]</code> habilita una unidad (se arrancara al inicio de sistema)</li>
+<li><code>systemctl disable [unit]</code> deshabilita una unidad (no se arrancara al inicio del sistema)</li>
+<li><code>systemctl is-enabled [unit]</code> muestra si esta habilitado para arrancar al inicio del sistema</li>
+</ul>
+<p>Upstart:</p>
+<ul>
+<li>Ficheros de configuración (.conf) en <code>/etc/init/*.conf</code></li>
+<li><code>initctl reload-configuration</code> recarga la configuración</li>
+<li><code>sudo start [servicio]</code>  arranca un servicio</li>
+</ul>
+<p><a href="http://www.tecmint.com/linux-boot-process-and-manage-services/" target="_blank">tecmint.com - boot</a></p>
+<h4>List and identify SELinux/AppArmor file and process contexts<br/>Configure and modify SELinux/AppArmor policies</h4>
+<p>AppArmor y SELinux no pueden estar arrancados a la vez.</p>
+<p><strong>SELinux</strong>:</p>
+<p>Instalar SELinux con <code>sudo apt-get install policycoreutils selinux-utils auditd</code> 
+y para habilitarlo ejecutar <code>sudo selinux-activate</code></p>
+<p>SELinux tiene tres modos:</p>
+<ul>
+<li>Disabled: no hace nada</li>
+<li><code>setenforce 1</code> Enforcing: Deniega el acceso si no se cumplen las reglas</li>
+<li><code>setenforce 0</code> Permissive: No deniega el acceso si no se cumplen las reglas, simplemente genera un log</li>
+</ul>
+<p><code>setenforce</code> no es persistente, para que el cambio sea permanente hay
+que editar <code>/etc/selinux/config</code> poniendo por ejemplo <code>SELINUX=enforcing</code></p>
+<p>Los logs se pueden leer con <code>grep AVC /var/log/audit/audit.log</code></p>
+<p>SELinux usa tres concetos fundamentales:</p>
+<ul>
+<li>Contextos: Son etiquetas a archivos, procesos y puertos. Ejemplos de contextos son usuarios de SELinux, rol y tipo.</li>
+<li>Reglas: Describe el control de acceso en términos de contextos, procesos, archivos, puertos, usuarios, etc.</li>
+<li>Políticas: Son un conjunto de reglas que describen las decisiones de control de acceso aplicables a todo el sistema, las que deberían ser aplicadas por SELinux.</li>
+</ul>
+<p>El parametro <code>Z</code> en <code>ps axZ</code> y <code>ls -Z</code> muestra los contextos.</p>
+<p><code>sudo semanage boolean -l</code> muestra los booleanos de las políticas y 
+<code>setsebool</code> cambia dichos booleanos, por defecto de manera no persistente
+y con el parametro <code>-P</code> de manera persistente.</p>
+<div class="highlight"><pre><span></span><span class="gp">me@deb ~ $</span> getsebool ssh_chroot_rw_homedirs
+<span class="go">ssh_chroot_rw_homedirs --&gt; off</span>
+<span class="gp">me@deb ~ $</span> sudo setsebool ssh_chroot_rw_homedirs on
+<span class="gp">me@deb ~ $</span> getsebool ssh_chroot_rw_homedirs
+<span class="go">ssh_chroot_rw_homedirs --&gt; on</span>
+</pre></div>
+<p>Habilitar el puerto 9999 para ssh:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@deb ~ $</span> sudo semanage port -l <span class="p">|</span> grep ssh
+<span class="go">ssh_port_t               tcp       22</span>
+<span class="gp">me@deb ~ $</span> sudo semanage port -m -t ssh_port_t -p tcp <span class="m">9999</span>
+<span class="go">jboss_management_port_t  tcp       4712, 4447, 7600, 9123, 9990, 9999, 18001</span>
+<span class="gp">me@deb ~ $</span> sudo semanage port -lC
+<span class="go">SELinux Prot Type         Proto    Port Number</span>
+
+<span class="go">ssh_port_t                tcp      9999</span>
+<span class="gp">me@deb ~ $</span> sudo semanage port -l <span class="p">|</span> grep ssh
+<span class="go">ssh_port_t                tcp      9999, 22</span>
+</pre></div>
+<p>Habilitar DocumentRoot fuera de <code>/var/www/html/</code>:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@deb ~ $</span> sudo semanage fcontext -a -t httpd_sys_content_t <span class="s2">"/websrv/sites/gabriel/public_html(/.*)?"</span>
+<span class="gp">me@deb ~ $</span> sudo restorecon -R -v /websrv/sites/gabriel/public_html
+</pre></div>
+<p>Herramientas para revisar errores (paquete <code>setroubleshoot-server</code>):</p>
+<ul>
+<li><code>grep httpd /var/log/audit/audit.log | audit2allow -M mypol</code> Crea reglas para permitir los accesos bloqueados</li>
+<li><code>audit2why</code> (similar a ala naterior) explica los errores</li>
+<li><code>sealert -l d51d34f9-91d5-4219-ad1e-5531e61a2dc3</code> muestra una alerta que hayamos visto en <code>/var/log/messages</code> por ejemplo</li>
+</ul>
+<p><strong>AppArmor</strong>:</p>
+<p>Instalar AppArmor con <code>sudo apt-get install apparmor apparmor-utils</code></p>
+<p>AppArmor se basa en perfiles y cada uno de ellos puede estar en dos estados:</p>
+<ul>
+<li>Enforcing: Deniega el acceso si no se cumplen las reglas</li>
+<li>Complain: No deniega el acceso si no se cumplen las reglas, simplemente genera un log</li>
+</ul>
+<p>Para trabajar con los perfiles tenemos:</p>
+<ul>
+<li><code>sudo apparmor_status</code> muestra el estado de AppArmor</li>
+<li>Los perfiles se guardan en <code>/etc/apparmor.d</code></li>
+<li>Los perfiles con un enlace blando en <code>/etc/apparmor.d/disabled</code> estan deshabilitados</li>
+<li>Se pueden conseguir más perfiles con <code>sudo apt-get install apparmor-profiles</code></li>
+<li><code>sudo aa-complain /path/to/file</code> pasa un perfil a complain mode</li>
+<li><code>sudo aa-enforce /path/to/file</code> pasa un perfil a enforce mode</li>
+</ul>
+<p>Para deshabilitar AppArmor:</p>
+<ul>
+<li><code>sudo systemctl stop apparmor.service</code> o</li>
+<li><code>sudo update-rc.d -f apparmor remove</code></li>
+</ul>
+<p>editar <code>/etc/default/grub</code> para poner <code>apparmor=0</code> en <code>GRUB_CMDLINE_LINUX</code> 
+y ejecutar <code>sudo update-grub</code></p>
+<p><a href="http://www.tecmint.com/mandatory-access-control-with-selinux-or-apparmor-linux/" target="_blank">tecmint.com - SELinux y AppArmor</a>
+<a href="https://wiki.debian.org/SELinux/Notes" target="_blank">wiki.debian.org - SELinux</a>
+<a href="https://wiki.archlinux.org/index.php/AppArmor" target="_blank">wiki.archlinux.org - AppArmor</a></p>
+<h4>Install software from source</h4>
+<p>Ejemplo con pidgin:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub /tmp $</span> sudo apt-get install build-essential
+<span class="go">...</span>
+<span class="gp">me@lub /tmp $</span> wget http://downloads.sourceforge.net/project/pidgin/Pidgin/2.11.0/pidgin-2.11.0.tar.bz2
+<span class="go">...</span>
+<span class="gp">me@lub /tmp $</span> tar -xjvf pidgin-2.11.0.tar.bz2
+<span class="gp">me@lub /tmp $</span> <span class="nb">cd</span> pidgin-2.11.0/
+<span class="gp">me@lub /tmp/pidgin-2.11.0 $</span> ./configure 
+<span class="go">...</span>
+<span class="go">checking whether NLS is requested... yes</span>
+<span class="go">./configure: line 14338: intltool-update: command not found</span>
+<span class="go">checking for intltool-update... no</span>
+<span class="go">checking for intltool-merge... no</span>
+<span class="go">checking for intltool-extract... no</span>
+<span class="go">configure: error: The intltool scripts were not found. Please install intltool.</span>
+<span class="gp">me@lub /tmp/pidgin-2.11.0 $</span> sudo apt-get install intltool
+<span class="go">...</span>
+<span class="gp">me@lub /tmp/pidgin-2.11.0 $</span> ./configure
+<span class="go">...</span>
+<span class="go">configure: error: </span>
+
+<span class="go">You must have GLib 2.16.0 or newer development headers installed to build.</span>
+
+<span class="go">If you have these installed already you may need to install pkg-config so</span>
+<span class="go">I can find them.</span>
+<span class="gp">me@lub /tmp/pidgin-2.11.0 $</span> sudo apt-get install pkg-config libglib2.0-dev libgtk2.0-dev libgtkspell-dev libavahi-client-dev libavahi-glib-dev libdbus-glib-1-dev libgstreamer0.10-dev tk8.4-dev tcl8.4-dev libperl-dev network-manager-dev libmeanwhile-dev libidn11-dev libnss3-dev
+<span class="go">...</span>
+<span class="gp">me@lub /tmp/pidgin-2.11.0 $</span> ./configure --disable-screensaver --disable-vv
+<span class="go">...</span>
+<span class="go">Pidgin will be installed in /usr/local/bin.</span>
+<span class="go">configure complete, now type 'make'</span>
+
+<span class="gp">me@lub /tmp/pidgin-2.11.0 $</span> sudo make
+<span class="go">...</span>
+<span class="gp">me@lub /tmp/pidgin-2.11.0 $</span> sudo make install
+<span class="go">...</span>
+<span class="gp">me@lub /tmp/pidgin-2.11.0 $</span> pidgin --version
+<span class="go">Pidgin 2.11.0 (libpurple 2.10.9)</span>
+</pre></div>
+<p><a href="http://www.howtogeek.com/105413/how-to-compile-and-install-from-source-on-ubuntu/" target="_blank">howtogeek.com/105413 - compile and install</a></p>
+<h3>User and Group Management - 15%</h3>
+<h4>Create, delete, and modify local user accounts<br/>Create, delete, and modify local groups and group memberships</h4>
+<ul>
+<li><code>userad</code> para añadir un usuario</li>
+<li><code>usermod</code> modifica un usuario</li>
+<li><code>userdel</code> borrar usuario</li>
+<li><code>groupdel</code> borrar grupo</li>
+<li><code>groupadd</code> para añadir un grupo</li>
+<li><code>gropmod</code> modifica un grupo</li>
+</ul>
+<p>Por cada usuario y grupo se crea una linea en <code>/etc/passwd</code> y <code>/etc/group</code> respectivamente</p>
+<p>Ejemplos:</p>
+<ul>
+<li><code>useradd -s /bin/csh -m -k /etc/skel -c "Bullwinkle J Moose" bmoose</code></li>
+<li><code>usermod --expiredate 2014-10-30 tecmint</code></li>
+<li><code>usermod --append --groups root,users tecmint</code></li>
+<li><code>usermod --home /tmp tecmint</code></li>
+<li><code>usermod --shell /bin/sh tecmint</code></li>
+<li><code>usermod --lock tecmint</code></li>
+<li><code>usermod --unlock tecmint</code></li>
+<li><code>chage -E 2014-09-11 isabelle</code></li>
+<li><code>sudo passwd kevin</code></li>
+<li><code>chage -l me</code></li>
+<li><code>useradd -m -s /bin/bash miusuario</code></li>
+<li><code>usermod -Ga sudo miusuario</code></li>
+</ul>
+<p>Sustituir la contraseña por <code>!</code> en <code>/etc/shadow</code> bloquea el usuario, el cual
+podemos editar usando <code>sudo vipw</code></p>
+<p>Adicionalmente podemos eliminar un usuario de un grupo con <code>sudo gpasswd -d usario grupo</code></p>
+<p>Si nos olvidamos de crearle la home al usuario podemos hacerlo posteriormente
+con <code>mkhomedir_helper usuario</code></p>
+<p><a href="http://www.tecmint.com/manage-users-and-groups-in-linux/" target="_blank">tecmint.com - user and groups</a></p>
+<h4>Manage system-wide environment profiles</h4>
+<p>En <code>/etc/environment</code> vienen definidas variables que afectan a todo el sistema, 
+como por ejemplo PATH</p>
+<p>Otras variables de entorno:</p>
+<ul>
+<li>HOME = home del usuario actual</li>
+<li>USER = nick del usuario actual</li>
+<li>SHELL = shell actual</li>
+<li>PS1 = Define como se ve el prompt de la shell actual</li>
+<li>EDITOR = editor de texto preferido</li>
+<li>LD_LIBRARY_PATH = Directorios donde se encuentran las librerias</li>
+<li>? = código de salida del último comando ejecutado</li>
+</ul>
+<p>Escribir en la shell algo como <code>VARIABLE=valor</code> no crea una varible de entorno
+si no una variable shell ya que solo afectara a la shell actual.
+Para que esta varaible shell se convierta en una variable de entorno es necesario
+exportarla.
+Podemos usar <code>echo</code> para ver el contenido de una variable.</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> <span class="nv">EDITOR</span><span class="o">=</span>nano
+<span class="gp">me@lub ~ $</span> <span class="nb">export</span> EDITOR
+<span class="gp">me@lub ~ $</span> <span class="nb">echo</span> <span class="nv">$EDITOR</span>
+<span class="go">nano</span>
+</pre></div>
+<ul>
+<li><code>printenv</code> muestra todas las variables de entorno y su contenido.</li>
+<li><code>env VAR=xxx programa</code>o <code>LANGUAGE=he FOO=bar gedit</code> ejecuta un programa modificando las variables de entorno
+que va a usar.</li>
+<li><code>unset VAR</code> elimina una variable</li>
+<li><code>export -n VAR</code> "desexporta" una variable, es decir, deja de ser variable de entorno pero sigue siendo variable shell</li>
+</ul>
+<p>Al se arranca la shell bash de un usuario procesa:</p>
+<ul>
+<li><code>/etc/profile</code> para leer los valores definidos para todos los usuarios</li>
+<li>Adicionalmente <code>/etc/profile.d/*.sh</code> seran ejecutados en cualquier login</li>
+<li><code>~/.bash_profile</code>, <code>~/.bash_login</code> y <code>~/.profile</code>, para leer los valores definidos para ese usuario en concreto</li>
+</ul>
+<p>Otros ficheros a tener en cuenta:</p>
+<p><code>/etc/bash.bashrc</code> valido para programas ejecutados desde la shell, pero puede 
+no surtir efecto con programas ejecutados desde el entorno gráfico.</p>
+<p>Los comando ejecutados con <code>sudo</code> tienen sus propias variables de entorno, indicadas
+en <code>/etc/sudoers</code>. Si se quiere que no se sobreescriba o pierda alguna variable
+hay que editar dicho fichero para añadir una linea de este tipo:</p>
+<div class="highlight"><pre><span></span>Defaults env_keep += "http_proxy SOMEOTHERVARIABLES ANOTHERVARIABLE ETC"
+</pre></div>
+<p><a href="https://wiki.debian.org/EnvironmentVariables" target="_blank">wiki.debian.org - Environment variables</a>
+<a href="https://help.ubuntu.com/community/EnvironmentVariables" target="_blank">help.ubuntu.com - Environment variables</a></p>
+<h4>Manage template user environment</h4>
+<p><em>no tengo claro a que se refiere</em></p>
+<h4>Configure user resource limits</h4>
+<p>Podemos definir los limites por usuario en <code>/etc/security/limits.conf</code> y el comando <code>ulimit</code></p>
+<p><a href="http://www.tecmint.com/monitor-linux-processes-and-set-process-limits-per-user/" target="_blank">tecmint.com - processes</a> -&gt; Setting Resource Limits on a Per-User Basis in Linux</p>
+<h4>Manage user processes</h4>
+<p><em>creo que se repite con otros apartados sobre <code>ps</code>, <code>kill</code>, <code>nice</code>, etc</em></p>
+<h4>Configure PAM</h4>
+<p>Los ficheros de configuración estan en <code>/etc/pam.d/</code>.</p>
+<p>Cada línea de uno de estos ficheros tiene la estructura:</p>
+<div class="highlight"><pre><span></span>type control module-path module-arguments
+</pre></div>
+<p>donde, <code>type</code> especifica el grupo de gestión al que el módulo estará asociado:</p>
+<ul>
+<li>auth: Le indica a la aplicación que debe pedir la identificación del usuario (nombre de usuario, contraseña, etc). Puede configurar las credenciales y otorgar privilegios.</li>
+<li>account: Verifica aspectos de la cuenta del usuario, tales como envejecimiento de la contraseña, control de acceso, etc.</li>
+<li>password: Es responsable de actualizar el token de autenticación del usuario, generalmente una contraseña.</li>
+<li>session: Se usa para proveer funciones antes y después de que se establece la sesión (tales como la configuración del ambiente, inicio de sesión, etc).</li>
+</ul>
+<p><code>control</code> controla cómo el éxito o fracaso de un módulo afecta el proceso general de autenticación:</p>
+<ul>
+<li>required: Debe devolver éxito para que el servicio se otorgue. Si es parte de un conjunto, el resto de módulos serán ejecutados. No se le informa a la aplicación qué módulo o módulos fallaron.</li>
+<li>requisite: Igual a required, con la excepción de que una falla en cualquier módulo termina el stack (conjunto de módulos) y devuelve un estado, el cual se envía a la aplicación.</li>
+<li>optional: El módulo no es requerido. Si este es el único módulo, el estado que se envía a la aplicación puede causar una falla.</li>
+<li>sufficient: Si este módulo termina con éxito no hay módulos subsecuentes a ser ejecutados. Si este falla, no causa una falla general en el resto de módulos, a menos de que sea el único módulo del stack.</li>
+<li>include: significa que las lineas dadas por el type deben ser leidas de otro archivo</li>
+<li>substack: similar a includes pero los fallos o exitos del fichero incluido no provocan la salida del modulo, solo del substack.</li>
+</ul>
+<p><a href="http://www.tecmint.com/manage-users-and-groups-in-linux/" target="_blank">tecmint.com - user and groups</a> -&gt; PAM (Pluggable Authentication Modules)</p>
+<h3>Networking - 15%</h3>
+<h4>Configure networking and hostname resolution statically or dynamically</h4>
+<ul>
+<li>Resolución de nombres estaticamente: <code>/etc/hosts</code></li>
+<li>Resolución de nombres dinamicamente: DNS</li>
+</ul>
+<p><a href="http://www.tecmint.com/setup-recursive-caching-dns-server-and-configure-dns-zones/" target="_blank">tecmint.com - DNS</a></p>
+<h4>Configure network services to start automatically at boot</h4>
+<p><code>sysv-rc-conf</code> o <code>update-rc.d servicio defaults</code> p <code>chkconfig --level runlevel servicio on</code></p>
+<p><a href="http://www.tecmint.com/installing-network-services-and-configuring-services-at-system-boot/" target="_blank">tecmint.com - services</a></p>
+<h4>Implement packet filtering<br/>Configure firewall settings</h4>
+<p><code>firewalld</code> o <code>iptables</code>, pero no se debe usar los dos a la vez.</p>
+<p><strong>iptables</strong></p>
+<ul>
+<li>Tiene la configuración en <code>/etc/iptables/rules.v*</code></li>
+<li><code>iptables -L</code> lista todas las reglas habitlitadas</li>
+<li>Las cadenas son: INPUT, OUTPUT, FORWARD</li>
+<li>Las politicas son: ACCEPT, DROP, REJECT</li>
+<li><code>iptables -P FORWARD DROP</code> define la politica DROP para la cadena FORWARD, es decir, los paquetes que no cumplan ninguna regla de FORWARD se les aplicara la politica DROP</li>
+<li><code>iptables -F INPUT</code> elimina todas las reglas de INPUT</li>
+<li>Añadir regla: <code>iptables -A cadena criterio -j politica</code>:</li>
+</ul>
+<p>Ejemplo 1: Permitir entrada y salida de trafico web</p>
+<div class="highlight"><pre><span></span><span class="gp">me@ubu ~ $</span> sudo iptables -A INPUT -i enp0s3 -p tcp --dport <span class="m">80</span> -m state --state NEW,ESTABLISHED -j ACCEPT
+<span class="gp">me@ubu ~ $</span> sudo iptables -A OUTPUT -o enp0s3 -p tcp --sport <span class="m">80</span> -m state --state ESTABLISHED -j ACCEPT
+<span class="gp">me@ubu ~ $</span> sudo iptables -A INPUT -i enp0s3 -p tcp --dport <span class="m">443</span> -m state --state NEW,ESTABLISHED -j ACCEPT
+<span class="gp">me@ubu ~ $</span> sudo iptables -A OUTPUT -o enp0s3 -p tcp --sport <span class="m">443</span> -m state --state ESTABLISHED -j ACCEPT
+</pre></div>
+<p>Ejemplo 2: Bloquear trafico entrante desde una red espeficica</p>
+<p>DROP todo el trafico que venga desde 192.168.1.0/24:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@ubu ~ $</span> sudo iptables -I INPUT -s <span class="m">192</span>.168.1.0/24 -j DROP
+</pre></div>
+<p>DROP solo el trafico que venga de 192.168.1.0/24 por el puerto 22:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@ubu ~ $</span> iptables -A INPUT -s <span class="m">192</span>.168.1.0/24 --dport <span class="m">22</span> -j ACCEPT
+</pre></div>
+<p>Ejemplo 3: Redirigir trafico entrate a otro destino</p>
+<ol>
+<li>Editamos <code>/etc/sysctl.conf</code> para poner <code>net.ipv4.ip_forward = 1</code></li>
+<li>Refrescamos la configuración con <code>sysctl -p /etc/sysctl.conf</code></li>
+<li>Redirigimos el trafico entrante por el puerto 631 a 192.168.0.10:631</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="gp">me@ubu ~ $</span> sudo iptables -t nat -A PREROUTING -i enp0s3 -p tcp --dport <span class="m">631</span> -j DNAT --to <span class="m">192</span>.168.0.10:631
+</pre></div>
+<p>Ejemplo 4: Bloquear ping entrante</p>
+<div class="highlight"><pre><span></span><span class="gp">me@ubu ~ $</span> sudo iptables -A INPUT --protocol icmp --in-interface eth0 -j DROP
+</pre></div>
+<p>Ejemplo 5: Deshabilitar/rehabilitar ssh logins desde dev2 a dev1</p>
+<div class="highlight"><pre><span></span><span class="gp">me@ubu ~ $</span> sudo iptables -A OUTPUT --protocol tcp --destination-port <span class="m">22</span> --out-interface eth0 --jump REJECT
+</pre></div>
+<p>Ejemplo 6: Permitir/prohibir a clientes NFS (de 192.168.0.0/24) motar unidades NFS4 compartidas</p>
+<div class="highlight"><pre><span></span><span class="gp">me@ubu ~ $</span> sudo iptables -A INPUT -i eth0 -s <span class="m">0</span>/0 -p tcp --dport <span class="m">2049</span> -j REJECT
+<span class="gp">me@ubu ~ $</span> sudo iptables -A INPUT -i eth0 -s <span class="m">0</span>/0 -p tcp --dport <span class="m">111</span> -j REJECT
+</pre></div>
+<p>Otros ejemplos:</p>
+<ul>
+<li>Insertar en la posición 2 de INPUT: <code>iptables -I INPUT 2 -p tcp --dport 80 -j ACCEPT</code></li>
+<li>BORRAR la regla 1 de INPUT: <code>iptables -D INPUT 1</code></li>
+<li>Mostrar las reglas con número de linea: <code>iptables -nL -v --line-number</code></li>
+<li>Remplaza la regla 2 de INPUT: <code>iptables -R INPUT 2 -i eth0 -s 0/0 -p tcp --dport 2049 -j REJECT</code></li>
+<li><code>iptables-save &gt; /etc/iptables/rules.v4</code> guardar las reglas para que se cargen al reiniciar (si iptables-persistent esta instalado)</li>
+<li>Cargar manualmente las reglas guardadas <code>iptables-restore &lt; /etc/iptables/rules.v4</code></li>
+</ul>
+<p><strong>FirewallD</strong></p>
+<p>Tiene la configuración en <code>/usr/lib/firewalld/</code> y <code>/etc/firewalld/</code>.</p>
+<p><code>firewall-cmd --get-active-zones</code> nos da las zonas activas, es decir, las zonas a las que se les ha asociado "algo"</p>
+<div class="highlight"><pre><span></span><span class="gp">me@deb ~ $</span> sudo firewall-cmd --get-active-zones 
+<span class="gp">me@deb ~ $</span> sudo firewall-cmd --zone<span class="o">=</span>internal --change-interface<span class="o">=</span>eth0
+<span class="go">success</span>
+<span class="gp">me@deb ~ $</span> sudo firewall-cmd --zone<span class="o">=</span>external --change-interface<span class="o">=</span>eth1
+<span class="go">success</span>
+<span class="gp">me@deb ~ $</span> sudo firewall-cmd --get-active-zones 
+<span class="go">internal</span>
+<span class="go">  interfaces: eth0</span>
+<span class="go">external</span>
+<span class="go">  interfaces: eth1</span>
+<span class="gp">me@deb ~ $</span> sudo firewall-cmd --zone<span class="o">=</span>internal --remove-interface<span class="o">=</span>eth0
+<span class="go">success</span>
+<span class="gp">me@deb ~ $</span> sudo firewall-cmd --zone<span class="o">=</span>external --remove-interface<span class="o">=</span>eth1
+<span class="go">success</span>
+<span class="gp">me@deb ~ $</span> sudo firewall-cmd --get-active-zones
+<span class="gp">me@deb ~ $</span>
+</pre></div>
+<p>Ejemplo 1: Permitir servicios a traves del firewall</p>
+<div class="highlight"><pre><span></span><span class="gp">me@ubu ~ $</span> sudo firewall-cmd --get-services
+<span class="go">...</span>
+<span class="gp">me@ubu ~ $</span> sudo firewall-cmd --zone<span class="o">=</span>MyZone --add-service<span class="o">=</span>http
+<span class="gp">me@ubu ~ $</span> sudo firewall-cmd --zone<span class="o">=</span>MyZone --permanent --add-service<span class="o">=</span>http
+<span class="gp">me@ubu ~ $</span> sudo firewall-cmd --zone<span class="o">=</span>MyZone --add-service<span class="o">=</span>https
+<span class="gp">me@ubu ~ $</span> sudo firewall-cmd --zone<span class="o">=</span>MyZone --permanent --add-service<span class="o">=</span>https
+<span class="gp">me@ubu ~ $</span> sudo firewall-cmd --reload
+</pre></div>
+<p>Ejemplo 2: Redirigir IP/Puerto</p>
+<div class="highlight"><pre><span></span><span class="gp">me@ubu ~ $</span> sudo firewall-cmd --zone<span class="o">=</span>MyZone --query-masquerade
+<span class="go">no</span>
+<span class="gp">me@ubu ~ $</span> sudo firewall-cmd --zone<span class="o">=</span>MyZone --add-masquerade
+<span class="gp">me@ubu ~ $</span> sudo firewall-cmd --zone<span class="o">=</span>MyZone --add-forward-port<span class="o">=</span><span class="nv">port</span><span class="o">=</span><span class="m">631</span>:proto<span class="o">=</span>tcp:toport<span class="o">=</span><span class="m">631</span>:toaddr<span class="o">=</span><span class="m">192</span>.168.0.10
+<span class="gp">me@ubu ~ $</span> sudo firewall-cmd --reload
+</pre></div>
+<p><a href="http://www.tecmint.com/configure-iptables-firewall/" target="_blank">tecmint.com - iptables</a>
+<a href="http://www.tecmint.com/firewalld-vs-iptables-and-control-network-traffic-in-firewall/" target="_blank">tecmint.com - firewalld vs iptable</a></p>
+<h4>Start, stop, and check the status of network services</h4>
+<ul>
+<li><code>sudo netstat -atup | grep LISTEN</code> ver network services arrancados</li>
+<li><code>sudo service servicio (start | stop | status)</code></li>
+<li><code>sudo systemctl (start | stop | status) servicio</code></li>
+</ul>
+<h4>Statically route IP traffic</h4>
+<p>El comando básico es <code>ip objeto comando</code> donde el objeto puede ser:</p>
+<ul>
+<li>link: dispositivo network</li>
+<li>addr: dirección del dispositivo (IP o IPv6)</li>
+<li>route: entrada en la tabla de ruta</li>
+<li>rule: regla de la base de datos de politicas de rutas</li>
+</ul>
+<p>y el comando es uno de los que podemos ver, por ejemplo, haciendo <code>ip link help</code></p>
+<p>Ejemplos:</p>
+<div class="highlight"><pre><span></span><span class="gp">root@lub:~#</span> ip link show
+<span class="go">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default </span>
+<span class="go">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span>
+<span class="go">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000</span>
+<span class="go">    link/ether 08:00:27:06:7e:79 brd ff:ff:ff:ff:ff:ff</span>
+<span class="gp">root@lub:~#</span> ip link <span class="nb">set</span> eth0 down
+<span class="gp">root@lub:~#</span> ip link show
+<span class="go">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default </span>
+<span class="go">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span>
+<span class="go">2: eth0: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc pfifo_fast state DOWN mode DEFAULT group default qlen 1000</span>
+<span class="go">    link/ether 08:00:27:06:7e:79 brd ff:ff:ff:ff:ff:ff</span>
+<span class="gp">root@lub:~#</span> ip link <span class="nb">set</span> eth0 up
+<span class="gp">root@lub:~#</span> ip link show eth0
+<span class="go">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000</span>
+<span class="go">    link/ether 08:00:27:06:7e:79 brd ff:ff:ff:ff:ff:ff</span>
+</pre></div>
+<p>Ejemplo 1: Rutear paquetes de una red privada a otra</p>
+<p>Cliente 1: CentOS 7 enp0s3: 192.168.0.17/24<br/>
+Router: Debian Wheezy 7.7 eth0: 192.168.0.15/24, eth1: 10.0.0.15/24<br/>
+Cliente 2: openSUSE 13.2 enp0s3: 10.0.0.18/24</p>
+<div class="highlight"><pre><span></span><span class="gp">root@rtr:~#</span> <span class="nb">echo</span> <span class="m">1</span> &gt; /proc/sys/net/ipv4/ip_forward
+</pre></div>
+<div class="highlight"><pre><span></span><span class="gp">root@cl1:~#</span> ip route add <span class="m">10</span>.0.0.0/24 via <span class="m">192</span>.168.0.15 dev enp0s3
+<span class="gp">root@cl1:~#</span> ping <span class="m">10</span>.0.0.18
+</pre></div>
+<div class="highlight"><pre><span></span><span class="gp">root@cl2:~#</span> ip route add <span class="m">192</span>.168.0.0/24 via <span class="m">10</span>.0.0.15 dev enp0s3
+<span class="gp">root@cl2:~#</span> ping <span class="m">192</span>.168.0.17
+</pre></div>
+<p>En openSUSE <code>/etc/sysconfig/network-scripts/ifcfg-enp0s3</code>:</p>
+<div class="highlight"><pre><span></span>BOOTPROTO=static
+BROADCAST=10.0.0.255
+IPADDR=10.0.0.18
+NETMASK=255.255.255.0
+GATEWAY=10.0.0.15
+NAME=enp0s3
+NETWORK=10.0.0.0
+ONBOOT=yes
+</pre></div>
+<p>Ejemplo 1: Enrutar paquetes entre red interna e internet</p>
+<p>Router: Debian Wheezy 7.7 eth0: Public IP, eth1: 10.0.0.15/24<br/>
+Client: openSUSE 13.2 enp0s3: 10.0.0.18/24</p>
+<div class="highlight"><pre><span></span><span class="gp">root@rtr:~#</span> iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+<span class="gp">root@rtr:~#</span> iptables -A FORWARD -i eth0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT
+<span class="gp">root@rtr:~#</span> iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT
+</pre></div>
+<p><a href="http://www.tecmint.com/setup-linux-as-router/" target="_blank">tecmint.com - router</a></p>
+<h4>Dynamically route IP traffic</h4>
+<p><code>quagga</code> sirve para ruteo dinamico.</p>
+<p>Router: Debian Wheezy 7.7 eth0: Public IP, router getaway 192.168.0.1, eth1: 10.0.0.15/24<br/>
+Client: openSUSE 13.2 enp0s3: 10.0.0.18/24</p>
+<p>En <code>/etc/quagga/daemons</code>:</p>
+<div class="highlight"><pre><span></span>zebra=1
+ripd=1
+</pre></div>
+<p>Crear ficheros de configuración</p>
+<div class="highlight"><pre><span></span><span class="gp">root@rtr:~#</span> touch /etc/quagga/zebra.conf
+<span class="gp">root@rtr:~#</span> touch /etc/quagga/ripd.conf
+<span class="gp">root@rtr:~#</span> chown quagga:quaggavty /etc/quagga/*.conf
+<span class="gp">root@rtr:~#</span> chmod <span class="m">640</span> /etc/quagga/*.conf 
+</pre></div>
+<p>Rellenarlos con:</p>
+<div class="highlight"><pre><span></span>service quagga restart
+hostname        usuario
+password        contraseña
+</pre></div>
+<p>Ejecutamos <code>service quagga restart</code></p>
+<p>Teniendo dos maquinas:<br/>
+dev2: 192.168.0.15, 10.0.0.15<br/>
+dev3: 192.168.1.1,  10.0.0.16  </p>
+<p>En cada una de ellas:</p>
+<p>Conectamos a zebra:</p>
+<div class="highlight"><pre><span></span><span class="gp">root@dev2:~#</span> telnet localhost <span class="m">2601</span>
+<span class="go">...</span>
+<span class="go">DebianRouter&gt; enable</span>
+<span class="go">DebianRouter# configure terminal</span>
+<span class="go">DebianRouter(config)# inter eth0</span>
+<span class="go">DebianRouter(config-if)# ip addr 192.168.0.15/24</span>
+<span class="go">DebianRouter(config-if)# inter eth1</span>
+<span class="go">DebianRouter(config-if)# ip addr 10.0.0.15/24</span>
+<span class="go">DebianRouter(config-if)# exit</span>
+<span class="go">DebianRouter(config)# exit</span>
+<span class="go">DebianRouter# write</span>
+<span class="go">Configuration saved to /etc/quagga/zebra.conf</span>
+</pre></div>
+<p>Conectamos a RIP:</p>
+<div class="highlight"><pre><span></span><span class="gp">root@dev2:~#</span> telnet localhost <span class="m">2602</span>
+<span class="go">...</span>
+<span class="go">DebianRouter&gt; enable</span>
+<span class="go">DebianRouter# configure terminal</span>
+<span class="go">DebianRouter(config)# router rip</span>
+<span class="go">DebianRouter(config-router)# version 2</span>
+<span class="go">DebianRouter(config-router)# network 192.168.0.0/24</span>
+<span class="go">There is a same network configuration 192.168.0.0/24</span>
+<span class="go">DebianRouter(config-router)# network 10.0.0.0/24</span>
+<span class="go">DebianRouter(config-router)# exit</span>
+<span class="go">DebianRouter(config)# exit</span>
+<span class="go">DebianRouter# write</span>
+<span class="go">Configuration saved to /etc/quagga/rip.conf</span>
+</pre></div>
+<p>Al volver a conectar a zebra veremos que los routers han aprendido la ruta de una a otro</p>
+<div class="highlight"><pre><span></span><span class="gp">root@dev2:~#</span> telnet localhost <span class="m">2601</span>
+<span class="go">...</span>
+<span class="go">dev2&gt; show ip route</span>
+<span class="go">Codes: K - kernel route, C - connected, S - static, R - RIP</span>
+<span class="go">       O - OSPF, I - IS-IS, B - BGP, A - Babel,</span>
+<span class="go">       &gt; - selected route, * - FIB route</span>
+
+<span class="go">K&gt;* 0.0.0.0/0 via 192.168.0.1, eth0</span>
+<span class="go">C&gt;* 10.0.0.0/24 is directly connected, eth1</span>
+<span class="go">C&gt;* 127.0.0.0/8 is directly connected, lo</span>
+<span class="go">C&gt;* 192.168.0.0/24 is directly connected, eth0</span>
+<span class="go">R&gt;* 192.168.1.10/24 [120/2] via 10.0.0.16, eth1, 00:00:20</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="gp">root@dev3:~#</span> telnet localhost <span class="m">2601</span>
+<span class="go">...</span>
+<span class="go">dev2&gt; show ip route</span>
+<span class="go">Codes: K - kernel route, C - connected, S - static, R - RIP</span>
+<span class="go">       O - OSPF, I - IS-IS, B - BGP, A - Babel,</span>
+<span class="go">       &gt; - selected route, * - FIB route</span>
+
+<span class="go">K&gt;* 0.0.0.0/0 via 10.0.0.15, eth0</span>
+<span class="go">C&gt;* 10.0.0.0/24 is directly connected, eth0</span>
+<span class="go">C&gt;* 127.0.0.0/8 is directly connected, lo</span>
+<span class="go">K&gt;* 169.254.0.0/16 is directly connected eth1</span>
+<span class="go">C&gt;* 192.168.0.0/24 [120/2] via 10.0.0.15, eth0, 00:36:09</span>
+<span class="go">R&gt;* 192.168.1.10/24 is directly connected eth1</span>
+</pre></div>
+<p><a href="http://www.tecmint.com/setup-linux-as-router/" target="_blank">tecmint.com - router</a></p>
+<h4>Synchronize time using other network peers</h4>
+<div class="highlight"><pre><span></span><span class="gp">me@deb ~ $</span> sudo apt-get install ntp ntpdate
+<span class="go">...</span>
+<span class="gp">me@deb ~ $</span> sudo service ntp status
+<span class="go">● ntp.service - LSB: Start NTP daemon</span>
+<span class="go">   Loaded: loaded (/etc/init.d/ntp)</span>
+<span class="go">   Active: active (running) since dom 2016-07-17 13:48:50 CEST; 26s ago</span>
+<span class="go">   CGroup: /system.slice/ntp.service</span>
+<span class="go">           └─4357 /usr/sbin/ntpd -p /var/run/ntpd.pid -g -u 121:130</span>
+<span class="go">...</span>
+<span class="gp">me@deb ~ $</span> sudo ntpq -p
+<span class="go">     remote           refid      st t when poll reach   delay   offset  jitter</span>
+<span class="go">==============================================================================</span>
+<span class="go">+static-21.herco 158.227.98.15    2 u   21   64    1  181.480   66.936  42.859</span>
+<span class="go">*i2t15.i2t.ehu.e .GPS.            1 u   20   64    1  160.858   70.449  39.383</span>
+<span class="go">+ntp.redimadrid. 193.147.107.33   2 u   21   64    1  131.977   63.068  32.831</span>
+<span class="go"> masip.celingest .STEP.          16 u  726   64    0    0.000    0.000   0.000</span>
+</pre></div>
+<ul>
+<li>La configuración esta en <code>/etc/ntp.conf</code></li>
+<li>Los logs se pueden ver con <code>grep ntp /var/log/syslog</code></li>
+<li>Las opciones con las que se arranca el demonio <code>ntpd</code> estan en <code>/etc/default/ntp</code></li>
+</ul>
+<p>Sin necesidad de tener <code>ntpd</code> se puede actualizar la fecha con <code>ntpdate pool.ntp.org</code> (añadir -u si se tiene isntalado <code>ntpd</code>)</p>
+<p><a href="http://www.tecmint.com/how-to-synchronize-time-with-ntp-server-in-ubuntu-linux-mint-xubuntu-debian/" target="_blank">tecmint.com - ntp ubuntu</a><br/>
+<a href="http://www.tecmint.com/install-and-configure-ntp-server-client-in-debian/" target="_blank">tecmint.com - ntp debian</a>
+<a href="http://www.pool.ntp.org/es/use.html" target="_blank">pool.ntp.org</a></p>
+<h3>Service Configuration - 10%</h3>
+<h4>Configure a basic DNS server<br/>Maintain a DNS zone</h4>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo apt-get install bind9 bind9utils
+<span class="go">...</span>
+<span class="gp">me@lub ~ $</span> sudo cp /etc/bind/named.conf.options /etc/bind/named.conf.options.orig
+<span class="gp">me@lub ~ $</span> sudo cp /etc/bind/named.conf.local /etc/bind/named.conf.local.orig
+</pre></div>
+<p>Siendo 10.13.13.101 la ip en la red que comparte con otras máquinas, editamos <code>/etc/bind/named.conf.options</code>:</p>
+<div class="highlight"><pre><span></span>options {
+..
+  listen-on port 53 { 127.0.0.1; 10.13.13.101;};
+  allow-query   { localhost; 10.13.13.0/24; };
+  recursion yes;
+  forwarders {
+    8.8.8.8;
+    8.8.4.4;
+  };
+...
+}
+</pre></div>
+<p>Luego editamos <code>/etc/bind/named.conf.local</code>:</p>
+<div class="highlight"><pre><span></span>  zone "sales.me.com." IN {
+    type master;
+    file "/var/named/sales.me.com.zone";
+  };
+  zone "13.13.10.in-addr.arpa" IN {
+    type master;
+    file "/var/named/13.13.10.in-addr.arpa.zone";
+  };
+</pre></div>
+<p>Chekeamos errores con <code>sudo named-checkconf /etc/bind/named.conf</code></p>
+<p>Siendo <code>/var/named/sales.me.com.zone</code>:</p>
+<div class="highlight"><pre><span></span>$TTL    604800
+@       IN      SOA     sales.me.com. root.sales.me.com. (
+2016051101 ; Serial
+10800 ; Refresh
+3600  ; Retry
+604800 ; Expire
+604800) ; Negative TTL
+;
+@       IN      NS      dns.sales.me.com.
+dns     IN      A       10.13.13.101
+web1    IN      A       10.13.13.104
+www.web1        IN      CNAME   web1
+</pre></div>
+<p>y <code>/var/named/13.13.10.in-addr.arpa.zone</code>:</p>
+<div class="highlight"><pre><span></span>$TTL    604800
+@       IN      SOA     sales.me.com. root.sales.me.com. (
+2016051101 ; Serial
+10800 ; Refresh
+3600  ; Retry
+604800 ; Expire
+604800) ; Minimun TTL
+;
+@       IN      NS      dns.sales.me.com.
+104     IN      PTR     web1.sales.me.com.
+</pre></div>
+<p>Chequeamos los ficheros</p>
+<div class="highlight"><pre><span></span>me@lub ~ $ sudo named-checkzone sales.me.com /var/named/sales.me.com.zone
+zone sales.me.com/IN: loaded serial 2016051101
+OK
+me@lub ~ $ sudo named-checkzone 0.168.192.in-addr.arpa /var/named/13.13.10.in-addr.arpa.zone 
+zone 0.168.192.in-addr.arpa/IN: loaded serial 2016051101
+OK
+</pre></div>
+<p>Reiniciamos el servicio con <code>sudo service bind9 restart</code></p>
+<p>Editamos <code>/etc/network/interfaces</code> para añadir la linea <code>dns-nameservers 10.13.13.101</code></p>
+<div class="highlight"><pre><span></span>auto eth1
+iface eth1 inet dhcp
+dns-nameservers 10.13.13.101
+</pre></div>
+<p>Reiniciamos la red con <code>sudo restart network-manager</code> (en realidad tuve que reiniciar), 
+y comprobamos que funciona</p>
+<div class="highlight"><pre><span></span>me@lub ~ $ host web1.sales.me.com
+web1.sales.me.com has address 10.13.13.104
+me@lub ~ $ host 10.13.13.104
+104.13.13.10.in-addr.arpa domain name pointer web1.sales.me.com.
+me@lub ~ $ host www.web1.sales.me.com
+www.web1.sales.me.com is an alias for web1.sales.me.com.
+web1.sales.me.com has address 10.13.13.104
+</pre></div>
+<p><a href="http://www.tecmint.com/setup-recursive-caching-dns-server-and-configure-dns-zones/" target="_blank">tecmint.com - DNS</a> -&gt; Installing and Configuring a DNS Server</p>
+<h4>Configure an FTP server<br/>Configure anonymous-only download on FTP servers</h4>
+<p>Instalamos con <code>sudo apt-get install vsftpd ftp</code>.<br/>
+La configuración esta en <code>/etc/vsftpd.conf</code>, el cual editamos para habilitar
+el acceso anonimo de solo lectura</p>
+<div class="highlight"><pre><span></span>anonymous_enable=YES
+no_anon_password=YES
+anon_root=/var/ftp/
+write_enable=NO
+anon_max_rate=10240
+max_per_ip=5
+</pre></div>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo mkdir /var/ftp
+<span class="gp">me@lub ~ $</span> sudo chmod <span class="m">555</span> /var/ftp
+<span class="gp">me@lub ~ $</span> man -t vsftpd.conf <span class="p">|</span> sudo ps2pdf - /var/ftp/vstpd.conf.pdf
+<span class="gp">me@lub ~ $</span> sudo service vsftpd restart
+<span class="go">vsftpd stop/waiting</span>
+<span class="go">vsftpd start/running, process 4188</span>
+<span class="gp">me@lub ~ $</span> ftp localhost
+<span class="go">Connected to localhost.</span>
+<span class="go">220 (vsFTPd 3.0.2)</span>
+<span class="go">Name (localhost:me): anonymous</span>
+<span class="go">230 Login successful.</span>
+<span class="go">Remote system type is UNIX.</span>
+<span class="go">Using binary mode to transfer files.</span>
+<span class="go">ftp&gt; ls</span>
+<span class="go">200 PORT command successful. Consider using PASV.</span>
+<span class="go">150 Here comes the directory listing.</span>
+<span class="go">-rw-rw-rw-    1 0        0           39599 Jul 17 20:35 vstpd.conf.pdf</span>
+<span class="go">226 Directory send OK.</span>
+<span class="go">ftp&gt; get vstpd.conf.pdf</span>
+<span class="go">local: vstpd.conf.pdf remote: vstpd.conf.pdf</span>
+<span class="go">200 PORT command successful. Consider using PASV.</span>
+<span class="go">150 Opening BINARY mode data connection for vstpd.conf.pdf (39599 bytes).</span>
+<span class="go">226 Transfer complete.</span>
+<span class="go">39599 bytes received in 0.01 secs (2598.2 kB/s)</span>
+<span class="go">ftp&gt; exit</span>
+<span class="go">221 Goodbye.</span>
+<span class="gp">me@lub ~ $</span> ls vstpd.conf.pdf 
+<span class="go">vstpd.conf.pdf</span>
+</pre></div>
+<p>Si en vez de eso queremos dar acceso a home a los usuarios del sistema haremos:</p>
+<div class="highlight"><pre><span></span>anonymous_enable=NO
+local_enable=YES
+chroot_local_user=YES
+chroot_list_enable=YES
+chroot_list_file=/etc/vsftpd.chroot_list
+local_max_rate=20480
+max_per_ip=5
+</pre></div>
+<p>Donde <code>/etc/vsftpd.chroot_list</code> es un fichero donde estan los nombres de los usuarios que queremos que si puedan salir de su home, por lo tanto en principio estará vacio.<br/>
+Y si se usa SELinux ejecutar <code>setsebool -P ftp_home_dir 1</code></p>
+<p>Podemos añadir la linea <code>allow_writeable_chroot=YES</code> a la configuración para que
+no nos de problemas del tipo <code>500 OOPS: vsftpd: refusing to run with writable root inside chroot()</code></p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo touch ../walterwhite/walterwhite.txt
+<span class="gp">me@lub ~ $</span> ftp localhost
+<span class="go">Connected to localhost.</span>
+<span class="go">220 (vsFTPd 3.0.2)</span>
+<span class="go">Name (localhost:me): walterwhite</span>
+<span class="go">331 Please specify the password.</span>
+<span class="go">Password:</span>
+<span class="go">230 Login successful.</span>
+<span class="go">Remote system type is UNIX.</span>
+<span class="go">Using binary mode to transfer files.</span>
+<span class="go">ftp&gt; ls</span>
+<span class="go">200 PORT command successful. Consider using PASV.</span>
+<span class="go">150 Here comes the directory listing.</span>
+<span class="go">-rw-r--r--    1 0        0               0 Jul 17 21:02 walterwhite.txt</span>
+<span class="go">226 Directory send OK.</span>
+<span class="go">ftp&gt; get walterwhite.txt</span>
+<span class="go">local: walterwhite.txt remote: walterwhite.txt</span>
+<span class="go">200 PORT command successful. Consider using PASV.</span>
+<span class="go">150 Opening BINARY mode data connection for walterwhite.txt (0 bytes).</span>
+<span class="go">226 Transfer complete.</span>
+<span class="go">ftp&gt; quit</span>
+<span class="go">221 Goodbye.</span>
+<span class="gp">me@lub ~ $</span> ls walterwhite.txt 
+<span class="go">walterwhite.txt</span>
+</pre></div>
+<p><a href="http://www.tecmint.com/setup-ftp-anonymous-logins-in-linux/" target="_blank">tecmint.com - FTP</a>
+<a href="https://www.benscobie.com/fixing-500-oops-vsftpd-refusing-to-run-with-writable-root-inside-chroot/" target="_blank">benscobie.com - vsftpd</a></p>
+<h4>Provide/configure network shares via NFS</h4>
+<p>En el servidor:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@ubu ~ $</span> sudo apt-get install nfs-common nfs-kernel-server
+<span class="gp">me@ubu ~ $</span> mkdir nfsshare
+<span class="gp">me@ubu ~ $</span> sudo bash -c <span class="s1">'echo "/home/me/nfsshare 10.13.13.101(rw,sync,no_root_squash)" &gt;&gt; /etc/exports'</span>
+<span class="gp">me@ubu ~ $</span> sudo service nfs-kernel-server start
+</pre></div>
+<p>En el cliente:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo apt-get install nfs-common
+<span class="gp">me@lub ~ $</span> showmount -e <span class="m">10</span>.13.13.102
+<span class="go">Export list for 10.13.13.102:</span>
+<span class="go">/home/me/nfsshare 10.13.13.101</span>
+<span class="gp">me@lub ~ $</span> sudo mkdir /mnt/nfsshare
+<span class="gp">me@lub ~ $</span> sudo mount -t nfs <span class="m">10</span>.13.13.102:/home/me/nfsshare /mnt/nfsshare
+<span class="gp">me@lub ~ $</span> sudo bash -c <span class="s1">'echo "10.13.13.102:/home/me/nfsshare /mnt/nfsshare  nfs defaults 0 0" &gt;&gt; /etc/fstab'</span>
+</pre></div>
+<p><a href="http://www.tecmint.com/mount-filesystem-in-linux/" target="_blank">tecmint.com - mount</a> -&gt; Mounting a NFS share on Linux<br/>
+<a href="https://help.ubuntu.com/community/SettingUpNFSHowTo" target="_blank">help.ubuntu.com - NFS</a><br/>
+<a href="http://systemadmin.es/2012/05/no_root_squash-vs-root_squash-de-nfs" target="_blank">systemadmin.es - root squash</a></p>
+<h4>Provide/configure network shares via CIFS</h4>
+<p>En el servidor:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@ubu ~ $</span> sudo apt-get install samba-client samba-common cifs-utils
+<span class="gp">me@ubu ~ $</span> sudo nano /etc/samba/smb.conf
+<span class="go">[share]</span>
+<span class="go">    comment = Ubuntu File Server Share</span>
+<span class="go">    path = /home/me/smb    </span>
+<span class="go">    browsable = yes</span>
+<span class="go">    guest ok = yes</span>
+<span class="go">    read only = no</span>
+<span class="go">    create mask = 0755</span>
+<span class="gp">me@ubu ~ $</span> mkdir smb
+<span class="gp">me@ubu ~ $</span> sudo chown nobody:nogroup smb
+<span class="gp">me@ubu ~ $</span> sudo service smbd restart
+<span class="go">smbd stop/waiting</span>
+<span class="go">smbd start/running, process 4978</span>
+<span class="gp">me@ubu ~ $</span> sudo service nmbd restart
+<span class="go">nmbd stop/waiting</span>
+<span class="go">nmbd start/running, process 5015</span>
+</pre></div>
+<p>En el cliente</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo apt-get install samba-client samba-common cifs-utils
+<span class="gp">me@lub ~ $</span> smbclient -L <span class="m">10</span>.13.13.102
+<span class="go">WARNING: The "syslog" option is deprecated</span>
+<span class="go">Enter me's password: </span>
+<span class="go">Domain=[WORKGROUP] OS=[Windows 6.1] Server=[Samba 4.3.8-Ubuntu]</span>
+
+<span class="go">    Sharename       Type      Comment</span>
+<span class="go">    ---------       ----      -------</span>
+<span class="go">    print$          Disk      Printer Drivers</span>
+<span class="go">    share           Disk      Ubuntu File Server Share</span>
+<span class="go">    IPC$            IPC       IPC Service (ubu server (Samba, Ubuntu))</span>
+<span class="go">Domain=[WORKGROUP] OS=[Windows 6.1] Server=[Samba 4.3.8-Ubuntu]</span>
+
+<span class="go">    Server               Comment</span>
+<span class="go">    ---------            -------</span>
+<span class="go">    UBU                  ubu server (Samba, Ubuntu)</span>
+
+<span class="go">    Workgroup            Master</span>
+<span class="go">    ---------            -------</span>
+<span class="go">    WORKGROUP            </span>
+<span class="gp">me@lub ~ $</span> sudo mkdir /mnt/samba
+<span class="gp">me@lub ~ $</span> sudo chown me:me /mnt/samba
+<span class="gp">me@lub ~ $</span> <span class="nb">echo</span> <span class="s2">"username=samba_username"</span> &gt; /mnt/samba/.smbcredentials
+<span class="gp">me@lub ~ $</span> <span class="nb">echo</span> <span class="s2">"password=samba_password"</span> &gt;&gt; /mnt/samba/.smbcredential
+<span class="gp">me@lub ~ $</span> chmod <span class="m">600</span> /mnt/samba/.smbcredentials
+<span class="gp">me@lub ~ $</span> sudo bash -c <span class="s1">'echo "//10.13.13.102/share /mnt/samba cifs credentials=/mnt/samba/.smbcredentials,defaults 0 0" &gt;&gt; /etc/fstab'</span>
+<span class="gp">me@lub ~ $</span> sudo mount //10.13.13.102/share
+</pre></div>
+<p><a href="http://www.tecmint.com/mount-filesystem-in-linux/" target="_blank">tecmint.com - mount</a> -&gt; Mounting a Samba share on Linux
+<a href="https://help.ubuntu.com/12.04/serverguide/samba-fileserver.html" target="_blank">help.ubuntu.com - samba</a></p>
+<h4>Configure email aliases</h4>
+<ul>
+<li><code>/etc/aliases</code> + <code>newaliases</code>, o</li>
+<li><code>/etc/postfix/aliases</code> + <code>postalias /etc/postfix/aliases</code></li>
+</ul>
+<p>La 1º opción si me funciono, la seguna no.</p>
+<h4>Configure SSH servers and clients<br/>Configure SSH-based remote access using public/private key pairs</h4>
+<ul>
+<li><code>/etc/ssh/sshd_config</code> condigura sshd</li>
+<li><code>/etc/default/ssh</code> permite añadir parametros para el arranque de sshd</li>
+<li><code>ssh-keygen</code> genera una clave privada y pública para usar con ssh</li>
+<li><code>~/.ssh/authorized_keys</code> tiene las claves publicas autorizadas</li>
+<li><code>ssh-copy-id</code> manda una clave publica a la maquina a la que queremos conectar</li>
+<li><code>~/.ssh/config</code> configura las conexiones ssh.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> mkdir .ssh
+<span class="gp">me@lub ~ $</span> touch .ssh/config
+<span class="gp">me@lub ~ $</span> chmod <span class="m">700</span> .ssh
+<span class="gp">me@lub ~ $</span> chmod <span class="m">600</span> ~/.ssh/*
+<span class="gp">me@lub ~ $</span> ssh-keygen
+<span class="go">Generating public/private rsa key pair.</span>
+<span class="go">Enter file in which to save the key (/home/me/.ssh/id_rsa): /home/me/.ssh/ubuntu</span>
+<span class="go">Enter passphrase (empty for no passphrase): </span>
+<span class="go">Enter same passphrase again: </span>
+<span class="go">Your identification has been saved in /home/me/.ssh/ubuntu.</span>
+<span class="go">Your public key has been saved in /home/me/.ssh/ubuntu.pub.</span>
+<span class="go">The key fingerprint is:</span>
+<span class="go">1e:10:a5:fd:d4:e4:91:0e:63:49:7d:db:b0:bf:81:94 me@lub</span>
+<span class="go">The key's randomart image is:</span>
+<span class="go">+--[ RSA 2048]----+</span>
+<span class="go">|      .....oo.   |</span>
+<span class="go">|       +  =+o.o  |</span>
+<span class="go">|      o ...+o..= |</span>
+<span class="go">|       . o  .Eo .|</span>
+<span class="go">|        S . . .. |</span>
+<span class="go">|       . .   . ..|</span>
+<span class="go">|        .       o|</span>
+<span class="go">|               . |</span>
+<span class="go">|                 |</span>
+<span class="go">+-----------------+</span>
+<span class="gp">me@lub ~ $</span> ssh-copy-id -i .ssh/ubuntu.pub me@10.13.13.102
+<span class="go">/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed</span>
+<span class="go">/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys</span>
+<span class="go">me@10.13.13.102's password: </span>
+
+<span class="go">Number of key(s) added: 1</span>
+
+<span class="go">Now try logging into the machine, with:   "ssh 'me@10.13.13.102'"</span>
+<span class="go">and check to make sure that only the key(s) you wanted were added.</span>
+
+<span class="gp">me@lub ~ $</span> nano .ssh/config
+<span class="go">Host ubuntu</span>
+<span class="go">HostName 10.13.13.102</span>
+<span class="go">IdentityFile /home/me/.ssh/ubuntu</span>
+<span class="go">User me</span>
+<span class="go">Port 22</span>
+<span class="gp">me@lub ~ $</span> ssh ubuntu
+<span class="go">Enter passphrase for key '/home/me/.ssh/ubuntu': </span>
+<span class="go">Welcome to Ubuntu 14.04.4 LTS (GNU/Linux 4.2.0-27-generic i686)</span>
+<span class="go">Last login: Mon Jul 18 20:49:36 2016 from 10.13.13.101</span>
+<span class="gp">me@ubu ~ $</span> ls .ssh
+<span class="go">authorized_keys</span>
+<span class="gp">me@ubu ~ $</span> <span class="nb">exit</span>
+<span class="gp">me@lub ~ $</span> <span class="nb">eval</span> <span class="s2">"</span><span class="k">$(</span>ssh-agent -s<span class="k">)</span><span class="s2">"</span>
+<span class="go">Agent pid 4986</span>
+<span class="gp">me@lub ~ $</span> ssh-add ~/.ssh/ubuntu
+<span class="gp">me@lub ~ $</span> ssh-add ~/.ssh/ubuntu
+<span class="go">Enter passphrase for /home/me/.ssh/ubuntu: </span>
+<span class="go">Identity added: /home/me/.ssh/ubuntu (/home/me/.ssh/ubuntu)</span>
+<span class="gp">me@lub ~ $</span> ssh ubuntu
+<span class="go">Welcome to Ubuntu 14.04.4 LTS (GNU/Linux 4.2.0-27-generic i686)</span>
+<span class="go">Last login: Mon Jul 18 22:14:01 2016 from 10.13.13.101</span>
+<span class="gp">me@ubu ~ $</span> <span class="nb">exit</span>
+</pre></div>
+<h4>Restrict access to the HTTP proxy server</h4>
+<p><code>sudo apt-get install install squid3 squidguard</code></p>
+<p><a href="http://www.tecmint.com/onfigure-squid-server-in-linux" target="_blank">tecmint.com - squid</a>
+<a href="http://www.tecmint.com/configure-squidguard-for-squid-proxy/" target="_blank">tecmint.com - squidguard</a></p>
+<h4>Configure an IMAP and IMAPS service</h4>
+<p><a href="http://www.tecmint.com/setting-up-email-services-smtp-and-restricting-access-to-smtp/" target="_blank">tecmint.com - smtp</a></p>
+<h4>Query and modify the behavior of system services at various run levels</h4>
+<p><em>no tengo claro a que se refiere</em></p>
+<h4>Configure an HTTP server<br/>Configure HTTP server log files</h4>
+<p><a href="http://www.tecmint.com/setup-apache-with-name-based-virtual-hosting-with-ssl-certificate/" target="_blank">tecmint.com - apache</a></p>
+<h4>Restrict access to a web page</h4>
+<p><a href="http://www.tecmint.com/apache-htaccess-tricks" target="_blank">tecmint.com - htaccess</a>
+<a href="https://www.cs.cmu.edu/~help/web_publishing/htaccess.html" target="_blank">cs.cmu.edu - htaccess</a></p>
+<h4>Diagnose routine SELinux/AppArmor policy violations</h4>
+<h4>Configure database server</h4>
+<ul>
+<li>Instalamos con <code>sudo apt-get install mariadb-server</code></li>
+<li>Nos conectamos con <code>mysql -u root -p</code></li>
+<li>Securizamos con <code>mysql_secure_installation</code></li>
+<li>Configuramos editando <code>/etc/mysql/my.cnf</code>, <code>/etc/my.cnf</code>, <code>~/.my.cnf</code></li>
+<li>Reiniciamos con <code>sudo service mysql restart</code></li>
+</ul>
+<p><a href="http://www.tecmint.com/install-mariadb-in-linux/" target="_blank">tecmint.com - MariaDB 1</a><br/>
+<a href="http://www.tecmint.com/install-secure-performance-tuning-mariadb-database-server/" target="_blank">tecmint.com - MariaDB 2</a><br/>
+<a href="http://www.tecmint.com/mysql-mariadb-performance-tuning-and-optimization/" target="_blank">tecmint.com - MariaDB 3</a></p>
+<h3>Virtualization - 5%</h3>
+<h4>Configure a hypervisor to host virtual guests</h4>
+<ul>
+<li>Ejecutar <code>kvm-ok</code> para saber si podemos virutalizar bien, o solo regular.</li>
+<li>Instalar: <code>sudo apt-get install qemu-kvm libvirt-bin ubuntu-vm-builder bridge-utils virtinst virt-viewer ubuntu-vm-builder</code></li>
+<li>Comprobar instalación. <code>virsh -c qemu:///system list</code></li>
+<li>Si falla recargar el modulo: <code>modprobe -a kvm</code></li>
+</ul>
+<p><code>sudo apt-get install qemu-kvm qemu-img virt-manager libvirt libvirt-python libvirt-client virtualization-client virtualization-platform virtualization-tools</code></p>
+<p>Hacer movidas:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo virsh -c qemu:///system list
+<span class="go"> Id    Nombre                         Estado</span>
+<span class="go">----------------------------------------------------</span>
+
+<span class="gp">me@lub ~ $</span> man virsh
+<span class="gp">me@lub ~ $</span> sudo virsh pool-define-as Spool1 dir - - - - <span class="s2">"/mnt/personal-data/SPool1/"</span>
+<span class="go">Se ha definido el grupo Spool1</span>
+
+<span class="gp">me@lub ~ $</span> sudo virsh pool-list --all
+<span class="go"> Nombre               Estado     Inicio automático</span>
+<span class="go">-------------------------------------------</span>
+<span class="go"> Spool1               inactivo   no        </span>
+
+<span class="gp">me@lub ~ $</span> sudo virsh pool-build Spool1
+<span class="go">El grupo Spool1 ya ha sido compilado</span>
+
+<span class="gp">me@lub ~ $</span> sudo virsh pool-start Spool1
+<span class="go">Se ha iniciado el grupo Spool1</span>
+
+<span class="gp">me@lub ~ $</span> sudo virsh pool-list --all
+<span class="go"> Nombre               Estado     Inicio automático</span>
+<span class="go">-------------------------------------------</span>
+<span class="go"> Spool1               activo     no        </span>
+
+<span class="gp">me@lub ~ $</span> sudo virsh pool-list --all
+<span class="go"> Nombre               Estado     Inicio automático</span>
+<span class="go">-------------------------------------------</span>
+<span class="go"> Spool1               activo     no        </span>
+
+<span class="gp">me@lub ~ $</span> sudo virsh pool-autostart Spool1
+<span class="go">El grupo Spool1 ha sido marcado como iniciable automáticamente</span>
+
+<span class="gp">me@lub ~ $</span> sudo virsh pool-list --all
+<span class="go"> Nombre               Estado     Inicio automático</span>
+<span class="go">-------------------------------------------</span>
+<span class="go"> Spool1               activo     si        </span>
+
+<span class="gp">me@lub ~ $</span> sudo qemu-img create -f raw /mnt/personal-data/SPool1/SVol1.img 1G
+<span class="go">Formatting '/mnt/personal-data/SPool1/SVol1.img', fmt=raw size=1073741824 </span>
+
+<span class="gp">me@lub ~ $</span> sudo virt-install --name<span class="o">=</span>cent --disk <span class="nv">path</span><span class="o">=</span>/mnt/personal-data/SPool1/SVol1.img --graphics spice --vcpu<span class="o">=</span><span class="m">1</span> --ram<span class="o">=</span><span class="m">1024</span> --location<span class="o">=</span>/home/me/Descargas/iso/CentOS-7-x86_64-Minimal-1511.iso --network <span class="nv">bridge</span><span class="o">=</span>virbr0
+</pre></div>
+<p><a href="https://help.ubuntu.com/community/KVM/Installation" target="_blank">help.ubuntu.com - KVM installation</a><br/>
+<a href="https://help.ubuntu.com/community/KVM/CreateGuests" target="_blank">help.ubuntu.com - KVM create guests</a><br/>
+<a href="http://www.naturalborncoder.com/virtualization/2014/10/27/installing-and-running-kvm-on-ubuntu-14-04-part-3/" target="_blank">naturalborncoder.com - KVM part 3</a><br/>
+<a href="http://www.naturalborncoder.com/virtualization/2014/10/27/installing-and-running-kvm-on-ubuntu-14-04-part-4/" target="_blank">naturalborncoder.com - KVM part 4</a><br/>
+<a href="http://www.tecmint.com/kvm-management-tools-to-manage-virtual-machines/" target="_blank">tecmint.com - KVM</a></p>
+<h4>Access a VM console</h4>
+<h4>Configure systems to launch virtual machines at boot</h4>
+<h4>Evaluate memory usage of virtual machines</h4>
+<p><code>vmstat</code>, <code>pmap</code>, <code>free</code></p>
+<h4>Resize RAM or storage of VMs</h4>
+<h3>Storage Management - 10%</h3>
+<h4>List, create, delete, and modify storage partitions</h4>
+<ul>
+<li><code>fdisk</code> crea, lista, borra y modifica particiones</li>
+<li><code>mkfs</code> y derivados formatean particiones</li>
+<li><code>mkswap</code> formatea particiones swap (se recomienda que sean del doble de la memoria ran si esta es menor de 2GB, e igual en caso contrario)</li>
+<li><code>/etc/fstab</code> tiene la información necesaria para que estas particiones se carguen al reiniciar.</li>
+</ul>
+<p><a href="http://www.tecmint.com/create-partitions-and-filesystems-in-linux/" target="_blank">tecmint.com - filesystems</a></p>
+<h4>Create, modify and delete Logical Volumes<br/>Extend existing Logical Volumes and filesystems<br/>Add new partitions, and logical volumes</h4>
+<p>Uno o más disco (<code>/dev/sdb</code>) o una o más particiones te tipo 8e (<code>/dev/sdb1</code>)
+forman un volumen fisico, los cuales se agrupan en grupos de volumenes (<code>vg</code>), 
+el cual se divide en uno o varios volumenes lógicos (<code>mylvm</code>)</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo pvcreate /dev/sdb1
+<span class="gp">me@lub ~ $</span> sudo pvcreate /dev/sdc1
+<span class="gp">me@lub ~ $</span> sudo vgcreate -s 16M vg /dev/sdb1
+<span class="gp">me@lub ~ $</span> sudo vgextend vg /dev/sdc1
+<span class="gp">me@lub ~ $</span> sudo lvcreate -L 50G -n mylvm vg
+<span class="gp">me@lub ~ $</span> sudo mkfs -t ext4 /dev/vg/mylvm
+<span class="gp">me@lub ~ $</span> mkdir /mylvm
+<span class="gp">me@lub ~ $</span> sudo mount /dev/vg/mylvm /mylvm
+</pre></div>
+<p>Mostrar información:</p>
+<ul>
+<li>Volumnes fisicos: <code>pvs</code>, <code>pvsdisplay</code> o <code>pvsdisplay /dev/sdX</code></li>
+<li>Grupos de volumenes: <code>vgs</code>, <code>vgdisplay</code> o <code>vgdisplay /dev/vg00</code></li>
+<li>Volumnes lógicos: <code>lvs</code>, <code>lvdisplay</code> o <code>lvdisplay /dev/vg00/mylvm</code></li>
+</ul>
+<p>Crear movidas:</p>
+<ul>
+<li>Volumnes fisicos: <code>ppvcreate /dev/sdX</code></li>
+<li>Grupos de volumenes: <code>vgcreate vg00 /dev/sdb /dev/sdc</code></li>
+<li>Volumnes lógicos:</li>
+<li><code>lvcreate -n vol_projects -L 10G vg00</code></li>
+<li><code>lvcreate -n vol_backups -l 100%FREE vg00</code></li>
+<li><code>lvcreate -l 128 -s -n mysnap /dev/vg/mylvm</code></li>
+</ul>
+<p>Extender volumen lógico:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo lvextend -L +500M /dev/vg/mylvm
+<span class="gp">me@lub ~ $</span> sudo resize2fs /dev/vg/mylvm
+</pre></div>
+<p>Reducir un grupo de volumenes:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo pvdisplay 
+<span class="go">  --- Physical volume ---</span>
+<span class="go">  PV Name               /dev/sdf</span>
+<span class="go">  VG Name               vg00</span>
+<span class="go">  PV Size               10,00 MiB / not usable 2,00 MiB</span>
+<span class="go">  Allocatable           yes (but full)</span>
+<span class="go">  PE Size               4,00 MiB</span>
+<span class="go">  Total PE              2</span>
+<span class="go">  Free PE               0</span>
+<span class="go">  Allocated PE          2</span>
+<span class="go">  PV UUID               aZnPnF-QFFg-M1Wb-wvLq-9Ku1-dWB3-2zY4c7</span>
+
+<span class="go">  --- Physical volume ---</span>
+<span class="go">  PV Name               /dev/sdh</span>
+<span class="go">  VG Name               vg00</span>
+<span class="go">  PV Size               10,00 MiB / not usable 2,00 MiB</span>
+<span class="go">  Allocatable           yes (but full)</span>
+<span class="go">  PE Size               4,00 MiB</span>
+<span class="go">  Total PE              2</span>
+<span class="go">  Free PE               0</span>
+<span class="go">  Allocated PE          2</span>
+<span class="go">  PV UUID               uWEcvk-n2DU-6Nbq-RfUy-4fe8-1Ofo-BeDUDu</span>
+
+<span class="go">  --- Physical volume ---</span>
+<span class="go">  PV Name               /dev/sdg</span>
+<span class="go">  VG Name               vg00</span>
+<span class="go">  PV Size               10,00 MiB / not usable 2,00 MiB</span>
+<span class="go">  Allocatable           yes </span>
+<span class="go">  PE Size               4,00 MiB</span>
+<span class="go">  Total PE              2</span>
+<span class="go">  Free PE               1</span>
+<span class="go">  Allocated PE          1</span>
+<span class="go">  PV UUID               DdPUP0-nYAz-aKzz-vhpo-Rtt1-el3C-kz53AM</span>
+<span class="gp">me@lub ~ $</span> sudo pvcreate /dev/sdk
+<span class="go">  Physical volume "/dev/sdk" successfully created</span>
+<span class="gp">me@lub ~ $</span> sudo vgextend vg00 /dev/sdk
+<span class="go">  Volume group "vg00" successfully extended</span>
+<span class="gp">me@lub ~ $</span> sudo pvmove /dev/sdg --alloc anywhere
+<span class="go">  /dev/sdg: Moved: 100,0%</span>
+<span class="gp">me@lub ~ $</span> sudo vgreduce vg00 /dev/sdg
+<span class="go">  Removed "/dev/sdg" from volume group "vg00"</span>
+<span class="gp">me@lub ~ $</span> sudo pvdisplay 
+<span class="go">  --- Physical volume ---</span>
+<span class="go">  PV Name               /dev/sdf</span>
+<span class="go">  VG Name               vg00</span>
+<span class="go">  PV Size               10,00 MiB / not usable 2,00 MiB</span>
+<span class="go">  Allocatable           yes (but full)</span>
+<span class="go">  PE Size               4,00 MiB</span>
+<span class="go">  Total PE              2</span>
+<span class="go">  Free PE               0</span>
+<span class="go">  Allocated PE          2</span>
+<span class="go">  PV UUID               aZnPnF-QFFg-M1Wb-wvLq-9Ku1-dWB3-2zY4c7</span>
+
+<span class="go">  --- Physical volume ---</span>
+<span class="go">  PV Name               /dev/sdh</span>
+<span class="go">  VG Name               vg00</span>
+<span class="go">  PV Size               10,00 MiB / not usable 2,00 MiB</span>
+<span class="go">  Allocatable           yes (but full)</span>
+<span class="go">  PE Size               4,00 MiB</span>
+<span class="go">  Total PE              2</span>
+<span class="go">  Free PE               0</span>
+<span class="go">  Allocated PE          2</span>
+<span class="go">  PV UUID               uWEcvk-n2DU-6Nbq-RfUy-4fe8-1Ofo-BeDUDu</span>
+
+<span class="go">  --- Physical volume ---</span>
+<span class="go">  PV Name               /dev/sdk</span>
+<span class="go">  VG Name               vg00</span>
+<span class="go">  PV Size               100,00 MiB / not usable 4,00 MiB</span>
+<span class="go">  Allocatable           yes </span>
+<span class="go">  PE Size               4,00 MiB</span>
+<span class="go">  Total PE              24</span>
+<span class="go">  Free PE               23</span>
+<span class="go">  Allocated PE          1</span>
+<span class="go">  PV UUID               wUahgs-13gr-gNhq-qVmG-lrJV-Yfsy-3PMwWG</span>
+
+<span class="go">  "/dev/sdg" is a new physical volume of "10,00 MiB"</span>
+<span class="go">  --- NEW Physical volume ---</span>
+<span class="go">  PV Name               /dev/sdg</span>
+<span class="go">  VG Name               </span>
+<span class="go">  PV Size               10,00 MiB</span>
+<span class="go">  Allocatable           NO</span>
+<span class="go">  PE Size               0   </span>
+<span class="go">  Total PE              0</span>
+<span class="go">  Free PE               0</span>
+<span class="go">  Allocated PE          0</span>
+<span class="go">  PV UUID               DdPUP0-nYAz-aKzz-vhpo-Rtt1-el3C-kz53AM</span>
+</pre></div>
+<p>Extender volumen logico</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo lvextend -r -L +50M /dev/vg00/vol_dos
+<span class="go">  Rounding size to boundary between physical extents: 52,00 MiB</span>
+<span class="go">  Extending logical volume vol_dos to 68,00 MiB</span>
+<span class="go">  Logical volume vol_dos successfully resized</span>
+<span class="go">resize2fs 1.42.9 (4-Feb-2014)</span>
+<span class="go">Filesystem at /dev/mapper/vg00-vol_dos is mounted on /home/me/vol_dos; on-line resizing required</span>
+<span class="go">old_desc_blocks = 1, new_desc_blocks = 1</span>
+<span class="go">The filesystem on /dev/mapper/vg00-vol_dos is now 69632 blocks long.</span>
+<span class="gp">me@lub ~ $</span> sudo lvdisplay 
+<span class="go">  --- Logical volume ---</span>
+<span class="go">  LV Path                /dev/vg00/vol_uno</span>
+<span class="go">  LV Name                vol_uno</span>
+<span class="go">  VG Name                vg00</span>
+<span class="go">  LV UUID                kgAVDg-II7h-MoRM-394R-ZFox-ti7r-vhYCbb</span>
+<span class="go">  LV Write Access        read/write</span>
+<span class="go">  LV Creation host, time lub, 2016-05-22 20:51:21 +0200</span>
+<span class="go">  LV Status              available</span>
+<span class="gp">  #</span> open                 <span class="m">1</span>
+<span class="go">  LV Size                8,00 MiB</span>
+<span class="go">  Current LE             2</span>
+<span class="go">  Segments               1</span>
+<span class="go">  Allocation             inherit</span>
+<span class="go">  Read ahead sectors     auto</span>
+<span class="go">  - currently set to     256</span>
+<span class="go">  Block device           252:0</span>
+
+<span class="go">  --- Logical volume ---</span>
+<span class="go">  LV Path                /dev/vg00/vol_dos</span>
+<span class="go">  LV Name                vol_dos</span>
+<span class="go">  VG Name                vg00</span>
+<span class="go">  LV UUID                ltBKDO-11vk-2oNN-rj1w-0RNa-ptYo-pi6FUe</span>
+<span class="go">  LV Write Access        read/write</span>
+<span class="go">  LV Creation host, time lub, 2016-05-22 20:51:35 +0200</span>
+<span class="go">  LV Status              available</span>
+<span class="gp">  #</span> open                 <span class="m">1</span>
+<span class="go">  LV Size                68,00 MiB</span>
+<span class="go">  Current LE             17</span>
+<span class="go">  Segments               3</span>
+<span class="go">  Allocation             inherit</span>
+<span class="go">  Read ahead sectors     auto</span>
+<span class="go">  - currently set to     256</span>
+<span class="go">  Block device           252:1</span>
+</pre></div>
+<p>Reducir volumen logico</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo lvreduce -r -L -50M /dev/vg00/vol_dos
+<span class="go">  Rounding size to boundary between physical extents: 48,00 MiB</span>
+<span class="go">Do you want to unmount "/home/me/vol_dos"? [Y|n] y</span>
+<span class="go">fsck de util-linux 2.20.1</span>
+<span class="go">/dev/mapper/vg00-vol_dos: 11/9216 files (9.1% non-contiguous), 2294/69632 blocks</span>
+<span class="go">resize2fs 1.42.9 (4-Feb-2014)</span>
+<span class="go">Resizing the filesystem on /dev/mapper/vg00-vol_dos to 20480 (1k) blocks.</span>
+<span class="go">The filesystem on /dev/mapper/vg00-vol_dos is now 20480 blocks long.</span>
+
+<span class="go">  Reducing logical volume vol_dos to 20,00 MiB</span>
+<span class="go">  Logical volume vol_dos successfully resized</span>
+</pre></div>
+<p>Crear una nueva partición:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo lvcreate -n vol_tres -L 10M vg00
+<span class="go">  Rounding up size to full physical extent 12,00 MiB</span>
+<span class="go">  Logical volume "vol_tres" created</span>
+<span class="gp">me@lub ~ $</span> sudo lvcreate -n vol_cuatro -l <span class="m">100</span>%FREE vg00
+<span class="go">  Logical volume "vol_cuatro" created</span>
+<span class="gp">me@lub ~ $</span> sudo mkfs.ext4 /dev/vg00/vol_tres
+<span class="go">...</span>
+</pre></div>
+<p>Montar:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> mkdir vol_tres
+<span class="gp">me@lub ~ $</span> sudo blkid <span class="p">|</span> grep vg00
+<span class="go">/dev/mapper/vg00-vol_uno: UUID="ea692853-a0cc-49d1-904a-a72be6162312" TYPE="ext4" </span>
+<span class="go">/dev/mapper/vg00-vol_dos: UUID="be2350c7-e4ed-45a0-8ebf-9aeb2f4eb774" TYPE="ext4" </span>
+<span class="go">/dev/mapper/vg00-vol_tres: UUID="f026ffd3-0910-437e-aac5-fce9195ee60c" TYPE="ext4" </span>
+<span class="go">/dev/mapper/vg00-vol_cuatro: UUID="cb76d1aa-5ea9-4130-b19c-bc375d90fa28" TYPE="ext4" </span>
+<span class="gp">me@lub ~ $</span> sudo bash -c <span class="s2">"echo 'UUID=\"f026ffd3-0910-437e-aac5-fce9195ee60c\"  /home/me/vol_tres ext4 defaults 0 2' &gt;&gt; /etc/fstab"</span>
+<span class="gp">me@lub ~ $</span> sudo mount /home/me/vol_tres
+<span class="gp">me@lub ~ $</span> ls vol_tres/
+<span class="go">lost+found</span>
+</pre></div>
+<p>Snapshots:</p>
+<p>Un Snapshot se va llenando con los datos originales que han sido cambiados
+en el volumen original, de manera que posteriormente si se quiere se podra
+revertir todos los cambios que se hicieron desde que se creo el Snapshots</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo lvcreate -l <span class="m">128</span> -s -n mysnap /dev/vg/mylvm
+<span class="gp">me@lub ~ $</span> mkdir /mysnap
+<span class="gp">me@lub ~ $</span> sudo mount -o ro /dev/vg/mysnap /mysnap
+<span class="gp">me@lub ~ $</span> sudo umount /mysnap
+<span class="gp">me@lub ~ $</span> sudo umount /mnt/vgmount/
+<span class="gp">me@lub ~ $</span> lvconvert --merge /dev/vg/mysnap
+</pre></div>
+<p>El snapshot se autoborra tras el merge.
+Si lo queremos borrar sin hacer el merge podemos hacer <code>sudo lvremove /dev/vg/mysnap</code></p>
+<p><a href="http://www.tecmint.com/manage-and-create-lvm-parition-using-vgcreate-lvcreate-and-lvextend/" target="_blank">tecmint.com - LVM parition</a><br/>
+<a href="http://blog.timmattison.com/archives/2009/11/01/how-to-fix-lvm2s-no-extents-available-for-allocation-errors-when-using-pvmove/" target="_blank">blog.timmattison.com - lvm2s</a><br/>
+<a href="http://www.tecmint.com/create-lvm-storage-in-linux/" target="_blank">tecmint.com - LVM storage</a><br/>
+<a href="http://www.vilecha.com/hellguest/lvm2_migrar.asp" target="_blank">vilecha.com - lvm2s</a></p>
+<h4>Create and configure encrypted partitions</h4>
+<ul>
+<li><code>dd if=/dev/urandom of=/dev/sdb bs=4096</code> sobreescribe el disco /dev/sdb</li>
+<li><code>grep -i config_dm_crypt /boot/config-$(uname -r)</code> comprueba el kernel tiene capacidad de encriptad</li>
+<li><code>lsmod | grep dm_crypt</code> comprueba si el modulo de encriptación esta cargado</li>
+<li><code>sudo modprobe dm_crypt</code> carga el modulo de encriptación</li>
+<li>Añadir la linea <code>dm_crypt</code> en <code>/etc/modules</code> para que se cargue el modulo al reiniciar</li>
+<li><code>sudo apt-get install cryptsetup</code> instala las herramientas necesarias</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo cryptsetup -y luksFormat /dev/sdg1
+
+<span class="go">WARNING!</span>
+<span class="go">========</span>
+<span class="go">Sobrescribirá los datos en /dev/sdg1 de forma irrevocable.</span>
+
+<span class="go">Are you sure? (Type uppercase yes): YES</span>
+<span class="go">Introduzca frase contraseña: </span>
+<span class="go">Verify passphrase: </span>
+<span class="gp">me@lub ~ $</span> sudo cryptsetup luksOpen /dev/sdg1 sdg1crypt
+<span class="go">Introduzca una contraseña para /dev/sdg1: </span>
+<span class="gp">me@lub ~ $</span> sudo mkfs.ext4 /dev/mapper/sdg1crypt 
+<span class="go">mke2fs 1.42.9 (4-Feb-2014)</span>
+<span class="go">Etiqueta del sistema de ficheros=</span>
+<span class="go">OS type: Linux</span>
+<span class="go">Tamaño del bloque=1024 (bitácora=0)</span>
+<span class="go">Tamaño del fragmento=1024 (bitácora=0)</span>
+<span class="go">Stride=0 blocks, Stripe width=0 blocks</span>
+<span class="go">1792 inodes, 7168 blocks</span>
+<span class="go">358 blocks (4.99%) reserved for the super user</span>
+<span class="go">Primer bloque de datos=1</span>
+<span class="go">Número máximo de bloques del sistema de ficheros=7340032</span>
+<span class="go">1 bloque de grupo</span>
+<span class="go">8192 bloques por grupo, 8192 fragmentos por grupo</span>
+<span class="go">1792 nodos-i por grupo</span>
+
+<span class="go">Allocating group tables: hecho                           </span>
+<span class="go">Escribiendo las tablas de nodos-i: hecho                           </span>
+<span class="go">Creating journal (1024 blocks): hecho</span>
+<span class="go">Escribiendo superbloques y la información contable del sistema de ficheros: hecho</span>
+
+<span class="gp">me@lub ~ $</span> sudo mkdir /mnt/sdg1cryp
+<span class="gp">me@lub ~ $</span> sudo mount /dev/mapper/sdg1crypt /mnt/sdg1cryp/
+<span class="gp">me@lub ~ $</span> ls /mnt/sdg1cryp/
+<span class="go">lost+found</span>
+<span class="gp">me@lub ~ $</span> sudo umount /mnt/sdg1cryp
+<span class="gp">me@lub ~ $</span> sudo cryptsetup luksClose sdg1crypt
+<span class="gp">me@lub ~ $</span> sudo mount /dev/sdg1 /mnt/sdg1cryp/
+<span class="go">mount: tipo de sistema de ficheros 'crypto_LUKS' desconocido</span>
+</pre></div>
+<p>Añadir fichero de clave para que automonte en el reinicio:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo dd <span class="k">if</span><span class="o">=</span>/dev/urandom <span class="nv">of</span><span class="o">=</span>/root/keyfile <span class="nv">bs</span><span class="o">=</span><span class="m">1024</span> <span class="nv">count</span><span class="o">=</span><span class="m">4</span>
+<span class="go">4+0 registros leídos</span>
+<span class="go">4+0 registros escritos</span>
+<span class="go">4096 bytes (4,1 kB) copiados, 0,0406153 s, 101 kB/s</span>
+<span class="gp">me@lub ~ $</span> sudo chmod <span class="m">0400</span> /root/keyfile
+<span class="gp">me@lub ~ $</span> sudo cryptsetup luksAddKey /dev/sdi1 /root/keyfile 
+<span class="go">Introduzca cualquier contraseña: </span>
+<span class="gp">me@lub ~ $</span> sudo nano /etc/crypttab 
+<span class="gp">#</span><span class="c1"># &lt;target name&gt;    &lt;source device&gt;     &lt;key file&gt;  &lt;options&gt;</span>
+<span class="go">secret      /dev/sdi1       /root/keyfile       luks</span>
+<span class="gp">me@lub ~ $</span> sudo nano /etc/fstab 
+<span class="go">/dev/mapper/secret  /mnt/mycrypt    ext4    defaults 0 0</span>
+<span class="gp">me@lub ~ $</span> sudo cryptdisks_start secret
+<span class="go"> * Starting crypto disk...</span>
+<span class="go"> * secret (starting)..</span>
+<span class="go"> * secret (started)...                                             [ OK ]</span>
+<span class="gp">me@lub ~ $</span> sudo mount -a
+<span class="gp">me@lub ~ $</span> ls /mnt/mycrypt/
+<span class="go">ejemplo.txt  lost+found</span>
+</pre></div>
+<p>Sin fichero de clave (pondriamos <code>none</code> en su lugar en <code>/etc/crypttab</code>)
+se nos preguntaria la clave en el inicio.</p>
+<p>Encryptado de swap:</p>
+<p>Hacerlo con <code>sudo ecryptfs-setup-swap</code> o manualmente:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo swapon -s
+<span class="go">Filename                Type        Size    Used    Priority</span>
+<span class="go">/dev/sda5                               partition   783356  0   -1</span>
+<span class="gp">me@lub ~ $</span> sudo swapoff -a
+<span class="gp">me@lub ~ $</span> sudo swapon -s
+<span class="go">Filename                Type        Size    Used    Priority</span>
+<span class="gp">me@lub ~ $</span> sudo nano /etc/crypttab 
+<span class="go">cswap           /dev/sda5               /dev/urandom    swap,cipher=aes-cbc-essiv:sha256</span>
+<span class="gp">me@lub ~ $</span> sudo nano /etc/fstab
+<span class="gp">#</span><span class="c1">#/dev/sda5              none            swap    sw              0       0</span>
+<span class="go">/dev/mapper/cswap       none            swap    sw              0       0</span>
+<span class="gp">me@lub ~ $</span> sudo cryptdisks_start cswap 
+<span class="go"> * Starting crypto disk...                                                                                                                                               * cswap (starting)..</span>
+<span class="go"> * cswap (started)...                                                                                                                                            [ OK ] </span>
+<span class="gp">me@lub ~ $</span> sudo swapon -a
+<span class="gp">me@lub ~ $</span> sudo swapon -s
+<span class="go">Filename                Type        Size    Used    Priority</span>
+<span class="go">/dev/mapper/cswap                       partition   783356  0   -1</span>
+<span class="gp">me@lub ~ $</span> sudo reboot
+<span class="go">...</span>
+<span class="gp">me@lub ~ $</span> sudo swapon -s
+<span class="go">Filename                Type        Size    Used    Priority</span>
+<span class="go">/dev/mapper/cswap                       partition   783356  0   -1</span>
+<span class="gp">me@lub ~ $</span> sudo cryptsetup status cswap
+<span class="go">/dev/mapper/cswap is active and is in use.</span>
+<span class="go">  type:    PLAIN</span>
+<span class="go">  cipher:  aes-cbc-essiv:sha256</span>
+<span class="go">  keysize: 256 bits</span>
+<span class="go">  device:  /dev/sda5</span>
+<span class="go">  offset:  0 sectors</span>
+<span class="go">  size:    1566720 sectors</span>
+<span class="go">  mode:    read/write</span>
+</pre></div>
+<p><a href="http://www.tecmint.com/disk-encryption-in-linux/" target="_blank">tecmint.com - disk encryption</a><br/>
+<a href="https://www.howtoforge.com/automatically-unlock-luks-encrypted-drives-with-a-keyfile" target="_blank">howtoforge.com - unlock luks</a><br/>
+<a href="https://www.debian.org/doc/manuals/debian-reference/ch09" target="_blank">debian.org - trucos del sistema</a></p>
+<h4>Configure systems to mount file systems at or during boot</h4>
+<p><code>/etc/fstab</code></p>
+<h4>Configure and manage swap space</h4>
+<ul>
+<li><code>swapon -s</code> = <code>cat /proc/swaps</code>, es decir, swaps montados</li>
+<li><code>swapon -a</code>, <code>swapoff -a</code>, montar y desmotar todos</li>
+<li><code>mkswap</code> dar formato swap</li>
+</ul>
+<h4>Assemble partitions as RAID devices</h4>
+<p>Muy importante usar el tipo <code>fd</code> (ver abajo), si no el raid no se montara
+al iniciar el equipo aunque este configurado <code>/etc/fstab</code></p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo fdisk /dev/sdb
+<span class="go">Orden (m para obtener ayuda): n</span>
+<span class="go">Tipo de partición:</span>
+<span class="go">   p primaria (0 primaria, 0 extendida, 4 libre)</span>
+<span class="go">   e extendido</span>
+<span class="go">Seleccione (predeterminado p): </span>
+<span class="go">Uso predeterminado de la respuesta p</span>
+<span class="go">Número de partición (1-4, valor predeterminado 1): </span>
+<span class="go">Se está utilizando el valor predeterminado 1</span>
+<span class="go">Primer sector (2048-20479, valor predeterminado 2048): </span>
+<span class="go">Se está utilizando el valor predeterminado 2048</span>
+<span class="go">Último sector, +sectores o +tamaño{K,M,G} (2048-20479, valor predeterminado 20479): </span>
+<span class="go">Se está utilizando el valor predeterminado 20479</span>
+
+<span class="go">Orden (m para obtener ayuda): t</span>
+<span class="go">Se ha seleccionado la partición 1</span>
+<span class="go">Código hexadecimal (escriba L para ver los códigos): fd</span>
+<span class="go">Se ha cambiado el tipo de sistema de la partición 1 por fd (Linux raid autodetect)</span>
+
+<span class="go">Orden (m para obtener ayuda): p</span>
+
+<span class="go">Disco /dev/sdd: 10 MB, 10485760 bytes</span>
+<span class="go">71 cabezas, 5 sectores/pista, 57 cilindros, 20480 sectores en total</span>
+<span class="go">Unidades = sectores de 1 * 512 = 512 bytes</span>
+<span class="go">Tamaño de sector (lógico / físico): 512 bytes / 512 bytes</span>
+<span class="go">Tamaño E/S (mínimo/óptimo): 512 bytes / 512 bytes</span>
+<span class="go">Identificador del disco: 0x391538bc</span>
+
+<span class="go">Dispositivo Inicio    Comienzo      Fin      Bloques  Id  Sistema</span>
+<span class="go">/dev/sdd1            2048       20479        9216   fd  Linux raid autodetect</span>
+
+<span class="go">Orden (m para obtener ayuda): w</span>
+<span class="go">¡Se ha modificado la tabla de particiones!</span>
+
+<span class="go">Llamando a ioctl() para volver a leer la tabla de particiones.</span>
+<span class="go">Se están sincronizando los discos.</span>
+
+<span class="gp">me@lub ~ $</span> sudo fdisk /dev/sdc
+<span class="go">...</span>
+<span class="gp">me@lub ~ $</span> sudo mdadm --create /dev/md0 --level<span class="o">=</span><span class="m">1</span> --raid-disks<span class="o">=</span><span class="m">2</span> /dev/sdb1 /dev/sdc1
+<span class="gp">me@lub ~ $</span> sudo mkfs.ext4 /dev/md0
+<span class="gp">me@lub ~ $</span> sudo mdadm --detail --scan
+<span class="go">ARRAY /dev/md0 metadata=1.2 name=lub:0 UUID=d57fb9f6:0eb21ac7:d23f8d55:f4e810e3</span>
+<span class="gp">me@lub ~ $</span> sudo bash -c <span class="s2">"mdadm --detail --scan &gt;&gt; /etc/mdadm/mdadm.conf"</span>
+<span class="gp">me@lub ~ $</span> sudo mkdir /myraid
+<span class="gp">me@lub ~ $</span> sudo bash -c <span class="s2">"echo '/dev/md0 /myraid ext4 defaults 0 2' &gt;&gt; /etc/fstab"</span>
+</pre></div>
+<p>Por otro lado hay que confirmar en <code>/etc/default/mdadm</code> que mdadm esta configurado para
+autoarrancar en el inicio.</p>
+<p>Si un disco tiene problemas (por ejemplo <code>sdc1</code>):</p>
+<ol>
+<li>Añadimos un disco de reserva <code>sudo mdadm /dev/md0 --add /dev/sdd1</code></li>
+<li>Marcamos el disco defectuoso <code>sudo mdadm /dev/md0 --fail /dev/sdc1</code></li>
+<li>Eliminamos el disco defectuoso <code>sudo mdadm /dev/md0 --remove /dev/sdc1</code></li>
+</ol>
+<p>Esto hará que el disco de reserva (<code>sdd1</code>) pase a ocupar el puesto del defectuoso (<code>sdc1</code>).</p>
+<p><a href="http://www.tecmint.com/creating-and-managing-raid-backups-in-linux/" target="_blank">tecmint.com - Raid</a></p>
+<h4>Configure systems to mount standard, encrypted, and network file systems on demand</h4>
+<p><code>autofs</code> lee <code>/etc/auto.master</code> y compañia para montar dispositivos cuando estos se
+demandan y desmontarlos cuando llevan x tiempo de inactividad.</p>
+<p>Las lineas que añadamos a <code>/etc/auto.master</code> tendran el siguiente aspecto:</p>
+<div class="highlight"><pre><span></span>/mmnt   /etc/auto.mnt   --timeout=60
+</pre></div>
+<p>Donde <code>/mnt</code> es el directorio donde se colocaran los puntos de montaje inidcados
+en <code>/etc/auto.mnt</code>, y <code>--timeout=60</code> indica que estos se desmontaran tras un minuto 
+sin ser usados.</p>
+<p>Mientras que en `/etc/auto.mnt``tendremos:</p>
+<div class="highlight"><pre><span></span>nfs -fstype=nfs4 10.13.13.102:/home/me/nfsshare
+</pre></div>
+<p>Donde indicamos que se monte en <code>nfs</code> (es decir <code>/mnt/nfs</code>) un sistema de ficheros de tipo <code>nfs4</code> que esta en <code>10.13.13.102:/home/me/nfsshare</code></p>
+<p>Tras esto:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo service autofs restart
+<span class="go">autofs stop/waiting</span>
+<span class="go">autofs start/running, process 5214</span>
+<span class="gp">me@lub ~ $</span> sudo mount <span class="p">|</span> grep nfs
+<span class="gp">me@lub ~ $</span> ls /mnt/nfs
+<span class="go">file1  file2  file3</span>
+<span class="gp">me@lub ~ $</span> sudo mount <span class="p">|</span> grep nfs
+<span class="go">10.13.13.102:/home/me/nfsshare on /mnt/nfs type nfs4 (rw,addr=10.13.13.102,clientaddr=10.13.13.101)</span>
+<span class="gp">me@lub ~ $</span> sleep <span class="m">60</span>
+<span class="gp">me@lub ~ $</span> sudo mount <span class="p">|</span> grep nfs
+<span class="gp">me@lub ~ $</span> 
+</pre></div>
+<p>Otros ejemplos:</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> cat /etc/auto.mnt 
+<span class="go">nfs -fstype=nfs4 10.13.13.102:/home/me/nfsshare</span>
+<span class="go">smb -fstype=cifs,credentials=/home/me/.smbcredentials ://10.13.13.102/share</span>
+<span class="go">ext -fstype=ext4 :/dev/sdk1</span>
+<span class="gp">me@lub ~ $</span> tail -n <span class="m">1</span> /etc/auto.master 
+<span class="go">/media/luks /etc/auto.luks  --timeout=60</span>
+</pre></div>
+<p>Siendo <code>/etc/auto.luks</code> une script <code>sh</code> ejecutable que monta dispositiovos
+encriptados.</p>
+<p><a href="http://www.tecmint.com/configure-nfs-server/" target="_blank">tecmint.com - NFS</a> -&gt; Mounting exported network shares using autofs<br/>
+<a href="https://help.ubuntu.com/community/Autofs" target="_blank">help.ubuntu.com - autofs</a><br/>
+<a href="https://debian-administration.org/article/127/Automounting_card_readers_and_USB_keys_using_autofs" target="_blank">debian-administration.org - autofs</a></p>
+<h4>Create and manage filesystem Access Control Lists (ACLs)</h4>
+<p>Con <code>tune2fs -l /dev/sda1 | grep "Default mount options:"</code> vemos si <code>/dev/sda1</code>
+tiene habilitado las <code>acl</code>. Si no tiene acl puede ser que en <code>/etc/fstab</code>
+use la opción noacl.</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> sudo groupadd developers
+<span class="gp">me@lub ~ $</span> sudo useradd walterwhite
+<span class="gp">me@lub ~ $</span> sudo useradd saulgoodman
+<span class="gp">me@lub ~ $</span> sudo usermod -a -G developers walterwhite
+<span class="gp">me@lub ~ $</span> sudo usermod -a -G developers saulgoodman
+<span class="gp">me@lub ~ $</span> sudo mkdir /mnt/test
+<span class="gp">me@lub ~ $</span> sudo touch /mnt/test/acl.txt
+<span class="gp">me@lub ~ $</span> sudo chgrp -R developers /mnt/test
+<span class="gp">me@lub ~ $</span> sudo chmod -R <span class="m">770</span> /mnt/test
+<span class="gp">me@lub ~ $</span> sudo su - walterwhite 
+<span class="gp">walterwhite@lub:~$</span> <span class="nb">echo</span> <span class="s2">"Wallter"</span> &gt; /mnt/test/acl.txt
+<span class="gp">walterwhite@lub:~$</span> <span class="nb">exit</span>
+<span class="go">logout</span>
+<span class="gp">me@lub ~ $</span> sudo su - saulgoodman 
+<span class="gp">saulgoodman@lub:~$</span> <span class="nb">echo</span> <span class="s2">"Saul"</span> &gt;&gt; /mnt/test/acl.txt 
+<span class="gp">saulgoodman@lub:~$</span> <span class="nb">exit</span>
+<span class="go">logout</span>
+<span class="gp">me@lub ~ $</span> sudo cat /mnt/test/acl.txt
+<span class="go">Walter</span>
+<span class="go">Saul</span>
+<span class="gp">me@lub ~ $</span> sudo getfacl /mnt/test/acl.txt
+<span class="go">getfacl: Eliminando «/» inicial en nombres de ruta absolutos</span>
+<span class="gp">#</span><span class="c1"># file: mnt/test/acl.txt</span>
+<span class="gp">#</span><span class="c1"># owner: root</span>
+<span class="gp">#</span><span class="c1"># group: developers</span>
+<span class="go">user::rwx</span>
+<span class="go">group::rwx</span>
+<span class="go">other::---</span>
+
+<span class="gp">me@lub ~ $</span> sudo setfacl -m u:me:rw /mnt/test/acl.txt
+<span class="go">e@lub ~ $ sudo getfacl /mnt/test/acl.txt</span>
+<span class="go">getfacl: Eliminando «/» inicial en nombres de ruta absolutos</span>
+<span class="gp">#</span><span class="c1"># file: mnt/test/acl.txt</span>
+<span class="gp">#</span><span class="c1"># owner: root</span>
+<span class="gp">#</span><span class="c1"># group: developers</span>
+<span class="go">user::rwx</span>
+<span class="go">user:me:rw-</span>
+<span class="go">group::rwx</span>
+<span class="go">mask::rwx</span>
+<span class="go">other::---</span>
+<span class="gp">me@lub ~ $</span> sudo chmod +x /mnt/test
+<span class="gp">me@lub ~ $</span> <span class="nb">echo</span> <span class="s2">"me"</span> &gt;&gt; /mnt/test/acl.txt
+<span class="gp">me@lub ~ $</span> cat /mnt/test/acl.txt
+<span class="go">Walter</span>
+<span class="go">Saul</span>
+<span class="go">me</span>
+<span class="gp">me@lub ~ $</span> setfacl -m d:o:r /mnt/test
+<span class="gp">me@lub ~ $</span> getfacl /mnt/test/
+<span class="go">getfacl: Eliminando «/» inicial en nombres de ruta absolutos</span>
+<span class="gp">#</span><span class="c1"># file: mnt/test/</span>
+<span class="gp">#</span><span class="c1"># owner: root</span>
+<span class="gp">#</span><span class="c1"># group: developers</span>
+<span class="go">user::rwx</span>
+<span class="go">group::rwx</span>
+<span class="go">other::--x</span>
+<span class="go">default:user::rwx</span>
+<span class="go">default:group::rwx</span>
+<span class="go">default:other::r--</span>
+</pre></div>
+<p>Adicionalmente, con <code>setfacl -x d:o /mnt/test</code> se borra una regla en concreto
+y con <code>setfacl -b /mnt/test</code> todas</p>
+<p><a href="http://www.tecmint.com/set-access-control-lists-acls-and-disk-quotas-for-users-groups/" target="_blank">tecmint.com - ACL</a></p>
+<h4>Diagnose and correct file permission problems</h4>
+<p><em>No se muy bien a que se refiere</em></p>
+<h4>Setup user and group disk quotas for filesystems</h4>
+<p>Para habilitar las cuotas hemos de añadir en <code>/etc/fstab</code> la opciones
+<code>grpquota</code> para cuotas de grupo y la opción <code>usrquota</code> para cuotas de usuario.</p>
+<div class="highlight"><pre><span></span><span class="gp">me@lub ~ $</span> tail -n <span class="m">2</span> /etc/fstab
+<span class="go">/dev/vg00/vol_uno   /home/me/vol_uno    ext4    defaults,grpquota 0 0</span>
+<span class="go">/dev/vg00/vol_dos   /home/me/vol_dos    ext4    defaults,usrquota 0 0</span>
+<span class="gp">me@lub ~ $</span> sudo mount -a
+<span class="gp">me@lub ~ $</span> mount <span class="p">|</span> grep vg00
+<span class="go">/dev/mapper/vg00-vol_uno on /home/me/vol_uno type ext4 (rw,grpquota)</span>
+<span class="go">/dev/mapper/vg00-vol_dos on /home/me/vol_dos type ext4 (rw,usrquota)</span>
+<span class="gp">me@lub ~ $</span> sudo quotacheck -avugc
+<span class="go">quotacheck: Su núcleo probablemente soporta cuotas transaccionales pero no las está utilizando. Considere la opción de usar cuotas transaccionales para evitar tener que ejecutar quotacheck después de un apagado incorrecto.</span>
+<span class="go">quotacheck: Explorando /dev/mapper/vg00-vol_uno [/home/me/vol_uno] echo</span>
+<span class="go">quotacheck: Old user file name could not been determined. Usage will not be subtracted.</span>
+<span class="go">quotacheck: Cannot stat old group quota file /home/me/vol_uno/aquota.group: No existe el archivo o el directorio. Usage will not be subtracted.</span>
+<span class="go">quotacheck: Comprobados 2 directorios y 0 archivos.</span>
+<span class="go">quotacheck: Archivo antiguo no encontrado.</span>
+<span class="go">quotacheck: Explorando /dev/mapper/vg00-vol_dos [/home/me/vol_dos] echo</span>
+<span class="go">quotacheck: Cannot stat old user quota file /home/me/vol_dos/aquota.user: No existe el archivo o el directorio. Usage will not be subtracted.</span>
+<span class="go">quotacheck: Old group file name could not been determined. Usage will not be subtracted.</span>
+<span class="go">quotacheck: Comprobados 2 directorios y 0 archivos.</span>
+<span class="go">quotacheck: Archivo antiguo no encontrado.</span>
+<span class="gp">me@lub ~ $</span> sudo quotaon -vu vol_dos/
+<span class="go">/dev/mapper/vg00-vol_dos [/home/me/vol_dos]: user quotas activadas</span>
+<span class="gp">me@lub ~ $</span> sudo quotaon -vg vol_uno/
+<span class="go">/dev/mapper/vg00-vol_uno [/home/me/vol_uno]: group quotas activadas</span>
+<span class="gp">me@lub ~ $</span> sudo edquota -u me
+<span class="go">Cuotas de disco para user me (uid 1000):</span>
+<span class="go">  Sist. arch.                  bloques     blando       duro     inodos   blando     duro</span>
+<span class="go">  /dev/mapper/vg00-vol_dos         13         900       1000          2       20       25</span>
+<span class="gp">me@lub ~ $</span> <span class="nb">cd</span> vol_dos/
+<span class="gp">me@lub ~/vol_dos $</span> dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>f2M <span class="nv">bs</span><span class="o">=</span>2M <span class="nv">count</span><span class="o">=</span><span class="m">1</span>
+<span class="go">dd: error al escribir en «f2M»: Se ha excedido la cuota de disco</span>
+<span class="go">1+0 registros leídos</span>
+<span class="go">0+0 registros escritos</span>
+<span class="go">1007616 bytes (1,0 MB) copiados, 0,0914139 s, 11,0 MB/s</span>
+<span class="gp">me@lub ~/vol_dos $</span> df -h .
+<span class="go">S.ficheros               Tamaño Usados  Disp Uso% Montado en</span>
+<span class="go">/dev/mapper/vg00-vol_dos   6,9M  1019K  5,5M  16% /home/me/vol_dos</span>
+<span class="gp">me@lub ~/vol_dos $</span> <span class="nb">cd</span> ../vol_uno/
+<span class="gp">me@lub ~/vol_uno $</span> setfacl -m g:developers:rwx .
+<span class="gp">me@lub ~/vol_uno $</span> sudo edquota -g developers
+<span class="go">Cuotas de disco para group developers (gid 1001):</span>
+<span class="go">  Sist. arch.                  bloques     blando       duro     inodos   blando     duro</span>
+<span class="go">  /dev/mapper/vg00-vol_uno          0         900       1000          0       20       25</span>
+<span class="gp">me@lub ~/vol_uno $</span> sudo edquota -t
+<span class="go">Período de gracia antes de imponer límites blandos para users:</span>
+<span class="go">La unidad de tiempo puede ser: días, horas, minutos, o segundos</span>
+<span class="go">  Sist. arch.          Periodo gracia bloque   Periodo gracia inodo</span>
+<span class="go">  /dev/mapper/vg00-vol_dos                 7días                 7días</span>
+<span class="gp">me@lub ~/vol_uno $</span> sudo su walterwhite 
+<span class="gp">walterwhite@lub:/home/me/vol_uno$</span> dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>f2M <span class="nv">bs</span><span class="o">=</span>2M <span class="nv">count</span><span class="o">=</span><span class="m">1</span>
+<span class="go">dd: error al escribir en «f2M»: Se ha excedido la cuota de disco</span>
+<span class="go">1+0 registros leídos</span>
+<span class="go">0+0 registros escritos</span>
+<span class="go">1007616 bytes (1,0 MB) copiados, 0,0779684 s, 12,9 MB/s</span>
+</pre></div>
+<p>Un limite de 1000 bloques equivale a 1024 bytes/block * 1000 bloques = 1024000 bytes = 1 MB</p>
+<p><a href="http://www.tecmint.com/set-access-control-lists-acls-and-disk-quotas-for-users-groups/" target="_blank">tecmint.com - ACL</a> -&gt; Set Linux Disk Quotas on Users and Filesystems</p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2016-07-28_apuntes_lfcs.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/apuntes_lfcs" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

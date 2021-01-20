@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Recordar comandos</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/recordar-comandos" rel="bookmark" title="Permalink to Recordar comandos">Recordar comandos</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2014-07-10T16:09:00+02:00" title="Publicado el 2014-07-10">2014-07-10</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<a class="bubble tag tg_perl" href="/tag/perl.html" title="Hay 3 entradas  más sobre perl">
+perl</a> </p>
+<p>
+<span class="bubble">148 lineas</span> <span class="bubble wc">562 palabras</span> <span class="bubble wc">3.990 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Problema 1</strong>: Tenemos que volver a usar algún comando o fichero pero
+no conseguimos recordarlo</p>
+<p><strong>Solución 1</strong>: Pulsar en <span title=" &amp;#8593; ">↑</span> para
+mirar en el histórico de comandos usados</p>
+<p><strong>Problema 2</strong>: Es un rollo y hay mucha morralla</p>
+<p><strong>Solución 2</strong>: Hacer un script que analice el histórico y nos saque la
+información más relevante</p>
+<p><strong>1-</strong> Configurar histórico (<code>~/.bashrc</code>)</p>
+<div class="highlight"><pre><span></span>...
+#No guardar en el histórico duplicados consecutivos
+HISTCONTROL=ignoredups
+#No guardar en el histórico comandos sencillos de uso habitual
+HISTIGNORE="pwd:ls:ls -lah:date:cd"
+...
+</pre></div>
+<p><strong>2-</strong> Crear script (<code>/usr/local/bin/uso</code>)</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/perl -w</span>
+<span class="k">use</span> <span class="nn">Cwd</span> <span class="s">'abs_path'</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="p">(</span><span class="nv">$hst</span><span class="p">,</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">$icm</span><span class="p">,</span><span class="nv">$filter</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="nb">undef</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="k">while</span><span class="p">(</span><span class="nv">@ARGV</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$_</span><span class="o">=</span><span class="nb">shift</span><span class="p">(</span><span class="nv">@ARGV</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$_</span> <span class="o">=~</span><span class="sr"> /\d+/</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$tp</span><span class="o">=</span><span class="nv">$_</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">elsif</span> <span class="p">(</span><span class="nv">$_</span> <span class="ow">eq</span> <span class="s">"-c"</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$icm</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">elsif</span> <span class="p">(</span><span class="o">-</span><span class="n">f</span> <span class="nv">$_</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$hst</span><span class="o">=</span><span class="nv">$_</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nv">$filter</span><span class="o">=</span><span class="nv">$_</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$tp</span><span class="o">==-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span><span class="nv">$tp</span><span class="o">=</span><span class="p">(</span><span class="nv">$filter</span><span class="p">?</span><span class="mi">5</span><span class="p">:</span><span class="mi">10</span><span class="p">);}</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$hst</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$hst</span><span class="o">=</span><span class="s">"$ENV{HOME}/.bash_history"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">my</span> <span class="nv">$home</span><span class="o">=</span> <span class="n">abs_path</span><span class="p">(</span><span class="nv">$hst</span><span class="p">);</span>
+<span class="nv">$home</span> <span class="o">=~</span> <span class="sr">s/\/[^\/]+$/\//</span><span class="p">;</span>
+
+<span class="k">sub</span> <span class="nf">report_top</span> <span class="p">{</span>
+    <span class="k">my</span><span class="p">(</span> <span class="nv">$top_count</span><span class="p">,</span> <span class="nv">%hash</span> <span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+    <span class="k">my</span> <span class="nv">@top_commands</span>  <span class="o">=</span> <span class="nb">sort</span> <span class="p">{</span> <span class="nv">$hash</span><span class="p">{</span><span class="nv">$b</span><span class="p">}</span> <span class="sr">&lt;=&gt;</span> <span class="nv">$hash</span><span class="p">{</span><span class="nv">$a</span><span class="p">}</span> <span class="p">}</span> <span class="nb">keys</span> <span class="nv">%hash</span><span class="p">;</span>
+    <span class="k">my</span> <span class="nv">$max_width</span> <span class="o">=</span> <span class="nb">length</span> <span class="nv">$hash</span><span class="p">{</span><span class="nv">$top_commands</span><span class="p">[</span><span class="mi">0</span><span class="p">]};</span>
+    <span class="k">while</span><span class="p">(</span> <span class="k">my</span><span class="p">(</span> <span class="nv">$i</span><span class="p">,</span> <span class="nv">$value</span> <span class="p">)</span> <span class="o">=</span> <span class="nb">each</span> <span class="nv">@top_commands</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">last</span> <span class="k">if</span> <span class="nv">$i</span> <span class="o">&gt;=</span> <span class="nv">$top_count</span> <span class="o">&amp;&amp;</span> <span class="nv">$top_count</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">;</span>
+        <span class="c1">#printf '%*d %s' . "\n", $max_width, $hash{$top_commands[$i]}, $top_commands[$i];</span>
+        <span class="k">print</span> <span class="nv">$top_commands</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="o">.</span> <span class="s">"\n"</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">sub</span> <span class="nf">gFile</span> <span class="p">{</span>
+    <span class="k">my</span> <span class="nv">$r</span><span class="o">=</span><span class="nb">shift</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">-</span><span class="n">f</span> <span class="nv">$r</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">abs_path</span><span class="p">(</span><span class="nv">$r</span><span class="p">);</span>
+    <span class="p">}</span> 
+    <span class="k">my</span> <span class="nv">$p</span><span class="o">=</span><span class="nb">index</span><span class="p">(</span><span class="nv">$r</span><span class="p">,</span><span class="s">"/"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$p</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$r</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">-</span><span class="n">f</span> <span class="p">(</span><span class="nv">$home</span> <span class="o">.</span> <span class="nv">$r</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">abs_path</span><span class="p">((</span><span class="nv">$home</span> <span class="o">.</span> <span class="nv">$r</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$p</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$r</span><span class="o">=</span><span class="sb">`sudo test -e $r &amp;&amp; sudo readlink -f $r || echo 0`</span><span class="p">;</span>
+        <span class="nb">chomp</span><span class="p">(</span><span class="nv">$r</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nv">$r</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">undef</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">open</span> <span class="p">(</span><span class="n">HISTORY</span><span class="p">,</span> <span class="s">"&lt;"</span><span class="p">,</span> <span class="nv">$hst</span><span class="p">)</span>  <span class="ow">or</span> <span class="nb">die</span> <span class="s">"Cannot open $hst: $!"</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="nv">$b</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$cmd</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">@fls</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">%files</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">%cmds</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="nv">$cmd</span><span class="o">=</span><span class="sr">&lt;HISTORY&gt;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">chomp</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">);</span>
+    <span class="nv">$cmd</span> <span class="o">=~</span> <span class="sr">s/  +/ /g</span><span class="p">;</span>
+    <span class="nv">$cmd</span> <span class="o">=~</span> <span class="sr">s/(^ +| +$)//g</span><span class="p">;</span>
+    <span class="nv">$cmd</span> <span class="o">=~</span> <span class="sr">s/^sudo +//</span><span class="p">;</span>
+    <span class="k">next</span> <span class="k">if</span> <span class="nb">length</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">5</span> <span class="o">||</span> <span class="nb">index</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">,</span><span class="s">" "</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">1</span> <span class="o">||</span> <span class="nv">$cmd</span> <span class="o">=~</span><span class="sr"> /(whereis|kill|cd|ls|su|uso) /</span> <span class="o">||</span> <span class="p">(</span><span class="nv">$filter</span> <span class="o">&amp;&amp;</span> <span class="nb">index</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">,</span><span class="nv">$filter</span><span class="p">)</span><span class="o">==-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="nv">$b</span><span class="o">=</span><span class="p">(</span><span class="nv">$cmd</span> <span class="o">=~</span><span class="sr"> /^(nano|tail|head|cat) /</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$icm</span> <span class="o">&amp;&amp;</span> <span class="nv">$b</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">@fls</span><span class="o">=</span><span class="nb">split</span><span class="p">(</span><span class="sr">/ /</span><span class="p">,</span><span class="nv">$cmd</span><span class="p">);</span>
+        <span class="nb">shift</span><span class="p">(</span><span class="nv">@fls</span><span class="p">);</span>
+        <span class="k">foreach</span> <span class="k">my</span> <span class="nv">$fl</span> <span class="p">(</span><span class="nv">@fls</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="nv">$fl</span><span class="p">,</span><span class="s">"/"</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nv">$files</span><span class="p">{</span><span class="nv">$fl</span><span class="p">})</span> <span class="p">{</span><span class="nv">$files</span><span class="p">{</span><span class="nv">$fl</span><span class="p">}</span><span class="o">++</span><span class="p">}</span>
+            <span class="k">elsif</span> <span class="p">((</span><span class="nv">$fl</span><span class="o">=</span><span class="n">gFile</span><span class="p">(</span><span class="nv">$fl</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="nb">index</span><span class="p">(</span><span class="nv">$fl</span><span class="p">,</span><span class="nv">$home</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span><span class="nv">$files</span><span class="p">{</span><span class="nv">$fl</span><span class="p">}</span><span class="o">++</span><span class="p">;}</span>
+        <span class="p">}</span>
+        <span class="k">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$icm</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nv">$b</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$cmds</span><span class="p">{</span><span class="nv">$cmd</span><span class="p">}</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nb">close</span><span class="p">(</span><span class="n">HISTORY</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">keys</span><span class="p">(</span><span class="nv">%files</span><span class="p">))</span> <span class="p">{</span><span class="n">report_top</span><span class="p">(</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">%files</span><span class="p">);}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">keys</span><span class="p">(</span><span class="nv">%cmds</span><span class="p">))</span> <span class="p">{</span><span class="n">report_top</span><span class="p">(</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">%cmds</span><span class="p">);}</span>
+</pre></div>
+<p><strong>3-</strong> Parámetros</p>
+<ul>
+<li>por defecto muestra los ficheros más usados</li>
+<li>con -c muestra los comando más usados</li>
+<li>parsea el fichero que se le pase, y por defecto el .bash_history
+    del usuario que ejecuta el script</li>
+<li>si se le pasa una palabra sera usada para filtrar los resultados</li>
+<li>si se le pasa un número se usara como tope máximo de resultados a
+    mostrar (siendo 0 = todos)</li>
+<li>por defecto se mostraran 5 elementos si se esta filtrando y 10 en
+    caso contrario</li>
+</ul>
+<p><strong>4-</strong> Ejemplos de uso (nunca mejor dicho, jeje)</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> uso
+<span class="go">/var/log/prosody/prosody.log</span>
+<span class="go">/usr/local/bin/hf</span>
+<span class="go">/usr/local/bin/cmd</span>
+<span class="go">/var/log/prosody/prosody.err</span>
+<span class="go">/usr/lib/prosody/modules/mod_takenote.lua</span>
+<span class="go">/usr/local/bin/atajo</span>
+<span class="go">/usr/bin/prosody</span>
+<span class="go">/home/bot/HAL/riddim/plugins/hashtag.lua</span>
+<span class="go">/root/.centerim/config</span>
+<span class="go">/etc/hosts</span>
+<span class="gp">pi@bot ~ $</span> uso -c
+<span class="go">/etc/init.d/prosody restart</span>
+<span class="go">history | hf</span>
+<span class="go">atajo prosody</span>
+<span class="go">atajo note</span>
+<span class="go">cmd a</span>
+<span class="go">chmod +x /usr/local/bin/hf</span>
+<span class="go">/bin/bash -i -c history</span>
+<span class="go">/usr/local/bin/dwn</span>
+<span class="go">lua HAL/riddim/init.lua</span>
+<span class="go">hg clone http://code.matthewwild.co.uk/verse/ verse</span>
+<span class="gp">pi@bot ~ $</span> uso <span class="m">2</span>
+<span class="go">/var/log/prosody/prosody.log</span>
+<span class="go">/usr/local/bin/hf</span>
+<span class="gp">pi@bot ~ $</span> uso prosody
+<span class="go">/var/log/prosody/prosody.log</span>
+<span class="go">/var/log/prosody/prosody.err</span>
+<span class="go">/usr/lib/prosody/modules/mod_takenote.lua</span>
+<span class="go">/usr/bin/prosody</span>
+<span class="go">/var/log/prosody/prosody.not</span>
+<span class="gp">pi@bot ~ $</span> sudo uso /home/bot/.bash_history -c lua <span class="m">1</span>
+<span class="go">lua riddim/init.lua</span>
+</pre></div>
+<p><strong>4-</strong> Apéndice</p>
+<p><code>.bash_history</code> no se actualiza en tiempo real así que si necesitamos que
+nuestro script analice hasta el últimisimo comando ejecutado debemos
+forzar antes una actualización mediante el comando:</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> <span class="nb">history</span> -a
+</pre></div>
+<p>No integramos la llamada a "history -a" dentro de nuestro script porque
+necesita ser ejecutado directamente por el usuario para garantizar que
+se actualice su <code>.bash_history</code></p>
+<p>Fuente:
+<a href="http://www.learning-perl.com/2013/02/learning-perl-challenge-popular-history-answer/" target="_blank">www.learning-perl.com</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2014-07-10_recordar-comandos.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/recordar-comandos" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

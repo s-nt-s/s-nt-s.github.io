@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Montando este blog (pelican)</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/montando-este-blog-pelican" rel="bookmark" title="Permalink to Montando este blog (pelican)">Montando este blog (pelican)</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2018-09-19T00:00:00+02:00" title="Publicado el 2018-09-19">2018-09-19</time>
+<a class="bubble category ct_web" href="/category/web.html" title="Hay 4 entradas más sobre Web">
+Web</a>
+<a class="bubble tag tg_markdown" href="/tag/markdown.html" title="Hay 2 entradas  más sobre markdown">
+markdown</a> <a class="bubble tag tg_pelican" href="/tag/pelican.html" title="Hay 2 entradas  más sobre pelican">
+pelican</a> <a class="bubble tag tg_python" href="/tag/python.html" title="Hay 5 entradas  más sobre python">
+python</a> </p>
+<p>
+<span class="bubble">60 lineas</span> <span class="bubble wc">692 palabras</span> <span class="bubble wc">4.248 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>0-</strong> Creo repositorio en github</p>
+<div class="highlight"><pre><span></span><span class="go">u@d ~/wks/apuntes $ git clone https://github.com/YOUR_USERNAME/YOUR_USERNAME.github.io.git</span>
+<span class="go">...</span>
+<span class="go">u@d ~/wks/apuntes $ cd YOUR_USERNAME.github.io</span>
+<span class="go">u@d ~/wks/apuntes $ git checkout -b source</span>
+<span class="go">u@d ~/wks/apuntes $ echo "output/" &gt;&gt; .gitignore</span>
+</pre></div>
+<p>(*) La última linea es porque el directorio <code>output</code> no es necesario en la rama <code>source</code> si no en la <code>master</code>,
+así me evito que cuando trabajo con la <code>source</code> me moleste con los cambios en los <code>html</code>,
+cosa muy frecuente porque, por tema de urls relativas o absolutas, cambian cada vez que haces
+la versión para desarrollo o para producción.</p>
+<p><strong>1-</strong> Instalar <code>pelican</code> y crear blog</p>
+<div class="highlight"><pre><span></span><span class="go">u@d ~/wks/apuntes $ sudo pip3 install pelican markdown ghp-import</span>
+<span class="go">...</span>
+<span class="go">u@d ~/wks/apuntes $ pelican-quickstart</span>
+<span class="gp">&gt;</span> Where <span class="k">do</span> you want to create your new web site? <span class="o">[</span>.<span class="o">]</span>
+<span class="gp">&gt;</span> What will be the title of this web site? Apuntes
+<span class="gp">&gt;</span> Who will be the author of this web site? <span class="o">(</span>mejor aquí que en un txt perdido<span class="o">)</span>
+<span class="gp">&gt;</span> What will be the default language of this web site? <span class="o">[</span>es<span class="o">]</span>
+<span class="gp">&gt;</span> Do you want to specify a URL prefix? e.g., http://example.com   <span class="o">(</span>Y/n<span class="o">)</span> n
+<span class="gp">&gt;</span> Do you want to <span class="nb">enable</span> article pagination? <span class="o">(</span>Y/n<span class="o">)</span> y
+<span class="gp">&gt;</span> How many articles per page <span class="k">do</span> you want? <span class="o">[</span><span class="m">10</span><span class="o">]</span> <span class="m">10</span>
+<span class="gp">&gt;</span> What is your <span class="nb">time</span> zone? <span class="o">[</span>Europe/Madrid<span class="o">]</span>
+<span class="gp">&gt;</span> Do you want to generate a Fabfile/Makefile to automate generation and publishing? <span class="o">(</span>Y/n<span class="o">)</span> Y
+<span class="gp">&gt;</span> Do you want an auto-reload <span class="p">&amp;</span> simpleHTTP script to assist with theme and site development? <span class="o">(</span>Y/n<span class="o">)</span> n
+<span class="gp">&gt;</span> Do you want to upload your website using FTP? <span class="o">(</span>y/N<span class="o">)</span> n
+<span class="gp">&gt;</span> Do you want to upload your website using SSH? <span class="o">(</span>y/N<span class="o">)</span> n
+<span class="gp">&gt;</span> Do you want to upload your website using Dropbox? <span class="o">(</span>y/N<span class="o">)</span> n
+<span class="gp">&gt;</span> Do you want to upload your website using S3? <span class="o">(</span>y/N<span class="o">)</span> n
+<span class="gp">&gt;</span> Do you want to upload your website using Rackspace Cloud Files? <span class="o">(</span>y/N<span class="o">)</span> n
+<span class="gp">&gt;</span> Do you want to upload your website using GitHub Pages? <span class="o">(</span>y/N<span class="o">)</span> y
+<span class="gp">&gt;</span> Is this your personal page <span class="o">(</span>username.github.io<span class="o">)</span>? <span class="o">(</span>y/N<span class="o">)</span> y
+<span class="go">Done. Your new project is available at /home/username/YOUR_USERNAME.github.io</span>
+</pre></div>
+<p><strong>2-</strong> Creo la estructura</p>
+<div class="highlight"><pre><span></span><span class="go">u@d ~/wks/apuntes $ mkdir -p content/extra content/images content/pages content/posts myplugins j2 themes</span>
+</pre></div>
+<p><strong>3-</strong> Importar wordpress</p>
+<div class="highlight"><pre><span></span><span class="go">u@d ~/wks/apuntes $ pelican-import --markup markdown --wpfile -o content ~/Descargas/apuntes.wordpress.2018-09-18.xml</span>
+</pre></div>
+<p>Con <code>sed</code> y <code>grep</code> saco las referencias de las urls a imágenes, las descargo y edito los <code>.md</code> para que las usen. (*)</p>
+<p>(*) Esto se podría haber hecho directamente con <code>pelican-import</code>, ver su ayuda.</p>
+<p><strong>4-</strong> Creo y configuro plugins y tema</p>
+<ul>
+<li>Creo un <code>reader</code> (ver <a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/myplugins/reader.py" target="_blank">github - reader.py</a>) para que:<ul>
+<li>se auto generen los tags en base al contenido del <code>post</code></li>
+<li>... <em>próximamente más</em></li>
+</ul>
+</li>
+<li>Creo una extensión <code>markdown</code> (ver <a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/myplugins/replacements.py" target="_blank">github - replacements.py</a>) para remplazar palabras claves por variables antes de generar el html</li>
+<li>Creo una extensión <code>pelican</code> (ver <a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/myplugins/mod_html.py" target="_blank">github - mod_html.py</a>) para hacer modificaciones en los <code>html</code> finales, por ejemplo poner automaticamente <code>target="_blank"</code> a todos los enlaces que no sean locales (y no tengan ya definido un target). Seria mucho más eficiente hacerlo con un <code>plugin</code> que solo tratara los markdown tras su conversión en <code>html</code>, pero no quiero dejarme fuera el contenido de los templates (menú, pie, etc)</li>
+<li>Creo una extensión <code>pelican</code> (ver <a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/myplugins/set_count.py" target="_blank">github - set_count.py</a>) para añadir a los objetos <code>tag</code> y <code>category</code> el número de artículos que contienen</li>
+<li>Creo una extensión <code>pelican</code> (ver <a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/myplugins/mod_content.py" target="_blank">github - mod_content.py</a>) para modificar el resultado html de los contenidos. Por ahora sirve para:<ul>
+<li>Cambiar los atributos deprecados <code>align</code> por clases que hagan la misma función</li>
+<li>... <em>próximamente más</em></li>
+</ul>
+</li>
+<li>Creo un filtro <code>jinja2</code> (ver <a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/myplugins/jinja_filters.py" target="_blank">github - jinja_filters.py</a>) para mostrar las estadísticas de un texto (lineas, palabras, letras)</li>
+<li>Copio el tema <code>notmyidea</code> (ver <a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom" target="_blank">github - notmyidea-custom</a>) para modificarlo y simplificarlo. También le creo algunos <code>templates</code> nuevos como el de los mapas (la versión <code>xml</code> para robots y la versión <code>html</code> para humanos).</li>
+<li>Modifico <code>Makefile</code> para añadir validación html5 y alguna cosa más (ver <a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/Makefile" target="_blank">github - Makefile</a>)</li>
+<li>Creo el script <code>renombrar.py</code> que cambia los nombres de los <code>.md</code> para que se adecuen la formato deseado</li>
+<li>Modifico <code>pelicanconf.py</code> para reflejar todo lo anterior  (ver <a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/pelicanconf.py" target="_blank">github - pelicanconf.py</a>)</li>
+</ul>
+<p><strong>5-</strong> Actualizo y publico</p>
+<div class="highlight"><pre><span></span><span class="go">u@d ~/wks/apuntes $ git add -A &amp;&amp; git commit -a -m 'first commit' &amp;&amp; git push --all</span>
+<span class="go">u@d ~/wks/apuntes $ make github</span>
+</pre></div>
+<p>Fuentes:
+<a href="http://nafiulis.me/making-a-static-blog-with-pelican.html" target="_blank">nafiulis.me</a>, <a href="https://www.fullstackpython.com/blog/generating-static-websites-pelican-jinja2-markdown.html" target="_blank">fullstackpython.com</a>,
+<a href="https://rsip22.github.io/blog/create-a-blog-with-pelican-and-github-pages.html" target="_blank">rsip22.github.io</a>,
+<a href="https://python-markdown.github.io/extensions/api/" target="_blank">python-markdown.github.io</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2018-09-19_montando-este-blog-pelican.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/montando-este-blog-pelican" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

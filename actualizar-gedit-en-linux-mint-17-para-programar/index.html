@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Actualizar gedit en Linux Mint 17 para programar</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/actualizar-gedit-en-linux-mint-17-para-programar" rel="bookmark" title="Permalink to Actualizar gedit en Linux Mint 17 para programar">Actualizar gedit en Linux Mint 17 para programar</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2014-09-11T10:27:00+02:00" title="Publicado el 2014-09-11">2014-09-11</time>
+<a class="bubble category ct_escritorio" href="/category/escritorio.html" title="Hay 5 entradas más sobre Escritorio">
+Escritorio</a>
+<a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 18 entradas  más sobre linux">
+linux</a> <a class="bubble tag tg_mint" href="/tag/mint.html" title="Hay 2 entradas  más sobre mint">
+mint</a> </p>
+<p>
+<span class="bubble">82 lineas</span> <span class="bubble wc">372 palabras</span> <span class="bubble wc">2.797 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Problema</strong>: Queremos usar los plugins de gedit pero nuestro Linux Mint
+viene con una versión anterior de gedit que es incompatible con los
+plugins del repositorio</p>
+<div class="highlight"><pre><span></span><span class="gp">mint@bot ~ $</span> sudo apt-get install gedit-plugins
+<span class="go">Leyendo lista de paquetes... Hecho</span>
+<span class="go">Creando árbol de dependencias</span>
+<span class="go">Leyendo la información de estado... Hecho</span>
+<span class="go">No se pudieron instalar algunos paquetes. Esto puede significar que</span>
+<span class="go">usted pidió una situación imposible o, si está usando la distribución</span>
+<span class="go">inestable, que algunos paquetes necesarios no han sido creados o han</span>
+<span class="go">sido movidos fuera de Incoming.</span>
+<span class="go">La siguiente información puede ayudar a resolver la situación:</span>
+<span class="go">Los siguientes paquetes tienen dependencias incumplidas:</span>
+<span class="go">gedit-plugins : Depende: libgucharmap7 (&gt;= 1:2.24.0) pero no es instalable</span>
+<span class="go">E: No se pudieron corregir los problemas, usted ha retenido paquetes rotos.</span>
+</pre></div>
+<p><strong>Solución</strong>: Actualizar gedit</p>
+<p><strong>1</strong>- Eliminamos el antiguo gedit e instalamos el nuevo</p>
+<div class="highlight"><pre><span></span><span class="gp">mint@bot ~ $</span> sudo apt purge gedit gedit-common
+<span class="go">...</span>
+<span class="go">Los siguientes paquetes se ELIMINARÁN:</span>
+<span class="go">gedit* gedit-common*</span>
+<span class="go">...</span>
+<span class="gp">mint@bot ~ $</span> sudo apt install gedit/trusty gedit-common/trusty
+<span class="go">...</span>
+<span class="go">Versión seleccionada «3.10.4-0ubuntu4» (Ubuntu:14.04/trusty [amd64]) para «gedit»</span>
+<span class="go">Versión seleccionada «3.10.4-0ubuntu4» (Ubuntu:14.04/trusty [all]) para «gedit-common»</span>
+<span class="go">Paquetes sugeridos:</span>
+<span class="go">gedit-plugins</span>
+<span class="go">Se instalarán los siguientes paquetes NUEVOS:</span>
+<span class="go">gedit gedit-common</span>
+<span class="go">0 actualizados, 2 se instalarán, 0 para eliminar y 1 no actualizados.</span>
+<span class="go">...</span>
+</pre></div>
+<p><strong>2</strong>- Instalar plugins</p>
+<div class="highlight"><pre><span></span><span class="gp">mint@bot ~ $</span> sudo apt install gedit-plugins/trusty
+<span class="go">...</span>
+<span class="go">Versión seleccionada «3.10.1-1ubuntu2» (Ubuntu:14.04/trusty [amd64]) para «gedit-plugins»</span>
+<span class="go">Se instalarán los siguientes paquetes extras:</span>
+<span class="go">gir1.2-gucharmap-2.90 gir1.2-zeitgeist-2.0</span>
+<span class="go">Paquetes sugeridos:</span>
+<span class="go">zeitgeist-datahub</span>
+<span class="go">Se instalarán los siguientes paquetes NUEVOS:</span>
+<span class="go">gedit-plugins gir1.2-gucharmap-2.90 gir1.2-zeitgeist-2.0</span>
+<span class="go">0 actualizados, 3 se instalarán, 0 para eliminar y 1 no actualizados.</span>
+<span class="go">...</span>
+</pre></div>
+<p><strong>3-</strong> Instalar Gmate</p>
+<div class="highlight"><pre><span></span><span class="gp">mint@bot ~ $</span> sudo apt-add-repository ppa:ubuntu-on-rails/ppa
+<span class="go">...</span>
+<span class="gp">mint@bot ~ $</span> sudo apt-get update
+<span class="go">...</span>
+<span class="gp">mint@bot ~ $</span> sudo apt-get install gedit-gmate
+<span class="go">...</span>
+<span class="go">Se instalarán los siguientes paquetes NUEVOS:</span>
+<span class="go">gedit-gmate</span>
+<span class="go">0 actualizados, 1 se instalarán, 0 para eliminar y 1 no actualizados.</span>
+<span class="go">...</span>
+</pre></div>
+<p><strong>4-</strong> Configurar gedit</p>
+<p>Editar -&gt; Preferencias -&gt; Ver:</p>
+<ul>
+<li>Mostrar los número de línea</li>
+<li>Resaltar la línea actual</li>
+<li>Resaltar parejas de corchetes</li>
+</ul>
+<p>Editar -&gt; Preferencias -&gt; Editor:</p>
+<ul>
+<li>Anchura del tabular: 4</li>
+<li>Activar sangría automática</li>
+</ul>
+<p>Editar -&gt; Preferencias -&gt; Tipografías y colores:</p>
+<ul>
+<li>Monokai</li>
+</ul>
+<p>Editar -&gt; Preferencias -&gt; Complementos:</p>
+<ul>
+<li>Buscar/Remplazar avanzado</li>
+<li>Cambiar capitalización</li>
+<li>Completar paréntesis</li>
+<li>Find in Files</li>
+<li>Panel del examinador de archivos</li>
+<li>Recortes</li>
+<li>Smart Highlighting</li>
+<li>Snap Open</li>
+<li>Tamaño del texto</li>
+<li>White Space Terminator</li>
+<li>Zen Coding</li>
+</ul>
+<p>Fuentes:
+<a href="http://forums.linuxmint.com/viewtopic.php?f=47&amp;t=168938" target="_blank">forums.linuxmint.com,</a>
+<a href="http://blog.desdelinux.net/gedit-para-programadores/" target="_blank">blog.desdelinux.net</a>
+y
+<a href="http://blog.jorgeivanmeza.com/2012/03/instalacion-de-gmate-para-gedit-en-gnulinux-ubuntu/" target="_blank">blog.jorgeivanmeza.com</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2014-09-11_actualizar-gedit-en-linux-mint-17-para-programar.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/actualizar-gedit-en-linux-mint-17-para-programar" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

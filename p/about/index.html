@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Sobre esta página</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/p/about" rel="bookmark" title="Permalink to Sobre esta página">Sobre esta página</a></h1>
+</header><!-- /#banner -->
+<section class="body" id="content">
+<p>Esta web esta hecha con <a href="http://getpelican.com/" target="_blank">Pelican</a> y esta continuamente en obras.
+Su objetivo no es crear contenido de calidad, ni hacer tutoriales,
+simplemente es un sitio para anotar algunas cosas y probar <code>pelican</code>.</p>
+<p>El código fuente en se puede ver aquí <a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">https://github.com/s-nt-s/s-nt-s.github.io/tree/source</a></p>
+<h1>Sobre la estructura de la web</h1>
+<p>Uso una modificación del tema <code>notmyidea</code> donde quizá los cambios más relevantes sean:</p>
+<h2>El contenido es lo primero</h2>
+<p>No le veo el sentido a empezar cada página de un blog con el título de ese blog.
+Con que salga en la portada creo que basta y sobra.</p>
+<p>El menú lo dejo abajo. Seamos sinceros, si llegas a alguno de mis <code>posts</code> porque
+estas configurando o instalando algo de lo que hablo, vas a leer el <code>posts</code> y te piras.
+El menú te da igual en la inmensa mayoría de los casos.</p>
+<p>Además, por accesibilidad lo mejor es que el contenido sea lo primero.</p>
+<h2>Paso de extractos</h2>
+<p>Si el titulo no da ya una idea de que va el <code>post</code> es que es un muy mal titulo,
+paso de arreglarlo con una entradilla, me merezco que no entres en el <code>post</code>.</p>
+<p>Además esto hace que las páginas de listados mucho más pequeñas me permite
+el lujo de no tener que paginaras por ahora.</p>
+<p>De paso, me permite colocar en su lugar un guiño al comando <code>wc</code> :P</p>
+<h2>Las categorías y tags son reguleras</h2>
+<p>Aunque si tuviera que elegir creo que son más relevantes los <code>tags</code>.
+Aún así en <a href="/mapa">el mapa</a> solo salen las que tengan como
+mínimo dos <code>posts</code>. Ya sabes, a menudo uno pone etiquetas que luego
+nunca vuelve a usar.</p>
+<h2>Este blog tiene un solo autor y un solo idioma</h2>
+<p>Todo lo referente a autores y multidioma del tema original ha sido borrado o desactivado.</p>
+<h2>El código esta en el pie de página</h2>
+<p>Además del enlace al proyecto completo, en cada <code>post</code> o <code>page</code> hay un enlace
+directo a su <code>markdown</code>, y en todo momento también se muestra un enlace al
+<code>template</code> que genero la página que estas viendo.</p>
+<p>(*) Si solo ves el enlace del <code>template</code> y no el del <code>markdown</code> es porque
+estas en una parte de la web que la genera unicamente un template, sin
+necesidad de un fichero <code>markdown</code>.</p>
+<p>Creo que esto es una buena practica para el que quiera ver como están
+hechas las cosas sin tener que ir navegando por el proyecto.</p>
+<h2>Internet Explorer no es bienvenido</h2>
+<p>Las lineas</p>
+<div class="highlight"><pre><span></span><span class="c">&lt;!--[if IE]&gt;</span>
+<span class="c">    &lt;script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"&gt;&lt;/script&gt;</span>
+<span class="c">&lt;![endif]--&gt;</span>
+</pre></div>
+<p>del template <a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/base.html" target="_blank">base.html</a>
+se han eliminado. Si entras con <code>Internet Explorer</code> no mereces piedad.</p>
+<p>Yo pruebo la web en <code>firefox</code>, <code>chromium</code>, <code>lynx</code> y miro que no de errores en
+<a href="https://validator.w3.org" target="_blank">validator.w3.org</a> así que con eso debería bastar.</p>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/page.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/pages/2018-10-19_about.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/p/about" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

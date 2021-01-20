@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Instalación desatendida con NOOBS en Raspberry Pi</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/instalacion-desatendida-con-noobs-en-raspberry-pi" rel="bookmark" title="Permalink to Instalación desatendida con NOOBS en Raspberry Pi">Instalación desatendida con NOOBS en Raspberry Pi</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2013-10-13T19:15:00+02:00" title="Publicado el 2013-10-13">2013-10-13</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<a class="bubble tag tg_raspberrypi" href="/tag/raspberry-pi.html" title="Hay 9 entradas  más sobre Raspberry Pi">
+Raspberry Pi</a> </p>
+<p>
+<span class="bubble">41 lineas</span> <span class="bubble wc">183 palabras</span> <span class="bubble wc">1.145 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>1-</strong> Formatear tarjeta</p>
+<p>Para ello podemos instalar gparted</p>
+<div class="highlight"><pre><span></span><span class="gp">user@bot ~ $</span> sudo apt-get -y install gparted
+<span class="go">...</span>
+<span class="gp">user@bot ~ $</span> sudo gparted
+</pre></div>
+<p>a.  Elegir en el desplegable de la esquina superior derecha nuestra
+    tarjeta
+b.  Dispositivo -&gt; Crear tabla de particiones
+c.  Partición -Nueva
+d.  Seleccionar sistema de ficheros fat32</p>
+<p><img alt="gparted" src="/images/gparted.png"/></p>
+<p><strong>2-</strong> Preparar NOOBS</p>
+<p>Descomprimimos NOOBS en nuestra SD, entramos en el directorio "os" y
+borramos todas las carpetas menos la del sistema opearivo que nos
+interesa (por ejemplo "Raspbian").</p>
+<p>Entramos en la carpeta que hemos dejado y si hay un fichero llamado
+<code>flavours.json</code> lo editamos de manera que en él solo quede una opción.</p>
+<p><code>flavours.json</code> ANTES:</p>
+<div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">"flavours"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Raspbian - Boot to Scratch"</span><span class="p">,</span>
+      <span class="nt">"description"</span><span class="p">:</span> <span class="s2">"A version of Raspbian that boots straight into Scratch"</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Raspbian"</span><span class="p">,</span>
+      <span class="nt">"description"</span><span class="p">:</span> <span class="s2">"A Debian wheezy port, optimised for the Raspberry Pi"</span>
+    <span class="p">}</span>  
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+<p><code>flavours.json</code> DESPUES:</p>
+<div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">"flavours"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Raspbian"</span><span class="p">,</span>
+      <span class="nt">"description"</span><span class="p">:</span> <span class="s2">"A Debian wheezy port, optimised for the Raspberry Pi"</span>
+    <span class="p">}</span>  
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+<p><strong>3-</strong> Arrancamos la Rasberry Pi con la tarjeta</p>
+<p>La instalación se hará del tirón sin necesidad de nuestra
+interactuación.</p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2013-10-13_instalacion-desatendida-con-noobs-en-raspberry-pi.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/instalacion-desatendida-con-noobs-en-raspberry-pi" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

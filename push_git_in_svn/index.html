@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Push GIT in SVN</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/push_git_in_svn" rel="bookmark" title="Permalink to Push GIT in SVN">Push GIT in SVN</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2020-01-07T00:00:00+01:00" title="Publicado el 2020-01-07">2020-01-07</time>
+<a class="bubble category ct_programacion" href="/category/programacion.html" title="Hay 5 entradas más sobre Programación">
+Programación</a>
+<a class="bubble tag tg_git" href="/tag/git.html" title="Hay 2 entradas  más sobre git">
+git</a> <span class="bubble tag tg_svn" title="No hay más entradas con esta etiqueta">svn</span> </p>
+<p>
+<span class="bubble">80 lineas</span> <span class="bubble wc">497 palabras</span> <span class="bubble wc">3.364 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Problema</strong>: Trabajamos en <code>git</code> pero queremos tener una copia de <code>master</code> en
+un repositiorio <code>svn</code></p>
+<p><strong>Solución</strong>: Crear en local una rama que servira exclusivamente para mezclar
+con <code>master</code> y hacer commit en <code>svn</code> via <code>git svn</code></p>
+<h2>Detalle</h2>
+<p>Lo que vamos a hacer es crear una rama git llamada <code>svnsync</code> que estará
+vinculada a nuestro repositorio <code>svn</code> mediante la extensión <code>git svn</code>.</p>
+<p>A diferencia de otros manuales donde presuponen que tu <code>svn</code> tiene una
+<a href="https://tortoisesvn.net/docs/release/TortoiseSVN_es/tsvn-repository.html#tsvn-repository-layout" target="_blank">organización estandar</a>,
+yo vinculare directamente con el <code>trunk</code> obviando cualquier distribución para
+que no haga falta preocuparse de este punto.</p>
+<p>Esto lo puedo hacer porque solo nos interesa tener una especie de <code>backup</code> en <code>svn</code>,
+si quisiéramos algo más versátil y complejo deberíamos cuidar la organización del repositorio
+y configurar nuestra rama <code>git</code> y la extensión <code>git svn</code> teniéndola en cuenta.</p>
+<p>Para el tutorial supondremos que el repositorio <code>git</code> esta en <code>git@github.com:my-user/my-repo.git</code>
+y el <code>trunk</code> del <code>svn</code> esta en <code>https://my-svn-server.com/my-repos/trunk/my-repo</code></p>
+<h2>Prerequisitos</h2>
+<div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get install git git-svn
+<span class="gp">$</span> git clone git@github.com:my-user/my-repo.git
+<span class="gp">$</span> <span class="nb">cd</span> my-repo
+</pre></div>
+<h2>Configuración</h2>
+<p><strong>1-</strong> Creamos la rama:</p>
+<div class="highlight"><pre><span></span><span class="go">my-repo $ git branch --no-track svnsync</span>
+<span class="go">my-repo $ git branch</span>
+<span class="go">* master</span>
+<span class="go">  svnsync</span>
+</pre></div>
+<p><strong>2-</strong> Creamos la vinculación con <code>svn</code></p>
+<div class="highlight"><pre><span></span><span class="go">my-repo $ git checkout svnsync</span>
+<span class="go">my-repo $ git svn init --trunk https://my-svn-server.com/my-repos/trunk/my-repo</span>
+<span class="go">my-repo $ git svn fetch</span>
+<span class="go">W: Ignoring error from SVN, path probably does not exist: (160013): El sistema de archivos no tiene el ítem: File not found: revision 100, path '/trunk/my-repo'</span>
+<span class="go">W: Do not be alarmed at the above message git-svn is just searching aggressively for old history.</span>
+<span class="go">This may take a while on large repositories</span>
+<span class="go">r292 = a9b53777212970a509d9bd3f7fbe18e0cedf01fd (refs/remotes/origin/trunk)</span>
+<span class="go">my-repo $ git reset --hard remotes/origin/trunk</span>
+<span class="go">HEAD está ahora en a9b5377 git-svn-id: https://my-svn-server.com/my-repos/trunk/my-repo@292 08dc7427-57a1-459d-80c6-e9e8415cd7c7</span>
+</pre></div>
+<p><strong>3-</strong> Mezclamos <code>master</code> en <code>svnsync</code></p>
+<div class="highlight"><pre><span></span><span class="go">my-repo $ git checkout master</span>
+<span class="go">my-repo $ git pull origin master</span>
+<span class="go">my-repo $ git checkout svnsync</span>
+<span class="go">my-repo $ git svn rebase</span>
+<span class="go">my-repo $ git merge -X theirs --allow-unrelated-histories master</span>
+<span class="go">my-repo $ git commit</span>
+<span class="go">my-repo $ git svn dcommit</span>
+</pre></div>
+<p>Podemos crear un script con los anteriores comandos para automatizar el proceso:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="nb">set</span> -e
+<span class="c1"># Comprobar que svnsync y master existen</span>
+git show-branch svnsync master
+<span class="c1"># Ir a master y actualizarlo</span>
+git checkout master
+git pull origin master
+<span class="c1"># Ir a svnsync</span>
+git checkout svnsync
+<span class="c1"># Revertirlo a su última versión consolidada</span>
+git svn rebase
+<span class="c1"># Mezclar master en svnsync</span>
+git merge -X theirs --allow-unrelated-histories master
+<span class="c1"># Hacer commit local en git</span>
+git commit
+<span class="c1"># Subir cambios al svn</span>
+git svn dcommit
+</pre></div>
+<p><strong>Z-</strong> Deshacer todo (si necesitas repetir el proceso desde cero y te esta dando problemas)</p>
+<p><strong>Z.a)</strong> Borrar rama <code>svnsync</code></p>
+<div class="highlight"><pre><span></span><span class="go">my-repo $ git checkout master</span>
+<span class="go">my-repo $ git branch -D svnsync</span>
+</pre></div>
+<p><strong>Z.b)</strong> Borrar del .git/config las lineas:</p>
+<div class="highlight"><pre><span></span><span class="k">[svn-remote "svn"]</span>
+    <span class="na">url</span> <span class="o">=</span> <span class="s">https://my-svn-server.com/my-repos</span>
+<span class="s">    fetch = trunk/my-repo:refs/remotes/origin/trunk</span>
+</pre></div>
+<p><strong>Z.c)</strong> Borrar histórico <code>svn</code></p>
+<div class="highlight"><pre><span></span><span class="go">my-repo $ sudo rm -R .git/svn</span>
+</pre></div>
+<p><strong>Z.d)</strong> Si esto no funciona, no queda más remedio que empezar verdaderamente desde 0 (acuérdate de salvar tus cambios antes):</p>
+<div class="highlight"><pre><span></span><span class="go">my-repo $ cd ..</span>
+<span class="gp">$</span> sudo rm -R my-repo
+<span class="gp">$</span> git clone git@github.com:my-user/my-repo.git
+<span class="gp">$</span> <span class="nb">cd</span> my-repo
+</pre></div>
+<p><strong>Fuentes</strong>: <a href="https://ben.lobaugh.net/blog/147853/creating-a-two-way-sync-between-a-github-repository-and-subversion" target="_blank">ben.lobaugh.net</a>,
+<a href="https://blog.justincarmony.com/2011/02/21/using-git-with-subversion" target="_blank">blog.justincarmony.com</a>,
+<a href="https://stackoverflow.com/questions/14585692/how-to-use-git-svn-to-checkout-only-trunk-and-not-branches-and-tags" target="_blank">stackoverflow.com</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2020-01-07_push_git_in_svn.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/push_git_in_svn" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

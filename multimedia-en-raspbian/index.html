@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Multimedia en Raspbian desde el terminal</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/multimedia-en-raspbian" rel="bookmark" title="Permalink to Multimedia en Raspbian desde el terminal">Multimedia en Raspbian desde el terminal</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2013-10-27T23:12:00+01:00" title="Publicado el 2013-10-27">2013-10-27</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<a class="bubble tag tg_raspberrypi" href="/tag/raspberry-pi.html" title="Hay 9 entradas  más sobre Raspberry Pi">
+Raspberry Pi</a> <a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 18 entradas  más sobre linux">
+linux</a> <a class="bubble tag tg_perl" href="/tag/perl.html" title="Hay 3 entradas  más sobre perl">
+perl</a> </p>
+<p>
+<span class="bubble">265 lineas</span> <span class="bubble wc">1.294 palabras</span> <span class="bubble wc">8.557 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>A) Vídeo</strong></p>
+<p><strong>1-</strong> Script para lanzar omxplayer con nuestras opciones habituales</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo touch /usr/local/bin/play
+<span class="gp">pi@bot ~ $</span> sudo chmod <span class="m">777</span> /usr/local/bin/play
+<span class="gp">pi@bot ~ $</span> sudo nano /usr/local/bin/play
+</pre></div>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="nv">seg</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">sub</span><span class="o">=</span><span class="s2">""</span>
+<span class="nv">vid</span><span class="o">=</span><span class="s2">""</span>
+<span class="nv">OPTS</span><span class="o">=</span><span class="s2">""</span>
+<span class="k">while</span> <span class="o">((</span> <span class="nv">$#</span> <span class="o">))</span>
+<span class="k">do</span>
+        <span class="k">case</span> <span class="nv">$1</span> in
+        -s <span class="o">)</span>
+                <span class="nv">seg</span><span class="o">=</span><span class="k">$((</span><span class="nv">$2</span><span class="o">+</span><span class="nv">$seg</span><span class="k">))</span>
+                <span class="nb">shift</span>
+        <span class="p">;;</span>
+        -m <span class="o">)</span>
+                <span class="nv">seg</span><span class="o">=</span><span class="k">$((</span><span class="o">(</span><span class="nv">$2</span> <span class="o">*</span> <span class="m">60</span><span class="o">)+</span><span class="nv">$seg</span><span class="k">))</span>
+                <span class="nb">shift</span>
+        <span class="p">;;</span>
+        -*<span class="o">)</span>
+                <span class="nv">OPTS</span><span class="o">=</span><span class="s2">"</span><span class="nv">$OPTS</span><span class="s2"> </span><span class="nv">$1</span><span class="s2">"</span>
+        <span class="p">;;</span>
+        *<span class="o">)</span>
+                <span class="nv">ext</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">2</span><span class="p">##*.</span><span class="si">}</span><span class="s2">"</span>
+                <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$ext</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"srt"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+                        <span class="nv">sub</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+                <span class="k">else</span>
+                        <span class="nv">vid</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+                <span class="k">fi</span>
+        <span class="p">;;</span>
+        <span class="k">esac</span>
+        <span class="nb">shift</span>
+<span class="k">done</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$vid</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">""</span> <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> ! -f <span class="s2">"</span><span class="nv">$vid</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">"Debe pasar un video como parámetro"</span>
+        <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$seg</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nv">seg</span><span class="o">=</span><span class="s2">""</span>
+<span class="k">else</span>
+        <span class="nv">seg</span><span class="o">=</span><span class="s2">"--pos </span><span class="si">${</span><span class="nv">seg</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">fi</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$sub</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">""</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nv">sub</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">vid</span><span class="p">%%.*</span><span class="si">}</span><span class="s2">.srt"</span>
+<span class="k">fi</span>
+<span class="k">if</span> <span class="o">[</span> -f  <span class="s2">"</span><span class="nv">$sub</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nv">sub</span><span class="o">=</span><span class="s2">"--subtitles </span><span class="nv">$sub</span><span class="s2">"</span>
+<span class="k">else</span>
+        <span class="nv">sub</span><span class="o">=</span><span class="s2">""</span>
+<span class="k">fi</span>
+
+<span class="c1"># Cambiar opcion local por hdmi si se quiere usar la salida de audio digital</span>
+omxplayer -o <span class="nb">local</span> --blank --vol -300 <span class="si">${</span><span class="nv">seg</span><span class="si">}</span> <span class="si">${</span><span class="nv">OPTS</span><span class="si">}</span> <span class="si">${</span><span class="nv">vid</span><span class="si">}</span> <span class="si">${</span><span class="nv">sub</span><span class="si">}</span>
+</pre></div>
+<p>Ejemplos de uso:</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> play video.avi
+<span class="gp">pi@bot ~ $</span> play video.avi sub.srt
+<span class="gp">pi@bot ~ $</span> play -s <span class="m">10</span> -m <span class="m">2</span> video.avi
+</pre></div>
+<p>2- Crear script para buscar vídeos en youtube y meneame, y reproducir
+medios online</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get install youtube-dl
+<span class="go">...</span>
+<span class="gp">pi@bot ~ $</span> sudo youtube-dl -U
+<span class="go">...</span>
+<span class="gp">pi@bot ~ $</span> sudo touch /usr/local/bin/ytb
+<span class="gp">pi@bot ~ $</span> sudo chmod <span class="m">777</span> /usr/local/bin/ytb
+<span class="gp">pi@bot ~ $</span> sudo nano /usr/local/bin/ytb
+</pre></div>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/perl -w</span>
+<span class="k">use</span> <span class="nn">XML::Simple</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">LWP::Simple</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">HTML::Entities</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">utf8</span><span class="p">;</span>                <span class="c1"># en este programa hay caracteres escritos en utf8</span>
+<span class="k">use</span> <span class="nn">open</span> <span class="n">OUT</span> <span class="o">=&gt;</span> <span class="s">':utf8'</span><span class="p">;</span> <span class="c1"># la salida del programa será en utf8</span>
+<span class="k">use</span> <span class="nn">open</span> <span class="s">':std'</span><span class="p">;</span>         <span class="c1"># la salida STDOUT (el print()) también será en utf8</span>
+
+<span class="c1"># Cambiar opcion local por hdmi si se quiere usar la salida de audio digital</span>
+<span class="k">my</span> <span class="nv">$omx</span><span class="o">=</span><span class="s">"omxplayer -o local --blank --vol -300"</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="nv">$fuente</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$respuesta</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$suerte</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">sub</span> <span class="nf">ask</span><span class="p">{</span>
+        <span class="nb">local</span> <span class="vg">$|</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1"># activate autoflush to immediately show the prompt</span>
+        <span class="k">print</span> <span class="s">"¿Reproducir / Descargar? (r/d): "</span><span class="p">;</span>
+        <span class="nb">chomp</span><span class="p">(</span><span class="nv">$respuesta</span> <span class="o">=</span> <span class="sr">&lt;STDIN&gt;</span><span class="p">);</span>
+        <span class="nv">$respuesta</span><span class="o">=</span><span class="nb">lc</span><span class="p">(</span><span class="nv">$respuesta</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nv">$respuesta</span> <span class="ow">eq</span> <span class="s">"r"</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nv">$respuesta</span> <span class="ow">eq</span> <span class="s">"d"</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">sub</span> <span class="nf">play</span> <span class="p">{</span>
+        <span class="k">my</span> <span class="p">(</span><span class="nv">$url</span><span class="p">,</span><span class="nv">$cmd</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$respuesta</span> <span class="ow">eq</span> <span class="s">"d"</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$cmd</span> <span class="o">=</span> <span class="s">"youtube-dl --continue --no-overwrites --restrict-filenames --sub-lang es,en -o '~/Download/%(title)s-%(extractor)s_%(id)s.%(ext)s' "</span> <span class="o">.</span> <span class="nv">$url</span> <span class="o">.</span> <span class="s">" --exec '"</span> <span class="o">.</span> <span class="nv">$omx</span> <span class="o">.</span> <span class="s">" {}'"</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nv">$url</span> <span class="o">=</span><span class="sb">`youtube-dl --max-quality 35 -g "$url"`</span><span class="p">;</span>
+                <span class="nv">$url</span> <span class="o">=~</span> <span class="sr">s/^\s+|\s+$//g</span><span class="p">;</span>
+                <span class="k">return</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$url</span><span class="p">);</span>
+                <span class="nv">$cmd</span><span class="o">=</span> <span class="p">(</span><span class="nv">$omx</span> <span class="o">.</span> <span class="s">" \""</span> <span class="o">.</span> <span class="nv">$url</span> <span class="o">.</span> <span class="s">"\""</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="c1">#print $cmd . "\n";</span>
+        <span class="nb">exec</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">)</span> <span class="k">if</span> <span class="nv">$suerte</span> <span class="o">==</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nb">system</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">sub</span> <span class="nf">spc</span> <span class="p">{</span>
+        <span class="k">my</span> <span class="p">(</span><span class="nv">$txt</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+        <span class="nv">$txt</span> <span class="o">=~</span> <span class="sr">s/\s\s+/ /g</span><span class="p">;</span>
+        <span class="nv">$txt</span> <span class="o">=~</span> <span class="sr">s/\.\.+/\./g</span><span class="p">;</span>
+        <span class="nv">$txt</span> <span class="o">=~</span> <span class="sr">s/  +/ /g</span><span class="p">;</span>
+        <span class="nv">$txt</span> <span class="o">=~</span> <span class="sr">s/^ +| +$//g</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nv">$txt</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">sub</span> <span class="nf">cln</span> <span class="p">{</span>
+        <span class="k">my</span> <span class="p">(</span><span class="nv">$link</span><span class="p">,</span><span class="nv">$title</span><span class="p">,</span><span class="nv">$des</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+        <span class="nv">$link</span><span class="o">=~</span> <span class="sr">s/\&amp;.*//</span><span class="p">;</span>
+        <span class="nv">$title</span> <span class="o">=</span> <span class="n">spc</span><span class="p">(</span><span class="nv">$title</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nv">$link</span><span class="p">,</span><span class="nv">$title</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$des</span><span class="p">);</span>
+        <span class="nv">$des</span><span class="o">=</span><span class="n">decode_entities</span><span class="p">(</span><span class="nv">$des</span><span class="p">);</span>
+        <span class="nv">$des</span> <span class="o">=~</span> <span class="sr">s/^.+\/&gt;&lt;p&gt;|&lt;\/p&gt;.+$//g</span><span class="p">;</span>
+        <span class="nv">$des</span> <span class="o">=~</span> <span class="sr">s/&lt;[^&gt;]+&gt;/ /g</span><span class="p">;</span>
+        <span class="nv">$des</span> <span class="o">=</span> <span class="n">spc</span><span class="p">(</span><span class="nv">$des</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$fuente</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$des</span> <span class="o">=~</span> <span class="sr">s/^\Q$title\E\s*//ig</span><span class="p">;</span>
+                <span class="nv">$des</span> <span class="o">=~</span> <span class="sr">s/\.? *From: .+ Views:[ \d ]+ ratings Time: (\d+:\d+(:\d+)?) .+$//</span><span class="p">;</span>
+                <span class="nv">$des</span> <span class="o">=~</span> <span class="sr">s/^ +| +$//g</span><span class="p">;</span>
+                <span class="nv">$title</span><span class="o">=</span> <span class="nv">$1</span> <span class="o">.</span> <span class="s">" - "</span> <span class="o">.</span> <span class="nv">$title</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nv">$link</span><span class="p">,</span><span class="nv">$title</span><span class="p">,</span><span class="nv">$des</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nb">die</span> <span class="s">"Ha de pasar como mínimo un parametro"</span> <span class="k">unless</span> <span class="nv">$#ARGV</span> <span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="nv">$url</span><span class="o">=</span><span class="nb">undef</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$filtro</span><span class="o">=</span><span class="nb">undef</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$lk</span><span class="o">=</span><span class="s">"link"</span><span class="p">;</span>
+
+<span class="k">while</span><span class="p">(</span><span class="nv">@ARGV</span> <span class="o">&amp;&amp;</span> <span class="nv">$ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=~</span> <span class="sr">m/^-/</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$_</span><span class="o">=</span><span class="nb">shift</span><span class="p">(</span><span class="nv">@ARGV</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$_</span> <span class="ow">eq</span> <span class="s">"-m"</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$fuente</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">elsif</span> <span class="p">(</span><span class="nv">$_</span> <span class="ow">eq</span> <span class="s">"-s"</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$suerte</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">elsif</span> <span class="p">(</span><span class="nv">$_</span> <span class="ow">eq</span> <span class="s">"-d"</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$respuesta</span><span class="o">=</span><span class="s">"d"</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$#ARGV</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nv">$ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=~</span> <span class="sr">m/^https?:\/\//</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$suerte</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">play</span><span class="p">(</span><span class="nv">$ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="nb">die</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$fuente</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$lk</span><span class="o">=</span><span class="s">"meneame:url"</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">@ARGV</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nv">$url</span><span class="o">=</span><span class="s">"https://www.meneame.net/rss/search?w=links&amp;p=title&amp;s=published&amp;q="</span> <span class="o">.</span> <span class="nb">join</span><span class="p">(</span><span class="s">"+"</span><span class="p">,</span><span class="nv">@ARGV</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nv">$url</span><span class="o">=</span><span class="s">"https://www.meneame.net/rss?q=youtube&amp;w=links&amp;p=url&amp;s=published&amp;h=&amp;o=date"</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nv">$url</span><span class="o">=</span><span class="s">"http://gdata.youtube.com/feeds/base/videos?v=2&amp;alt=rss&amp;q="</span> <span class="o">.</span> <span class="nb">join</span><span class="p">(</span><span class="s">"+"</span><span class="p">,</span><span class="nv">@ARGV</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">my</span> <span class="nv">$content</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="nv">$url</span><span class="p">);</span>
+<span class="k">my</span> <span class="nv">$xml</span> <span class="o">=</span><span class="n">XMLin</span><span class="p">(</span><span class="nv">$content</span><span class="p">,</span> <span class="n">ForceArray</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s">'item'</span><span class="p">]);</span>
+
+<span class="k">my</span> <span class="nv">@r</span> <span class="o">=</span> <span class="nv">@</span><span class="p">{</span> <span class="nv">$xml</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">channel</span><span class="p">}</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">item</span><span class="p">}</span> <span class="p">};</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$fuente</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">@r</span> <span class="o">=</span> <span class="nb">grep</span> <span class="p">{</span>
+                <span class="nv">$_</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'meneame:comments'</span><span class="p">}</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="o">&amp;&amp;</span>
+                <span class="nv">$_</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'meneame:url'</span><span class="p">}</span> <span class="o">=~</span><span class="sr">/(youtube|vimeo)\.com|youtu\.be/</span><span class="p">;</span>
+        <span class="p">}</span> <span class="nv">@r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">print</span> <span class="s">"No hay resultados\n"</span> <span class="ow">and</span> <span class="nb">exit</span> <span class="k">unless</span> <span class="p">(</span><span class="nv">@r</span><span class="p">);</span>
+
+<span class="k">my</span> <span class="nv">$count</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">foreach</span> <span class="k">my</span> <span class="nv">$ult</span> <span class="p">(</span><span class="nv">@r</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">print</span> <span class="s">"\n"</span> <span class="k">if</span> <span class="nv">$count</span><span class="o">++</span><span class="p">;</span>
+        <span class="k">my</span> <span class="p">(</span><span class="nv">$l</span><span class="p">,</span><span class="nv">$t</span><span class="p">,</span><span class="nv">$d</span><span class="p">)</span> <span class="o">=</span> <span class="n">cln</span><span class="p">(</span><span class="nv">$ult</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$lk</span><span class="p">},</span> <span class="nv">$ult</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">title</span><span class="p">},</span> <span class="nv">$ult</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">description</span><span class="p">});</span>
+        <span class="k">print</span> <span class="p">((</span><span class="nv">$t</span> <span class="o">.</span> <span class="s">"\n"</span> <span class="o">.</span> <span class="nv">$d</span> <span class="o">.</span> <span class="s">"\n"</span> <span class="o">.</span> <span class="nv">$l</span> <span class="o">.</span> <span class="s">"\n"</span><span class="p">)</span>  <span class="o">=~</span> <span class="sr">s/\n\n+/\n/g</span><span class="n">r</span><span class="p">);</span>
+        <span class="n">play</span><span class="p">(</span><span class="nv">$l</span><span class="p">)</span> <span class="k">if</span> <span class="nv">$suerte</span> <span class="o">||</span> <span class="n">ask</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+<p>Ejemplos de uso:</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> ytb show must go on
+<span class="go">04:15 - Queen - 'The Show Must Go On' (Music Video)</span>
+<span class="go">The official 'The Show Must Go On' music video. Taken from Queen - 'Innuendo'</span>
+<span class="go">http://www.youtube.com/watch?v=4ADh8Fs3YdU</span>
+<span class="go">¿Reproducir / Descargar? (r/d): r</span>
+<span class="go">Video codec omx-h264 width 352 height 264 profile 66 fps 24.941999</span>
+<span class="go">Audio codec aac channels 2 samplerate 44100 bitspersample 16</span>
+<span class="go">Subtitle count: 0, state: off, index: 1, delay: 0</span>
+<span class="go">V:PortSettingsChanged: 352x264@24.94 interlace:0 deinterlace:0 par:1.00 layer:0</span>
+<span class="go">have a nice day ;)</span>
+<span class="gp">pi@bot ~ $</span> ytb http://www.youtube.com/watch?v<span class="o">=</span>1hiasK3oE3k
+<span class="go">Video codec omx-h264 width 640 height 360 profile 578 fps 25.000000</span>
+<span class="go">Audio codec aac channels 2 samplerate 44100 bitspersample 16</span>
+<span class="go">Subtitle count: 0, state: off, index: 1, delay: 0</span>
+<span class="go">V:PortSettingsChanged: 640x360@25.00 interlace:0 deinterlace:0 par:1.00 layer:0</span>
+<span class="go">Stopped at: 00:00:03</span>
+<span class="go">have a nice day ;)</span>
+<span class="gp">pi@bot~ $</span> ytb -d http://www.youtube.com/watch?v<span class="o">=</span>4ADh8Fs3YdU
+<span class="go">[youtube] Setting language</span>
+<span class="go">[youtube] Confirming age</span>
+<span class="go">[youtube] 4ADh8Fs3YdU: Downloading webpage</span>
+<span class="go">[youtube] 4ADh8Fs3YdU: Downloading video info webpage</span>
+<span class="go">[youtube] 4ADh8Fs3YdU: Extracting video information</span>
+<span class="go">[youtube] 4ADh8Fs3YdU: Encrypted signatures detected.</span>
+<span class="go">[youtube] 4ADh8Fs3YdU: Downloading js player vflzDhHvc</span>
+<span class="go">[download] Destination: /home/pi/Download/Queen_-_The_Show_Must_Go_On_Music_Video-youtube_4ADh8Fs3YdU.mp4</span>
+<span class="go">[download] 100% of 13.13MiB in 00:07</span>
+<span class="go">[exec] Executing command: omxplayer -o local --blank --vol -300 '/home/pi/Download/Queen_-_The_Show_Must_Go_On_Music_Video-youtube_4ADh8Fs3YdU.mp4'</span>
+<span class="go">Video codec omx-h264 width 352 height 264 profile 66 fps 24.941999</span>
+<span class="go">Audio codec aac channels 2 samplerate 44100 bitspersample 16</span>
+<span class="go">Subtitle count: 0, state: off, index: 1, delay: 0</span>
+<span class="go">V:PortSettingsChanged: 352x264@24.94 interlace:0 deinterlace:0 par:1.00 layer:0</span>
+<span class="go">Stopped at: 00:00:01</span>
+<span class="go">have a nice day ;)</span>
+<span class="gp">pi@bot ~ $</span> ytb -m
+<span class="go">Marine sobrevive a un disparo en la cabeza gracias a su casco de kevlar</span>
+<span class="go">Vídeo de como un marine sobrevive a un disparo en la cabeza de un francotirador talibán. El disparo se produce en el 0:45.</span>
+<span class="go">https://www.youtube.com/watch?v=gBjUv_T9CYU</span>
+<span class="go">¿Reproducir / Descargar? (r/d):</span>
+
+<span class="go">Joan March financió a Franco porque en la República solo podía hacer negocios desde la cárcel</span>
+<span class="go">"Joan March, los Negocios de la Guerra" es el primer documental que se realiza sobre este personaje misterioso y secreto conocido popularmente como "el banquero de Franco".</span>
+<span class="go">https://www.youtube.com/watch?v=K92g9DU2JqM</span>
+<span class="go">¿Reproducir / Descargar? (r/d):</span>
+</pre></div>
+<p><strong>Notas</strong>:</p>
+<ul>
+<li>Si no se contesta nada (pulsar enter sin más) se muestra el próximo
+    resultado</li>
+<li>Si se contesta <em>d</em> descarga el video por completo antes de
+    reproducir, y si ya estaba descargado usa la copia local</li>
+<li>Si se llama al comando con el modificador <em>-m</em> hace la búsqueda
+    sobre meneame.net</li>
+<li>Si se llama al comando con el modificador <em>-s</em> reproduce
+    directamente el primer resultado sin preguntar</li>
+<li>Si se le pasa una url reproduce directamente ese vídeo</li>
+</ul>
+<p><strong>B) Imágenes</strong></p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> apt-get install fbi
+<span class="go">...</span>
+<span class="gp">pi@bot ~ $</span> fbi -a *.jpg
+</pre></div>
+<p><strong>C) Musica</strong></p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get install moc
+<span class="go">...</span>
+<span class="gp">pi@bot ~ $</span> <span class="nb">cd</span> .moc
+<span class="gp">pi@bot ~/.moc $</span> cp /usr/share/doc/moc/examples/config.example.gz .
+<span class="gp">pi@bot ~/.moc $</span> gzip -d config.example.gz
+<span class="gp">pi@bot ~/.moc $</span> mv config.example config
+<span class="gp">pi@bot ~/.moc $</span> nano config
+</pre></div>
+<div class="highlight"><pre><span></span>...
+Allow24bitOutput        = yes
+...
+</pre></div>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> mocp
+</pre></div>
+<p>Si no se oye el audio y se quiere usar la salida analogía jack probar
+con:</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> amixer cset <span class="nv">numid</span><span class="o">=</span><span class="m">3</span> <span class="m">1</span>
+</pre></div>
+<p>Si el control del volumen por defecto no funciona probar lo siguiente:</p>
+<div class="highlight"><pre><span></span>...
+ExecCommand1  = "amixer set PCM 100- &gt; /dev/null" #decrementa 1%
+ExecCommand2  = "amixer set PCM 100+ &gt; /dev/null" #incrementa 1%
+ExecCommand3  = "amixer set PCM 1000- &gt; /dev/null" #decrementa 10%
+ExecCommand4  = "amixer set PCM 1000+ &gt; /dev/null" #incrementa 10%
+ExecCommand9  = "amixer cset numid=1 -- 80% &gt; /dev/null" #pone el audio al 80%
+ExecCommand10 = "amixer cset numid=1 -- 0% &gt; /dev/null" #pone el audio al 0%
+...
+</pre></div>
+<p>y usa F1, F2, F3, F4, F9 y F10 para gestionar el volumen.</p>
+<p><strong>BONUS</strong>: Problema con las eñes y tildes en los subtitulos al usar
+omxplayer</p>
+<p>Comprobamos el tipo de fichero y si es ISO-8859 lo convertimos a utf-8
+con iconv</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> file sub_ori.srt
+<span class="go">sub_ori.srt: ISO-8859 text, with CRLF line terminators</span>
+<span class="gp">pi@bot ~ $</span> iconv --from-code<span class="o">=</span>iso-8859-1 --to-code<span class="o">=</span>utf-8 sub_ori.srt -o sub_fix.srt
+</pre></div>
+<p>Fuentes: <a href="http://www.diverteka.com/?p=899" target="_blank">diverteka</a>,
+<a href="http://hackingthesystem4fun.blogspot.com.es/2012/04/ver-imagenes-sin-x-en-una-tty.html" target="_blank">hackingthesystem4fun.blogspot.com.es</a>,
+ <a href="http://jeffskinnerbox.wordpress.com/2012/11/15/getting-audio-out-working-on-the-raspberry-pi/" target="_blank">jeffskinnerbox.wordpress.com</a>, <a href="http://v1.corenominal.org/howto-setup-moc-music-on-console/" target="_blank">v1.corenominal.org</a>,
+<a href="http://www.raspberrypi.org/forums/viewtopic.php?f=76&amp;t=47711" target="_blank">www.raspberrypi.org</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2013-10-27_multimedia-en-raspbian.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/multimedia-en-raspbian" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

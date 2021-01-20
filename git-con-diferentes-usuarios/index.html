@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Usar git con diferentes usuarios</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/git-con-diferentes-usuarios" rel="bookmark" title="Permalink to Usar git con diferentes usuarios">Usar git con diferentes usuarios</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2019-02-01T00:00:00+01:00" title="Publicado el 2019-02-01">2019-02-01</time>
+<a class="bubble category ct_programacion" href="/category/programacion.html" title="Hay 5 entradas más sobre Programación">
+Programación</a>
+<a class="bubble tag tg_git" href="/tag/git.html" title="Hay 2 entradas  más sobre git">
+git</a> <a class="bubble tag tg_github" href="/tag/github.html" title="Hay 1 entrada  más sobre github">
+github</a> <a class="bubble tag tg_python" href="/tag/python.html" title="Hay 5 entradas  más sobre python">
+python</a> <a class="bubble tag tg_ssh" href="/tag/ssh.html" title="Hay 1 entrada  más sobre ssh">
+ssh</a> </p>
+<p>
+<span class="bubble">173 lineas</span> <span class="bubble wc">934 palabras</span> <span class="bubble wc">6.621 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Situación</strong>:</p>
+<p>Tienes que trabajar en dos proyectos: <code>project1</code> y <code>project2</code>.
+Los dos están en el el mismo servidor (por ejemplo, <code>GitHub</code>)
+pero en cada uno vas a hacer commits con un usuario diferente:
+<code>user1</code> y <code>user2</code> respectivamente.</p>
+<p>Además, el acceso para interactuar con el servidor (<code>clone</code>, <code>pull</code>,
+<code>push</code>) también requiere usuarios diferentes.</p>
+<p><strong>2 problemas</strong>:</p>
+<ol>
+<li>Acceso al repositorio remoto: Tener que conectarte al mismo servidor remoto con dos identidades
+distintas requiere "desdoblar" de alguna manera la referencia al servidor
+para poder tener dos configuraciones distintas para él</li>
+<li>No confundir usuarios: Usar en el mismo equipo dos identidades puede provocar que sin darte
+cuenta hagas commit en un repositorio con el usuario equivocado</li>
+</ol>
+<h2>¿Cómo acceder al repositorio remoto?</h2>
+<p>Para solucionar el primer problema usaremos autenticación por <code>SSH</code>
+y crearemos dos configuraciones distintas en <code>.ssh/config</code> para
+acceder al servidor.</p>
+<p><strong>1</strong>- Generar las <code>claves SSH</code></p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> ssh-keygen -t rsa -b <span class="m">4096</span> -C <span class="s2">"user1@example.com"</span>
+<span class="go">Generating public/private rsa key pair.</span>
+<span class="go">Enter a file in which to save the key (/home/you/.ssh/id_rsa): /home/you/.ssh/user1</span>
+<span class="go">Enter passphrase (empty for no passphrase): [Type a passphrase]</span>
+<span class="go">Enter same passphrase again: [Type passphrase again]</span>
+
+<span class="gp">$</span> ssh-keygen -t rsa -b <span class="m">4096</span> -C <span class="s2">"user2@example.com"</span>
+<span class="go">Generating public/private rsa key pair.</span>
+<span class="go">Enter a file in which to save the key (/home/you/.ssh/id_rsa): /home/you/.ssh/user2</span>
+<span class="go">Enter passphrase (empty for no passphrase): [Type a passphrase]</span>
+<span class="go">Enter same passphrase again: [Type passphrase again]</span>
+</pre></div>
+<p>Y las añadimos a <code>GitHub</code> siguiendo los
+<a href="https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/" target="_blank">pasos indicados en su manual</a>.</p>
+<p><strong>2</strong>- Configurar <code>SSH</code></p>
+<p>Suponiendo que <code>user1</code> es el usuario que queremos usar por defecto
+editamos <code>.ssh/config</code> de la siguiente manera:</p>
+<div class="highlight"><pre><span></span>Host github.com
+HostName github.com
+User git
+IdentityFile ~/.ssh/user1
+
+Host github-user2
+HostName github.com
+User git
+IdentityFile ~/.ssh/user2
+</pre></div>
+<p><strong>3</strong>- Configurar los repositorios</p>
+<p>La clave esta en clonar cada repositorio con el <code>host ssh</code> adecuado.</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> git clone git@github.com:user-random/project1.git
+<span class="gp">$</span> git clone git@github-user2:user-random/project2.git
+</pre></div>
+<p>De manera que en <code>project1</code> tendremos un proyecto que accede al
+servidor con el usuario <code>user1</code> y en <code>project2</code> tendremos un proyecto
+que accede al servidor con el usuario <code>user2</code>.</p>
+<p><strong>Bonus</strong>: Por comodidad, también podemos configurar <code>git</code> para usar <code>ssh</code> en vez de <code>https</code></p>
+<p>Como hemos dicho que <code>user1</code> va a ser nuestro usuario por defecto y
+en <code>GitHub</code> es más habitual clonar usando <code>https</code>, podemos configurar
+<code>git</code> para que transforme las urls directamente a <code>ssh</code> de esta manera:</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> git config --global url.ssh://git@github.com/.insteadOf https://github.com/
+</pre></div>
+<p>Esto hará que hacer:</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/user-random/project1
+</pre></div>
+<p>sea equivalente a hacer:</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> git clone git@github.com:user-random/project1.git
+</pre></div>
+<p>y como en <code>.ssh/config</code> la entrada para <code>github.com</code> es la de <code>user1</code>,
+se usara su clave para el acceso.</p>
+<h2>¿Cómo hacer commit con distinto usuario?</h2>
+<p>Manualmente podemos ir a cada repositorio y definir una configuración local:</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> project1
+<span class="go">project2/ $ git config --local user.name user1</span>
+<span class="go">project2/ $ git config --local user.email user1@example.com</span>
+<span class="gp">$</span> <span class="nb">cd</span> ..
+<span class="gp">$</span> <span class="nb">cd</span> project2
+<span class="go">project2/ $ git config --local user.name user2</span>
+<span class="go">project2/ $ git config --local user.email user2@example.com</span>
+</pre></div>
+<p>pero si con el tiempo vamos a ir teniendo más y más proyectos
+para cada uno de los usuarios debemos automatizar esto
+para evitar errores.</p>
+<p>Hay varias alternativas:</p>
+<h3>Obligar a usar la configuración local</h3>
+<p>Para evitar que en un proyecto de <code>user2</code> usemos la identidad
+de <code>user1</code> sin querer por no haber definido la configuración
+local, podemos obligar a que sea un requisito haciendo:</p>
+<div class="highlight"><pre><span></span><span class="go">git config --global --add user.useConfigOnly true</span>
+<span class="go">git config --global --unset-all user.email</span>
+<span class="go">git config --global --unset-all user.name</span>
+</pre></div>
+<h3>Una carpeta por usuario</h3>
+<p>Si tenemos todos los proyectos de <code>user1</code> en <code>~/wks1</code> y
+todos los proyectos de <code>user2</code> en <code>~/wks2</code> podemos añadir
+en <code>~/.gitconfig</code> las lineas:</p>
+<div class="highlight"><pre><span></span><span class="k">[includeIf "gitdir:~/wks1/"]</span>
+    <span class="na">path</span> <span class="o">=</span> <span class="s">~/wks1/.gitconfig</span>
+<span class="k">[includeIf "gitdir:~/wks/"]</span>
+    <span class="na">path</span> <span class="o">=</span> <span class="s">~/wks2/.gitconfig</span>
+</pre></div>
+<p>y escribir <code>~/wks1/.gitconfig</code> con el contenido:</p>
+<div class="highlight"><pre><span></span><span class="k">[user]</span>
+<span class="na">name</span> <span class="o">=</span> <span class="s">user1</span>
+<span class="na">email</span> <span class="o">=</span> <span class="s">user1@example.com</span>
+</pre></div>
+<p>y <code>~/wks1/.gitconfig</code> con el contenido:</p>
+<div class="highlight"><pre><span></span><span class="k">[user]</span>
+<span class="na">name</span> <span class="o">=</span> <span class="s">user2</span>
+<span class="na">email</span> <span class="o">=</span> <span class="s">user2@example.com</span>
+</pre></div>
+<h3>Crear un hook para git clone</h3>
+<p>En realidad no existe <code>hook</code> para <code>clone</code>, pero podemos usar el <code>hook</code>
+<code>post-checkout</code> que se ejecuta tras un <code>checkout</code>, lo cual siempre
+sucede cuando se hace <code>clone</code> (a no ser que se use el argumento <code>--no-checkout</code>).</p>
+<p>Para ello hacemos:</p>
+<div class="highlight"><pre><span></span><span class="gp">$</span> mkdir -p ~/.git/hooks
+<span class="gp">$</span> git config --global core.hooksPath ~/.git/hooks
+<span class="gp">$</span> touch ~/.git/hooks/post-checkout
+</pre></div>
+<p>y en <code>~/.git/hooks/post-checkout</code> ponemos este script:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">git</span>
+<span class="kn">import</span> <span class="nn">ConfigParser</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">repo</span> <span class="o">=</span> <span class="n">git</span><span class="o">.</span><span class="n">Repo</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+
+<span class="c1"># Don't do anything if an identity is already configured in this</span>
+<span class="c1"># repo's .git/config</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">config_reader</span><span class="p">(</span><span class="n">config_level</span> <span class="o">=</span> <span class="s1">'repository'</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="c1"># The value of user.email is non-empty, stop here</span>
+  <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'email'</span><span class="p">):</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">except</span> <span class="p">(</span><span class="n">ConfigParser</span><span class="o">.</span><span class="n">NoSectionError</span><span class="p">,</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">NoOptionError</span><span class="p">):</span>
+  <span class="c1"># Section or option does not exist, continue</span>
+  <span class="k">pass</span>
+<span class="n">origin</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">remote</span><span class="p">(</span><span class="s1">'origin'</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">origin</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="s1">'** Failed to detect remote origin, identity not updated! **'</span><span class="p">)</span>
+  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">email</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">user</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="c1"># This is where you adjust the code to fit your needs</span>
+<span class="k">if</span> <span class="s1">'/user1/'</span> <span class="ow">in</span> <span class="n">origin</span><span class="o">.</span><span class="n">url</span><span class="p">:</span>
+  <span class="n">user</span> <span class="o">=</span> <span class="s2">"user2"</span>
+  <span class="n">email</span> <span class="o">=</span> <span class="s1">'user2@example.com'</span>
+<span class="k">elif</span> <span class="s1">'/user2/'</span> <span class="ow">in</span> <span class="n">origin</span><span class="o">.</span><span class="n">url</span><span class="p">:</span>
+  <span class="n">user</span> <span class="o">=</span> <span class="s2">"user1"</span>
+  <span class="n">email</span> <span class="o">=</span> <span class="s1">'user1@example.com'</span>
+<span class="k">if</span> <span class="n">email</span><span class="p">:</span>
+  <span class="c1"># Write the option to .git/config</span>
+  <span class="n">config</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">config_writer</span><span class="p">()</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s1">'user'</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s1">'email'</span><span class="p">,</span> <span class="n">email</span><span class="p">)</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+  <span class="k">print</span><span class="p">(</span><span class="s1">'User identity for this repository set to </span><span class="si">%s</span><span class="s1"> &lt;</span><span class="si">%s</span><span class="s1">&gt;'</span> <span class="o">%</span> <span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">email</span><span class="p">))</span>
+</pre></div>
+<h1>¿Y si aún así metes la pata?</h1>
+<p>Si a pesar de todo ya has hecho un commit con el usuario erróneo
+puedes reescribir el autor de los commits con el siguiente
+script:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+
+git filter-branch --env-filter <span class="s1">'</span>
+<span class="s1">OLD_EMAIL="user2@example.com"</span>
+<span class="s1">CORRECT_NAME="user1"</span>
+<span class="s1">CORRECT_EMAIL="user1@example.com"</span>
+<span class="s1">if [ "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL" ]</span>
+<span class="s1">then</span>
+<span class="s1">    export GIT_COMMITTER_NAME="$CORRECT_NAME"</span>
+<span class="s1">    export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL"</span>
+<span class="s1">fi</span>
+<span class="s1">if [ "$GIT_AUTHOR_EMAIL" = "$OLD_EMAIL" ]</span>
+<span class="s1">then</span>
+<span class="s1">    export GIT_AUTHOR_NAME="$CORRECT_NAME"</span>
+<span class="s1">    export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"</span>
+<span class="s1">fi</span>
+<span class="s1">'</span> --tag-name-filter cat -- --branches --tags
+</pre></div>
+<p>adecuando las variables <code>OLD_EMAIL</code>, <code>CORRECT_NAME</code> y <code>CORRECT_EMAIL</code>
+a tu caso.</p>
+<p>Y luego fuerza el cambio con <code>git push --force --tags origin HEAD:master</code></p>
+<p>Pero ten en cuento que esto reescribe el histórico y puedes
+romper un montón de ramas.</p>
+<p>Fuentes:
+<a href="https://medium.com/@therajanmaurya/git-push-pull-with-two-different-account-and-two-different-user-on-same-machine-a85f9ee7ec61" target="_blank">medium.com/@therajanmaurya</a>,
+<a href="https://collectiveidea.com/blog/archives/2016/04/04/multiple-personalities-in-git" target="_blank">collectiveidea.com</a>,
+<a href="https://www.dvratil.cz/2015/12/git-trick-628-automatically-set-commit-author-based-on-repo-url/" target="_blank">dvratil.cz</a>,
+<a href="https://blog.sleeplessbeastie.eu/2020/05/04/how-to-share-git-hooks-between-multiple-repositories/" target="_blank">blog.sleeplessbeastie.eu</a>,
+<a href="https://stackoverflow.com/a/750182" target="_blank">stackoverflow.com</a>,
+<a href="https://stackoverflow.com/a/36296990/5204002" target="_blank">stackoverflow.com</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2019-02-01_git-con-diferentes-usuarios.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/git-con-diferentes-usuarios" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

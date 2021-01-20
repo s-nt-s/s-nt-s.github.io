@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Configurar e instalar remotamente Raspbian</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/configurar-e-instalar-remotamente-raspbian" rel="bookmark" title="Permalink to Configurar e instalar remotamente Raspbian">Configurar e instalar remotamente Raspbian</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2013-10-13T21:25:00+02:00" title="Publicado el 2013-10-13">2013-10-13</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<a class="bubble tag tg_raspberrypi" href="/tag/raspberry-pi.html" title="Hay 9 entradas  más sobre Raspberry Pi">
+Raspberry Pi</a> <a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 18 entradas  más sobre linux">
+linux</a> <a class="bubble tag tg_redes" href="/tag/redes.html" title="Hay 6 entradas  más sobre redes">
+redes</a> </p>
+<p>
+<span class="bubble">47 lineas</span> <span class="bubble wc">280 palabras</span> <span class="bubble wc">1.934 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Problema</strong>: Queremos instalar Raspbian en Raspbarry Pi pero no tenemos
+teclado usb que enchufarle</p>
+<p><strong>Solución</strong>: Automatizar la instalación y configurar remotamente
+nuestra Raspberry</p>
+<p><strong>1-</strong> Instalamos Raspbian en nuestra targeta SD</p>
+<p>Hay dos opciones:</p>
+<ul>
+<li><a href="/instalacion-desatendida-con-noobs-en-raspberry-pi">Automatizar la instalación vía NOOBS</a></li>
+<li><a href="/instalacion-raspbian-en-raspberry-pi">Quemar una imagen con el sistema instalado</a></li>
+</ul>
+<p><strong>2-</strong> Arrancamos la Raspberry Pi con la tarjeta SD</p>
+<p><strong>3-</strong> Averiguamos la IP de la Raspberry Pi</p>
+<p>Entramos en la configuración de nuestro router (<a href="http://192.168.1.1/" target="_blank">http://192.168.1.1/</a>) y
+vamos al apartado Device Info -- DHCP Leases (según el modelo del router
+esto puede cambiar)</p>
+<p><img alt="captura-DHCP-router" src="/images/DHCP-router.png"/></p>
+<p><strong>4-</strong> Conectamos vía ssh</p>
+<p>Conectamos con el usuario "pi" a la ip obtenida en el paso anterior,
+responemos "yes" a la pregunta que nos hacen y tecleamos "raspberry"
+como contraseña. Finalmente actualizamos como se nos indica el software</p>
+<div class="highlight"><pre><span></span><span class="gp">user@bot ~ $</span> ssh pi@192.168.1.132
+<span class="go">The authenticity of host '192.168.1.132 (192.168.1.132)' can't be established.</span>
+<span class="go">ECDSA key fingerprint is e8:c5:6d:df:58:a7:a3:5a:7d:e6:f2:9d:dd:43:b1:d0.</span>
+<span class="go">Are you sure you want to continue connecting (yes/no)? &lt;strong&gt;yes&lt;/strong&gt;</span>
+<span class="go">Warning: Permanently added '192.168.1.132' (ECDSA) to the list of known hosts.</span>
+<span class="go">pi@192.168.1.132's password: &lt;strong&gt;raspberry&lt;/strong&gt;</span>
+</pre></div>
+<p><strong>5-</strong> Configuramos las opciones de Raspbian</p>
+<p>Nos metemos en el panel de configuración</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@raspberrypi ~ $</span> sudo raspi-config
+</pre></div>
+<p><img alt="confgpi" src="/images/confgpi.png"/></p>
+<p>Ejecutamos como mínimo:</p>
+<ul>
+<li>Expand Filesystem</li>
+<li>Advance options -&gt; SSH -&gt; Enabled</li>
+<li>Advance option -&gt; Update</li>
+</ul>
+<p>Además si queremos que al arrancar se inicie el entrono gráfico
+ejecutaremos "Enable Boot to Desktop/Scratch -&gt; Desktop Log in as
+user 'pi' at the graphical desktop"</p>
+<p>Le damos a finalizar y cuando nos pregunte si queremos reiniciar le
+decimos que si.</p>
+<p><strong>6-</strong> Actualizar software</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@raspberry ~ $</span> sudo apt-get update
+<span class="go">...</span>
+<span class="gp">pi@raspberry ~ $</span> sudo apt-get upgrade
+</pre></div>
+<p><strong>7-</strong> Manejar entorno gráfico remotamente</p>
+<p>Dos opciones:</p>
+<ul>
+<li><a href="/simple-computer-remote-en-rasberry-pi">Desde el móvil con Simple Computer
+    Remote</a></li>
+<li>Desde un cliente VNC</li>
+</ul>
+<hr/>
+<p>Fuentes:</p>
+<ul>
+<li><a href="http://sobrebits.com/montar-un-servidor-casero-con-raspberry-pi-parte-2-primera-ejecucion-de-raspbian/" target="_blank">sobrebits.com</a></li>
+<li><a href="http://deeiivid.wordpress.com/2013/02/23/guia-completa-raspberry-pi-espanol/" target="_blank">deeiivid.wordpress.com</a></li>
+</ul>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2013-10-13_configurar-e-instalar-remotamente-raspbian.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/configurar-e-instalar-remotamente-raspbian" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

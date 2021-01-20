@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Autocompletar ssh</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/autocompletar-ssh" rel="bookmark" title="Permalink to Autocompletar ssh">Autocompletar ssh</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2015-09-11T19:16:00+02:00" title="Publicado el 2015-09-11">2015-09-11</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 18 entradas  más sobre linux">
+linux</a> <a class="bubble tag tg_ssh" href="/tag/ssh.html" title="Hay 1 entrada  más sobre ssh">
+ssh</a> </p>
+<p>
+<span class="bubble">32 lineas</span> <span class="bubble wc">106 palabras</span> <span class="bubble wc">782 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>1-</strong> Configurar ~/.ssh/config (ver
+<a href="http://rafael.bonifaz.ec/blog/2011/01/sshconfig-simplifica-nuestra-vida-con-ssh/" target="_blank">rafael.bonifaz.ec</a>)</p>
+<div class="highlight"><pre><span></span>Host unhost
+HostName un.host.ej
+User usuario1
+Port 22
+
+Host otrohost
+HostName otro.host.ej
+User usuario2
+Port 22
+</pre></div>
+<p><strong>3-</strong> Instalamos bash-completion (ver
+<a href="https://www.howtoforge.com/how-to-add-bash-completion-in-debian" target="_blank">howtoforge.com</a>)</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get install bash-completion
+</pre></div>
+<p><strong>2-</strong> Creamos función de autocompletado en /etc/bash_completion.d/ssh
+(ver
+<a href="http://eli.thegreenplace.net/2013/12/26/adding-bash-completion-for-your-own-tools-an-example-for-pss" target="_blank">eli.thegreenplace.net</a>
+y
+<a href="http://www.dicas-l.com.br/arquivo/configurando_auto-completar_para_favoritos_ssh.php" target="_blank">www.dicas-l.com.br</a>)</p>
+<div class="highlight"><pre><span></span>_compssh <span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">[</span> -f <span class="s2">"</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span><span class="s2">/.ssh/config"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+                <span class="nv">cur</span><span class="o">=</span><span class="si">${</span><span class="nv">COMP_WORDS</span><span class="p">[COMP_CWORD]</span><span class="si">}</span><span class="p">;</span>
+                <span class="nv">COMPREPLY</span><span class="o">=(</span><span class="k">$(</span><span class="nb">compgen</span> -W <span class="s1">'$(grep "^Host\b" ${HOME}/.ssh/config | sed -e "s/Host //")'</span> -- <span class="nv">$cur</span><span class="k">)</span><span class="o">)</span>
+        <span class="k">fi</span>
+<span class="o">}</span>
+<span class="nb">complete</span> -F _compssh ssh
+</pre></div>
+<p><strong>3-</strong> Reiniciamos o recargamos el fichero (source
+/usr/share/bash-completion/bash_completion)</p>
+<p><strong>4-</strong> Probamos</p>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> ssh un + TAB
+<span class="gp">pi@bot ~ $</span> ssh unhost
+<span class="gp">pi@bot ~ $</span> ssh o + TAB
+<span class="gp">pi@bot ~ $</span> ssh otrohost
+</pre></div>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/source/content/posts/2015-09-11_autocompletar-ssh.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/autocompletar-ssh" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>
