@@ -369,7 +369,9 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/index.html
 </ul>
 <p>
 <em>¿Por qué no estudias aquí la evolución de los <codes>strikes?</codes></em><br/>
-    Porque la api no da ese dato y aunque obtenerlo haciendo scraping
+    Porque la api no da ese dato
+    (si me equivoco ponme un <a href="https://github.com/s-nt-s/meneame.dump/issues">issue</a>)
+    y aunque obtenerlo haciendo scraping
     es parcialmente posible (los comentarios causa de <codes>strike tienen
     esa información dentro de un tag html) me llevaría más tiempo
     del que tenia previsto dedicar y aún así no tendría información completa
