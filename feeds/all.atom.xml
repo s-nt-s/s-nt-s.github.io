@@ -390,7 +390,9 @@
 &lt;/ul&gt;
 &lt;p&gt;
 &lt;em&gt;¿Por qué no estudias aquí la evolución de los &lt;codes&gt;strikes?&lt;/codes&gt;&lt;/em&gt;&lt;br/&gt;
-    Porque la api no da ese dato y aunque obtenerlo haciendo scraping
+    Porque la api no da ese dato
+    (si me equivoco ponme un &lt;a href="https://github.com/s-nt-s/meneame.dump/issues"&gt;issue&lt;/a&gt;)
+    y aunque obtenerlo haciendo scraping
     es parcialmente posible (los comentarios causa de &lt;codes&gt;strike tienen
     esa información dentro de un tag html) me llevaría más tiempo
     del que tenia previsto dedicar y aún así no tendría información completa
