@@ -3,9 +3,9 @@
 &lt;p&gt;
       Este informe abarca principalmente la &lt;a href="https://www.meneame.net/"&gt;portada&lt;/a&gt; y
       &lt;a href="https://www.meneame.net/queue"&gt;cola&lt;/a&gt; de la &lt;b&gt;edición general&lt;/b&gt;
-      de &lt;code&gt;meneame.net&lt;/code&gt; desde
+      de &lt;code&gt;meneame.net&lt;/code&gt; desde el
       &lt;a href="https://www.meneame.net/story/1"&gt;&lt;code&gt;07/12/2005&lt;/code&gt;&lt;/a&gt;
-      a
+      hasta el
       &lt;a href="https://www.meneame.net/story/3434988"&gt;&lt;code&gt;31/12/2020 23:52&lt;/code&gt;&lt;/a&gt;,
       lo que representa
       &lt;code&gt;2.678.557&lt;/code&gt; noticias y
@@ -23,16 +23,13 @@
 &lt;tr&gt;
 &lt;td&gt;queued&lt;/td&gt;
 &lt;td class="rg"&gt;&lt;code&gt;1.807.189&lt;/code&gt;&lt;/td&gt;
-&lt;td class="rg"&gt;&lt;code&gt;13.634.448&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;discard …&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;</summary><content type="html">&lt;div&gt;&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"&gt;&lt;/script&gt;&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/00-libs/sigma.min.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/00-libs/sigma.plugins.animate.min.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/00-libs/tagify.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/01-js/util.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/data/graph.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/data/modelos.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/data/zz-parse.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/js/00-graph.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/js/00-tag.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/js/chart.js"&gt;&lt;/script&gt;&lt;link href="https://s-nt-s.github.io/meneame.dump/css/main.css" rel="stylesheet" type="text/css"/&gt;&lt;link href="https://yaireo.github.io/tagify/dist/tagify.css" rel="stylesheet" type="text/css"/&gt;
+&lt;td class="rg"&gt;&lt;code&gt;13.634 …&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;</summary><content type="html">&lt;div&gt;&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"&gt;&lt;/script&gt;&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/00-libs/sigma.min.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/00-libs/sigma.plugins.animate.min.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/00-libs/tagify.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/01-js/util.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/data/graph.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/data/modelos.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/data/zz-parse.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/js/00-graph.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/js/00-tag.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/js/chart.js"&gt;&lt;/script&gt;&lt;link href="https://s-nt-s.github.io/meneame.dump/css/main.css" rel="stylesheet" type="text/css"/&gt;&lt;link href="https://yaireo.github.io/tagify/dist/tagify.css" rel="stylesheet" type="text/css"/&gt;
 &lt;p&gt;
       Este informe abarca principalmente la &lt;a href="https://www.meneame.net/"&gt;portada&lt;/a&gt; y
       &lt;a href="https://www.meneame.net/queue"&gt;cola&lt;/a&gt; de la &lt;b&gt;edición general&lt;/b&gt;
-      de &lt;code&gt;meneame.net&lt;/code&gt; desde
+      de &lt;code&gt;meneame.net&lt;/code&gt; desde el
       &lt;a href="https://www.meneame.net/story/1"&gt;&lt;code&gt;07/12/2005&lt;/code&gt;&lt;/a&gt;
-      a
+      hasta el
       &lt;a href="https://www.meneame.net/story/3434988"&gt;&lt;code&gt;31/12/2020 23:52&lt;/code&gt;&lt;/a&gt;,
       lo que representa
       &lt;code&gt;2.678.557&lt;/code&gt; noticias y
