@@ -30,18 +30,18 @@ script para mandarnos notificaciones</p>
 <p><strong>Solución</strong>: usar xmpp y crear un grupo con permisos para usar este
 comando</p>
 <p><strong>1-</strong> Instalar sendxmpp y crear comando</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get install sendxmpp
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo apt-get install sendxmpp
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $</span> sudo touch /usr/local/bin/say
-<span class="gp">pi@bot ~ $</span> sudo chmod <span class="m">710</span> /usr/local/bin/say
-<span class="gp">pi@bot ~ $</span> sudo nano /usr/local/bin/say
-</pre></div>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="gp">pi@bot ~ $ </span>sudo touch /usr/local/bin/say
+<span class="gp">pi@bot ~ $ </span>sudo chmod <span class="m">710</span> /usr/local/bin/say
+<span class="gp">pi@bot ~ $ </span>sudo nano /usr/local/bin/say
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$*</span><span class="s2">"</span> <span class="p">|</span> sendxmpp -u usuario -p contraseña -j servidor_jabber -o dominio -t destinatario
 
 <span class="c1">#Ejemplo con gmail:</span>
 <span class="c1">#sendxmpp -t -u mygmailuser -o gmail.com -p mygmailpassword another@jabber.com</span>
-</pre></div>
+</code></pre></div>
 <p><strong>Nota</strong>: Creamos este script como root (sudo) ya que contiene el
 usuario y contraseña de la cuenta que usamos para enviar y la derección
 de a quien queremos que se le envíen los mensajes que usen este comando.
@@ -50,36 +50,36 @@ usuarios que no queremos que sean sudo ni puedan leer el codigo del
 script, para ello veremos los siguientes pasos</p>
 <p><strong>2-</strong> Crear grupo que podrá enviar mensajes y darle permisos para
 ejecutar el comando</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo groupadd snd
-<span class="gp">pi@bot ~ $</span> sudo visudo
-</pre></div>
-<div class="highlight"><pre><span></span><span class="k">[...]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo groupadd snd
+<span class="gp">pi@bot ~ $ </span>sudo visudo
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">[...]</span>
 <span class="na">%snd    ALL</span> <span class="o">=</span> <span class="s">NOPASSWD: /usr/local/bin/say</span>
-</pre></div>
+</code></pre></div>
 <p><strong>3-</strong> Ejemplo con transmission: aviso de descarga finalizada.</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo adduser debian-transmission snd
-<span class="gp">pi@bot ~ $</span> nano /dwn/complete.sh
-</pre></div>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo adduser debian-transmission snd
+<span class="gp">pi@bot ~ $ </span>nano /dwn/complete.sh
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 sudo say DECARGADO: <span class="s2">"</span><span class="nv">$TR_TORRENT_NAME</span><span class="s2">"</span>
-</pre></div>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo service transmission-daemon stop
-<span class="gp">pi@bot ~ $</span> sudo nano /var/lib/transmission-daemon/info/settings.json
-</pre></div>
-<div class="highlight"><pre><span></span><span class="p">{</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo service transmission-daemon stop
+<span class="gp">pi@bot ~ $ </span>sudo nano /var/lib/transmission-daemon/info/settings.json
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="err">...</span>
     <span class="nt">"script-torrent-done-filename"</span><span class="p">:</span> <span class="s2">"/dwn/complete.sh"</span><span class="p">,</span>
 <span class="err">...</span>
 <span class="p">}</span>
-</pre></div>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo service transmission-daemon start
-</pre></div>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo service transmission-daemon start
+</code></pre></div>
 <p><strong>4-</strong> Ejemplo con PAM: aviso de usuario conectado por ssh.</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~/wks/scripts $</span> touch notif-login.sh
-<span class="gp">pi@bot ~/wks/scripts $</span> chmod +x notif-login.sh
-<span class="gp">pi@bot ~/wks/scripts $</span> nano notif-login.sh
-</pre></div>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~/wks/scripts $ </span>touch notif-login.sh
+<span class="gp">pi@bot ~/wks/scripts $ </span>chmod +x notif-login.sh
+<span class="gp">pi@bot ~/wks/scripts $ </span>nano notif-login.sh
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$PAM_TYPE</span><span class="s2">"</span> !<span class="o">=</span> <span class="s2">"open_session"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">exit</span> <span class="m">0</span>
 <span class="k">fi</span>
@@ -93,13 +93,13 @@ sudo say DECARGADO: <span class="s2">"</span><span class="nv">$TR_TORRENT_NAME</
 <span class="k">fi</span>
 
 sudo say <span class="k">$(</span>date <span class="s2">"+%d/%m/%Y %H:%M"</span><span class="k">)</span><span class="s2">" &gt; </span><span class="nv">$USER</span><span class="s2"> inicia </span><span class="nv">$PAM_SERVICE</span><span class="s2"> en TTY </span><span class="nv">$PAM_TTY</span><span class="s2">"</span> <span class="p">&amp;</span>
-</pre></div>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo nano /etc/pam.d/sshd
-</pre></div>
-<div class="highlight"><pre><span></span># PAM configuration for the Secure Shell service
-# ...
-session optional pam_exec.so /home/pi/wks/scripts/notif-login.sh
-</pre></div>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo nano /etc/pam.d/sshd
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="err"># PAM configuration for the Secure Shell service</span>
+<span class="err"># ...</span>
+<span class="err">session optional pam_exec.so /home/pi/wks/scripts/notif-login.sh</span>
+</code></pre></div>
 </div><!-- /.entry-content -->
 </article>
 </section>

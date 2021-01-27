@@ -39,19 +39,19 @@ y configurar nuestra rama <code>git</code> y la extensión <code>git svn</code> 
 <p>Para el tutorial supondremos que el repositorio <code>git</code> esta en <code>git@github.com:my-user/my-repo.git</code>
 y el <code>trunk</code> del <code>svn</code> esta en <code>https://my-svn-server.com/my-repos/trunk/my-repo</code></p>
 <h2>Prerequisitos</h2>
-<div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt-get install git git-svn
-<span class="gp">$</span> git clone git@github.com:my-user/my-repo.git
-<span class="gp">$</span> <span class="nb">cd</span> my-repo
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo apt-get install git git-svn
+<span class="gp">$ </span>git clone git@github.com:my-user/my-repo.git
+<span class="gp">$ </span><span class="nb">cd</span> my-repo
+</code></pre></div>
 <h2>Configuración</h2>
 <p><strong>1-</strong> Creamos la rama:</p>
-<div class="highlight"><pre><span></span><span class="go">my-repo $ git branch --no-track svnsync</span>
+<div class="highlight"><pre><span></span><code><span class="go">my-repo $ git branch --no-track svnsync</span>
 <span class="go">my-repo $ git branch</span>
 <span class="go">* master</span>
 <span class="go">  svnsync</span>
-</pre></div>
+</code></pre></div>
 <p><strong>2-</strong> Creamos la vinculación con <code>svn</code></p>
-<div class="highlight"><pre><span></span><span class="go">my-repo $ git checkout svnsync</span>
+<div class="highlight"><pre><span></span><code><span class="go">my-repo $ git checkout svnsync</span>
 <span class="go">my-repo $ git svn init --trunk https://my-svn-server.com/my-repos/trunk/my-repo</span>
 <span class="go">my-repo $ git svn fetch</span>
 <span class="go">W: Ignoring error from SVN, path probably does not exist: (160013): El sistema de archivos no tiene el ítem: File not found: revision 100, path '/trunk/my-repo'</span>
@@ -60,18 +60,18 @@ y el <code>trunk</code> del <code>svn</code> esta en <code>https://my-svn-server
 <span class="go">r292 = a9b53777212970a509d9bd3f7fbe18e0cedf01fd (refs/remotes/origin/trunk)</span>
 <span class="go">my-repo $ git reset --hard remotes/origin/trunk</span>
 <span class="go">HEAD está ahora en a9b5377 git-svn-id: https://my-svn-server.com/my-repos/trunk/my-repo@292 08dc7427-57a1-459d-80c6-e9e8415cd7c7</span>
-</pre></div>
+</code></pre></div>
 <p><strong>3-</strong> Mezclamos <code>master</code> en <code>svnsync</code></p>
-<div class="highlight"><pre><span></span><span class="go">my-repo $ git checkout master</span>
+<div class="highlight"><pre><span></span><code><span class="go">my-repo $ git checkout master</span>
 <span class="go">my-repo $ git pull origin master</span>
 <span class="go">my-repo $ git checkout svnsync</span>
 <span class="go">my-repo $ git svn rebase</span>
 <span class="go">my-repo $ git merge -X theirs --allow-unrelated-histories master</span>
 <span class="go">my-repo $ git commit</span>
 <span class="go">my-repo $ git svn dcommit</span>
-</pre></div>
+</code></pre></div>
 <p>Podemos crear un script con los anteriores comandos para automatizar el proceso:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 <span class="nb">set</span> -e
 <span class="c1"># Comprobar que svnsync y master existen</span>
 git show-branch svnsync master
@@ -88,26 +88,26 @@ git merge -X theirs --allow-unrelated-histories master
 git commit
 <span class="c1"># Subir cambios al svn</span>
 git svn dcommit
-</pre></div>
+</code></pre></div>
 <p><strong>Z-</strong> Deshacer todo (si necesitas repetir el proceso desde cero y te esta dando problemas)</p>
 <p><strong>Z.a)</strong> Borrar rama <code>svnsync</code></p>
-<div class="highlight"><pre><span></span><span class="go">my-repo $ git checkout master</span>
+<div class="highlight"><pre><span></span><code><span class="go">my-repo $ git checkout master</span>
 <span class="go">my-repo $ git branch -D svnsync</span>
-</pre></div>
+</code></pre></div>
 <p><strong>Z.b)</strong> Borrar del .git/config las lineas:</p>
-<div class="highlight"><pre><span></span><span class="k">[svn-remote "svn"]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[svn-remote "svn"]</span>
     <span class="na">url</span> <span class="o">=</span> <span class="s">https://my-svn-server.com/my-repos</span>
-<span class="s">    fetch = trunk/my-repo:refs/remotes/origin/trunk</span>
-</pre></div>
+    <span class="na">fetch</span> <span class="o">=</span> <span class="s">trunk/my-repo:refs/remotes/origin/trunk</span>
+</code></pre></div>
 <p><strong>Z.c)</strong> Borrar histórico <code>svn</code></p>
-<div class="highlight"><pre><span></span><span class="go">my-repo $ sudo rm -R .git/svn</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="go">my-repo $ sudo rm -R .git/svn</span>
+</code></pre></div>
 <p><strong>Z.d)</strong> Si esto no funciona, no queda más remedio que empezar verdaderamente desde 0 (acuérdate de salvar tus cambios antes):</p>
-<div class="highlight"><pre><span></span><span class="go">my-repo $ cd ..</span>
-<span class="gp">$</span> sudo rm -R my-repo
-<span class="gp">$</span> git clone git@github.com:my-user/my-repo.git
-<span class="gp">$</span> <span class="nb">cd</span> my-repo
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="go">my-repo $ cd ..</span>
+<span class="gp">$ </span>sudo rm -R my-repo
+<span class="gp">$ </span>git clone git@github.com:my-user/my-repo.git
+<span class="gp">$ </span><span class="nb">cd</span> my-repo
+</code></pre></div>
 <p><strong>Fuentes</strong>: <a href="https://ben.lobaugh.net/blog/147853/creating-a-two-way-sync-between-a-github-repository-and-subversion" target="_blank">ben.lobaugh.net</a>,
 <a href="https://blog.justincarmony.com/2011/02/21/using-git-with-subversion" target="_blank">blog.justincarmony.com</a>,
 <a href="https://stackoverflow.com/questions/14585692/how-to-use-git-svn-to-checkout-only-trunk-and-not-branches-and-tags" target="_blank">stackoverflow.com</a></p>

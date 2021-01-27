@@ -36,38 +36,38 @@ sobre todo si lo anterior lo podemos considerar un prototipo
 o versión ya finalizado, listo para ser tageado y olvidarse de él.</p>
 <h2>Pasos</h2>
 <p><strong>1-</strong> Asegurarse de estar sincronizado y en master</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> git branch
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git branch
 <span class="go">* master</span>
-<span class="gp">$</span> git status
+<span class="gp">$ </span>git status
 <span class="go">En la rama master</span>
 <span class="go">Tu rama está actualizada con 'origin/master'.</span>
 
 <span class="go">nada para hacer commit, el árbol de trabajo está limpio</span>
-</pre></div>
+</code></pre></div>
 <p><strong>2-</strong> Creamos el tag para que no se pierda nada</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> git tag -a -m <span class="s2">"Ultima versión antes de reiniciar repositorio"</span> v1
-<span class="gp">$</span> git push origin v1
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git tag -a -m <span class="s2">"Ultima versión antes de reiniciar repositorio"</span> v1
+<span class="gp">$ </span>git push origin v1
+</code></pre></div>
 <p><strong>3-</strong> Crear una nueva rama desde 0</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> git checkout --orphan nuevo_comienzo
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git checkout --orphan nuevo_comienzo
 <span class="go">Cambiado a nueva rama 'nuevo_comienzo'</span>
-<span class="gp">$</span> git add -A
-<span class="gp">$</span> git commit -am <span class="s2">"nuevo_comienzo"</span>
-<span class="gp">$</span> git status
+<span class="gp">$ </span>git add -A
+<span class="gp">$ </span>git commit -am <span class="s2">"nuevo_comienzo"</span>
+<span class="gp">$ </span>git status
 <span class="go">En la rama nuevo_comienzo</span>
 <span class="go">nada para hacer commit, el árbol de trabajo está limpio</span>
-<span class="gp">$</span> git branch
+<span class="gp">$ </span>git branch
 <span class="go">  master</span>
 <span class="go">* nuevo_comienzo</span>
-</pre></div>
+</code></pre></div>
 <p><strong>4-</strong> Sustituir master con nuevo_comienzo</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> git branch -D master <span class="c1"># Elimina 'master' original</span>
-<span class="gp">$</span> git branch -m master <span class="c1"># Renombra 'nuevo_comienzo' a 'master'</span>
-<span class="gp">$</span> git push -f origin master <span class="c1"># Sube los cambios</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git branch -D master <span class="c1"># Elimina 'master' original</span>
+<span class="gp">$ </span>git branch -m master <span class="c1"># Renombra 'nuevo_comienzo' a 'master'</span>
+<span class="gp">$ </span>git push -f origin master <span class="c1"># Sube los cambios</span>
+</code></pre></div>
 <p><strong>5-</strong> Limpiar todo lo que ha quedado huérfano</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> git gc --aggressive --prune<span class="o">=</span>all
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git gc --aggressive --prune<span class="o">=</span>all
+</code></pre></div>
 <p><strong>Fuentes</strong>: <a href="https://medium.com/@sangeethkumar.tvm.kpm/cleaning-up-a-git-repo-for-reducing-the-repository-size-d11fa496ba48" target="_blank">medium.com/@sangeethkumar.tvm.kpm</a>,
 <a href="https://stackoverflow.com/questions/13716658/how-to-delete-all-commit-history-in-github" target="_blank">stackoverflow.com</a></p>
 </div><!-- /.entry-content -->

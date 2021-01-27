@@ -24,13 +24,13 @@ xfce</a> </p>
 <article>
 <div class="entry-content">
 <p><strong>1-</strong> Instalar XFCE</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get install xfce4
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo apt-get install xfce4
+</code></pre></div>
 <p><strong>2-</strong> Eliminar LXDE</p>
 <p>Primero listamos los paquetes de LXDE, luego desinstalamos todos los
 resultados y finalmente desintalamos los paquetes que han quedado
 huérfanos</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo dpkg --get-selections <span class="p">|</span> grep <span class="s2">"^lx"</span>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo dpkg --get-selections <span class="p">|</span> grep <span class="s2">"^lx"</span>
 <span class="go">lxappearance                                    install</span>
 <span class="go">lxde                                            install</span>
 <span class="go">lxde-common                                     install</span>
@@ -47,20 +47,20 @@ huérfanos</p>
 <span class="go">lxshortcut                                      install</span>
 <span class="go">lxtask                                          install</span>
 <span class="go">lxterminal                                      install</span>
-<span class="gp">pi@bot ~ $</span> sudo apt-get remove lxappearance lxde lxde-* lxinput lxmenu-data lxmusic lxpanel lxpolkit lxrandr lxsession* lxsession lxshortcut lxtask lxterminal
+<span class="gp">pi@bot ~ $ </span>sudo apt-get remove lxappearance lxde lxde-* lxinput lxmenu-data lxmusic lxpanel lxpolkit lxrandr lxsession* lxsession lxshortcut lxtask lxterminal
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $</span> sudo apt-get autoremove <span class="o">&amp;&amp;</span> sudo apt-get autoclean
-</pre></div>
+<span class="gp">pi@bot ~ $ </span>sudo apt-get autoremove <span class="o">&amp;&amp;</span> sudo apt-get autoclean
+</code></pre></div>
 <p><strong>4-</strong> Instalar paquetes extra para el audio</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get install alsa-base alsa-utils gstreamer0.10-alsa gstreamer0.10-plugins-base xfce4-mixer
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo apt-get install alsa-base alsa-utils gstreamer0.10-alsa gstreamer0.10-plugins-base xfce4-mixer
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $</span> sudo apt-get install gstreamer0.10-plugins-good gstreamer0.10-plugins-bad gstreamer0.10-ffmpeg
-</pre></div>
+<span class="gp">pi@bot ~ $ </span>sudo apt-get install gstreamer0.10-plugins-good gstreamer0.10-plugins-bad gstreamer0.10-ffmpeg
+</code></pre></div>
 <p><strong>5-</strong> Reiniciar y arrancar XFCE</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo reboot
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo reboot
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $</span> startx
-</pre></div>
+<span class="gp">pi@bot ~ $ </span>startx
+</code></pre></div>
 <p>El primer arranque puede tardar varios minutos pero es normal, luego
 arrancara mucho más rápido.</p>
 <p>Fuentes:

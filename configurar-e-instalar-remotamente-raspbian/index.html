@@ -44,17 +44,17 @@ esto puede cambiar)</p>
 <p>Conectamos con el usuario "pi" a la ip obtenida en el paso anterior,
 responemos "yes" a la pregunta que nos hacen y tecleamos "raspberry"
 como contraseña. Finalmente actualizamos como se nos indica el software</p>
-<div class="highlight"><pre><span></span><span class="gp">user@bot ~ $</span> ssh pi@192.168.1.132
+<div class="highlight"><pre><span></span><code><span class="gp">user@bot ~ $ </span>ssh pi@192.168.1.132
 <span class="go">The authenticity of host '192.168.1.132 (192.168.1.132)' can't be established.</span>
 <span class="go">ECDSA key fingerprint is e8:c5:6d:df:58:a7:a3:5a:7d:e6:f2:9d:dd:43:b1:d0.</span>
 <span class="go">Are you sure you want to continue connecting (yes/no)? &lt;strong&gt;yes&lt;/strong&gt;</span>
 <span class="go">Warning: Permanently added '192.168.1.132' (ECDSA) to the list of known hosts.</span>
 <span class="go">pi@192.168.1.132's password: &lt;strong&gt;raspberry&lt;/strong&gt;</span>
-</pre></div>
+</code></pre></div>
 <p><strong>5-</strong> Configuramos las opciones de Raspbian</p>
 <p>Nos metemos en el panel de configuración</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@raspberrypi ~ $</span> sudo raspi-config
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@raspberrypi ~ $ </span>sudo raspi-config
+</code></pre></div>
 <p><img alt="confgpi" src="/images/confgpi.png"/></p>
 <p>Ejecutamos como mínimo:</p>
 <ul>
@@ -68,10 +68,10 @@ user 'pi' at the graphical desktop"</p>
 <p>Le damos a finalizar y cuando nos pregunte si queremos reiniciar le
 decimos que si.</p>
 <p><strong>6-</strong> Actualizar software</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@raspberry ~ $</span> sudo apt-get update
+<div class="highlight"><pre><span></span><code><span class="gp">pi@raspberry ~ $ </span>sudo apt-get update
 <span class="go">...</span>
-<span class="gp">pi@raspberry ~ $</span> sudo apt-get upgrade
-</pre></div>
+<span class="gp">pi@raspberry ~ $ </span>sudo apt-get upgrade
+</code></pre></div>
 <p><strong>7-</strong> Manejar entorno gráfico remotamente</p>
 <p>Dos opciones:</p>
 <ul>

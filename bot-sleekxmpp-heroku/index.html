@@ -26,47 +26,47 @@ xmpp</a> </p>
 <h2>Instalar heroku cli</h2>
 <p>Instalamos <code>heroku CLI</code> siguiendo las <a href="https://devcenter.heroku.com/articles/heroku-cli" target="_blank">instrucción de su web</a></p>
 <h2>Creamos la aplicación</h2>
-<div class="highlight"><pre><span></span><span class="gp">$</span> mkdir heroku-bot
-<span class="gp">$</span> <span class="nb">cd</span> heroku-bot/
-<span class="gp">$</span> heroku create
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir heroku-bot
+<span class="gp">$ </span><span class="nb">cd</span> heroku-bot/
+<span class="gp">$ </span>heroku create
 <span class="go">Creating app... done, ⬢ stark-lake-74962</span>
 <span class="go">https://stark-lake-74962.herokuapp.com/ | https://git.heroku.com/stark-lake-74962.git</span>
-<span class="gp">$</span> git init
+<span class="gp">$ </span>git init
 <span class="go">Initialized empty Git repository in /tmp/heroku-bot/.git/</span>
-<span class="gp">$</span> heroku git:remote -a stark-lake-74962
+<span class="gp">$ </span>heroku git:remote -a stark-lake-74962
 <span class="go">set git remote heroku to https://git.heroku.com/stark-lake-74962.git</span>
-<span class="gp">$</span> heroku buildpacks:set heroku/python
+<span class="gp">$ </span>heroku buildpacks:set heroku/python
 <span class="go">Buildpack set. Next release on stark-lake-74962 will use heroku/python.</span>
 <span class="go">Run git push heroku master to create a new release using this buildpack.</span>
-</pre></div>
+</code></pre></div>
 <h2>Creamos el bot</h2>
-<div class="highlight"><pre><span></span><span class="gp">$</span> sudo pip3 install sleekxmpp
-<span class="gp">$</span> wget -1 https://raw.githubusercontent.com/fritzy/SleekXMPP/develop/examples/echo_client.py
-<span class="gp">$</span> pip3 freeze <span class="p">|</span> grep -i sleekxmpp &gt; requirements.txt
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo pip3 install sleekxmpp
+<span class="gp">$ </span>wget -1 https://raw.githubusercontent.com/fritzy/SleekXMPP/develop/examples/echo_client.py
+<span class="gp">$ </span>pip3 freeze <span class="p">|</span> grep -i sleekxmpp &gt; requirements.txt
+</code></pre></div>
 <h2>Configuramos el proyecto</h2>
 <p><strong>a)</strong> Editamos el bot (<code>echo_client.py</code>) para que funcione con variables de entorno</p>
-<div class="highlight"><pre><span></span>    <span class="k">if</span> <span class="n">opts</span><span class="o">.</span><span class="n">jid</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code>    <span class="k">if</span> <span class="n">opts</span><span class="o">.</span><span class="n">jid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">opts</span><span class="o">.</span><span class="n">jid</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"XMPP_USER"</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">opts</span><span class="o">.</span><span class="n">password</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">opts</span><span class="o">.</span><span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">opts</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"XMPP_PASS"</span><span class="p">]</span>
-</pre></div>
+</code></pre></div>
 <p><strong>b)</strong> Creamos las variables de entorno con los datos del usuario que vamos a utilizar</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> heroku config:set <span class="nv">XMPP_USER</span><span class="o">=</span>ejemplo@bot.com
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>heroku config:set <span class="nv">XMPP_USER</span><span class="o">=</span>ejemplo@bot.com
 <span class="go">Setting XMPP_USER and restarting ⬢ stark-lake-74962... done, v3</span>
 <span class="go">XMPP_USER: ejemplo@bot.com</span>
-<span class="gp">$</span> heroku config:set <span class="nv">XMPP_PASS</span><span class="o">=</span>passejemplo
+<span class="gp">$ </span>heroku config:set <span class="nv">XMPP_PASS</span><span class="o">=</span>passejemplo
 <span class="go">Setting XMPP_PASS and restarting ⬢ stark-lake-74962... done, v4</span>
 <span class="go">XMPP_PASS: passejemplo</span>
-</pre></div>
+</code></pre></div>
 <p><strong>c)</strong> Le indicamos a heroku que tiene que arrancar al desplegar</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"worker: python3 echo_client.py"</span> &gt; Procfile
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"worker: python3 echo_client.py"</span> &gt; Procfile
+</code></pre></div>
 <h2>Desplegamos</h2>
-<div class="highlight"><pre><span></span><span class="gp">$</span> git add .
-<span class="gp">$</span> git commit -m <span class="s2">"Echo bot"</span>
-<span class="gp">$</span> git push heroku master
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git add .
+<span class="gp">$ </span>git commit -m <span class="s2">"Echo bot"</span>
+<span class="gp">$ </span>git push heroku master
+</code></pre></div>
 <h2>Arrancamos el bot</h2>
 <p>Este punto no lo tengo del todo claro. La primera vez que lo hice vi
 que al desplegar no se arrancaba el bot automáticamente, así que entre
@@ -78,9 +78,9 @@ dyno estaba desactivado:</p>
 <p>y el bot arranco. Pero para estos apuntes quise hacerlo todo desde linea
 de comandos, así que tras varias pruebas vi que llegaba al mismo resultado
 haciendo:</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> heroku ps:scale <span class="nv">worker</span><span class="o">=</span><span class="m">1</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>heroku ps:scale <span class="nv">worker</span><span class="o">=</span><span class="m">1</span>
 <span class="go">Scaling dynos... done, now running worker at 1:Free</span>
-<span class="gp">$</span> heroku ps
+<span class="gp">$ </span>heroku ps
 <span class="go">Free dyno hours quota remaining this month: 548h 15m (99%)</span>
 <span class="go">Free dyno usage for this app: 0h 0m (0%)</span>
 <span class="go">For more information on dyno sleeping and how to upgrade, see:</span>
@@ -88,38 +88,38 @@ haciendo:</p>
 
 <span class="go">=== worker (Free): python3 echo_client.py (1)</span>
 <span class="go">worker.1: up 2019/02/20 17:47:07 +0100 (~ 3s ago)</span>
-</pre></div>
+</code></pre></div>
 <h2>Bonus 1: Añadir servidor web</h2>
 <p>Según algunos blogs <code>heroku</code> espera que haya un servidor web y si no
 lo encuentra puede pensar que la aplicación esta fallando y por lo tanto
 pararla. A fin de evitar esto recomiendan añadir un servidor web aunque
 sea de pega.</p>
 <p><strong>a)</strong> Instalamos y añadimos las dependencias</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> sudo pip3 install flask
-<span class="gp">$</span> pip3 freeze <span class="p">|</span> grep -i flask &gt;&gt; requirements.txt
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo pip3 install flask
+<span class="gp">$ </span>pip3 freeze <span class="p">|</span> grep -i flask &gt;&gt; requirements.txt
+</code></pre></div>
 <p><strong>b)</strong> Creamos el servidor (<code>server.py</code>)</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">environ</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">environ</span>
 <span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
 
 <span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'PORT'</span><span class="p">))</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="nd">@app.route</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
     <span class="k">return</span> <span class="s2">"Hello World!"</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span> <span class="s1">'0.0.0.0'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 <p><strong>c)</strong> Lo añadimos a <code>Procfile</code></p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">echo</span> <span class="s2">"web: python3 server.py"</span> &gt;&gt; Procfile
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"web: python3 server.py"</span> &gt;&gt; Procfile
+</code></pre></div>
 <p><strong>d)</strong> Desplegamos</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> git add .
-<span class="gp">$</span> git commit -m <span class="s2">"Echo bot with web server"</span>
-<span class="gp">$</span> git push heroku master
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git add .
+<span class="gp">$ </span>git commit -m <span class="s2">"Echo bot with web server"</span>
+<span class="gp">$ </span>git push heroku master
+</code></pre></div>
 <p>El <code>dyno</code> de <code>web</code> si que se arranca solo, pero el <code>dyno</code> de <code>worker</code>
 seguirá necesitando ser arrancado a mano.</p>
 <h2>Bonus 2: Probar en local</h2>
@@ -129,12 +129,12 @@ tener que meterlas en nuestra máquina o pasarlas por comando cada vez que
 probemos, crearemos un fichero <code>.env</code> con dichas variables para que <code>heroku</code>
 las simule en la prueba local. Al ser información sensible debemos también
 excluirlo del proyecto <code>git</code>.</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> heroku config:get XMPP_USER XMPP_PASS -s &gt; .env
-<span class="gp">$</span> <span class="nb">echo</span> <span class="s2">".env"</span> &gt; .gitignore
-<span class="gp">$</span> heroku <span class="nb">local</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>heroku config:get XMPP_USER XMPP_PASS -s &gt; .env
+<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">".env"</span> &gt; .gitignore
+<span class="gp">$ </span>heroku <span class="nb">local</span>
 <span class="go">[OKAY] Loaded ENV .env File as KEY=VALUE Format</span>
 <span class="go">20:03:47 worker.1   |  INFO     ...</span>
-</pre></div>
+</code></pre></div>
 <p>Fuentes: <a href="https://dev.to/emcain/how-to-set-up-a-twitter-bot-with-python-and-heroku-1n39" target="_blank">emcain - dev.to</a>,
 <a href="https://boostlog.io/@anshulc95/how-to-host-a-discord-bot-on-heroku-for-free-5a9c230798a8b60096c43336" target="_blank">anshulc95 - boostlog.io</a></p>
 </div><!-- /.entry-content -->

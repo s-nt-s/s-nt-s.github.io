@@ -40,24 +40,24 @@ queremos pagarlo ni queremos dar acceso a nuestra cuenta sin encriptar</p>
 intermedia + nuestra cuenta final</p>
 <p><strong>1-</strong> Crear directorio para el script e instalar las herramientas
 necesarias</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> mkdir .owa
-<span class="gp">pi@bot ~ $</span> <span class="nb">cd</span> .owa
-<span class="gp">pi@bot ~/.owa $</span> wget http://downloads.sourceforge.net/project/davmail/davmail/4.4.0/davmail-4.4.0-2198.zip
-<span class="gp">pi@bot ~/.owa $</span> unzip davmail-*.zip
-<span class="gp">pi@bot ~/.owa $</span> rm davmail-*.zip
-<span class="gp">pi@bot ~/.owa $</span> aptitude install libmail-pop3client-perl libmail-imapclient-perl libdigest-hmac-perl libemail-simple-perl libdate-manip-perl
-<span class="gp">pi@bot ~/.owa $</span> wget http://www.linux-france.org/prj/pop2imap/dist/pop2imap-1.21.tgz
-<span class="gp">pi@bot ~/.owa $</span> tar -xzvf pop2imap-*.tgz
-<span class="gp">pi@bot ~/.owa $</span> <span class="nb">cd</span> pop2imap*
-<span class="gp">pi@bot ~/.owa/pop2imap-1.21 $</span> make install
-<span class="gp">pi@bot ~/.owa/pop2imap-1.21 $</span> <span class="nb">cd</span> ..
-<span class="gp">pi@bot ~/.owa $</span> rm -R pop2imap*
-<span class="gp">pi@bot ~/.owa $</span> touch owa.sh
-<span class="gp">pi@bot ~/.owa $</span> chmod +x owa.sh
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>mkdir .owa
+<span class="gp">pi@bot ~ $ </span><span class="nb">cd</span> .owa
+<span class="gp">pi@bot ~/.owa $ </span>wget http://downloads.sourceforge.net/project/davmail/davmail/4.4.0/davmail-4.4.0-2198.zip
+<span class="gp">pi@bot ~/.owa $ </span>unzip davmail-*.zip
+<span class="gp">pi@bot ~/.owa $ </span>rm davmail-*.zip
+<span class="gp">pi@bot ~/.owa $ </span>aptitude install libmail-pop3client-perl libmail-imapclient-perl libdigest-hmac-perl libemail-simple-perl libdate-manip-perl
+<span class="gp">pi@bot ~/.owa $ </span>wget http://www.linux-france.org/prj/pop2imap/dist/pop2imap-1.21.tgz
+<span class="gp">pi@bot ~/.owa $ </span>tar -xzvf pop2imap-*.tgz
+<span class="gp">pi@bot ~/.owa $ </span><span class="nb">cd</span> pop2imap*
+<span class="gp">pi@bot ~/.owa/pop2imap-1.21 $ </span>make install
+<span class="gp">pi@bot ~/.owa/pop2imap-1.21 $ </span><span class="nb">cd</span> ..
+<span class="gp">pi@bot ~/.owa $ </span>rm -R pop2imap*
+<span class="gp">pi@bot ~/.owa $ </span>touch owa.sh
+<span class="gp">pi@bot ~/.owa $ </span>chmod +x owa.sh
+</code></pre></div>
 <p><strong>2-</strong> Configurar DavMail</p>
 <p><code>davmail.properties</code>:</p>
-<div class="highlight"><pre><span></span><span class="err">...</span>
+<div class="highlight"><pre><span></span><code><span class="err">...</span>
 <span class="c"># Modo servidor</span>
 <span class="na">davmail.server</span><span class="o">=</span><span class="s">true</span>
 <span class="c"># Exchange OWA o EWS url</span>
@@ -74,10 +74,10 @@ necesarias</p>
 <span class="c"># Lo dejamos vacio para que escriba el log en la misma carpeta del script</span>
 <span class="na">davmail.logFilePath</span><span class="o">=</span>
 <span class="err">...</span>
-</pre></div>
+</code></pre></div>
 <p><strong>3-</strong> Crear script de ejecución</p>
 <p><code>owa.sh</code>:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 
 <span class="c1">#Editar con nuestros datos</span>
 <span class="nv">usr1</span><span class="o">=</span>origen@outloock.com
@@ -138,20 +138,20 @@ log <span class="s2">"</span><span class="nv">$msg</span><span class="s2">"</spa
 <span class="k">if</span> <span class="o">[</span> <span class="nv">$mig</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$dat</span><span class="s2"> - </span><span class="nv">$msg</span><span class="s2">"</span> &gt;&gt; summary.log
 <span class="k">fi</span>
-</pre></div>
+</code></pre></div>
 <p><strong>4-</strong> Crear tarea programada</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> crontab -e
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>crontab -e
+</code></pre></div>
 <p>Añadir las siguientes lineas para que el script se ejecute
 periódicamente</p>
-<div class="highlight"><pre><span></span># Cada hora en horario laboral
-0 7-20 * * 1,2,3,4  /bin/bash ~/.owa/owa.sh
-0 7-18 * * 5  /bin/bash ~/.owa/owa.sh
-# Cada 4 horas fuera de horario laboral y entre semana
-0 23,3 * * 1,2,3,4  /bin/bash ~/.owa/owa.sh
-# Cada 8 horas en fin de semana
-0 */8 * 6,7 /bin/bash ~/.owa/owa.sh
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err"># Cada hora en horario laboral</span>
+<span class="err">0 7-20 * * 1,2,3,4  /bin/bash ~/.owa/owa.sh</span>
+<span class="err">0 7-18 * * 5  /bin/bash ~/.owa/owa.sh</span>
+<span class="err"># Cada 4 horas fuera de horario laboral y entre semana</span>
+<span class="err">0 23,3 * * 1,2,3,4  /bin/bash ~/.owa/owa.sh</span>
+<span class="err"># Cada 8 horas en fin de semana</span>
+<span class="err">0 */8 * 6,7 /bin/bash ~/.owa/owa.sh</span>
+</code></pre></div>
 <p><strong>5-</strong> Configurar nuestra cuenta final</p>
 <p>Ahora nuestra cuenta final puede leer vía pop de la cuenta intermedia
 (que funciona como espejo del owa) sin problemas.</p>

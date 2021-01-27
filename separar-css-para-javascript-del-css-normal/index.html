@@ -47,13 +47,13 @@ delante de nuestras narices</p>
 para uso con javascript que solo estará disponible cuando haya js de
 manera que la página se renderice como queremos a la primera</p>
 <p><code>css/main.css</code>:</p>
-<div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">displayIfJS</span><span class="p">{</span><span class="k">display</span><span class="p">:</span><span class="kc">none</span><span class="p">;}</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">.</span><span class="nc">displayIfJS</span><span class="p">{</span><span class="k">display</span><span class="p">:</span><span class="kc">none</span><span class="p">;}</span>
+</code></pre></div>
 <p><code>css/javascript.css</code>:</p>
-<div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">hiddenIfJS</span><span class="p">{</span><span class="k">display</span><span class="p">:</span><span class="kc">none</span><span class="p">;}</span>
+<div class="highlight"><pre><span></span><code><span class="p">.</span><span class="nc">hiddenIfJS</span><span class="p">{</span><span class="k">display</span><span class="p">:</span><span class="kc">none</span><span class="p">;}</span>
 <span class="p">.</span><span class="nc">displayIfJS</span><span class="p">{</span><span class="k">display</span><span class="p">:</span><span class="kc">inline</span> <span class="cp">!important</span><span class="p">}</span>
-</pre></div>
-<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">"css/main.css"</span> <span class="na">rel</span><span class="o">=</span><span class="s">"stylesheet"</span> <span class="na">media</span><span class="o">=</span><span class="s">"screen"</span> <span class="na">type</span><span class="o">=</span><span class="s">"text/css"</span> <span class="p">/&gt;</span>
     <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">"text/javascript"</span><span class="p">&gt;</span>
@@ -67,7 +67,7 @@ manera que la página se renderice como queremos a la primera</p>
     <span class="p">&lt;</span><span class="nt">a</span> <span class="na">class</span><span class="o">=</span><span class="s">"hiddenIfJS"</span> <span class="na">href</span><span class="o">=</span><span class="s">"#do"</span><span class="p">&gt;</span>Link sin JS<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</pre></div>
+</code></pre></div>
 <p>El caso del menú desplegable es similar, simplemente la clase o clases
 que lo muestran colapsado estaría en javascript.css</p>
 </div><!-- /.entry-content -->

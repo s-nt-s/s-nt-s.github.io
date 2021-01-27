@@ -27,28 +27,28 @@ linux</a> </p>
 <p>Obtener de
 <a href="http://philproctor.github.io/SimpleComputerRemote/" target="_blank">http://philproctor.github.io/SimpleComputerRemote</a>
 el fichero .deb e instalarlo</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@rasp ~ $</span> wget http://philproctor.github.io/SimpleComputerRemote/downloads/simplecomputerremote_1.2_armhf.deb
+<div class="highlight"><pre><span></span><code><span class="gp">pi@rasp ~ $ </span>wget http://philproctor.github.io/SimpleComputerRemote/downloads/simplecomputerremote_1.2_armhf.deb
 <span class="go">...</span>
-<span class="gp">pi@rasp ~ $</span> sudo dpkg -i simplecomputerremote_1.2_armhf.deb
-</pre></div>
+<span class="gp">pi@rasp ~ $ </span>sudo dpkg -i simplecomputerremote_1.2_armhf.deb
+</code></pre></div>
 <p><strong>2-</strong> Hacemos que se arranque con cada inicio de sesión</p>
 <p>Generamos el archivo <code>SimpleComputerRemote.desktop</code> en
 <code>/home/pi/.config/autostart</code></p>
-<div class="highlight"><pre><span></span><span class="gp">pi@rasp ~ $</span> mkdir /home/pi/.config/autostart
-<span class="gp">pi@rasp ~ $</span> nano /home/pi/.config/autostart/SimpleComputerRemote.desktop
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@rasp ~ $ </span>mkdir /home/pi/.config/autostart
+<span class="gp">pi@rasp ~ $ </span>nano /home/pi/.config/autostart/SimpleComputerRemote.desktop
+</code></pre></div>
 <p>con el siguiente contenido</p>
-<div class="highlight"><pre><span></span><span class="k">[Desktop Entry]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[Desktop Entry]</span>
 <span class="na">name</span><span class="o">=</span><span class="s">SimpleComputerRemote</span>
 <span class="na">GenericName</span><span class="o">=</span><span class="s">Remote Control</span>
 <span class="na">Comment</span><span class="o">=</span><span class="s">Allow remote control using Simple Computer Remote</span>
 <span class="na">Exec</span><span class="o">=</span><span class="s">/opt/rekap/SimpleComputerRemote</span>
 <span class="na">Terminal</span><span class="o">=</span><span class="s">False</span>
 <span class="na">Type</span><span class="o">=</span><span class="s">Application</span>
-</pre></div>
+</code></pre></div>
 <p>Reiniciamos</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@rasp ~ $</span> sudo reboot
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@rasp ~ $ </span>sudo reboot
+</code></pre></div>
 <p><strong>3-</strong> Instalamos el cliente en nuestro móvil Android</p>
 <p>Vamos a <a href="https://play.google.com/store/apps/details?id=com.rekap.remote" target="_blank">https://play.google.com/store/apps/details?id=com.rekap.remote</a>
 y lo instalamos</p>

@@ -30,16 +30,16 @@ porque han deshabilitado desde el servidor el acceso EWS</p>
 <p><strong>Solución</strong>: Para reducir las veces que nos vemos obligados a entrar a
 OWA construiremos un script que nos avise de cuando hay un correo nuevo</p>
 <p><strong>1-</strong> Crear el script que visitara OWA por nosotros</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> <span class="nb">cd</span> ~/.owa
-<span class="gp">pi@bot ~ $</span> touch inbox.txt
-<span class="gp">pi@bot ~ $</span> touch notif.awk
-<span class="gp">pi@bot ~ $</span> touch notif.sh
-<span class="gp">pi@bot ~ $</span> chmod +x notif.sh
-<span class="gp">pi@bot ~ $</span> nano notif.sh
-<span class="gp">pi@bot ~ $</span> nano notif.awk
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span><span class="nb">cd</span> ~/.owa
+<span class="gp">pi@bot ~ $ </span>touch inbox.txt
+<span class="gp">pi@bot ~ $ </span>touch notif.awk
+<span class="gp">pi@bot ~ $ </span>touch notif.sh
+<span class="gp">pi@bot ~ $ </span>chmod +x notif.sh
+<span class="gp">pi@bot ~ $ </span>nano notif.sh
+<span class="gp">pi@bot ~ $ </span>nano notif.awk
+</code></pre></div>
 <p><code>~/.owa/notif.sh</code>:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 
 <span class="nv">usr1</span><span class="o">=</span>origen@outloock.com
 <span class="nv">pas1</span><span class="o">=</span>passorigen
@@ -66,12 +66,12 @@ OWA construiremos un script que nos avise de cuando hay un correo nuevo</p>
     <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$ln</span><span class="s2">"</span> &gt;&gt; <span class="nv">$CWD</span>/inbox.txt
     sudo say <span class="s2">"</span><span class="nv">$ln</span><span class="s2">"</span>
 <span class="k">done</span>
-</pre></div>
+</code></pre></div>
 <p><strong>Nota</strong>: El comando <code>say</code> es el implementado en "<a href="http://apuntes.pusku.com/914" target="_blank">Notificaciones xmmp
 desde linux</a>" y podría ser sustituido por
 algún otro método de notificación que deseemos</p>
 <p><code>"~/.owa/notif.awk</code>:</p>
-<div class="highlight"><pre><span></span><span class="nb">BEGIN</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="nb">BEGIN</span> <span class="p">{</span>
         <span class="nx">m</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
         <span class="nx">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
         <span class="nx">s</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
@@ -112,7 +112,7 @@ algún otro método de notificación que deseemos</p>
                 <span class="nx">s</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
         <span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 <p><strong>2-</strong> Crear tarea programada</p>
 <p>Repetimos el paso homologo del post "<a href="http://apuntes.pusku.com/251" target="_blank">Acceder a OWA a través de otra
 cuenta de correo</a>" pero con el script

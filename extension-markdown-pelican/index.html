@@ -26,7 +26,7 @@ python</a> </p>
 <div class="entry-content">
 <p>Según la documentación de <code>pelican</code> la manera de incluir un plugin <code>markdown</code>
 es poniendo en <code>pelicanconf.py</code> lo siguiente:</p>
-<div class="highlight"><pre><span></span><span class="n">MARKDOWN</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="n">MARKDOWN</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">'extensions'</span><span class="p">:</span> <span class="p">[</span> <span class="o">&lt;&lt;</span><span class="n">aquí</span> <span class="n">van</span> <span class="n">las</span> <span class="n">extensiones</span><span class="o">&gt;&gt;</span> <span class="p">],</span>
     <span class="s1">'extension_configs'</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">'markdown.extensions.codehilite'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'css_class'</span><span class="p">:</span> <span class="s1">'highlight'</span><span class="p">},</span>
@@ -35,7 +35,7 @@ es poniendo en <code>pelicanconf.py</code> lo siguiente:</p>
     <span class="p">},</span>
     <span class="s1">'output_format'</span><span class="p">:</span> <span class="s1">'html5'</span><span class="p">,</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 <p>donde la parte relevante es el array <code>extensions</code> ya que lo demás solo se pone
 para preservar el valor por defecto de la variable <code>MARKDOWN</code></p>
 <p>Si estamos incluyendo extensiones de terceros probablemente esto sea lo mejor,
@@ -48,7 +48,7 @@ Esto también es útil cuando queremos configurar la extensión en base a
 variables de <code>pelicanconf.py</code> evitando tener que pasarlas por parámetro una a una.</p>
 <p>Este sería un ejemplo para poder usar variables en <code>markdown</code></p>
 <p>En <code>pelicanconf.py</code>:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)</span> <span class="c1">#### 1</span>
 <span class="kn">from</span> <span class="nn">plugins</span> <span class="kn">import</span> <span class="n">replacements</span> <span class="c1">#### 2</span>
 
@@ -60,14 +60,14 @@ variables de <code>pelicanconf.py</code> evitando tener que pasarlas por paráme
 
 <span class="n">GITHUB_URL</span> <span class="o">=</span> <span class="s1">'https://github.com/s-nt-s/s-nt-s.github.io'</span>
 <span class="n">DEFAULT_PAGINATION</span> <span class="o">=</span> <span class="mi">10</span>
-</pre></div>
+</code></pre></div>
 <ul>
 <li>Con <code>1</code> y <code>2</code> incluimos el <code>plugin</code> que esta en <code>plugins/replacements.py</code></li>
 <li>Con <code>3</code> definimos la variable que se usara para obtener el fichero de configuración</li>
 <li>Con <code>4</code> incluimos el <code>plugin</code></li>
 </ul>
 <p>En <code>plugins/replacements.py</code> tenemos:</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">markdown.preprocessors</span> <span class="kn">import</span> <span class="n">Preprocessor</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">markdown.preprocessors</span> <span class="kn">import</span> <span class="n">Preprocessor</span>
 <span class="kn">from</span> <span class="nn">markdown.extensions</span> <span class="kn">import</span> <span class="n">Extension</span>
 <span class="kn">from</span> <span class="nn">pelican</span> <span class="kn">import</span> <span class="n">signals</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
@@ -125,7 +125,7 @@ variables de <code>pelicanconf.py</code> evitando tener que pasarlas por paráme
 <span class="k">def</span> <span class="nf">register</span><span class="p">():</span>
     <span class="sd">"""Plugin registration"""</span>
     <span class="n">signals</span><span class="o">.</span><span class="n">initialized</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">replacements_init</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 <ul>
 <li><code>register</code> registra el <code>plugin</code></li>
 <li><code>replacements_init</code> usa <code>pelicanobj</code> para preparar las opciones a través de <code>process_settings</code> y pasarselas a <code>replacements_markdown_extension</code></li>
@@ -135,28 +135,28 @@ variables de <code>pelicanconf.py</code> evitando tener que pasarlas por paráme
 <p>En <code>process_settings</code> vemos como nos es de ayuda tener el objeto <code>pelican</code> disponible,
 de manera que tenemos disponible <code>REPLACEMENTS_CONFIG</code> para encontrar el <code>yaml</code> de configuración (en <code>1</code>)
 y a su vez podemos usar otras variables (en <code>2</code>) de manera que si el <code>yaml</code> es:</p>
-<div class="highlight"><pre><span></span>DELIMITER: '::'
-PELICAN_SETTINGS: GITHUB_URL DEFAULT_PAGINATION
-LOREM: Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="c">DELIMITER: '::'</span>
+<span class="c">PELICAN_SETTINGS: GITHUB_URL DEFAULT_PAGINATION</span>
+<span class="c">LOREM: Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+</code></pre></div>
 <p>y tenemos un <code>markdown</code> tal que así:</p>
-<div class="highlight"><pre><span></span>Este blog usa una imaginación de **::DEFAULT_PAGINATION::** items por hoja y
-puedes encontrar el código en [github](::GITHUB_URL::)
+<div class="highlight"><pre><span></span><code><span class="n">Este</span><span class="w"> </span><span class="n">blog</span><span class="w"> </span><span class="n">usa</span><span class="w"> </span><span class="n">una</span><span class="w"> </span><span class="n">imaginación</span><span class="w"> </span><span class="n">de</span><span class="w"> </span><span class="o">**::</span><span class="nl">DEFAULT_PAGINATION</span><span class="p">:</span><span class="err">:</span><span class="o">**</span><span class="w"> </span><span class="n">items</span><span class="w"> </span><span class="n">por</span><span class="w"> </span><span class="n">hoja</span><span class="w"> </span><span class="n">y</span><span class="w"></span>
+<span class="n">puedes</span><span class="w"> </span><span class="n">encontrar</span><span class="w"> </span><span class="n">el</span><span class="w"> </span><span class="n">código</span><span class="w"> </span><span class="n">en</span><span class="w"> </span><span class="o">[</span><span class="n">github</span><span class="o">]</span><span class="p">(</span><span class="o">::</span><span class="nl">GITHUB_URL</span><span class="p">:</span><span class="err">:</span><span class="p">)</span><span class="w"></span>
 
-::LOREN::
-</pre></div>
+<span class="o">::</span><span class="nl">LOREN</span><span class="p">:</span><span class="err">:</span><span class="w"></span>
+</code></pre></div>
 <p>se transformara justo antes de ser pasado a <code>html</code> en:</p>
-<div class="highlight"><pre><span></span>Este blog usa una imaginación de **10** items por hoja y
-puedes encontrar el código en [github](https://github.com/s-nt-s/s-nt-s.github.io)
+<div class="highlight"><pre><span></span><code><span class="n">Este</span><span class="w"> </span><span class="n">blog</span><span class="w"> </span><span class="n">usa</span><span class="w"> </span><span class="n">una</span><span class="w"> </span><span class="n">imaginación</span><span class="w"> </span><span class="n">de</span><span class="w"> </span><span class="o">**</span><span class="mi">10</span><span class="o">**</span><span class="w"> </span><span class="n">items</span><span class="w"> </span><span class="n">por</span><span class="w"> </span><span class="n">hoja</span><span class="w"> </span><span class="n">y</span><span class="w"></span>
+<span class="n">puedes</span><span class="w"> </span><span class="n">encontrar</span><span class="w"> </span><span class="n">el</span><span class="w"> </span><span class="n">código</span><span class="w"> </span><span class="n">en</span><span class="w"> </span><span class="o">[</span><span class="n">github</span><span class="o">]</span><span class="p">(</span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">s</span><span class="o">-</span><span class="n">nt</span><span class="o">-</span><span class="n">s</span><span class="o">/</span><span class="n">s</span><span class="o">-</span><span class="n">nt</span><span class="o">-</span><span class="n">s</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span><span class="p">)</span><span class="w"></span>
 
-Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...
-</pre></div>
+<span class="n">Neque</span><span class="w"> </span><span class="n">porro</span><span class="w"> </span><span class="n">quisquam</span><span class="w"> </span><span class="n">est</span><span class="w"> </span><span class="n">qui</span><span class="w"> </span><span class="n">dolorem</span><span class="w"> </span><span class="n">ipsum</span><span class="w"> </span><span class="n">quia</span><span class="w"> </span><span class="n">dolor</span><span class="w"> </span><span class="n">sit</span><span class="w"> </span><span class="n">amet</span><span class="p">,</span><span class="w"> </span><span class="n">consectetur</span><span class="p">,</span><span class="w"> </span><span class="n">adipisci</span><span class="w"> </span><span class="n">velit</span><span class="p">...</span><span class="w"></span>
+</code></pre></div>
 <p>y finalmente en el <code>html</code></p>
-<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Este blog usa una imaginación de <span class="p">&lt;</span><span class="nt">b</span><span class="p">&gt;</span>10<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span> items por hoja y
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Este blog usa una imaginación de <span class="p">&lt;</span><span class="nt">b</span><span class="p">&gt;</span>10<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span> items por hoja y
 puedes encontrar el código en <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">'https://github.com/s-nt-s/s-nt-s.github.io'</span><span class="p">&gt;</span>github<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
 
 <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</pre></div>
+</code></pre></div>
 <p>Resumo las ventajas:</p>
 <ul>
 <li>menos lineas en <code>pelicanconf.py</code></li>

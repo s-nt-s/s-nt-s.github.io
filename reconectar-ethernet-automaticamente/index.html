@@ -30,11 +30,11 @@ físicamente a él para reiniciarlo no es una buena solución.</p>
 conexión del ethernet y levantarlo en caso de caída.</p>
 <p><strong>1-</strong> Crear script para ver el estado del ethernet y levantarlo si es
 necesario.</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo touch /usr/local/bin/eth
-<span class="gp">pi@bot ~ $</span> sudo chmod <span class="m">777</span> /usr/local/bin/eth
-<span class="gp">pi@bot ~ $</span> sudo nano /usr/local/bin/eth
-</pre></div>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo touch /usr/local/bin/eth
+<span class="gp">pi@bot ~ $ </span>sudo chmod <span class="m">777</span> /usr/local/bin/eth
+<span class="gp">pi@bot ~ $ </span>sudo nano /usr/local/bin/eth
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 ok<span class="o">()</span> <span class="o">{</span>
     <span class="nv">STATE</span><span class="o">=</span><span class="k">$(</span>ifconfig eth0 <span class="p">|</span> grep <span class="s2">"inet addr:"</span> <span class="p">|</span> sed <span class="s1">'s/^ *inet addr/Lan/'</span> <span class="p">|</span> sed <span class="s1">'s/  / /g'</span><span class="k">)</span>
     <span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>curl -s icanhazip.com<span class="k">)</span>
@@ -63,32 +63,32 @@ ok<span class="o">()</span> <span class="o">{</span>
 <span class="k">else</span>
     <span class="nb">echo</span> <span class="s2">"RESET FAIL - </span><span class="nv">$ERR</span><span class="s2">"</span>
 <span class="k">fi</span>
-</pre></div>
+</code></pre></div>
 <p><strong>2-</strong> Ejemplo de uso desde linea de comandos</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> eth
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>eth
 <span class="go">Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0</span>
-<span class="gp">pi@bot ~ $</span> eth --log
+<span class="gp">pi@bot ~ $ </span>eth --log
 <span class="go">23/03/2014 21:14 &gt; Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0</span>
-<span class="gp">pi@bot ~ $</span> sudo ifdown eth0
+<span class="gp">pi@bot ~ $ </span>sudo ifdown eth0
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $</span> eth
+<span class="gp">pi@bot ~ $ </span>eth
 <span class="go">RESET FAIL - ifup: failed to open statefile /run/network/ifstate: Permission denied</span>
-<span class="gp">pi@bot ~ $</span> sudo eth
+<span class="gp">pi@bot ~ $ </span>sudo eth
 <span class="go">RESET OK - Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0</span>
-</pre></div>
+</code></pre></div>
 <p><strong>3-</strong> Programar tarea cada 5 minutos</p>
 <p>Editar el crontab de usuario root y añadir las siguientes lineas al
 final del fichero</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo nano /etc/crontab
-</pre></div>
-<div class="highlight"><pre><span></span># Cada 5 minutos testeamos el ethernet
-*/5 *   * * *   root    /bin/bash /usr/local/bin/eth --log  | grep "RESET\|ERROR" &gt;&gt; /var/log/eth.log
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo nano /etc/crontab
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Cada 5 minutos testeamos el ethernet</span>
+<span class="o">*/</span><span class="mi">5</span> <span class="o">*</span>   <span class="o">*</span> <span class="o">*</span> <span class="o">*</span>   <span class="n">root</span>    <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">eth</span> <span class="o">--</span><span class="nb">log</span>  <span class="o">|</span> <span class="n">grep</span> <span class="s2">"RESET\|ERROR"</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">eth</span><span class="o">.</span><span class="n">log</span>
+</code></pre></div>
 <p><strong>4-</strong> Ejemplos de log generado por crontab</p>
-<div class="highlight"><pre><span></span>20/03/2014 07:05 &gt; RESET OK - Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0
-20/03/2014 16:05 &gt; RESET OK - Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0
-21/03/2014 17:05 &gt; RESET OK - Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">20/03/2014 07:05 &gt; RESET OK - Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0</span>
+<span class="err">20/03/2014 16:05 &gt; RESET OK - Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0</span>
+<span class="err">21/03/2014 17:05 &gt; RESET OK - Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0</span>
+</code></pre></div>
 <p>Fuente:
 <a href="http://www.samhobbs.co.uk/2013/11/fix-for-ethernet-connection-drop-on-raspberry-pi/" target="_blank">samhobbs</a>
 (<a href="http://webcache.googleusercontent.com/search?q=cache:T9cgkUiSUZsJ:www.samhobbs.co.uk/2013/11/fix-for-ethernet-connection-drop-on-raspberry-pi/+&amp;cd=1&amp;hl=es&amp;ct=clnk" target="_blank">cache</a>)</p>

@@ -33,30 +33,30 @@ contraseñas simples</p>
     <code>pam_unix.so</code></li>
 <li>Borrar la palabra obscure y añadir <code>nullok min_len=3</code></li>
 </ol>
-<div class="highlight"><pre><span></span><span class="gp">user@mint ~ $</span> gksudo gedit /etc/pam.d/common-password
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">user@mint ~ $ </span>gksudo gedit /etc/pam.d/common-password
+</code></pre></div>
 <p>Antes:</p>
-<div class="highlight"><pre><span></span>...
-# here are the per-package modules (the "Primary" block)
-password    [success=2 default=ignore]  pam_unix.so obscure sha512
-password    [success=1 default=ignore]  pam_winbind.so use_authtok
-...
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">...</span>
+<span class="err"># here are the per-package modules (the "Primary" block)</span>
+<span class="err">password    [success=2 default=ignore]  pam_unix.so obscure sha512</span>
+<span class="err">password    [success=1 default=ignore]  pam_winbind.so use_authtok</span>
+<span class="err">...</span>
+</code></pre></div>
 <p>Después:</p>
-<div class="highlight"><pre><span></span>...
-# here are the per-package modules (the "Primary" block)
-password    [success=2 default=ignore]  pam_unix.so nullok minlen=3 sha512
-password    [success=1 default=ignore]  pam_winbind.so use_authtok
-...
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">...</span>
+<span class="err"># here are the per-package modules (the "Primary" block)</span>
+<span class="err">password    [success=2 default=ignore]  pam_unix.so nullok minlen=3 sha512</span>
+<span class="err">password    [success=1 default=ignore]  pam_winbind.so use_authtok</span>
+<span class="err">...</span>
+</code></pre></div>
 <p>Reiniciar</p>
-<div class="highlight"><pre><span></span><span class="gp">user@mint ~ $</span> passwd
+<div class="highlight"><pre><span></span><code><span class="gp">user@mint ~ $ </span>passwd
 <span class="go">Cambiando la contraseña de user.</span>
-<span class="go">(actual) contraseña de UNIX: ********</span>
+<span class="gp gp-VirtualEnv">(actual)</span> <span class="go">contraseña de UNIX: ********</span>
 <span class="go">Introduzca la nueva contraseña de UNIX: ***</span>
 <span class="go">Vuelva a escribir la nueva contraseña de UNIX: ***</span>
 <span class="go">passwd: contraseña actualizada correctamente</span>
-</pre></div>
+</code></pre></div>
 </div><!-- /.entry-content -->
 </article>
 </section>

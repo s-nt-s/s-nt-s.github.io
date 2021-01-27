@@ -26,13 +26,13 @@ git</a> </p>
 usando <code>Git</code></p>
 <h2>Deshacer un <code>push</code></h2>
 <p>Listamos los dos últimos <code>commit</code>:</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> git rebase -i HEAD~2
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git rebase -i HEAD~2
+</code></pre></div>
 <p>Seleccionamos el segundo y lo borramos.</p>
 <p>Forzamos el cambio en la rama <code>master</code> o aquella en la que queramos
 hacer la corrección:</p>
-<div class="highlight"><pre><span></span><span class="go">git push origin +master --force</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="go">git push origin +master --force</span>
+</code></pre></div>
 <p>Fuente: <a href="https://stackoverflow.com/questions/448919/how-can-i-remove-a-commit-on-github" target="_blank">stackoverflow.com</a></p>
 </div><!-- /.entry-content -->
 </article>

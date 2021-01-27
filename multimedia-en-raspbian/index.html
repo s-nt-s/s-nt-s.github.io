@@ -26,11 +26,11 @@ perl</a> </p>
 <div class="entry-content">
 <p><strong>A) Vídeo</strong></p>
 <p><strong>1-</strong> Script para lanzar omxplayer con nuestras opciones habituales</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo touch /usr/local/bin/play
-<span class="gp">pi@bot ~ $</span> sudo chmod <span class="m">777</span> /usr/local/bin/play
-<span class="gp">pi@bot ~ $</span> sudo nano /usr/local/bin/play
-</pre></div>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo touch /usr/local/bin/play
+<span class="gp">pi@bot ~ $ </span>sudo chmod <span class="m">777</span> /usr/local/bin/play
+<span class="gp">pi@bot ~ $ </span>sudo nano /usr/local/bin/play
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 
 <span class="nv">seg</span><span class="o">=</span><span class="m">0</span>
 <span class="nv">sub</span><span class="o">=</span><span class="s2">""</span>
@@ -38,7 +38,7 @@ perl</a> </p>
 <span class="nv">OPTS</span><span class="o">=</span><span class="s2">""</span>
 <span class="k">while</span> <span class="o">((</span> <span class="nv">$#</span> <span class="o">))</span>
 <span class="k">do</span>
-        <span class="k">case</span> <span class="nv">$1</span> in
+        <span class="k">case</span> <span class="nv">$1</span> <span class="k">in</span>
         -s <span class="o">)</span>
                 <span class="nv">seg</span><span class="o">=</span><span class="k">$((</span><span class="nv">$2</span><span class="o">+</span><span class="nv">$seg</span><span class="k">))</span>
                 <span class="nb">shift</span>
@@ -83,23 +83,23 @@ perl</a> </p>
 
 <span class="c1"># Cambiar opcion local por hdmi si se quiere usar la salida de audio digital</span>
 omxplayer -o <span class="nb">local</span> --blank --vol -300 <span class="si">${</span><span class="nv">seg</span><span class="si">}</span> <span class="si">${</span><span class="nv">OPTS</span><span class="si">}</span> <span class="si">${</span><span class="nv">vid</span><span class="si">}</span> <span class="si">${</span><span class="nv">sub</span><span class="si">}</span>
-</pre></div>
+</code></pre></div>
 <p>Ejemplos de uso:</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> play video.avi
-<span class="gp">pi@bot ~ $</span> play video.avi sub.srt
-<span class="gp">pi@bot ~ $</span> play -s <span class="m">10</span> -m <span class="m">2</span> video.avi
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>play video.avi
+<span class="gp">pi@bot ~ $ </span>play video.avi sub.srt
+<span class="gp">pi@bot ~ $ </span>play -s <span class="m">10</span> -m <span class="m">2</span> video.avi
+</code></pre></div>
 <p>2- Crear script para buscar vídeos en youtube y meneame, y reproducir
 medios online</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get install youtube-dl
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo apt-get install youtube-dl
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $</span> sudo youtube-dl -U
+<span class="gp">pi@bot ~ $ </span>sudo youtube-dl -U
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $</span> sudo touch /usr/local/bin/ytb
-<span class="gp">pi@bot ~ $</span> sudo chmod <span class="m">777</span> /usr/local/bin/ytb
-<span class="gp">pi@bot ~ $</span> sudo nano /usr/local/bin/ytb
-</pre></div>
-<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/perl -w</span>
+<span class="gp">pi@bot ~ $ </span>sudo touch /usr/local/bin/ytb
+<span class="gp">pi@bot ~ $ </span>sudo chmod <span class="m">777</span> /usr/local/bin/ytb
+<span class="gp">pi@bot ~ $ </span>sudo nano /usr/local/bin/ytb
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/perl -w</span>
 <span class="k">use</span> <span class="nn">XML::Simple</span><span class="p">;</span>
 <span class="k">use</span> <span class="nn">LWP::Simple</span><span class="p">;</span>
 <span class="k">use</span> <span class="nn">HTML::Entities</span><span class="p">;</span>
@@ -217,9 +217,9 @@ medios online</p>
         <span class="k">print</span> <span class="p">((</span><span class="nv">$t</span> <span class="o">.</span> <span class="s">"\n"</span> <span class="o">.</span> <span class="nv">$d</span> <span class="o">.</span> <span class="s">"\n"</span> <span class="o">.</span> <span class="nv">$l</span> <span class="o">.</span> <span class="s">"\n"</span><span class="p">)</span>  <span class="o">=~</span> <span class="sr">s/\n\n+/\n/g</span><span class="n">r</span><span class="p">);</span>
         <span class="n">play</span><span class="p">(</span><span class="nv">$l</span><span class="p">)</span> <span class="k">if</span> <span class="nv">$suerte</span> <span class="o">||</span> <span class="n">ask</span><span class="p">();</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 <p>Ejemplos de uso:</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> ytb show must go on
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>ytb show must go on
 <span class="go">04:15 - Queen - 'The Show Must Go On' (Music Video)</span>
 <span class="go">The official 'The Show Must Go On' music video. Taken from Queen - 'Innuendo'</span>
 <span class="go">http://www.youtube.com/watch?v=4ADh8Fs3YdU</span>
@@ -229,14 +229,14 @@ medios online</p>
 <span class="go">Subtitle count: 0, state: off, index: 1, delay: 0</span>
 <span class="go">V:PortSettingsChanged: 352x264@24.94 interlace:0 deinterlace:0 par:1.00 layer:0</span>
 <span class="go">have a nice day ;)</span>
-<span class="gp">pi@bot ~ $</span> ytb http://www.youtube.com/watch?v<span class="o">=</span>1hiasK3oE3k
+<span class="gp">pi@bot ~ $ </span>ytb http://www.youtube.com/watch?v<span class="o">=</span>1hiasK3oE3k
 <span class="go">Video codec omx-h264 width 640 height 360 profile 578 fps 25.000000</span>
 <span class="go">Audio codec aac channels 2 samplerate 44100 bitspersample 16</span>
 <span class="go">Subtitle count: 0, state: off, index: 1, delay: 0</span>
 <span class="go">V:PortSettingsChanged: 640x360@25.00 interlace:0 deinterlace:0 par:1.00 layer:0</span>
 <span class="go">Stopped at: 00:00:03</span>
 <span class="go">have a nice day ;)</span>
-<span class="gp">pi@bot~ $</span> ytb -d http://www.youtube.com/watch?v<span class="o">=</span>4ADh8Fs3YdU
+<span class="gp">pi@bot~ $ </span>ytb -d http://www.youtube.com/watch?v<span class="o">=</span>4ADh8Fs3YdU
 <span class="go">[youtube] Setting language</span>
 <span class="go">[youtube] Confirming age</span>
 <span class="go">[youtube] 4ADh8Fs3YdU: Downloading webpage</span>
@@ -253,7 +253,7 @@ medios online</p>
 <span class="go">V:PortSettingsChanged: 352x264@24.94 interlace:0 deinterlace:0 par:1.00 layer:0</span>
 <span class="go">Stopped at: 00:00:01</span>
 <span class="go">have a nice day ;)</span>
-<span class="gp">pi@bot ~ $</span> ytb -m
+<span class="gp">pi@bot ~ $ </span>ytb -m
 <span class="go">Marine sobrevive a un disparo en la cabeza gracias a su casco de kevlar</span>
 <span class="go">Vídeo de como un marine sobrevive a un disparo en la cabeza de un francotirador talibán. El disparo se produce en el 0:45.</span>
 <span class="go">https://www.youtube.com/watch?v=gBjUv_T9CYU</span>
@@ -263,7 +263,7 @@ medios online</p>
 <span class="go">"Joan March, los Negocios de la Guerra" es el primer documental que se realiza sobre este personaje misterioso y secreto conocido popularmente como "el banquero de Franco".</span>
 <span class="go">https://www.youtube.com/watch?v=K92g9DU2JqM</span>
 <span class="go">¿Reproducir / Descargar? (r/d):</span>
-</pre></div>
+</code></pre></div>
 <p><strong>Notas</strong>:</p>
 <ul>
 <li>Si no se contesta nada (pulsar enter sin más) se muestra el próximo
@@ -277,48 +277,48 @@ medios online</p>
 <li>Si se le pasa una url reproduce directamente ese vídeo</li>
 </ul>
 <p><strong>B) Imágenes</strong></p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> apt-get install fbi
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>apt-get install fbi
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $</span> fbi -a *.jpg
-</pre></div>
+<span class="gp">pi@bot ~ $ </span>fbi -a *.jpg
+</code></pre></div>
 <p><strong>C) Musica</strong></p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get install moc
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo apt-get install moc
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $</span> <span class="nb">cd</span> .moc
-<span class="gp">pi@bot ~/.moc $</span> cp /usr/share/doc/moc/examples/config.example.gz .
-<span class="gp">pi@bot ~/.moc $</span> gzip -d config.example.gz
-<span class="gp">pi@bot ~/.moc $</span> mv config.example config
-<span class="gp">pi@bot ~/.moc $</span> nano config
-</pre></div>
-<div class="highlight"><pre><span></span>...
-Allow24bitOutput        = yes
-...
-</pre></div>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> mocp
-</pre></div>
+<span class="gp">pi@bot ~ $ </span><span class="nb">cd</span> .moc
+<span class="gp">pi@bot ~/.moc $ </span>cp /usr/share/doc/moc/examples/config.example.gz .
+<span class="gp">pi@bot ~/.moc $ </span>gzip -d config.example.gz
+<span class="gp">pi@bot ~/.moc $ </span>mv config.example config
+<span class="gp">pi@bot ~/.moc $ </span>nano config
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">...</span>
+<span class="err">Allow24bitOutput        = yes</span>
+<span class="err">...</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>mocp
+</code></pre></div>
 <p>Si no se oye el audio y se quiere usar la salida analogía jack probar
 con:</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> amixer cset <span class="nv">numid</span><span class="o">=</span><span class="m">3</span> <span class="m">1</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>amixer cset <span class="nv">numid</span><span class="o">=</span><span class="m">3</span> <span class="m">1</span>
+</code></pre></div>
 <p>Si el control del volumen por defecto no funciona probar lo siguiente:</p>
-<div class="highlight"><pre><span></span>...
-ExecCommand1  = "amixer set PCM 100- &gt; /dev/null" #decrementa 1%
-ExecCommand2  = "amixer set PCM 100+ &gt; /dev/null" #incrementa 1%
-ExecCommand3  = "amixer set PCM 1000- &gt; /dev/null" #decrementa 10%
-ExecCommand4  = "amixer set PCM 1000+ &gt; /dev/null" #incrementa 10%
-ExecCommand9  = "amixer cset numid=1 -- 80% &gt; /dev/null" #pone el audio al 80%
-ExecCommand10 = "amixer cset numid=1 -- 0% &gt; /dev/null" #pone el audio al 0%
-...
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">...</span>
+<span class="err">ExecCommand1  = "amixer set PCM 100- &gt; /dev/null" #decrementa 1%</span>
+<span class="err">ExecCommand2  = "amixer set PCM 100+ &gt; /dev/null" #incrementa 1%</span>
+<span class="err">ExecCommand3  = "amixer set PCM 1000- &gt; /dev/null" #decrementa 10%</span>
+<span class="err">ExecCommand4  = "amixer set PCM 1000+ &gt; /dev/null" #incrementa 10%</span>
+<span class="err">ExecCommand9  = "amixer cset numid=1 -- 80% &gt; /dev/null" #pone el audio al 80%</span>
+<span class="err">ExecCommand10 = "amixer cset numid=1 -- 0% &gt; /dev/null" #pone el audio al 0%</span>
+<span class="err">...</span>
+</code></pre></div>
 <p>y usa F1, F2, F3, F4, F9 y F10 para gestionar el volumen.</p>
 <p><strong>BONUS</strong>: Problema con las eñes y tildes en los subtitulos al usar
 omxplayer</p>
 <p>Comprobamos el tipo de fichero y si es ISO-8859 lo convertimos a utf-8
 con iconv</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> file sub_ori.srt
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>file sub_ori.srt
 <span class="go">sub_ori.srt: ISO-8859 text, with CRLF line terminators</span>
-<span class="gp">pi@bot ~ $</span> iconv --from-code<span class="o">=</span>iso-8859-1 --to-code<span class="o">=</span>utf-8 sub_ori.srt -o sub_fix.srt
-</pre></div>
+<span class="gp">pi@bot ~ $ </span>iconv --from-code<span class="o">=</span>iso-8859-1 --to-code<span class="o">=</span>utf-8 sub_ori.srt -o sub_fix.srt
+</code></pre></div>
 <p>Fuentes: <a href="http://www.diverteka.com/?p=899" target="_blank">diverteka</a>,
 <a href="http://hackingthesystem4fun.blogspot.com.es/2012/04/ver-imagenes-sin-x-en-una-tty.html" target="_blank">hackingthesystem4fun.blogspot.com.es</a>,
  <a href="http://jeffskinnerbox.wordpress.com/2012/11/15/getting-audio-out-working-on-the-raspberry-pi/" target="_blank">jeffskinnerbox.wordpress.com</a>, <a href="http://v1.corenominal.org/howto-setup-moc-music-on-console/" target="_blank">v1.corenominal.org</a>,

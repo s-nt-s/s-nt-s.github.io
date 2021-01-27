@@ -25,41 +25,41 @@ ssh</a> </p>
 <div class="entry-content">
 <p><strong>1-</strong> Configurar ~/.ssh/config (ver
 <a href="http://rafael.bonifaz.ec/blog/2011/01/sshconfig-simplifica-nuestra-vida-con-ssh/" target="_blank">rafael.bonifaz.ec</a>)</p>
-<div class="highlight"><pre><span></span>Host unhost
-HostName un.host.ej
-User usuario1
-Port 22
+<div class="highlight"><pre><span></span><code><span class="k">Host</span> <span class="n">unhost</span>
+<span class="n">HostName</span> <span class="n">un</span><span class="p">.</span><span class="k">host</span><span class="p">.</span><span class="n">ej</span>
+<span class="k">User</span> <span class="n">usuario1</span>
+<span class="n">Port</span> <span class="mi">22</span>
 
-Host otrohost
-HostName otro.host.ej
-User usuario2
-Port 22
-</pre></div>
+<span class="k">Host</span> <span class="n">otrohost</span>
+<span class="n">HostName</span> <span class="n">otro</span><span class="p">.</span><span class="k">host</span><span class="p">.</span><span class="n">ej</span>
+<span class="k">User</span> <span class="n">usuario2</span>
+<span class="n">Port</span> <span class="mi">22</span>
+</code></pre></div>
 <p><strong>3-</strong> Instalamos bash-completion (ver
 <a href="https://www.howtoforge.com/how-to-add-bash-completion-in-debian" target="_blank">howtoforge.com</a>)</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> sudo apt-get install bash-completion
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo apt-get install bash-completion
+</code></pre></div>
 <p><strong>2-</strong> Creamos función de autocompletado en /etc/bash_completion.d/ssh
 (ver
 <a href="http://eli.thegreenplace.net/2013/12/26/adding-bash-completion-for-your-own-tools-an-example-for-pss" target="_blank">eli.thegreenplace.net</a>
 y
 <a href="http://www.dicas-l.com.br/arquivo/configurando_auto-completar_para_favoritos_ssh.php" target="_blank">www.dicas-l.com.br</a>)</p>
-<div class="highlight"><pre><span></span>_compssh <span class="o">()</span> <span class="o">{</span>
+<div class="highlight"><pre><span></span><code>_compssh <span class="o">()</span> <span class="o">{</span>
         <span class="k">if</span> <span class="o">[</span> -f <span class="s2">"</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span><span class="s2">/.ssh/config"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
                 <span class="nv">cur</span><span class="o">=</span><span class="si">${</span><span class="nv">COMP_WORDS</span><span class="p">[COMP_CWORD]</span><span class="si">}</span><span class="p">;</span>
                 <span class="nv">COMPREPLY</span><span class="o">=(</span><span class="k">$(</span><span class="nb">compgen</span> -W <span class="s1">'$(grep "^Host\b" ${HOME}/.ssh/config | sed -e "s/Host //")'</span> -- <span class="nv">$cur</span><span class="k">)</span><span class="o">)</span>
         <span class="k">fi</span>
 <span class="o">}</span>
 <span class="nb">complete</span> -F _compssh ssh
-</pre></div>
+</code></pre></div>
 <p><strong>3-</strong> Reiniciamos o recargamos el fichero (source
 /usr/share/bash-completion/bash_completion)</p>
 <p><strong>4-</strong> Probamos</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> ssh un + TAB
-<span class="gp">pi@bot ~ $</span> ssh unhost
-<span class="gp">pi@bot ~ $</span> ssh o + TAB
-<span class="gp">pi@bot ~ $</span> ssh otrohost
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>ssh un + TAB
+<span class="gp">pi@bot ~ $ </span>ssh unhost
+<span class="gp">pi@bot ~ $ </span>ssh o + TAB
+<span class="gp">pi@bot ~ $ </span>ssh otrohost
+</code></pre></div>
 </div><!-- /.entry-content -->
 </article>
 </section>

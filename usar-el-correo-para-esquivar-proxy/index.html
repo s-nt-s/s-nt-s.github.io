@@ -42,14 +42,14 @@ solo paso el archivo en una carpeta imap del servidor de correo.</p>
 <p><strong>1-</strong> Preparar en nuestro equipo libre los archivos</p>
 <p>Creamos un zip por volúmenes según el tamaño máximo permitido por la
 cuenta de correo que vamos a usar</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> zip -r -s 40m -0 -Pmailzip /tmp/mail.zip /data
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>zip -r -s 40m -0 -Pmailzip /tmp/mail.zip /data
+</code></pre></div>
 <p>El parámetro -Pmailzip define "mailzip" como contraseña del zip
 resultante, con esto evitamos que el servidor rechace el mail por alguno
 de sus contenidos (por ejemplo, un ejecutable).</p>
 <p><strong>2-</strong> Creamos el script y su archivo de configuración en nuestro equipo
 libre (<code>mail.pl</code>)</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/perl -w</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/perl -w</span>
 <span class="k">use</span> <span class="nn">Mail::IMAPClient</span><span class="p">;</span>
 <span class="k">use</span> <span class="nn">MIME::Lite</span><span class="p">;</span>
 <span class="k">use</span> <span class="nn">Cwd</span> <span class="s">'abs_path'</span><span class="p">;</span>
@@ -176,17 +176,17 @@ libre (<code>mail.pl</code>)</p>
 <span class="k">if</span> <span class="p">(</span><span class="nv">$imap</span> <span class="o">&amp;&amp;</span> <span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">IsConnected</span><span class="p">)</span> <span class="p">{</span>
     <span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">disconnect</span> <span class="ow">or</span> <span class="nb">die</span> <span class="s">"Could not disconnect: $@\n"</span><span class="p">;</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 <p><code>.up.cnf</code>:</p>
-<div class="highlight"><pre><span></span>Server    = imap.cep.correos.es
-Port      = 993
-User      = BARTOLO.PIROLO.57658Z@correos.es
-Password  = 123456
-Peek      = 1
-Uid       = 1
-Ssl       = 1
-Folder    = dv
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">Server    = imap.cep.correos.es</span>
+<span class="err">Port      = 993</span>
+<span class="err">User      = BARTOLO.PIROLO.57658Z@correos.es</span>
+<span class="err">Password  = 123456</span>
+<span class="err">Peek      = 1</span>
+<span class="err">Uid       = 1</span>
+<span class="err">Ssl       = 1</span>
+<span class="err">Folder    = dv</span>
+</code></pre></div>
 <p>dv (el valor del campo "Folder") es el nombre de la carpeta que hemos
 creado en nuestra cuenta de correo para servir a este propósito, de
 manera que nuestros mails "esquiva-proxy" no se mezclen con nuestro
@@ -196,14 +196,14 @@ correo normal.</p>
 de correo y esperará a que nosotros, desde el equipo enjaulado y tras
 haber descargado los adjuntos, liberemos espacio para continuar
 automáticamente.</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> ./mail.pl /tmp/mail.z*
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>./mail.pl /tmp/mail.z*
 <span class="go">Conectando a BARTOLO.PIROLO.57658Z@correos.es/dv ... OK</span>
 <span class="go">Subiendo 1 de 4: mail.z01 ... OK</span>
 <span class="go">Subiendo 2 de 4: mail.z02 ... OK</span>
 <span class="go">Esperando a que el usuario libere 20MB del servidor... OK</span>
 <span class="go">Subiendo 3 de 4: mail.z03 ... OK</span>
 <span class="go">Subiendo 4 de 4: mail.zip ... OK</span>
-</pre></div>
+</code></pre></div>
 <p>Nuestro correo antes de empezar el proceso tenia 100MB libres. En el
 primer paso el script llena 40MB, en el segundo llena otros 40MB, en el
 tercer paso ve que necesita al menos otros 20MB para subir el tercer

@@ -25,18 +25,18 @@ python</a> </p>
 <article>
 <div class="entry-content">
 <p><strong>0-</strong> Creo repositorio en github</p>
-<div class="highlight"><pre><span></span><span class="go">u@d ~/wks/apuntes $ git clone https://github.com/YOUR_USERNAME/YOUR_USERNAME.github.io.git</span>
+<div class="highlight"><pre><span></span><code><span class="go">u@d ~/wks/apuntes $ git clone https://github.com/YOUR_USERNAME/YOUR_USERNAME.github.io.git</span>
 <span class="go">...</span>
 <span class="go">u@d ~/wks/apuntes $ cd YOUR_USERNAME.github.io</span>
 <span class="go">u@d ~/wks/apuntes $ git checkout -b source</span>
 <span class="go">u@d ~/wks/apuntes $ echo "output/" &gt;&gt; .gitignore</span>
-</pre></div>
+</code></pre></div>
 <p>(*) La última linea es porque el directorio <code>output</code> no es necesario en la rama <code>source</code> si no en la <code>master</code>,
 así me evito que cuando trabajo con la <code>source</code> me moleste con los cambios en los <code>html</code>,
 cosa muy frecuente porque, por tema de urls relativas o absolutas, cambian cada vez que haces
 la versión para desarrollo o para producción.</p>
 <p><strong>1-</strong> Instalar <code>pelican</code> y crear blog</p>
-<div class="highlight"><pre><span></span><span class="go">u@d ~/wks/apuntes $ sudo pip3 install pelican markdown ghp-import</span>
+<div class="highlight"><pre><span></span><code><span class="go">u@d ~/wks/apuntes $ sudo pip3 install pelican markdown ghp-import</span>
 <span class="go">...</span>
 <span class="go">u@d ~/wks/apuntes $ pelican-quickstart</span>
 <span class="gp">&gt;</span> Where <span class="k">do</span> you want to create your new web site? <span class="o">[</span>.<span class="o">]</span>
@@ -57,13 +57,13 @@ la versión para desarrollo o para producción.</p>
 <span class="gp">&gt;</span> Do you want to upload your website using GitHub Pages? <span class="o">(</span>y/N<span class="o">)</span> y
 <span class="gp">&gt;</span> Is this your personal page <span class="o">(</span>username.github.io<span class="o">)</span>? <span class="o">(</span>y/N<span class="o">)</span> y
 <span class="go">Done. Your new project is available at /home/username/YOUR_USERNAME.github.io</span>
-</pre></div>
+</code></pre></div>
 <p><strong>2-</strong> Creo la estructura</p>
-<div class="highlight"><pre><span></span><span class="go">u@d ~/wks/apuntes $ mkdir -p content/extra content/images content/pages content/posts myplugins j2 themes</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="go">u@d ~/wks/apuntes $ mkdir -p content/extra content/images content/pages content/posts myplugins j2 themes</span>
+</code></pre></div>
 <p><strong>3-</strong> Importar wordpress</p>
-<div class="highlight"><pre><span></span><span class="go">u@d ~/wks/apuntes $ pelican-import --markup markdown --wpfile -o content ~/Descargas/apuntes.wordpress.2018-09-18.xml</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="go">u@d ~/wks/apuntes $ pelican-import --markup markdown --wpfile -o content ~/Descargas/apuntes.wordpress.2018-09-18.xml</span>
+</code></pre></div>
 <p>Con <code>sed</code> y <code>grep</code> saco las referencias de las urls a imágenes, las descargo y edito los <code>.md</code> para que las usen. (*)</p>
 <p>(*) Esto se podría haber hecho directamente con <code>pelican-import</code>, ver su ayuda.</p>
 <p><strong>4-</strong> Creo y configuro plugins y tema</p>
@@ -88,9 +88,9 @@ la versión para desarrollo o para producción.</p>
 <li>Modifico <code>pelicanconf.py</code> para reflejar todo lo anterior  (ver <a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/pelicanconf.py" target="_blank">github - pelicanconf.py</a>)</li>
 </ul>
 <p><strong>5-</strong> Actualizo y publico</p>
-<div class="highlight"><pre><span></span><span class="go">u@d ~/wks/apuntes $ git add -A &amp;&amp; git commit -a -m 'first commit' &amp;&amp; git push --all</span>
+<div class="highlight"><pre><span></span><code><span class="go">u@d ~/wks/apuntes $ git add -A &amp;&amp; git commit -a -m 'first commit' &amp;&amp; git push --all</span>
 <span class="go">u@d ~/wks/apuntes $ make github</span>
-</pre></div>
+</code></pre></div>
 <p>Fuentes:
 <a href="http://nafiulis.me/making-a-static-blog-with-pelican.html" target="_blank">nafiulis.me</a>, <a href="https://www.fullstackpython.com/blog/generating-static-websites-pelican-jinja2-markdown.html" target="_blank">fullstackpython.com</a>,
 <a href="https://rsip22.github.io/blog/create-a-blog-with-pelican-and-github-pages.html" target="_blank">rsip22.github.io</a>,

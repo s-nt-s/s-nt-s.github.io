@@ -30,15 +30,15 @@ mirar en el histórico de comandos usados</p>
 <p><strong>Solución 2</strong>: Hacer un script que analice el histórico y nos saque la
 información más relevante</p>
 <p><strong>1-</strong> Configurar histórico (<code>~/.bashrc</code>)</p>
-<div class="highlight"><pre><span></span>...
-#No guardar en el histórico duplicados consecutivos
-HISTCONTROL=ignoredups
-#No guardar en el histórico comandos sencillos de uso habitual
-HISTIGNORE="pwd:ls:ls -lah:date:cd"
-...
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">...</span>
+<span class="err">#No guardar en el histórico duplicados consecutivos</span>
+<span class="err">HISTCONTROL=ignoredups</span>
+<span class="err">#No guardar en el histórico comandos sencillos de uso habitual</span>
+<span class="err">HISTIGNORE="pwd:ls:ls -lah:date:cd"</span>
+<span class="err">...</span>
+</code></pre></div>
 <p><strong>2-</strong> Crear script (<code>/usr/local/bin/uso</code>)</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/perl -w</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/perl -w</span>
 <span class="k">use</span> <span class="nn">Cwd</span> <span class="s">'abs_path'</span><span class="p">;</span>
 
 <span class="k">my</span> <span class="p">(</span><span class="nv">$hst</span><span class="p">,</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">$icm</span><span class="p">,</span><span class="nv">$filter</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="nb">undef</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
@@ -122,7 +122,7 @@ HISTIGNORE="pwd:ls:ls -lah:date:cd"
 
 <span class="k">if</span> <span class="p">(</span><span class="nb">keys</span><span class="p">(</span><span class="nv">%files</span><span class="p">))</span> <span class="p">{</span><span class="n">report_top</span><span class="p">(</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">%files</span><span class="p">);}</span>
 <span class="k">if</span> <span class="p">(</span><span class="nb">keys</span><span class="p">(</span><span class="nv">%cmds</span><span class="p">))</span> <span class="p">{</span><span class="n">report_top</span><span class="p">(</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">%cmds</span><span class="p">);}</span>
-</pre></div>
+</code></pre></div>
 <p><strong>3-</strong> Parámetros</p>
 <ul>
 <li>por defecto muestra los ficheros más usados</li>
@@ -136,7 +136,7 @@ HISTIGNORE="pwd:ls:ls -lah:date:cd"
     caso contrario</li>
 </ul>
 <p><strong>4-</strong> Ejemplos de uso (nunca mejor dicho, jeje)</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> uso
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>uso
 <span class="go">/var/log/prosody/prosody.log</span>
 <span class="go">/usr/local/bin/hf</span>
 <span class="go">/usr/local/bin/cmd</span>
@@ -147,7 +147,7 @@ HISTIGNORE="pwd:ls:ls -lah:date:cd"
 <span class="go">/home/bot/HAL/riddim/plugins/hashtag.lua</span>
 <span class="go">/root/.centerim/config</span>
 <span class="go">/etc/hosts</span>
-<span class="gp">pi@bot ~ $</span> uso -c
+<span class="gp">pi@bot ~ $ </span>uso -c
 <span class="go">/etc/init.d/prosody restart</span>
 <span class="go">history | hf</span>
 <span class="go">atajo prosody</span>
@@ -158,24 +158,24 @@ HISTIGNORE="pwd:ls:ls -lah:date:cd"
 <span class="go">/usr/local/bin/dwn</span>
 <span class="go">lua HAL/riddim/init.lua</span>
 <span class="go">hg clone http://code.matthewwild.co.uk/verse/ verse</span>
-<span class="gp">pi@bot ~ $</span> uso <span class="m">2</span>
+<span class="gp">pi@bot ~ $ </span>uso <span class="m">2</span>
 <span class="go">/var/log/prosody/prosody.log</span>
 <span class="go">/usr/local/bin/hf</span>
-<span class="gp">pi@bot ~ $</span> uso prosody
+<span class="gp">pi@bot ~ $ </span>uso prosody
 <span class="go">/var/log/prosody/prosody.log</span>
 <span class="go">/var/log/prosody/prosody.err</span>
 <span class="go">/usr/lib/prosody/modules/mod_takenote.lua</span>
 <span class="go">/usr/bin/prosody</span>
 <span class="go">/var/log/prosody/prosody.not</span>
-<span class="gp">pi@bot ~ $</span> sudo uso /home/bot/.bash_history -c lua <span class="m">1</span>
+<span class="gp">pi@bot ~ $ </span>sudo uso /home/bot/.bash_history -c lua <span class="m">1</span>
 <span class="go">lua riddim/init.lua</span>
-</pre></div>
+</code></pre></div>
 <p><strong>4-</strong> Apéndice</p>
 <p><code>.bash_history</code> no se actualiza en tiempo real así que si necesitamos que
 nuestro script analice hasta el últimisimo comando ejecutado debemos
 forzar antes una actualización mediante el comando:</p>
-<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $</span> <span class="nb">history</span> -a
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span><span class="nb">history</span> -a
+</code></pre></div>
 <p>No integramos la llamada a "history -a" dentro de nuestro script porque
 necesita ser ejecutado directamente por el usuario para garantizar que
 se actualice su <code>.bash_history</code></p>
