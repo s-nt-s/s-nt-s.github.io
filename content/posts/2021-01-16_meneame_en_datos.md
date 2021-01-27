@@ -62,7 +62,7 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/index.html
     <a href="https://github.com/s-nt-s/meneame.dump/blob/master/sql/views/general.sql">la sentencia sql</a> que ha servido de fuente.
   </p>
 <p>Adicionalmente, para las gráficas de uso (apartado 2) se han utilizado datos
-    de TODO meneame (no solo la edición general) incluyendo los 2.054.444
+    de TODO meneame (no solo la edición general) incluyendo los 2.054.051
     <a href="https://www.meneame.net/notame/">posts del notame</a>.
   </p>
 <p>
