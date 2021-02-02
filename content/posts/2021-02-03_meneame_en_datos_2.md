@@ -1,4 +1,4 @@
-Title: "Algunos datos sobre Menéame 2: Strikes"
+Title: Algunos datos sobre Menéame 2: Strikes
 Category: Datos
 body_class: overgraph
 tags: Menéame
