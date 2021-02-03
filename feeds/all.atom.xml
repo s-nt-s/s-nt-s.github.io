@@ -85,7 +85,7 @@
       repartidos de la siguiente manera:
     &lt;/p&gt;
 &lt;table&gt;
-&lt;thead&gt;
+&lt;thead style="text-align: center;"&gt;
 &lt;tr&gt;
 &lt;th colspan="2"&gt;Strike&lt;/th&gt;
 &lt;th rowspan="2"&gt;Usuarios&lt;sup&gt;1&lt;/sup&gt;&lt;/th&gt;
