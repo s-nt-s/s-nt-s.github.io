@@ -79,7 +79,7 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i2/index.html
       repartidos de la siguiente manera:
     </p>
 <table>
-<thead>
+<thead style="text-align: center;">
 <tr>
 <th colspan="2">Strike</th>
 <th rowspan="2">Usuarios<sup>1</sup></th>
