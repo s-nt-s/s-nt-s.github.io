@@ -21,7 +21,7 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i2/index.html
         posterior al <a href="https://github.com/Meneame/meneame.net/blob/master/sql/2017-02-24-strikes.sql">24/02/2017</a>
         pero no he encontrado ningún comunicado oficial y fechado de cuando
         entró en vigor, así que usaremos como referencia la fecha del
-        primer strike detectado (<code>07/04/2017</code>).
+        primer strike detectado (<code>13/03/2017</code>).
       </li>
 <li>
         En <a href="https://www.meneame.net/normas-comunidad">las normas de Menéame</a>
@@ -29,7 +29,7 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i2/index.html
       </li>
 <li>
         En <a href="https://www.meneame.net/legal#penalizaciones">la información legal de Menéame (apartado Penalizaciones)</a>
-        podemos consultar las consecuencias de los strikes (ninguna conlleva la eliminación de la cuenta o el ban perpetuo).
+        podemos consultar las consecuencias de los strikes.
       </li>
 <li>
 <a href="https://blog.meneame.net/2019/03/26/revision-de-las-normas-de-uso-de-la-comunidad-hacia-una-conversacion-mas-sana/" title="2019-03-26 Revisión de las normas de uso de la comunidad: hacia una conversación más sana">En 26/03/2019 la administración de Méneame</a>:
@@ -45,8 +45,8 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i2/index.html
             comentario este puede estar motivado por la reiteración de
             comentarios o comportamientos</li>
 <li>anuncia que para mejorar la transparencia próximamente habrá un método
-          para que todos los usuarios pudan saber si un comentario ha sido objeto
-          de strike</li>
+          para que todos los usuarios puedan saber si un comentario ha sido objeto
+          de strike y porqué</li>
 </ul>
 </li>
 <li>
@@ -62,6 +62,11 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i2/index.html
 <li>
         La Api de Menéame no devuelve ninguna información sobre strikes.
       </li>
+<li>
+        Frecuentemente hay <a href="https://www.meneame.net/m/Art%C3%ADculos/search?q=strike">artículos</a> y <a href="https://www.meneame.net/search?q=strike&amp;w=comments&amp;h=&amp;o=&amp;u=">comentarios</a>
+         quejándose de los strikes
+        o quejándose de la gente que se queja de los strikes.
+      </li>
 </ol>
 <p>Sabiendo todo esto, podemos continuar teniendo en cuenta
       que todos los datos aquí presentados parten de recolectar
@@ -71,10 +76,10 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i2/index.html
       algún tipo de strike que no se asocia a comentarios
       de la manera que hemos visto quedará fuera del estudio.
     </p>
-<h2>¿Cuántos strikes hay?</h2>
+<h2>1. ¿Cuántos strikes hay?</h2>
 <p>
-      Se han capturado <code>486 strikes</code>
-      desde <code>07/04/2017</code> hasta
+      Se han capturado <code>10.090 strikes</code>
+      desde el <code>13/03/2017</code> hasta el
       <code>31/12/2020</code>
       repartidos de la siguiente manera:
     </p>
@@ -93,95 +98,94 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i2/index.html
 </thead>
 <tbody>
 <tr>
-<td class="rg"><code>197</code></td>
-<td>Insultos directos</td>
-<td class="rg"><code>177</code></td>
-<td><code>07/04/2017</code></td>
-<td><code>28/12/2020</code></td>
+<td class="rg"><code>3.688</code></td>
+<td>Incitación al odio</td>
+<td class="rg"><code>1.591</code></td>
+<td><code>16/03/2017</code></td>
+<td><code>31/12/2020</code></td>
 </tr>
 <tr>
-<td class="rg"><code>131</code></td>
-<td>Incitación al odio</td>
-<td class="rg"><code>113</code></td>
-<td><code>12/06/2017</code></td>
+<td class="rg"><code>3.453</code></td>
+<td>Insultos directos</td>
+<td class="rg"><code>1.691</code></td>
+<td><code>15/03/2017</code></td>
+<td><code>31/12/2020</code></td>
+</tr>
+<tr>
+<td class="rg"><code>2.455</code></td>
+<td>Contenido inapropiado</td>
+<td class="rg"><code>1.390</code></td>
+<td><code>13/03/2017</code></td>
+<td><code>31/12/2020</code></td>
+</tr>
+<tr>
+<td class="rg"><code>167</code></td>
+<td>Bulo</td>
+<td class="rg"><code>130</code></td>
+<td><code>29/04/2020</code></td>
 <td><code>30/12/2020</code></td>
 </tr>
 <tr>
-<td class="rg"><code>127</code></td>
-<td>Contenido inapropiado</td>
-<td class="rg"><code>115</code></td>
-<td><code>15/04/2017</code></td>
-<td><code>23/12/2020</code></td>
-</tr>
-<tr>
-<td class="rg"><code>9</code></td>
-<td>Bulo</td>
-<td class="rg"><code>9</code></td>
-<td><code>02/05/2020</code></td>
-<td><code>28/12/2020</code></td>
-</tr>
-<tr>
-<td class="rg"><code>8</code></td>
+<td class="rg"><code>99</code></td>
 <td>Viola las normas de uso</td>
-<td class="rg"><code>8</code></td>
-<td><code>17/08/2017</code></td>
-<td><code>09/04/2020</code></td>
+<td class="rg"><code>96</code></td>
+<td><code>24/03/2017</code></td>
+<td><code>18/12/2020</code></td>
 </tr>
 <tr>
-<td class="rg"><code>5</code></td>
+<td class="rg"><code>66</code></td>
 <td>Spam</td>
-<td class="rg"><code>5</code></td>
-<td><code>17/09/2018</code></td>
-<td><code>09/12/2020</code></td>
+<td class="rg"><code>61</code></td>
+<td><code>01/05/2017</code></td>
+<td><code>20/12/2020</code></td>
 </tr>
 <tr>
-<td class="rg"><code>3</code></td>
-<td>Incumple la legalidad española vigente</td>
-<td class="rg"><code>3</code></td>
-<td><code>21/07/2017</code></td>
-<td><code>26/10/2018</code></td>
-</tr>
-<tr>
-<td class="rg"><code>2</code></td>
-<td>Contiene datos personales propios o de un tercero</td>
-<td class="rg"><code>2</code></td>
-<td><code>19/08/2017</code></td>
-<td><code>03/10/2017</code></td>
-</tr>
-<tr>
-<td class="rg"><code>2</code></td>
+<td class="rg"><code>56</code></td>
 <td>Material pornográfico o de violencia gráfica</td>
-<td class="rg"><code>2</code></td>
-<td><code>06/10/2019</code></td>
-<td><code>25/11/2019</code></td>
+<td class="rg"><code>51</code></td>
+<td><code>26/05/2017</code></td>
+<td><code>23/06/2020</code></td>
 </tr>
 <tr>
-<td class="rg"><code>2</code></td>
+<td class="rg"><code>47</code></td>
 <td>Promoción comercial de productos o servicios</td>
-<td class="rg"><code>2</code></td>
-<td><code>01/08/2017</code></td>
-<td><code>01/08/2017</code></td>
+<td class="rg"><code>42</code></td>
+<td><code>23/05/2017</code></td>
+<td><code>20/11/2020</code></td>
+</tr>
+<tr>
+<td class="rg"><code>39</code></td>
+<td>Contiene datos personales propios o de un tercero</td>
+<td class="rg"><code>38</code></td>
+<td><code>24/04/2017</code></td>
+<td><code>17/12/2020</code></td>
+</tr>
+<tr>
+<td class="rg"><code>20</code></td>
+<td>Incumple la legalidad española vigente</td>
+<td class="rg"><code>20</code></td>
+<td><code>21/07/2017</code></td>
+<td><code>20/12/2020</code></td>
 </tr>
 </tbody>
 </table>
-<p>Notas:</p>
 <ol>
 <li>Usuarios únicos, es decir: ¿Cuántos usuarios <b>distintos</b> tienen uno o más strikes de este tipo?</li>
-<li>Primera fecha en la que se vió un strike de este tipo</li>
-<li>Última fecha en la que se vió un strike de este tipo</li>
+<li>Primera fecha en la que se vio un strike de este tipo</li>
+<li>Última fecha en la que se vio un strike de este tipo</li>
 </ol>
 <p>
       En números absolutos, ha habido aproximadamente
-      un strike cada <code>3</code> días
+      un strike cada <code>3</code> horas
       y se han visto afectados un total de
-      <code>398</code> usuarios.
+      <code>3.371</code> usuarios.
     </p>
 <p>
-      En otras palabras, entre <code>07/04/2017</code> y
+      En otras palabras, entre <code>13/03/2017</code> y
       <code>31/12/2020</code>
-      el <code title="486 de 10.294.798">0.005%</code> de los comentarios
+      el <code title="10.090 de 10.434.355">0.1%</code> de los comentarios
       recibieron un strike y el
-      <code title="398 de 33.575">1%</code> de los usuarios
+      <code title="3.371 de 34.007">10%</code> de los usuarios
       que hicieron esos comentarios recibieron un strike o más.
     </p>
 <p>
@@ -218,29 +222,13 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i2/index.html
 <li>normas que apenas se incumplen</li>
 <li>normas que se incumplen pero a los usuarios no les importa demasiado</li>
 <li>normas que se incumplen pero los usuarios piensan que no son
-            merecedoras de un strike y lo dejan en un voto negativo
-            a lo sumo</li>
+          merecedoras de un strike y lo dejan en un voto negativo
+          a lo sumo</li>
 </ul>
 <p>La única excepción podría ser el <code>strike Bulo</code> ya que viendo
-        su primera fecha de uso parece que es de muy reciente creación
-        y aún así ya esta en la 4ª posición.</p>
-<p>Lo segundo que llama la atención son las cantidades en sí.
-        <a href="https://blog.meneame.net/2019/03/26/revision-de-las-normas-de-uso-de-la-comunidad-hacia-una-conversacion-mas-sana/">La
-        afirmación por parte de la administración de que recibe muchas
-        quejas</a> por los strikes y los abundantes
-        <a href="https://www.meneame.net/m/Art%C3%ADculos/search?q=strike">artículos</a>
-        y <a href="https://www.meneame.net/search?q=strike&amp;w=comments&amp;h=&amp;o=&amp;u=">comentarios</a>
-        quejándose de los strikes me hacían pensar que habría muchos más strikes y usuarios afectados.
-        Puede que el problema sean mis expectativas iniciales, o que yo nunca
-        haya administrado un foro, pero ahora no puedo evitar pensar
-        que la cantidad de strikes es minúscula.
-      </p>
-<p>
-      A partir de aquí, viendo la poca relevancia que tienen los strikes
-      me temo que el interés (y el morbo) por este estudio pierde muchos enteros.
-      Sin embargo, ya que tengo los datos... continuemos.
-    </p>
-<h2>¿Cuál ha sido la evolución temporal de los strikes?</h2>
+      su primera fecha de uso parece que es de muy reciente creación
+      y aún así ya esta en la 4ª posición.</p>
+<h2>2. ¿Cuál ha sido la evolución temporal de los strikes?</h2>
 <div class="data" data-modelo="timeline">
 <p>Mostrar cantidad de strikes en <select name="transformacion">
 <option selected="selected" value="">números absolutos</option>
@@ -265,54 +253,39 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i2/index.html
 <b>¿Qué vemos aquí?</b>
 </p>
 <p>
-      Poca cosa, la verdad. La grafica es muy irregular, no hay una
-      tendencia clara ni a peor ni a mejor.
-      Personalmente, leyendo las quejas, me esperaba que la gráfica
-      fuera una linea claramente ascendente al menos en los dos
-      tipos de strikes más polemicos (insultos y odio)
-      pero ni eso, incluso bajan más que subir.
+      La gráfica tiene muchos altibajos como para sacar interpretaciones claras,
+      pero si nos fijamos unicamente en el total de strikes y utilizamos un rango
+      temporal suficientemente amplio (semestre o anual) podemos ver que la
+      cantidad de strikes fue en aumento hasta 2019 y luego, en 2020, disminuyo
+      a niveles de 2018.
     </p>
-<h2>¿Hay usuarios con muchos strikes?</h2>
-<p>Los <code>398</code> usuarios con strikes
+<h2>3. ¿Hay usuarios con muchos strikes?</h2>
+<p>Los <code>3.371</code> usuarios con strikes
       se dividen en:
     </p>
-<ul>
-<li>
-<code>1</code> usuario que ha recibido <code>5 strikes</code>
-</li>
-<li>
-<code>4</code> usuarios que han recibido <code>4 strikes</code> cada uno
-                      </li>
-<li>
-<code>19</code> usuarios que han recibido <code>3 strikes</code> cada uno
-                      </li>
-<li>
-<code>34</code> usuarios que han recibido <code>2 strikes</code> cada uno
-                      </li>
-<li>
-<code>340</code> usuarios que han recibido <code>1 strikes</code> cada uno
-                      </li>
-</ul>
+<div class="data" data-modelo="countstrikes">
+<canvas class="chart"></canvas>
+</div>
 <p>
-      Lo que según <a href="https://www.meneame.net/legal#penalizaciones">las penalizaciones</a>
-      hace un computo global de <code>40</code> días de ban y <code>-20</code> puntos de karma.
+      (*) Haz click en la legenda verde (<em>Usuarios con 10 strikes o menos</em>)
+      para ver con mayor detalle las barras azules y rojas.
     </p>
 <p><b>¿Qué vemos aquí?</b></p>
-<p>
-      Parece que muy pocos usuarios tienen problemas recurrentes con los strikes,
-      lo que puede deberse a que:
-    </p>
 <ol>
-<li>realmente los usuarios cambian su comportamiento</li>
-<li>los usuarios no cambian pero la administración se resiste a escalar el conflicto</li>
-<li>los usuarios con strike terminan abandonando la plataforma</li>
-<li>los usuarios con strike no cambian de comportamiento pero sí de usuario, registrando una nueva cuenta</li>
+<li>La mayoría de los usuarios que recibe un strike (<code title="1.670 de 3.371">50%</code>) no vuelve a tener problemas</li>
+<li>Aún así, el <code title="417 de 3.371">12%</code> de los usuarios con strikes han recibido 6 strikes o más</li>
+<li>Mientras que solo el <code title="41 de 3.371">1%</code> tiene 20 strikes o más</li>
 </ol>
-<p>Las dos primeras hipótesis no se pueden verificar, pero las otras dos
-      serán estudiadas más adelante</p>
-<h2>¿Provocan los strikes el abandono de los usuarios penalizados?</h2>
 <p>
-      Es imposible validar completamente esta hipótesis porque incluso habiendo abandono
+      (*) Recuerda que tener 6 strikes no significa necesariamente
+      haber llegado a la penalización máxima (ban de 90 días)
+      e igualmente tener menos de 6 strikes tampoco significa
+      que no se haya aplicado la penalización máxima.
+      Ver <a href="https://www.meneame.net/legal#penalizaciones">la información legal de Menéame</a> para más detalles.
+    </p>
+<h2>4. ¿Provocan los strikes el abandono de los usuarios penalizados?</h2>
+<p>
+      Es imposible responder completamente a esta pregunta porque incluso habiendo abandono
       este puede ser por otra causa, pero si esto fuera cierto (que se abandonó la plataforma por el strike)
       deberíamos ver en cada usuario una correlación
       entre la fecha de su último strike y el momento en que dejó Menéame.
@@ -343,79 +316,67 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i2/index.html
     	que consideres necesaria.
     	</li>
 <li>
-    	No voy a repetir aquí cómo se calcula la fecha de abandono y eliminación
-    	(ya se explicó en el <a href="https://s-nt-s.github.io/meneame_en_datos/">punto
-      2.B del anterior informe</a>) pero basta decir que al ser distintas
-      deberías seleccionar la opción que te parezca más acertada.
+        Cómo se calcula la fecha de abandono y eliminación se explico en el
+    	<a href="https://s-nt-s.github.io/meneame_en_datos/">punto 2.B del anterior informe</a>,
+      revisa la definición y elige el tipo de fecha que creas más relevante.
     	</li>
 <li>
-    	Si tienes dificultades en comparar las barras más pequeñas
-    	puedes <label for="nostay">
-          ocultar la barra de usuarios que permanecen
-          haciendo click aquí <input id="nostay" name="nostay" type="checkbox"/>
-        para reescalar las demás</label>.
+        Haz click en la legenda verde (<em>Usuarios que permanecen</em>)
+          para ver con mayor detalle las barras rojas.
     	</li>
 </ol>
 <p><b>¿Qué vemos aquí?</b></p>
-<p>
-    Aunque hay una parte reseñable de usuarios que abandonan el mismo día
-    que reciben el strike o en menos de un mes la inmensa mayoría
-    permanecen en Menéame o tardan tanto tiempo en dejarlo que es difícil
-    ver la relación entre un hecho y el otro.
-    </p>
-<p>
-    En definitiva, aunque hay usuarios que abandonan tras el strike eso no
-    explica que la mayoría de los usuarios con strikes solo tengan uno.
-    </p>
+<ul>
+<li>La mayoria de los usuarios ni abandona ni elimina su cuenta</li>
+<li>A partir del 2º, 3º o 4º mes (según que opciones
+      hayamos seleccionado) la grafica se vuelve poco relevante no pudiendo
+      achacar a los strikes esos abandonos</li>
+<li>Una pequeña pero significativa porción de los usuarios abandona
+      el mismo día del strike o ese mismo mes
+      (entre un 11% y un 35% según que opciones hayamos seleccionado)
+      lo que hace pensar, tanto por el breve tiempo transcurrido como por
+      la diferencia de concentración de casos con respecto a otros meses, que estos usuarios
+      probablemente abandonaron a consecuencia del strike</li>
+</ul>
 </div>
-<h2>¿De qué época son los usuarios con strikes?</h2>
-<p>
-      Si los usuarios con strikes crean nuevas cuentas con las que finalmente
-      reciben otro strike llegará
-      un momento en que las cuentas de 2017 (año en que se implementaron
-      los strikes) o posteriores tendrán más strikes de las que les correspondería
-      en una distribución usual porque la mayoría de los usuarios conflictivos
-      - al haberse hecho cuentas nuevas - tendrán como fecha de registro 2017 o posterior.
-      Por eso la pregunta
-      <em>¿los usuarios con strike crean nuevas cuentas y vuelven a tener
-        otro strike?</em> se transforma en <em>¿de qué época son los usuarios
-          con strikes?</em>.
-    </p>
+<h2>5. ¿De qué época son los usuarios con strikes?</h2>
 <p>
     En esta gráfica podemos ver superpuesto la composición de
     los usuarios con strikes (rojo) y la composición de usuarios que mandaron comentarios
-    a Meneáme entre <code>07/04/2017</code> y
-    <code>31/12/2020</code> (azul).
+    (azul) entre <code>13/03/2017</code> y
+    <code>31/12/2020</code>.
     </p>
 <div class="data" data-modelo="poblacion">
 <canvas class="chart"></canvas>
 </div>
 <p><b>¿Qué vemos aquí?</b></p>
-<ul>
-<li>Se verifica que la distribiución es más o menos la esperada hasta 2017</li>
-<li>
-      Vemos que los peores años fueron de 2017 a 2019 pero que la tendencia
-      se invierte en 2020 a pesar del meme <a href="https://www.meneame.net/search?q=en+meneame+desde+2020&amp;w=comments&amp;h=&amp;o=&amp;u=">
-<em>en Menéame desde 2020</em></a> que hace referencia
-        a la teoría de que recientemente - y con relación a la crisis COVID-19 -
-        se están creando usuarios <em>fake</em>
-        para trolear (cierto o no, se ve que no tiene un reflejo en strikes).
-    </li>
-</ul>
 <p>
-      Obviamente, esta grafica no es una demostración al 100% de la hipótesis
-      (puede haber otras explicaciones al efecto 2017-2019 que no esté teniendo en cuenta)
-      pero por lo menos no se ve desmentida por los datos (como sí pasaba con la
-      anterior hipótesis).
+      En circunstancias normales es de esperar que el porcentaje de strikes
+      de cada generación sea similar a su porcentaje de comentarios.
+      Y efectivamente vemos que esto se cumple hasta 2016, pero no después.</p>
+<p>
+      Una explicación para la concentración inusual de strikes en las generaciones
+      2017-2019 sería que parte de esas personas con strike realmente sean
+      usuarios de otras generaciones que se crearon una nueva cuenta.
+    </p>
+<p>Es decir, teniendo en cuenta que el sistema de strikes se implemento en 2017
+      y suponiendo que haya un tipo de usuario <em>propenso a
+    tener strikes</em>, si este decidiera abandonar Menéame pero luego quisiera volver,
+    o si simplemente quisiera crear una nueva cuenta para proteger el karma de la antigua,
+    su nuevo usuario sería de la generación 2017 o posterior y tendría
+    nuevos strikes con él.</p>
+<p>
+      Si damos por buena esta explicación, debemos inferir que las personas
+      afectadas por un strike no son <code>3.371</code>
+      si no menos ya que una parte de ellas habría usado varias cuentas.
     </p>
 <p>
-      Por otro lado, si damos por buena esta hipotesis, además de lo dicho
-      debemos concluir que las personas afectadas por los strikes
-      no son <code>398</code> si no muchas menos
-      ya que es gente que opera varias cuentas.
+      En cuanto al brusco cambio en el año 2020 solo se me ocurre que este
+      relacionado con el ligero descenso en el número de strikes que vimos
+      en la gráfica 2 combinado con la fuerte subida de usuarios registrados
+      para ese año que vimos en
+      <a href="https://s-nt-s.github.io/meneame_en_datos/">la gráfica 2.B del anterior informe sobre Menéame</a>.
     </p>
-<h2>¿Alguna conclusión?</h2>
-<p>
-      No.
-    </p>
+<h2>6. ¿Alguna conclusión?</h2>
+<p>No.</p>
 </div>

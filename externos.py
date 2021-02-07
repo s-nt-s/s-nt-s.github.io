@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 
 re_link1 = re.compile(r"!?\[.*?\]\(([^#].+?)\)")
 re_link2 = re.compile(r'<img\b[^>]+src=["]([^"]+)')
+re_dot = re.compile(r'(Title):(.*)')
 
 
 def get_head(md):
@@ -109,7 +110,8 @@ def get_html_page(url, yml):
 for md in sorted(iglob("content/**/*.md")):
     source, head = get_head(md)
     if source:
-        yml = yaml.load(head, Loader=yaml.FullLoader)
+        shead = re_dot.sub(lambda x: x.group(1)+":"+(x.group(2).replace(":", "")), head)
+        yml = yaml.load(shead, Loader=yaml.FullLoader)
         print("Cargando %s\ndesde %s" % (md, source))
         ext = source.rsplit(".", 1)[-1].lower()
         if ext in ("html", "html"):
