@@ -67,6 +67,10 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i2/index.html
          quejándose de los strikes
         o quejándose de la gente que se queja de los strikes.
       </li>
+<li>
+        Menéame es <a href="https://github.com/Meneame/meneame.net/blob/master/LICENSE">código abierto con licencia libre</a>, por lo tanto cualquiera puede
+        crear un Menéame alternativo mejorando o eliminando el sistema de strikes.
+      </li>
 </ol>
 <p>Sabiendo todo esto, podemos continuar teniendo en cuenta
       que todos los datos aquí presentados parten de recolectar
