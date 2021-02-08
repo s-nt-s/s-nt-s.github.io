@@ -181,6 +181,7 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i2/index.html
 <p>
       En números absolutos, ha habido aproximadamente
       un strike cada <code>3</code> horas
+      y <code>18</code> minutos,
       y se han visto afectados un total de
       <code>3.371</code> usuarios.
     </p>
