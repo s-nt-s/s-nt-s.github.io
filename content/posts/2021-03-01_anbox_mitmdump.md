@@ -40,8 +40,8 @@ mitmproxy-ca-cert.cer  mitmproxy-ca-cert.pem  mitmproxy-dhparam.pem
 **3-** Instalar certificado en Anbox
 
 ```console
-$ snap set anbox rootfs-overlay.enable=true
-$ snap restart anbox.container-manager
+$ sudo snap set anbox rootfs-overlay.enable=true
+$ sudo snap restart anbox.container-manager
 $ sudo snap run --shell anbox.container-manager
 $ mkdir -p /var/snap/anbox/common/rootfs-overlay/system/etc/security/cacerts
 $ cp /home/TU_USUARIO/.mitmproxy/c8750f0d.0 /var/snap/anbox/common/rootfs-overlay/system/etc/security/cacerts/
