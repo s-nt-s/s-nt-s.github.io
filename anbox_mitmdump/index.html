@@ -34,12 +34,12 @@ para inspeccionar las llamadas http que hace la app</p>
 <li><a href="https://docs.mitmproxy.org/stable/overview-tools/" target="_blank">mitmdump</a> de mitmproxy para el ataque</li>
 <li>un script que capture y guarde las peticiones <code>http</code> que nos interesen</li>
 </ul>
-<p><em>1-</em> Instalación</p>
+<p><strong>1-</strong> Instalación</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo -H pip3 install mitmproxy
 <span class="gp">$ </span>snap install --devmode --beta anbox
 <span class="gp">$ </span>sudo apt install android-tools-adb
 </code></pre></div>
-<p><em>2-</em> Renombrar certificado para usar en android</p>
+<p><strong>2-</strong> Renombrar certificado para usar en android</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>ls ~/.mitmproxy
 <span class="go">mitmproxy-ca-cert.cer  mitmproxy-ca-cert.pem  mitmproxy-dhparam.pem</span>
 <span class="go">mitmproxy-ca-cert.p12  mitmproxy-ca.pem</span>
@@ -50,7 +50,7 @@ para inspeccionar las llamadas http que hace la app</p>
 <span class="go">c8750f0d.0             mitmproxy-ca-cert.p12  mitmproxy-ca.pem</span>
 <span class="go">mitmproxy-ca-cert.cer  mitmproxy-ca-cert.pem  mitmproxy-dhparam.pem</span>
 </code></pre></div>
-<p><em>3-</em> Instalar certificado en Anbox</p>
+<p><strong>3-</strong> Instalar certificado en Anbox</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>snap <span class="nb">set</span> anbox rootfs-overlay.enable<span class="o">=</span><span class="nb">true</span>
 <span class="gp">$ </span>snap restart anbox.container-manager
 <span class="gp">$ </span>sudo snap run --shell anbox.container-manager
@@ -60,17 +60,17 @@ para inspeccionar las llamadas http que hace la app</p>
 <span class="gp">$ </span><span class="nb">exit</span>
 <span class="gp">$ </span>sudo snap restart anbox.container-manager
 </code></pre></div>
-<p><em>4-</em> Configurar proxy en Anbox</p>
+<p><strong>4-</strong> Configurar proxy en Anbox</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>adb devices
 <span class="go">List of devices attached</span>
 <span class="go">emulator-5558   device</span>
 <span class="gp">$ </span>adb shell settings put global http_proxy <span class="m">192</span>.168.1.126:8080
 </code></pre></div>
 <p><strong>Nota</strong>: Cambia <code>192.168.1.126</code> por la ip de la máquina donde se ejecutar mitmproxy</p>
-<p><em>5-</em> Instalar app en Anbox</p>
+<p><strong>5-</strong> Instalar app en Anbox</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>adb install app.apk
 </code></pre></div>
-<p><em>6-</em> Crear script para capturar tráfico</p>
+<p><strong>6-</strong> Crear script para capturar tráfico</p>
 <p>Por lo general nos van a interesar las peticiones que devuelvan <code>json</code>.
 El siguiente script (<code>mitmjson.py</code>) captura esas peticiones y las guarda en una
 estructura de directorios basada en el <code>hostname</code> y <code>path</code> de la <code>url</code>.</p>
@@ -86,7 +86,6 @@ crear manualmente una carpeta por <code>hostname</code> que queramos capturar.</
 
 <span class="kn">from</span> <span class="nn">mitmproxy.net.http</span> <span class="kn">import</span> <span class="n">cookies</span>
 
-
 <span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
@@ -95,14 +94,12 @@ crear manualmente una carpeta por <code>hostname</code> que queramos capturar.</
             <span class="k">pass</span>
     <span class="k">return</span> <span class="kc">None</span>
 
-
 <span class="k">def</span> <span class="nf">format_request_cookies</span><span class="p">(</span><span class="n">fields</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">format_cookies</span><span class="p">(</span><span class="n">cookies</span><span class="o">.</span><span class="n">group_cookies</span><span class="p">(</span><span class="n">fields</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">format_response_cookies</span><span class="p">(</span><span class="n">fields</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">format_cookies</span><span class="p">((</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">)</span>
-
 
 <span class="k">def</span> <span class="nf">format_cookies</span><span class="p">(</span><span class="n">cookie_list</span><span class="p">):</span>
     <span class="n">rv</span> <span class="o">=</span> <span class="p">[]</span>
@@ -120,7 +117,6 @@ crear manualmente una carpeta por <code>hostname</code> que queramos capturar.</
         <span class="n">rv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cookie_har</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">rv</span>
-
 
 <span class="k">def</span> <span class="nf">name_value</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="n">r</span> <span class="o">=</span> <span class="p">{}</span>
@@ -197,7 +193,7 @@ crear manualmente una carpeta por <code>hostname</code> que queramos capturar.</
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </code></pre></div>
-<p><em>7-</em> Arrancar mitmdump</p>
+<p><strong>7-</strong> Arrancar mitmdump</p>
 <div class="highlight"><pre><span></span><code>$ mkdir hostname.com
 $ mitmdump --flow-detail <span class="m">0</span> -s <span class="s2">"mitmjson.py"</span> <span class="p">|</span> sed <span class="s1">'/:.* \(clientdisconnect\|clientconnect\)/d'</span>
 </code></pre></div>
