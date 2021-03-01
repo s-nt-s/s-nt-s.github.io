@@ -17,7 +17,7 @@ Programación</a>
 proxy</a> <a class="bubble tag tg_redes" href="/tag/redes.html" title="Hay 7 entradas  más sobre redes">
 redes</a> </p>
 <p>
-<span class="bubble">152 lineas</span> <span class="bubble wc">601 palabras</span> <span class="bubble wc">5.250 letras</span>
+<span class="bubble">152 lineas</span> <span class="bubble wc">603 palabras</span> <span class="bubble wc">5.260 letras</span>
 </p>
 </div><!-- /.post-info --> </header><!-- /#banner -->
 <section class="body" id="content">
@@ -51,8 +51,8 @@ para inspeccionar las llamadas http que hace la app</p>
 <span class="go">mitmproxy-ca-cert.cer  mitmproxy-ca-cert.pem  mitmproxy-dhparam.pem</span>
 </code></pre></div>
 <p><strong>3-</strong> Instalar certificado en Anbox</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>snap <span class="nb">set</span> anbox rootfs-overlay.enable<span class="o">=</span><span class="nb">true</span>
-<span class="gp">$ </span>snap restart anbox.container-manager
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo snap <span class="nb">set</span> anbox rootfs-overlay.enable<span class="o">=</span><span class="nb">true</span>
+<span class="gp">$ </span>sudo snap restart anbox.container-manager
 <span class="gp">$ </span>sudo snap run --shell anbox.container-manager
 <span class="gp">$ </span>mkdir -p /var/snap/anbox/common/rootfs-overlay/system/etc/security/cacerts
 <span class="gp">$ </span>cp /home/TU_USUARIO/.mitmproxy/c8750f0d.0 /var/snap/anbox/common/rootfs-overlay/system/etc/security/cacerts/
