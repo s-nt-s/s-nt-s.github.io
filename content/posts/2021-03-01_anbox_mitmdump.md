@@ -15,7 +15,7 @@ Para ello vamos a necesitar:
 * [mitmdump](https://docs.mitmproxy.org/stable/overview-tools/) de mitmproxy para el ataque
 * un script que capture y guarde las peticiones `http` que nos interesen
 
-*1-* Instalación
+**1-** Instalación
 
 ```console
 $ sudo -H pip3 install mitmproxy
@@ -23,7 +23,7 @@ $ snap install --devmode --beta anbox
 $ sudo apt install android-tools-adb
 ```
 
-*2-* Renombrar certificado para usar en android
+**2-** Renombrar certificado para usar en android
 
 ```console
 $ ls ~/.mitmproxy
@@ -37,7 +37,7 @@ c8750f0d.0             mitmproxy-ca-cert.p12  mitmproxy-ca.pem
 mitmproxy-ca-cert.cer  mitmproxy-ca-cert.pem  mitmproxy-dhparam.pem
 ```
 
-*3-* Instalar certificado en Anbox
+**3-** Instalar certificado en Anbox
 
 ```console
 $ snap set anbox rootfs-overlay.enable=true
@@ -50,7 +50,7 @@ $ exit
 $ sudo snap restart anbox.container-manager
 ```
 
-*4-* Configurar proxy en Anbox
+**4-** Configurar proxy en Anbox
 
 ```console
 $ adb devices
@@ -61,13 +61,13 @@ $ adb shell settings put global http_proxy 192.168.1.126:8080
 
 **Nota**: Cambia `192.168.1.126` por la ip de la máquina donde se ejecutar mitmproxy
 
-*5-* Instalar app en Anbox
+**5-** Instalar app en Anbox
 
 ```console
 $ adb install app.apk
 ```
 
-*6-* Crear script para capturar tráfico
+**6-** Crear script para capturar tráfico
 
 Por lo general nos van a interesar las peticiones que devuelvan `json`.
 El siguiente script (`mitmjson.py`) captura esas peticiones y las guarda en una
@@ -87,7 +87,6 @@ import yaml
 
 from mitmproxy.net.http import cookies
 
-
 def get_json(text):
     if text:
         try:
@@ -96,14 +95,12 @@ def get_json(text):
             pass
     return None
 
-
 def format_request_cookies(fields):
     return format_cookies(cookies.group_cookies(fields))
 
 
 def format_response_cookies(fields):
     return format_cookies((c[0], c[1][0], c[1][1]) for c in fields)
-
 
 def format_cookies(cookie_list):
     rv = []
@@ -121,7 +118,6 @@ def format_cookies(cookie_list):
         rv.append(cookie_har)
 
     return rv
-
 
 def name_value(obj):
     r = {}
@@ -199,7 +195,7 @@ def response(flow):
         f.write(json.dumps(info, indent=4, sort_keys=True))
 ```
 
-*7-* Arrancar mitmdump
+**7-** Arrancar mitmdump
 
 ```
 $ mkdir hostname.com
