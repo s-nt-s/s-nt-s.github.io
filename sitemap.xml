@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
+    <loc>https://s-nt-s.github.io/anbox_mitmdump/</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://s-nt-s.github.io/meneame_en_datos_2/</loc>
     <priority>0.8</priority>
   </url>

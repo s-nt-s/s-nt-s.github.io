@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Configurar Anbox con mitmdump</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/anbox_mitmdump" rel="bookmark" title="Permalink to Configurar Anbox con mitmdump">Configurar Anbox con mitmdump</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2021-03-01T00:00:00+01:00" title="Publicado el 2021-03-01">2021-03-01</time>
+<a class="bubble category ct_programacion" href="/category/programacion.html" title="Hay 6 entradas más sobre Programación">
+Programación</a>
+<span class="bubble tag tg_anbox" title="No hay más entradas con esta etiqueta">anbox</span> <span class="bubble tag tg_mitm" title="No hay más entradas con esta etiqueta">mitm</span> <span class="bubble tag tg_mitmdump" title="No hay más entradas con esta etiqueta">mitmdump</span> <a class="bubble tag tg_proxy" href="/tag/proxy.html" title="Hay 2 entradas  más sobre proxy">
+proxy</a> <a class="bubble tag tg_redes" href="/tag/redes.html" title="Hay 7 entradas  más sobre redes">
+redes</a> </p>
+<p>
+<span class="bubble">152 lineas</span> <span class="bubble wc">601 palabras</span> <span class="bubble wc">5.250 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p><strong>Problema</strong>: Queremos obtener la api de una app</p>
+<p><strong>Solución</strong>: Instalar la app en Anbox y ejecutar un ataque
+<a href="https://es.wikipedia.org/wiki/Ataque_de_intermediario" target="_blank">man-in-the-middle</a>
+para inspeccionar las llamadas http que hace la app</p>
+<p>Para ello vamos a necesitar:</p>
+<ul>
+<li><a href="https://anbox.io/" target="_blank">Anbox</a> para ejecutar la aplicación</li>
+<li><a href="https://packages.debian.org/sid/android-tools-adb" target="_blank">adb</a> para interactuar con Anbox</li>
+<li><a href="https://docs.mitmproxy.org/stable/overview-tools/" target="_blank">mitmdump</a> de mitmproxy para el ataque</li>
+<li>un script que capture y guarde las peticiones <code>http</code> que nos interesen</li>
+</ul>
+<p><em>1-</em> Instalación</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo -H pip3 install mitmproxy
+<span class="gp">$ </span>snap install --devmode --beta anbox
+<span class="gp">$ </span>sudo apt install android-tools-adb
+</code></pre></div>
+<p><em>2-</em> Renombrar certificado para usar en android</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ls ~/.mitmproxy
+<span class="go">mitmproxy-ca-cert.cer  mitmproxy-ca-cert.pem  mitmproxy-dhparam.pem</span>
+<span class="go">mitmproxy-ca-cert.p12  mitmproxy-ca.pem</span>
+<span class="gp">$ </span>openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.cer <span class="p">|</span> head -1
+<span class="go">c8750f0d</span>
+<span class="gp">$ </span>cp ~/.mitmproxy/mitmproxy-ca-cert.cer <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.mitmproxy/</span><span class="k">$(</span>openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.cer <span class="p">|</span> head -1<span class="k">)</span><span class="s2">.0"</span>
+<span class="gp">$ </span>ls ~/.mitmproxy
+<span class="go">c8750f0d.0             mitmproxy-ca-cert.p12  mitmproxy-ca.pem</span>
+<span class="go">mitmproxy-ca-cert.cer  mitmproxy-ca-cert.pem  mitmproxy-dhparam.pem</span>
+</code></pre></div>
+<p><em>3-</em> Instalar certificado en Anbox</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>snap <span class="nb">set</span> anbox rootfs-overlay.enable<span class="o">=</span><span class="nb">true</span>
+<span class="gp">$ </span>snap restart anbox.container-manager
+<span class="gp">$ </span>sudo snap run --shell anbox.container-manager
+<span class="gp">$ </span>mkdir -p /var/snap/anbox/common/rootfs-overlay/system/etc/security/cacerts
+<span class="gp">$ </span>cp /home/TU_USUARIO/.mitmproxy/c8750f0d.0 /var/snap/anbox/common/rootfs-overlay/system/etc/security/cacerts/
+<span class="gp">$ </span>sudo chown -R <span class="m">100000</span>:100000 /var/snap/anbox/common/rootfs-overlay
+<span class="gp">$ </span><span class="nb">exit</span>
+<span class="gp">$ </span>sudo snap restart anbox.container-manager
+</code></pre></div>
+<p><em>4-</em> Configurar proxy en Anbox</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>adb devices
+<span class="go">List of devices attached</span>
+<span class="go">emulator-5558   device</span>
+<span class="gp">$ </span>adb shell settings put global http_proxy <span class="m">192</span>.168.1.126:8080
+</code></pre></div>
+<p><strong>Nota</strong>: Cambia <code>192.168.1.126</code> por la ip de la máquina donde se ejecutar mitmproxy</p>
+<p><em>5-</em> Instalar app en Anbox</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>adb install app.apk
+</code></pre></div>
+<p><em>6-</em> Crear script para capturar tráfico</p>
+<p>Por lo general nos van a interesar las peticiones que devuelvan <code>json</code>.
+El siguiente script (<code>mitmjson.py</code>) captura esas peticiones y las guarda en una
+estructura de directorios basada en el <code>hostname</code> y <code>path</code> de la <code>url</code>.</p>
+<p><strong>Nota</strong>: Para evitar capturar peticiones indiscriminadamente, este script
+solo guarda ficheros <code>json</code> en carpetas que ya existan, es decir, debemos
+crear manualmente una carpeta por <code>hostname</code> que queramos capturar.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="kn">from</span> <span class="nn">mitmproxy.net.http</span> <span class="kn">import</span> <span class="n">cookies</span>
+
+
+<span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">format_request_cookies</span><span class="p">(</span><span class="n">fields</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">format_cookies</span><span class="p">(</span><span class="n">cookies</span><span class="o">.</span><span class="n">group_cookies</span><span class="p">(</span><span class="n">fields</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">format_response_cookies</span><span class="p">(</span><span class="n">fields</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">format_cookies</span><span class="p">((</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">format_cookies</span><span class="p">(</span><span class="n">cookie_list</span><span class="p">):</span>
+    <span class="n">rv</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">attrs</span> <span class="ow">in</span> <span class="n">cookie_list</span><span class="p">:</span>
+        <span class="n">cookie_har</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"name"</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+            <span class="s2">"value"</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"path"</span><span class="p">,</span> <span class="s2">"domain"</span><span class="p">,</span> <span class="s2">"comment"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+                <span class="n">cookie_har</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+        <span class="n">rv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cookie_har</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">rv</span>
+
+
+<span class="k">def</span> <span class="nf">name_value</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">r</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">r</span>
+
+<span class="k">def</span> <span class="nf">response</span><span class="p">(</span><span class="n">flow</span><span class="p">):</span>
+    <span class="n">uparse</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">uparse</span><span class="o">.</span><span class="n">hostname</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">js</span> <span class="o">=</span> <span class="n">get_json</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">js</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">uparse</span><span class="o">.</span><span class="n">hostname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">"."</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">req_cookies</span> <span class="o">=</span> <span class="n">format_request_cookies</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+    <span class="n">res_cookies</span> <span class="o">=</span> <span class="n">format_response_cookies</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+    <span class="n">req_content_type</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Content-Type"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">res_content_type</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Content-Type"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">res_redirect</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'Location'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"request"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"method"</span><span class="p">:</span> <span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
+            <span class="s2">"url"</span><span class="p">:</span> <span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
+            <span class="s2">"headers"</span><span class="p">:</span> <span class="n">name_value</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="s2">"response"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"status"</span><span class="p">:</span> <span class="n">flow</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="s2">"statusText"</span><span class="p">:</span> <span class="n">flow</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">reason</span><span class="p">,</span>
+            <span class="s2">"headers"</span><span class="p">:</span> <span class="n">name_value</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">),</span>
+            <span class="s2">"json"</span><span class="p">:</span> <span class="n">js</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">req_cookies</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">"request"</span><span class="p">][</span><span class="s2">"cookies"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req_cookies</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">res_cookies</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">"response"</span><span class="p">][</span><span class="s2">"cookies"</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_cookies</span>
+    <span class="k">if</span> <span class="n">res_content_type</span><span class="p">:</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">"response"</span><span class="p">][</span><span class="s2">"mimeType"</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_content_type</span>
+    <span class="k">if</span> <span class="n">res_redirect</span><span class="p">:</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">"response"</span><span class="p">][</span><span class="s2">"redirectURL"</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_redirect</span>
+
+    <span class="k">if</span> <span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"GET"</span><span class="p">,</span> <span class="s2">"POST"</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">,</span> <span class="s2">"PATCH"</span><span class="p">):</span>
+        <span class="n">req_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlencoded_form</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="n">multi</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">req_params</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span>
+        <span class="n">req_text</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">req_json</span> <span class="o">=</span> <span class="n">get_json</span><span class="p">(</span><span class="n">req_text</span><span class="p">)</span>
+        <span class="n">postData</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">req_content_type</span><span class="p">:</span>
+            <span class="n">postData</span><span class="p">[</span><span class="s2">"mimeType"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req_content_type</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">req_params</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">postData</span><span class="p">[</span><span class="s2">"params"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req_params</span>
+        <span class="k">if</span> <span class="n">req_json</span><span class="p">:</span>
+            <span class="n">postData</span><span class="p">[</span><span class="s2">"json"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req_json</span>
+        <span class="k">elif</span> <span class="n">req_text</span><span class="p">:</span>
+            <span class="n">postData</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req_text</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">"request"</span><span class="p">][</span><span class="s2">"postData"</span><span class="p">]</span> <span class="o">=</span> <span class="n">postData</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S.</span><span class="si">%f</span><span class="s1">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">uparse</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="n">uparse</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">"."</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">uparse</span><span class="o">.</span><span class="n">hostname</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">".json"</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span> <span class="o">+</span> <span class="s2">" ---&gt; "</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</code></pre></div>
+<p><em>7-</em> Arrancar mitmdump</p>
+<div class="highlight"><pre><span></span><code>$ mkdir hostname.com
+$ mitmdump --flow-detail <span class="m">0</span> -s <span class="s2">"mitmjson.py"</span> <span class="p">|</span> sed <span class="s1">'/:.* \(clientdisconnect\|clientconnect\)/d'</span>
+</code></pre></div>
+<p><strong>Nota</strong>: Uso <code>sed</code> para eliminar de la salida los abundantes reportes
+por conexiones y desconexiones.</p>
+<p><strong>Fuentes</strong>:
+<a href="https://blog.jeroenhd.nl/article/android-7-nougat-and-certificate-authorities" target="_blank">jeroenhd.nl</a>,
+<a href="https://github.com/anbox/anbox/issues/398" target="_blank">github - anbox/issues/398</a>,
+<a href="https://github.com/anbox/anbox/issues/1097" target="_blank">github - anbox/issues/1097</a>,
+<a href="https://docs.anbox.io/userguide/advanced/rootfs_overlay.html" target="_blank">docs.anbox.io</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/content/posts/2021-03-01_anbox_mitmdump.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/anbox_mitmdump" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>
