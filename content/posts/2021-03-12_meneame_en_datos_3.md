@@ -8,13 +8,13 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i3/index.html
 <div><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script><script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/i3/js/sort_table.js"></script><link data-autoinsert="1" href="https://s-nt-s.github.io/meneame.dump/i3/css/main.css" rel="stylesheet" type="text/css"/>
 <p>
       Esto listado de <a href="https://www.meneame.net/m/Preg%C3%BAntame">encuentros digitales en Menéame</a>
-      mide a grosso modo la participación de cada entrevista en base a:
+      mide a grosso modo la participación en cada entrevista en base a:
     </p>
 <ul>
 <li><b>Respuestas</b>: Cada comentario de la persona entrevistada cuenta como 1 respuesta</li>
 <li><b>Preguntas</b>: Cada comentario de los los demás usuarios cuenta como 1 pregunta, excepto aquellos que se realizaron después de la última respuesta</li>
-<li><b>Contestadas</b>: Porcentaje de preguntas contestadas, por el ratón encima para ver el numero de respuestas</li>
-<li><b>Palabras</b>: Número total de palabras usadas en las contestaciones</li>
+<li><b>Contestadas</b>: Porcentaje de preguntas contestadas, pon el ratón encima para ver el numero exacto de respuestas</li>
+<li><b>Palabras</b>: Suma total de palabras usadas en las contestaciones</li>
 <li><b>Tiempo</b>: Tiempo transcurrido entre la primera contestación y la última contestación</li>
 </ul>
 <p>
