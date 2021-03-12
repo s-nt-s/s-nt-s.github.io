@@ -19,7 +19,7 @@
 &lt;li&gt;&lt;b&gt;Tiempo&lt;/b&gt;: Tiempo transcurrido entre la primera contestación y la última contestación&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;
-      Puedes pulsar sobre las cabeceras de la tabla para reordenar las filas.
+      Puedes reordenar la tabla pulsando en las cabeceras.
     &lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
