@@ -6,14 +6,14 @@
     &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;b&gt;Respuestas&lt;/b&gt;: Cada comentario de la persona entrevistada cuenta como 1 respuesta&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Preguntas&lt;/b&gt;: Cada comentario de los los demás usuarios cuenta como 1 pregunta, excepto aquellos que se realizaron despues de la …&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;</summary><content type="html">&lt;div&gt;&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/i3/js/sort_table.js"&gt;&lt;/script&gt;&lt;link data-autoinsert="1" href="https://s-nt-s.github.io/meneame.dump/i3/css/main.css" rel="stylesheet" type="text/css"/&gt;
+&lt;li&gt;&lt;b&gt;Preguntas&lt;/b&gt;: Cada comentario de los los demás usuarios cuenta como 1 pregunta, excepto aquellos que se realizaron después de la …&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;</summary><content type="html">&lt;div&gt;&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/i3/js/sort_table.js"&gt;&lt;/script&gt;&lt;link data-autoinsert="1" href="https://s-nt-s.github.io/meneame.dump/i3/css/main.css" rel="stylesheet" type="text/css"/&gt;
 &lt;p&gt;
       Esto listado de &lt;a href="https://www.meneame.net/m/Preg%C3%BAntame"&gt;encuentros digitales en Menéame&lt;/a&gt;
       mide a grosso modo la participación de cada entrevista en base a:
     &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;b&gt;Respuestas&lt;/b&gt;: Cada comentario de la persona entrevistada cuenta como 1 respuesta&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Preguntas&lt;/b&gt;: Cada comentario de los los demás usuarios cuenta como 1 pregunta, excepto aquellos que se realizaron despues de la última respuesta&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;Preguntas&lt;/b&gt;: Cada comentario de los los demás usuarios cuenta como 1 pregunta, excepto aquellos que se realizaron después de la última respuesta&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Contestadas&lt;/b&gt;: Porcentaje de preguntas contestadas, por el ratón encima para ver el numero de respuestas&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Palabras&lt;/b&gt;: Número total de palabras usadas en las contestaciones&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Tiempo&lt;/b&gt;: Tiempo transcurrido entre la primera contestación y la última contestación&lt;/li&gt;
