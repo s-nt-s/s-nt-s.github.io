@@ -18,7 +18,7 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i3/index.html
 <li><b>Tiempo</b>: Tiempo transcurrido entre la primera contestación y la última contestación</li>
 </ul>
 <p>
-      Puedes pulsar sobre las cabeceras de la tabla para reordenar las filas.
+      Puedes reordenar la tabla pulsando en las cabeceras.
     </p>
 <table>
 <thead>
