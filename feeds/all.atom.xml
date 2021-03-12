@@ -1223,7 +1223,7 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;/div&gt;</content><category term="menéame"></category><category term="videojuegos"></category></entry><entry><title>Configurar Anbox con mitmdump</title><link href="https://s-nt-s.github.io/anbox_mitmdump/" rel="alternate"></link><published>2021-03-01T00:00:00+01:00</published><updated>2021-03-01T00:00:00+01:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2021-03-01:/anbox_mitmdump/</id><summary type="html">&lt;p&gt;&lt;strong&gt;Problema&lt;/strong&gt;: Queremos obtener la api de una app&lt;/p&gt;
+&lt;/div&gt;</content><category term="menéame"></category></entry><entry><title>Configurar Anbox con mitmdump</title><link href="https://s-nt-s.github.io/anbox_mitmdump/" rel="alternate"></link><published>2021-03-01T00:00:00+01:00</published><updated>2021-03-01T00:00:00+01:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2021-03-01:/anbox_mitmdump/</id><summary type="html">&lt;p&gt;&lt;strong&gt;Problema&lt;/strong&gt;: Queremos obtener la api de una app&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Solución&lt;/strong&gt;: Instalar la app en Anbox y ejecutar un ataque
 &lt;a href="https://es.wikipedia.org/wiki/Ataque_de_intermediario"&gt;man-in-the-middle&lt;/a&gt;
 para inspeccionar las llamadas http que hace la app&lt;/p&gt;
