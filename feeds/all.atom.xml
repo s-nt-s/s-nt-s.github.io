@@ -14,9 +14,9 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;b&gt;Respuestas&lt;/b&gt;: Cada comentario de la persona entrevistada cuenta como 1 respuesta&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Preguntas&lt;/b&gt;: Cada comentario de los los demás usuarios cuenta como 1 pregunta, excepto aquellos que se realizaron después de la última respuesta&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Contestadas&lt;/b&gt;: Porcentaje de preguntas contestadas, pon el ratón encima para ver el numero exacto de respuestas&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Palabras&lt;/b&gt;: Suma total de palabras usadas en las contestaciones&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Tiempo&lt;/b&gt;: Tiempo transcurrido entre la primera contestación y la última contestación&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;Contestadas&lt;/b&gt;: Porcentaje de preguntas contestadas (pon el ratón encima para ver el numero exacto de respuestas)&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;Palabras&lt;/b&gt;: Suma total de palabras usadas en las respuestas&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;Tiempo&lt;/b&gt;: Tiempo transcurrido entre la primera la última respuesta&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;
       Puedes reordenar la tabla pulsando en las cabeceras.
