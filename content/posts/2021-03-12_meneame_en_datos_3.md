@@ -8,7 +8,7 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i3/index.html
 <div><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script><script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/i3/js/sort_table.js"></script><link data-autoinsert="1" href="https://s-nt-s.github.io/meneame.dump/i3/css/main.css" rel="stylesheet" type="text/css"/>
 <p>
       Esto listado de <a href="https://www.meneame.net/m/Preg%C3%BAntame">encuentros digitales en Menéame</a>
-      mide a grosso modo la participación en cada entrevista en base a:
+      evalua, de manera orientativa, la participación en cada entrevista en base a:
     </p>
 <ul>
 <li><b>Respuestas</b>: Cada comentario de la persona entrevistada cuenta como 1 respuesta</li>
