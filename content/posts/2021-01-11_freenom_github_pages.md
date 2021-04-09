@@ -28,8 +28,8 @@ para que no se pierda la configuración.
 **Bonus 2**: Si no quieres que el cambio afecte a todos tus proyectos
 [consulta este issue](https://github.com/isaacs/github/issues/547#issuecomment-694671575).  
 **Bonus 3**: Si estas fuera de USA y [freenom.com](https://www.freenom.com) falla siempre
-en el último del paso del registro de dominio prueba a [cambiar tu dirección
-por una de USA](https://www.fakeaddressgenerator.com/usa_address_generator)
+en el último del paso del registro de dominio prueba a [cambiar la dirección de tu perfil
+de usuario por una de USA](https://www.fakeaddressgenerator.com/usa_address_generator)
 y [acceder a traves de VPN con una ip de USA](https://chrome.google.com/webstore/detail/hola-free-vpn-proxy-unblo/gkojfkhlekighikafcpjkiklfbnlmeio).
 
 **Fuentes**: [docs.github.com](https://docs.github.com/es/free-pro-team@latest/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site),
