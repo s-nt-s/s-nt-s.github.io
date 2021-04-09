@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>AWS CloudFront con Freemon y LetsEncrypt</title>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/freenom_letsencrypt_cloudfront" rel="bookmark" title="Permalink to AWS CloudFront con Freemon y LetsEncrypt">AWS CloudFront con Freemon y LetsEncrypt</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2021-04-09T00:00:00+02:00" title="Publicado el 2021-04-09">2021-04-09</time>
+<a class="bubble category ct_web" href="/category/web.html" title="Hay 5 entradas más sobre Web">
+Web</a>
+<span class="bubble tag tg_aws" title="No hay más entradas con esta etiqueta">aws</span> <span class="bubble tag tg_cloudfront" title="No hay más entradas con esta etiqueta">cloudfront</span> <a class="bubble tag tg_dns" href="/tag/dns.html" title="Hay 1 entrada  más sobre dns">
+dns</a> <a class="bubble tag tg_freemon" href="/tag/freemon.html" title="Hay 1 entrada  más sobre freemon">
+freemon</a> <span class="bubble tag tg_letsencrypt" title="No hay más entradas con esta etiqueta">letsencrypt</span> <a class="bubble tag tg_redes" href="/tag/redes.html" title="Hay 9 entradas  más sobre redes">
+redes</a> </p>
+<p>
+<span class="bubble">35 lineas</span> <span class="bubble wc">289 palabras</span> <span class="bubble wc">2.100 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<ol>
+<li>Registrarse en <a href="https://www.freenom.com" target="_blank">freenom.com</a></li>
+<li>Crear el dominio <code>example.ml</code> (<a href="https://my.freenom.com/domains.php" target="_blank">Services -&gt; Register a New Domain</a> -&gt; ...)</li>
+<li>Ir a <a href="https://console.aws.amazon.com/route53/v2/home#Dashboard" target="_blank">AWS Route53</a> -&gt; <code>Create hosted zone</code>:<ul>
+<li>Domain name: example.ml</li>
+</ul>
+</li>
+<li>Copiamos los valores <code>ns-*</code> de la columna <code>Value/Route traffic to</code></li>
+<li>En <a href="https://www.freenom.com" target="_blank">freenom.com</a> seleccionamos nuestro dominio y vamos a <code>Manage Tools -&gt; Nameserver</code></li>
+<li>Seleccionamos <code>Use custom nameservers (enter below)</code> y rellenamos los campos <code>Nameserver</code> con los valores <code>ns-*</code> anteriormente copiados</li>
+<li>En <a href="https://www.dnschecker.org/#NS" target="_blank">dnschecker.org/#NS</a> podemos validar el resultado pasados unos minutos</li>
+<li>Solicitar el certificado a letsencrypt:<ul>
+<li><code>certbot certonly --manual --preferred-challenges=dns --email your@email-address.com --agree-tos --config-dir ./config --logs-dir ./logs --work-dir ./workdir -d example.ml -d *.example.ml</code></li>
+<li>Esto imprimirá una regla DNS que debemos crear.</li>
+</ul>
+</li>
+<li>Volvemos a <a href="https://console.aws.amazon.com/route53/v2/home#Dashboard" target="_blank">AWS Route53</a> y pulsamos en <code>Create record</code>:<ul>
+<li>Name Record: <code>_acme-challenge</code></li>
+<li>Record type: TXT</li>
+<li>Value: <em>dato proporcionado en el paso anterior</em> (cadena alfanumerica)</li>
+</ul>
+</li>
+<li>Vamos a <a href="https://console.aws.amazon.com/acm/home" target="_blank">AWS Certificate Manager</a> (en zona us-east-1 para poder usarlo en CloudFront)y pulsamos en <code>Import a certificate</code>:<ul>
+<li>Certificate body = contenido de <code>config/live/example.ml/cert.pem</code></li>
+<li>Certificate private key = contenido de <code>config/live/example.ml/privkey.pem</code></li>
+<li>Certificate chain = contenido de <code>config/live/example.ml/chain.pem</code></li>
+</ul>
+</li>
+<li>Vamos a <a href="https://console.aws.amazon.com/cloudfront/home?region=us-east-1#distributions:" target="_blank">CloudFront</a>, editamos la distribución:<ul>
+<li>Alternate Domain Names (CNAMEs) = example.ml</li>
+<li>SSL Certificate -&gt; Custom SSL Certificate: seleccionamos el certificado anteriormente importado</li>
+</ul>
+</li>
+<li>Volvemos a <a href="https://console.aws.amazon.com/route53/v2/home#Dashboard" target="_blank">AWS Route53</a> y seleccionamos la zona creada anteriormente</li>
+<li>Pulsamos en <code>Create record</code>:<ul>
+<li>Marcar el check <code>Alias</code></li>
+<li>Routing policy = Simple routing</li>
+<li>Record type = A – Routes traffic to an IPv4 address and some AWS resources</li>
+<li>Route traffic to = Alias to CloudFront distribution</li>
+<li>Region = US East (N. Virginia)</li>
+<li>CloudFront = seleccionamos nuestro CloudFront</li>
+</ul>
+</li>
+</ol>
+<p><strong>Bonus</strong>: Si estas fuera de USA y <a href="https://www.freenom.com" target="_blank">freenom.com</a> falla siempre
+en el último del paso del registro de dominio prueba a <a href="https://www.fakeaddressgenerator.com/usa_address_generator" target="_blank">cambiar tu dirección
+por una de USA</a>
+y <a href="https://chrome.google.com/webstore/detail/hola-free-vpn-proxy-unblo/gkojfkhlekighikafcpjkiklfbnlmeio" target="_blank">acceder a traves de VPN con una ip de USA</a>.</p>
+<p><strong>Fuentes</strong>: <a href="https://itnext.io/using-letsencrypt-ssl-certificates-in-aws-certificate-manager-c2bc3c6ae10" target="_blank">itnext.io</a>, <a href="https://medium.com/200-response/como-crear-una-p%C3%A1gina-est%C3%A1tica-usando-aws-y-freenom-casi-completamente-gratis-parte-2-manos-a-la-48b9b6f45074" target="_blank">medium.com/200-response</a>, <a href="https://medium.com/analytics-vidhya/tutorial-how-to-deploy-an-angular-app-with-a-free-domain-and-ssl-to-aws-s3-and-cloudfront-d0143de53d2d" target="_blank">medium.com/analytics-vidhya</a>, <a href="https://www.reddit.com/r/freenom/comments/gegiy4/i_cant_register_free_domains_with_freenom/" target="_blank">reddit.com/r/freenom</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/content/posts/2021-04-09_freenom_letsencrypt_cloudfront.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/freenom_letsencrypt_cloudfront" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

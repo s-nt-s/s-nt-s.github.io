@@ -1,5 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Apuntes</title><link href="https://s-nt-s.github.io/" rel="alternate"></link><link href="https://s-nt-s.github.io/feeds/all.atom.xml" rel="self"></link><id>https://s-nt-s.github.io/</id><updated>2021-03-12T00:00:00+01:00</updated><subtitle>(mejor aquí que en un txt perdido)</subtitle><entry><title>Algunos datos sobre Menéame 3: Pregúntame</title><link href="https://s-nt-s.github.io/meneame_en_datos_3/" rel="alternate"></link><published>2021-03-12T00:00:00+01:00</published><updated>2021-03-12T00:00:00+01:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2021-03-12:/meneame_en_datos_3/</id><summary type="html">&lt;div&gt;&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/i3/js/sort_table.js"&gt;&lt;/script&gt;&lt;link data-autoinsert="1" href="https://s-nt-s.github.io/meneame.dump/i3/css/main.css" rel="stylesheet" type="text/css"/&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Apuntes</title><link href="https://s-nt-s.github.io/" rel="alternate"></link><link href="https://s-nt-s.github.io/feeds/all.atom.xml" rel="self"></link><id>https://s-nt-s.github.io/</id><updated>2021-04-09T00:00:00+02:00</updated><subtitle>(mejor aquí que en un txt perdido)</subtitle><entry><title>AWS CloudFront con Freemon y LetsEncrypt</title><link href="https://s-nt-s.github.io/freenom_letsencrypt_cloudfront/" rel="alternate"></link><published>2021-04-09T00:00:00+02:00</published><updated>2021-04-09T00:00:00+02:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2021-04-09:/freenom_letsencrypt_cloudfront/</id><summary type="html">&lt;ol&gt;
+&lt;li&gt;Registrarse en &lt;a href="https://www.freenom.com"&gt;freenom.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Crear el dominio &lt;code&gt;example.ml&lt;/code&gt; (&lt;a href="https://my.freenom.com/domains.php"&gt;Services -&amp;gt; Register a New Domain&lt;/a&gt; -&amp;gt; ...)&lt;/li&gt;
+&lt;li&gt;Ir a &lt;a href="https://console.aws.amazon.com/route53/v2/home#Dashboard"&gt;AWS Route53&lt;/a&gt; -&amp;gt; &lt;code&gt;Create hosted zone&lt;/code&gt;:&lt;ul&gt;
+&lt;li&gt;Domain name: example.ml&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Copiamos los valores &lt;code&gt;ns-*&lt;/code&gt; de la columna &lt;code&gt;Value/Route traffic to&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;En &lt;a href="https://www.freenom.com"&gt;freenom.com&lt;/a&gt; seleccionamos nuestro dominio y vamos a &lt;code&gt;Manage Tools -&amp;gt; Nameserver&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Seleccionamos &lt;code&gt;Use …&lt;/code&gt;&lt;/li&gt;&lt;/ol&gt;</summary><content type="html">&lt;ol&gt;
+&lt;li&gt;Registrarse en &lt;a href="https://www.freenom.com"&gt;freenom.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Crear el dominio &lt;code&gt;example.ml&lt;/code&gt; (&lt;a href="https://my.freenom.com/domains.php"&gt;Services -&amp;gt; Register a New Domain&lt;/a&gt; -&amp;gt; ...)&lt;/li&gt;
+&lt;li&gt;Ir a &lt;a href="https://console.aws.amazon.com/route53/v2/home#Dashboard"&gt;AWS Route53&lt;/a&gt; -&amp;gt; &lt;code&gt;Create hosted zone&lt;/code&gt;:&lt;ul&gt;
+&lt;li&gt;Domain name: example.ml&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Copiamos los valores &lt;code&gt;ns-*&lt;/code&gt; de la columna &lt;code&gt;Value/Route traffic to&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;En &lt;a href="https://www.freenom.com"&gt;freenom.com&lt;/a&gt; seleccionamos nuestro dominio y vamos a &lt;code&gt;Manage Tools -&amp;gt; Nameserver&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Seleccionamos &lt;code&gt;Use custom nameservers (enter below)&lt;/code&gt; y rellenamos los campos &lt;code&gt;Nameserver&lt;/code&gt; con los valores &lt;code&gt;ns-*&lt;/code&gt; anteriormente copiados&lt;/li&gt;
+&lt;li&gt;En &lt;a href="https://www.dnschecker.org/#NS"&gt;dnschecker.org/#NS&lt;/a&gt; podemos validar el resultado pasados unos minutos&lt;/li&gt;
+&lt;li&gt;Solicitar el certificado a letsencrypt:&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;certbot certonly --manual --preferred-challenges=dns --email your@email-address.com --agree-tos --config-dir ./config --logs-dir ./logs --work-dir ./workdir -d example.ml -d *.example.ml&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Esto imprimirá una regla DNS que debemos crear.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Volvemos a &lt;a href="https://console.aws.amazon.com/route53/v2/home#Dashboard"&gt;AWS Route53&lt;/a&gt; y pulsamos en &lt;code&gt;Create record&lt;/code&gt;:&lt;ul&gt;
+&lt;li&gt;Name Record: &lt;code&gt;_acme-challenge&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Record type: TXT&lt;/li&gt;
+&lt;li&gt;Value: &lt;em&gt;dato proporcionado en el paso anterior&lt;/em&gt; (cadena alfanumerica)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Vamos a &lt;a href="https://console.aws.amazon.com/acm/home"&gt;AWS Certificate Manager&lt;/a&gt; (en zona us-east-1 para poder usarlo en CloudFront)y pulsamos en &lt;code&gt;Import a certificate&lt;/code&gt;:&lt;ul&gt;
+&lt;li&gt;Certificate body = contenido de &lt;code&gt;config/live/example.ml/cert.pem&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Certificate private key = contenido de &lt;code&gt;config/live/example.ml/privkey.pem&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Certificate chain = contenido de &lt;code&gt;config/live/example.ml/chain.pem&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Vamos a &lt;a href="https://console.aws.amazon.com/cloudfront/home?region=us-east-1#distributions:"&gt;CloudFront&lt;/a&gt;, editamos la distribución:&lt;ul&gt;
+&lt;li&gt;Alternate Domain Names (CNAMEs) = example.ml&lt;/li&gt;
+&lt;li&gt;SSL Certificate -&amp;gt; Custom SSL Certificate: seleccionamos el certificado anteriormente importado&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Volvemos a &lt;a href="https://console.aws.amazon.com/route53/v2/home#Dashboard"&gt;AWS Route53&lt;/a&gt; y seleccionamos la zona creada anteriormente&lt;/li&gt;
+&lt;li&gt;Pulsamos en &lt;code&gt;Create record&lt;/code&gt;:&lt;ul&gt;
+&lt;li&gt;Marcar el check &lt;code&gt;Alias&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Routing policy = Simple routing&lt;/li&gt;
+&lt;li&gt;Record type = A – Routes traffic to an IPv4 address and some AWS resources&lt;/li&gt;
+&lt;li&gt;Route traffic to = Alias to CloudFront distribution&lt;/li&gt;
+&lt;li&gt;Region = US East (N. Virginia)&lt;/li&gt;
+&lt;li&gt;CloudFront = seleccionamos nuestro CloudFront&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Bonus&lt;/strong&gt;: Si estas fuera de USA y &lt;a href="https://www.freenom.com"&gt;freenom.com&lt;/a&gt; falla siempre
+en el último del paso del registro de dominio prueba a &lt;a href="https://www.fakeaddressgenerator.com/usa_address_generator"&gt;cambiar tu dirección
+por una de USA&lt;/a&gt;
+y &lt;a href="https://chrome.google.com/webstore/detail/hola-free-vpn-proxy-unblo/gkojfkhlekighikafcpjkiklfbnlmeio"&gt;acceder a traves de VPN con una ip de USA&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Fuentes&lt;/strong&gt;: &lt;a href="https://itnext.io/using-letsencrypt-ssl-certificates-in-aws-certificate-manager-c2bc3c6ae10"&gt;itnext.io&lt;/a&gt;, &lt;a href="https://medium.com/200-response/como-crear-una-p%C3%A1gina-est%C3%A1tica-usando-aws-y-freenom-casi-completamente-gratis-parte-2-manos-a-la-48b9b6f45074"&gt;medium.com/200-response&lt;/a&gt;, &lt;a href="https://medium.com/analytics-vidhya/tutorial-how-to-deploy-an-angular-app-with-a-free-domain-and-ssl-to-aws-s3-and-cloudfront-d0143de53d2d"&gt;medium.com/analytics-vidhya&lt;/a&gt;, &lt;a href="https://www.reddit.com/r/freenom/comments/gegiy4/i_cant_register_free_domains_with_freenom/"&gt;reddit.com/r/freenom&lt;/a&gt;&lt;/p&gt;</content><category term="aws"></category><category term="cloudfront"></category><category term="dns"></category><category term="freemon"></category><category term="letsencrypt"></category><category term="redes"></category></entry><entry><title>Algunos datos sobre Menéame 3: Pregúntame</title><link href="https://s-nt-s.github.io/meneame_en_datos_3/" rel="alternate"></link><published>2021-03-12T00:00:00+01:00</published><updated>2021-03-12T00:00:00+01:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2021-03-12:/meneame_en_datos_3/</id><summary type="html">&lt;div&gt;&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/i3/js/sort_table.js"&gt;&lt;/script&gt;&lt;link data-autoinsert="1" href="https://s-nt-s.github.io/meneame.dump/i3/css/main.css" rel="stylesheet" type="text/css"/&gt;
 &lt;p&gt;
       Esto listado de &lt;a href="https://www.meneame.net/m/Preg%C3%BAntame"&gt;encuentros digitales en Menéame&lt;/a&gt;
       mide a grosso modo la participación en cada entrevista en base a:
@@ -2487,9 +2544,13 @@ los pasos a seguir serían:&lt;/p&gt;
 &lt;a href="https://docs.getpelican.com/en/3.6.3/tips.html#extra-tips"&gt;docs.getpelican.com&lt;/a&gt;
 para que no se pierda la configuración.&lt;br/&gt;
 &lt;strong&gt;Bonus 2&lt;/strong&gt;: Si no quieres que el cambio afecte a todos tus proyectos
-&lt;a href="https://github.com/isaacs/github/issues/547#issuecomment-694671575"&gt;consulta este issue&lt;/a&gt;.&lt;/p&gt;
+&lt;a href="https://github.com/isaacs/github/issues/547#issuecomment-694671575"&gt;consulta este issue&lt;/a&gt;.
+&lt;strong&gt;Bonus 3&lt;/strong&gt;: Si estas fuera de USA y &lt;a href="https://www.freenom.com"&gt;freenom.com&lt;/a&gt; falla siempre
+en el último del paso del registro de dominio prueba a &lt;a href="https://www.fakeaddressgenerator.com/usa_address_generator"&gt;cambiar tu dirección
+por una de USA&lt;/a&gt;
+y &lt;a href="https://chrome.google.com/webstore/detail/hola-free-vpn-proxy-unblo/gkojfkhlekighikafcpjkiklfbnlmeio"&gt;acceder a traves de VPN con una ip de USA&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Fuentes&lt;/strong&gt;: &lt;a href="https://docs.github.com/es/free-pro-team@latest/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site"&gt;docs.github.com&lt;/a&gt;,
-&lt;a href="https://stackoverflow.com/a/49963795/5204002"&gt;stackoverflow.com&lt;/a&gt;&lt;/p&gt;</content><category term="dns"></category><category term="freemon"></category><category term="github"></category><category term="pelican"></category></entry><entry><title>Reiniciar repositorio Git</title><link href="https://s-nt-s.github.io/reiniciar_git/" rel="alternate"></link><published>2020-09-04T00:00:00+02:00</published><updated>2020-09-04T00:00:00+02:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2020-09-04:/reiniciar_git/</id><summary type="html">&lt;p&gt;&lt;strong&gt;Problema&lt;/strong&gt;: El repositorio ocupa mucho (gigas) aunque el código
+&lt;a href="https://stackoverflow.com/a/49963795/5204002"&gt;stackoverflow.com&lt;/a&gt;, &lt;a href="https://www.reddit.com/r/freenom/comments/gegiy4/i_cant_register_free_domains_with_freenom/"&gt;reddit.com/r/freenom&lt;/a&gt;&lt;/p&gt;</content><category term="dns"></category><category term="freemon"></category><category term="github"></category><category term="pelican"></category><category term="redes"></category></entry><entry><title>Reiniciar repositorio Git</title><link href="https://s-nt-s.github.io/reiniciar_git/" rel="alternate"></link><published>2020-09-04T00:00:00+02:00</published><updated>2020-09-04T00:00:00+02:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2020-09-04:/reiniciar_git/</id><summary type="html">&lt;p&gt;&lt;strong&gt;Problema&lt;/strong&gt;: El repositorio ocupa mucho (gigas) aunque el código
 representa solo un puñado de megas.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Solución&lt;/strong&gt;: Reiniciar el repositorio Git y olvidarse de la historia pasada.&lt;/p&gt;
 &lt;h2&gt;Detalle&lt;/h2&gt;
