@@ -18,7 +18,7 @@ dns</a> <a class="bubble tag tg_freemon" href="/tag/freemon.html" title="Hay 1 e
 freemon</a> <span class="bubble tag tg_letsencrypt" title="No hay más entradas con esta etiqueta">letsencrypt</span> <a class="bubble tag tg_redes" href="/tag/redes.html" title="Hay 9 entradas  más sobre redes">
 redes</a> </p>
 <p>
-<span class="bubble">35 lineas</span> <span class="bubble wc">289 palabras</span> <span class="bubble wc">2.100 letras</span>
+<span class="bubble">35 lineas</span> <span class="bubble wc">295 palabras</span> <span class="bubble wc">2.124 letras</span>
 </p>
 </div><!-- /.post-info --> </header><!-- /#banner -->
 <section class="body" id="content">
@@ -37,7 +37,7 @@ redes</a> </p>
 <li>En <a href="https://www.dnschecker.org/#NS" target="_blank">dnschecker.org/#NS</a> podemos validar el resultado pasados unos minutos</li>
 <li>Solicitar el certificado a letsencrypt:<ul>
 <li><code>certbot certonly --manual --preferred-challenges=dns --email your@email-address.com --agree-tos --config-dir ./config --logs-dir ./logs --work-dir ./workdir -d example.ml -d *.example.ml</code></li>
-<li>Esto imprimirá una regla DNS que debemos crear.</li>
+<li>Esto imprimirá una regla DNS que debemos crear</li>
 </ul>
 </li>
 <li>Volvemos a <a href="https://console.aws.amazon.com/route53/v2/home#Dashboard" target="_blank">AWS Route53</a> y pulsamos en <code>Create record</code>:<ul>
@@ -52,7 +52,7 @@ redes</a> </p>
 <li>Certificate chain = contenido de <code>config/live/example.ml/chain.pem</code></li>
 </ul>
 </li>
-<li>Vamos a <a href="https://console.aws.amazon.com/cloudfront/home?region=us-east-1#distributions:" target="_blank">CloudFront</a>, editamos la distribución:<ul>
+<li>Vamos a <a href="https://console.aws.amazon.com/cloudfront/home?region=us-east-1#distributions:" target="_blank">CloudFront</a> y editamos la distribución:<ul>
 <li>Alternate Domain Names (CNAMEs) = example.ml</li>
 <li>SSL Certificate -&gt; Custom SSL Certificate: seleccionamos el certificado anteriormente importado</li>
 </ul>
@@ -69,8 +69,8 @@ redes</a> </p>
 </li>
 </ol>
 <p><strong>Bonus</strong>: Si estas fuera de USA y <a href="https://www.freenom.com" target="_blank">freenom.com</a> falla siempre
-en el último del paso del registro de dominio prueba a <a href="https://www.fakeaddressgenerator.com/usa_address_generator" target="_blank">cambiar tu dirección
-por una de USA</a>
+en el último del paso del registro de dominio prueba a <a href="https://www.fakeaddressgenerator.com/usa_address_generator" target="_blank">cambiar la dirección de tu perfil
+de usuario por una de USA</a>
 y <a href="https://chrome.google.com/webstore/detail/hola-free-vpn-proxy-unblo/gkojfkhlekighikafcpjkiklfbnlmeio" target="_blank">acceder a traves de VPN con una ip de USA</a>.</p>
 <p><strong>Fuentes</strong>: <a href="https://itnext.io/using-letsencrypt-ssl-certificates-in-aws-certificate-manager-c2bc3c6ae10" target="_blank">itnext.io</a>, <a href="https://medium.com/200-response/como-crear-una-p%C3%A1gina-est%C3%A1tica-usando-aws-y-freenom-casi-completamente-gratis-parte-2-manos-a-la-48b9b6f45074" target="_blank">medium.com/200-response</a>, <a href="https://medium.com/analytics-vidhya/tutorial-how-to-deploy-an-angular-app-with-a-free-domain-and-ssl-to-aws-s3-and-cloudfront-d0143de53d2d" target="_blank">medium.com/analytics-vidhya</a>, <a href="https://www.reddit.com/r/freenom/comments/gegiy4/i_cant_register_free_domains_with_freenom/" target="_blank">reddit.com/r/freenom</a></p>
 </div><!-- /.entry-content -->

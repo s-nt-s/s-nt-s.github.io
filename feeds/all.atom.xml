@@ -21,7 +21,7 @@
 &lt;li&gt;En &lt;a href="https://www.dnschecker.org/#NS"&gt;dnschecker.org/#NS&lt;/a&gt; podemos validar el resultado pasados unos minutos&lt;/li&gt;
 &lt;li&gt;Solicitar el certificado a letsencrypt:&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;certbot certonly --manual --preferred-challenges=dns --email your@email-address.com --agree-tos --config-dir ./config --logs-dir ./logs --work-dir ./workdir -d example.ml -d *.example.ml&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Esto imprimirá una regla DNS que debemos crear.&lt;/li&gt;
+&lt;li&gt;Esto imprimirá una regla DNS que debemos crear&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;Volvemos a &lt;a href="https://console.aws.amazon.com/route53/v2/home#Dashboard"&gt;AWS Route53&lt;/a&gt; y pulsamos en &lt;code&gt;Create record&lt;/code&gt;:&lt;ul&gt;
@@ -36,7 +36,7 @@
 &lt;li&gt;Certificate chain = contenido de &lt;code&gt;config/live/example.ml/chain.pem&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;Vamos a &lt;a href="https://console.aws.amazon.com/cloudfront/home?region=us-east-1#distributions:"&gt;CloudFront&lt;/a&gt;, editamos la distribución:&lt;ul&gt;
+&lt;li&gt;Vamos a &lt;a href="https://console.aws.amazon.com/cloudfront/home?region=us-east-1#distributions:"&gt;CloudFront&lt;/a&gt; y editamos la distribución:&lt;ul&gt;
 &lt;li&gt;Alternate Domain Names (CNAMEs) = example.ml&lt;/li&gt;
 &lt;li&gt;SSL Certificate -&amp;gt; Custom SSL Certificate: seleccionamos el certificado anteriormente importado&lt;/li&gt;
 &lt;/ul&gt;
@@ -53,8 +53,8 @@
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;&lt;strong&gt;Bonus&lt;/strong&gt;: Si estas fuera de USA y &lt;a href="https://www.freenom.com"&gt;freenom.com&lt;/a&gt; falla siempre
-en el último del paso del registro de dominio prueba a &lt;a href="https://www.fakeaddressgenerator.com/usa_address_generator"&gt;cambiar tu dirección
-por una de USA&lt;/a&gt;
+en el último del paso del registro de dominio prueba a &lt;a href="https://www.fakeaddressgenerator.com/usa_address_generator"&gt;cambiar la dirección de tu perfil
+de usuario por una de USA&lt;/a&gt;
 y &lt;a href="https://chrome.google.com/webstore/detail/hola-free-vpn-proxy-unblo/gkojfkhlekighikafcpjkiklfbnlmeio"&gt;acceder a traves de VPN con una ip de USA&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Fuentes&lt;/strong&gt;: &lt;a href="https://itnext.io/using-letsencrypt-ssl-certificates-in-aws-certificate-manager-c2bc3c6ae10"&gt;itnext.io&lt;/a&gt;, &lt;a href="https://medium.com/200-response/como-crear-una-p%C3%A1gina-est%C3%A1tica-usando-aws-y-freenom-casi-completamente-gratis-parte-2-manos-a-la-48b9b6f45074"&gt;medium.com/200-response&lt;/a&gt;, &lt;a href="https://medium.com/analytics-vidhya/tutorial-how-to-deploy-an-angular-app-with-a-free-domain-and-ssl-to-aws-s3-and-cloudfront-d0143de53d2d"&gt;medium.com/analytics-vidhya&lt;/a&gt;, &lt;a href="https://www.reddit.com/r/freenom/comments/gegiy4/i_cant_register_free_domains_with_freenom/"&gt;reddit.com/r/freenom&lt;/a&gt;&lt;/p&gt;</content><category term="aws"></category><category term="cloudfront"></category><category term="dns"></category><category term="freemon"></category><category term="letsencrypt"></category><category term="redes"></category></entry><entry><title>Algunos datos sobre Menéame 3: Pregúntame</title><link href="https://s-nt-s.github.io/meneame_en_datos_3/" rel="alternate"></link><published>2021-03-12T00:00:00+01:00</published><updated>2021-03-12T00:00:00+01:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2021-03-12:/meneame_en_datos_3/</id><summary type="html">&lt;div&gt;&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"&gt;&lt;/script&gt;&lt;script data-autoinsert="1" src="https://s-nt-s.github.io/meneame.dump/i3/js/sort_table.js"&gt;&lt;/script&gt;&lt;link data-autoinsert="1" href="https://s-nt-s.github.io/meneame.dump/i3/css/main.css" rel="stylesheet" type="text/css"/&gt;
 &lt;p&gt;
