@@ -2546,8 +2546,8 @@ para que no se pierda la configuración.&lt;br/&gt;
 &lt;strong&gt;Bonus 2&lt;/strong&gt;: Si no quieres que el cambio afecte a todos tus proyectos
 &lt;a href="https://github.com/isaacs/github/issues/547#issuecomment-694671575"&gt;consulta este issue&lt;/a&gt;.&lt;br/&gt;
 &lt;strong&gt;Bonus 3&lt;/strong&gt;: Si estas fuera de USA y &lt;a href="https://www.freenom.com"&gt;freenom.com&lt;/a&gt; falla siempre
-en el último del paso del registro de dominio prueba a &lt;a href="https://www.fakeaddressgenerator.com/usa_address_generator"&gt;cambiar tu dirección
-por una de USA&lt;/a&gt;
+en el último del paso del registro de dominio prueba a &lt;a href="https://www.fakeaddressgenerator.com/usa_address_generator"&gt;cambiar la dirección de tu perfil
+de usuario por una de USA&lt;/a&gt;
 y &lt;a href="https://chrome.google.com/webstore/detail/hola-free-vpn-proxy-unblo/gkojfkhlekighikafcpjkiklfbnlmeio"&gt;acceder a traves de VPN con una ip de USA&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Fuentes&lt;/strong&gt;: &lt;a href="https://docs.github.com/es/free-pro-team@latest/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site"&gt;docs.github.com&lt;/a&gt;,
 &lt;a href="https://stackoverflow.com/a/49963795/5204002"&gt;stackoverflow.com&lt;/a&gt;, &lt;a href="https://www.reddit.com/r/freenom/comments/gegiy4/i_cant_register_free_domains_with_freenom/"&gt;reddit.com/r/freenom&lt;/a&gt;&lt;/p&gt;</content><category term="dns"></category><category term="freemon"></category><category term="github"></category><category term="pelican"></category><category term="redes"></category></entry><entry><title>Reiniciar repositorio Git</title><link href="https://s-nt-s.github.io/reiniciar_git/" rel="alternate"></link><published>2020-09-04T00:00:00+02:00</published><updated>2020-09-04T00:00:00+02:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2020-09-04:/reiniciar_git/</id><summary type="html">&lt;p&gt;&lt;strong&gt;Problema&lt;/strong&gt;: El repositorio ocupa mucho (gigas) aunque el código
