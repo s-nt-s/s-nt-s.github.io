@@ -1,4 +1,4 @@
-Title: AWS CloudFront con Freemon y LetsEncrypt
+Title: AWS CloudFront con LetsEncrypt y Freemon
 Category: Web
 Tags: freemon, LetsEncrypt, AWS, CloudFront, dns
 
