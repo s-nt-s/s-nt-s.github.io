@@ -26,7 +26,7 @@ los pasos a seguir serían:
 [docs.getpelican.com](https://docs.getpelican.com/en/3.6.3/tips.html#extra-tips)
 para que no se pierda la configuración.  
 **Bonus 2**: Si no quieres que el cambio afecte a todos tus proyectos
-[consulta este issue](https://github.com/isaacs/github/issues/547#issuecomment-694671575).
+[consulta este issue](https://github.com/isaacs/github/issues/547#issuecomment-694671575).  
 **Bonus 3**: Si estas fuera de USA y [freenom.com](https://www.freenom.com) falla siempre
 en el último del paso del registro de dominio prueba a [cambiar tu dirección
 por una de USA](https://www.fakeaddressgenerator.com/usa_address_generator)
