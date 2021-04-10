@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 import os
 import sys
+from glob import glob
 
 sys.path.append('.')
 
@@ -14,6 +15,12 @@ sys.path.append('.')
 
 abspath = os.path.abspath(__file__)
 cur_dir = os.path.dirname(abspath)
+
+def myglob(root, *args):
+    r=[]
+    for a in args:
+        r.extend(glob(root+a))
+    return sorted(r)
 
 AUTHOR = 's-nt-s'
 SITENAME = 'Apuntes'
@@ -92,17 +99,26 @@ PAGE_SAVE_AS = PAGE_OUT + '{slug}/index.html'
 
 FILENAME_METADATA = '(?P<date>\d{4}-\d{2}-\d{2})[\-_](?P<slug>.*)'
 
+FAVICON_FILES = [i.split("/",1)[-1] for i in myglob("content/extra/favicon/*.",
+    "png",
+    "ico",
+    "svg",
+    "webmanifest",
+    "xml"
+)]
 STATIC_PATHS = [
     'images',
     'extra/robots.txt',
-    'extra/favicon.ico',
     'extra/CNAME'
-]
+] + FAVICON_FILES
+
 EXTRA_PATH_METADATA = {
     'extra/robots.txt': {'path': 'robots.txt'},
     'extra/favicon.ico': {'path': 'favicon.ico'},
     'extra/CNAME': {'path': 'CNAME'}
 }
+for f in FAVICON_FILES:
+    EXTRA_PATH_METADATA[f]={'path':os.path.basename(f)}
 
 THEME = cur_dir + '/themes/notmyidea-custom'
 
