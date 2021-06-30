@@ -1,6 +1,6 @@
-Title: AWS CloudFront con LetsEncrypt y Freemon
+Title: AWS CloudFront con LetsEncrypt y Freenom
 Category: Web
-Tags: freemon, LetsEncrypt, AWS, CloudFront, dns
+Tags: freenom, LetsEncrypt, AWS, CloudFront, dns
 
 1. Registrarse en [freenom.com](https://www.freenom.com)
 2. Crear el dominio `example.ml` ([Services -> Register a New Domain](https://my.freenom.com/domains.php) -> ...)
