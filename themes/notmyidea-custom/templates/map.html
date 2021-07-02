@@ -10,7 +10,7 @@
 
 <section id="content" class="body grid-container">
     <div class="grid-item">
-        <h2>Categorías:</h2>
+        <h2>Categorías</h2>
         <ul>
         {% for tag, articles in categories|sort %}
             <li><a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a> ({{ articles|count }})</li>
