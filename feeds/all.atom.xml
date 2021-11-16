@@ -4427,7 +4427,7 @@ web, y si de paso me da información útil como su idioma mejor.&lt;/p&gt;
 &lt;p&gt;Pues bien, parece que &lt;code&gt;graby&lt;/code&gt; es lo que estaba buscando.
 Ver &lt;a href="https://github.com/j0k3r/graby"&gt;https://github.com/j0k3r/graby&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Mi interés no es usarla en &lt;code&gt;php&lt;/code&gt;, así que haré una instalación y un pequeño
-&lt;code&gt;php&lt;/code&gt; para usar como comando externo para otras aplicaciones.&lt;/p&gt;
+&lt;code&gt;python&lt;/code&gt; para usar como comando externo para otras aplicaciones.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;1- Instalo graby&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;La manera habitual sería usar &lt;code&gt;compose&lt;/code&gt;, pero como no estoy interesado
 en un proyecto &lt;code&gt;php&lt;/code&gt; y además en la &lt;code&gt;raspberry&lt;/code&gt; el intento de instalar
