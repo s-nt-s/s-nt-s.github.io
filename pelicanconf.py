@@ -115,7 +115,7 @@ STATIC_PATHS = [
 EXTRA_PATH_METADATA = {
     'extra/robots.txt': {'path': 'robots.txt'},
     'extra/favicon.ico': {'path': 'favicon.ico'},
-    'extra/CNAME': {'path': 'CNAME'}
+    #'extra/CNAME': {'path': 'CNAME'}
 }
 for f in FAVICON_FILES:
     EXTRA_PATH_METADATA[f]={'path':os.path.basename(f)}
