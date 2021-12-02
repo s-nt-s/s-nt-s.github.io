@@ -1,6 +1,6 @@
-Title: Usar un dominio Freemon en GitHub Pages
+Title: Usar un dominio Freenom en GitHub Pages
 Category: Web
-Tags: freemon, github, dns
+Tags: freenom, github, dns
 
 Suponiendo que tu usuario GitHub se llama `user` y por
 lo tanto el dominio que te da GitHub sea
