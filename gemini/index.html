@@ -24,7 +24,7 @@ Web</a>
 Raspberry Pi</a> <span class="bubble tag tg_gemini" title="No hay más entradas con esta etiqueta">gemini</span> <a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 19 entradas  más sobre linux">
 linux</a> </p>
 <p>
-<span class="bubble">36 lineas</span> <span class="bubble wc">150 palabras</span> <span class="bubble wc">1.309 letras</span>
+<span class="bubble">64 lineas</span> <span class="bubble wc">312 palabras</span> <span class="bubble wc">2.642 letras</span>
 </p>
 </div><!-- /.post-info --> </header><!-- /#banner -->
 <section class="body" id="content">
@@ -32,20 +32,34 @@ linux</a> </p>
 <div class="entry-content">
 <p>Este método ha sido probado en una Raspberry Pi 3</p>
 <h2>Estructura de carpetas</h2>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir -p ~/gemini/<span class="o">{</span>content,certificates<span class="o">}</span>
-<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"Hola mundo"</span> &gt; ~/gemini/content/index.gmi
-<span class="gp">$ </span>ln -s content/ replace.by.your.domain.com
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nv">GEMINI_DOMAIN</span><span class="o">=</span>replace.by.your.domain.com
+<span class="gp">$ </span>mkdir -p ~/gemini/<span class="nv">$GEMINI_DOMAIN</span>
+<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"Hola mundo"</span> &gt; ~/gemini/<span class="nv">$GEMINI_DOMAIN</span>/index.gmi
 </code></pre></div>
-<p><strong>NOTA</strong>: En enlace simbolico es para tener una manera fácil
-de cambiar el dominio de la web sin tener que editar el
-fichero <code>agate.service</code> creado más adelante.</p>
-<h2>Descargar <code>agate</code></h2>
+<h2>Descargar <code>agate</code> y crear script de arranque</h2>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">cd</span> ~/gemini
 <span class="gp">$ </span>wget -O - <span class="k">$(</span>curl -s https://api.github.com/repos/mbrubeck/agate/releases/latest <span class="p">|</span> grep <span class="s2">"browser_download_url.*agate.armv7-unknown-linux.*.gz"</span> <span class="p">|</span> cut -d<span class="s1">'"'</span> -f4<span class="k">)</span> <span class="p">|</span> gunzip &gt; agate-server.bin
-<span class="gp">$ </span>chmod +x agate-server.bin
+<span class="gp">$ </span>cat &gt; agate-server.sh &lt;&lt;EOL
+<span class="gp">#</span>!/bin/sh
+<span class="go">set -e</span>
+<span class="go">cd "\$(dirname "\$0")"</span>
+
+<span class="go">INX=\$(find . -maxdepth 2 -type f -name index.gmi | sort | head -n 1)</span>
+<span class="go">if [ ! -f \$INX ]; then</span>
+<span class="go">    echo "index.gmi not found"</span>
+<span class="go">    exit 1</span>
+<span class="go">fi</span>
+<span class="go">DOM=\$(echo "\$INX" | xargs dirname | xargs | xargs basename)</span>
+<span class="go">./agate-server.bin --lang es-ES --certs ./certificate/ --content "./\$DOM/" --hostname "\$DOM"</span>
+<span class="go">EOL</span>
+<span class="gp">$ </span>chmod +x agate-server.bin agate-server.sh
 <span class="gp">$ </span>./agate-server.bin --version
 <span class="go">agate 3.2.4</span>
 </code></pre></div>
+<p><strong>NOTA</strong>: el script <code>agate-server.sh</code> permite usar como dominio
+el nombre del directorio que tiene el contenido, así si queremos
+cambiarlo basta con renombrar la carpeta y no hay que editar el
+servicio <code>agate.service</code> creado más adelante.</p>
 <h2>Crear servicio</h2>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat &gt; agate.service &lt;&lt;EOL
 <span class="go">[Unit]</span>
@@ -54,7 +68,7 @@ fichero <code>agate.service</code> creado más adelante.</p>
 
 <span class="go">[Service]</span>
 <span class="go">WorkingDirectory=${HOME}/gemini</span>
-<span class="go">ExecStart=/bin/sh -c 'find ${HOME}/gemini/ -maxdepth 1 -type l ! -xtype l | xargs basename | xargs ${HOME}/gemini/agate-server.bin --lang es-ES --hostname'</span>
+<span class="go">ExecStart=${HOME}/gemini/agate-server.sh</span>
 
 <span class="go">Restart=always</span>
 <span class="go">RestartSec=1</span>
@@ -69,6 +83,22 @@ fichero <code>agate.service</code> creado más adelante.</p>
 <span class="gp">$ </span>sudo mv agate.service /etc/systemd/system/agate.service
 <span class="gp">$ </span>sudo systemctl <span class="nb">enable</span> agate
 <span class="gp">$ </span>sudo systemctl start agate
+<span class="gp">$ </span>sudo systemctl status agate
+<span class="go">● agate.service - Agate gemini server</span>
+<span class="go">   Loaded: loaded (/etc/systemd/system/agate.service; enabled; vendor preset: enabled)</span>
+<span class="go">   Active: active (running) since Sun 2023-02-26 11:22:24 CET; 4s ago</span>
+<span class="go"> Main PID: 9914 (agate-server.sh)</span>
+<span class="go">    Tasks: 6 (limit: 4915)</span>
+<span class="go">   Memory: 1.0M</span>
+<span class="go">      CPU: 68ms</span>
+<span class="go">   CGroup: /system.slice/agate.service</span>
+<span class="go">           ├─9914 /bin/sh /home/pi/gemini/agate-server.sh</span>
+<span class="go">           └─9931 ./agate-server.bin --lang es-ES --certs ./certificate/ --content ./replace.by.your.domain.com/ --hostname replace.by.your.domain.com</span>
+
+<span class="go">feb 26 11:22:24 bot systemd[1]: Started Agate gemini server.</span>
+<span class="go">feb 26 11:22:24 bot gemini[9914]: [2023-02-26T10:22:24Z INFO  agate] The certificate directory "./certificate/" does not exist, creating it.</span>
+<span class="go">feb 26 11:22:24 bot gemini[9914]: [2023-02-26T10:22:24Z INFO  agate] No certificate or key found for "replace.by.your.domain.com", generating them.</span>
+<span class="go">feb 26 11:22:24 bot gemini[9914]: [2023-02-26T10:22:24Z INFO  agate] Started listener on [::]:1965</span>
 </code></pre></div>
 <h2>Clientes</h2>
 <p>Ver <a href="https://gemini.circumlunar.space/clients.html" target="_blank">gemini.circumlunar.space/clients.html</a></p>
