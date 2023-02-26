@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Servidor Gemini en Raspberry</title>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<meta content="#da532c" name="msapplication-TileColor"/>
+<meta content="#ffffff" name="theme-color"/>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/gemini" rel="bookmark" title="Permalink to Servidor Gemini en Raspberry">Servidor Gemini en Raspberry</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2023-02-26T00:00:00+01:00" title="Publicado el 2023-02-26">2023-02-26</time>
+<a class="bubble category ct_web" href="/category/web.html" title="Hay 6 entradas más sobre Web">
+Web</a>
+<a class="bubble tag tg_raspberrypi" href="/tag/raspberry-pi.html" title="Hay 10 entradas  más sobre Raspberry Pi">
+Raspberry Pi</a> <span class="bubble tag tg_gemini" title="No hay más entradas con esta etiqueta">gemini</span> <a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 19 entradas  más sobre linux">
+linux</a> </p>
+<p>
+<span class="bubble">36 lineas</span> <span class="bubble wc">150 palabras</span> <span class="bubble wc">1.328 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<p>Este método ha sido probado en una Raspberry Pi 3</p>
+<h2>Estructura de carpetas</h2>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir -p ~/gemini/<span class="o">{</span>content,certificates<span class="o">}</span>
+<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"Hola mundo"</span> &gt; ~/gemini/replace.by.your.domain.com/index.gmi
+<span class="gp">$ </span>ln -s content/ replace.by.your.domain.com
+</code></pre></div>
+<p><strong>NOTA</strong>: En enlace simbolico es para tener una manera fácil
+de cambiar el dominio de la web sin tener que editar el
+fichero <code>agate.service</code> creado más adelante.</p>
+<h2>Descargar <code>agate</code></h2>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">cd</span> ~/gemini
+<span class="gp">$ </span>wget -O - <span class="k">$(</span>curl -s https://api.github.com/repos/mbrubeck/agate/releases/latest <span class="p">|</span> grep <span class="s2">"browser_download_url.*agate.armv7-unknown-linux.*.gz"</span> <span class="p">|</span> cut -d<span class="s1">'"'</span> -f4<span class="k">)</span> <span class="p">|</span> gunzip &gt; agate-server.bin
+<span class="gp">$ </span>chmod +x agate-server.bin
+<span class="gp">$ </span>./agate-server.bin --version
+<span class="go">agate 3.2.4</span>
+</code></pre></div>
+<h2>Crear servicio</h2>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat &gt; agate.service &lt;&lt;EOL
+<span class="go">[Unit]</span>
+<span class="go">Description=Agate gemini server</span>
+<span class="go">After=network.target</span>
+
+<span class="go">[Service]</span>
+<span class="go">WorkingDirectory=${HOME}/gemini</span>
+<span class="go">ExecStart=/bin/sh -c 'find ${HOME}/gemini/ -maxdepth 1 -type l ! -xtype l | xargs basename | xargs ${HOME}/gemini/agate-server.bin --lang es-ES --hostname'</span>
+
+<span class="go">Restart=always</span>
+<span class="go">RestartSec=1</span>
+
+<span class="go">StandardOutput=syslog</span>
+<span class="go">StandardError=syslog</span>
+<span class="go">SyslogIdentifier=gemini</span>
+
+<span class="go">[Install]</span>
+<span class="go">WantedBy=multi-user.target</span>
+<span class="go">EOL</span>
+<span class="gp">$ </span>sudo mv agate.service /etc/systemd/system/agate.service
+<span class="gp">$ </span>sudo systemctl <span class="nb">enable</span> agate
+<span class="gp">$ </span>sudo systemctl start agate
+</code></pre></div>
+<h2>Clientes</h2>
+<p>Ver <a href="https://gemini.circumlunar.space/clients.html" target="_blank">gemini.circumlunar.space/clients.html</a></p>
+<p><strong>Fuentes</strong>: <a href="https://github.com/mbrubeck/agate" target="_blank">github/mbrubeck</a>, <a href="https://www.ochobitshacenunbyte.com/2021/11/15/como-crear-una-capsula-gemini-en-linux/" target="_blank">ochobitshacenunbyte.com</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/content/posts/2023-02-26_gemini.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/gemini" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

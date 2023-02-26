@@ -1,5 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Apuntes</title><link href="https://s-nt-s.github.io/" rel="alternate"></link><link href="https://s-nt-s.github.io/feeds/all.atom.xml" rel="self"></link><id>https://s-nt-s.github.io/</id><updated>2021-04-09T00:00:00+02:00</updated><subtitle>(mejor aquí que en un txt perdido)</subtitle><entry><title>AWS CloudFront con LetsEncrypt y Freenom</title><link href="https://s-nt-s.github.io/cloudfront_letsencrypt_freenom/" rel="alternate"></link><published>2021-04-09T00:00:00+02:00</published><updated>2021-04-09T00:00:00+02:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2021-04-09:/cloudfront_letsencrypt_freenom/</id><summary type="html">&lt;ol&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Apuntes</title><link href="https://s-nt-s.github.io/" rel="alternate"></link><link href="https://s-nt-s.github.io/feeds/all.atom.xml" rel="self"></link><id>https://s-nt-s.github.io/</id><updated>2023-02-26T00:00:00+01:00</updated><subtitle>(mejor aquí que en un txt perdido)</subtitle><entry><title>Servidor Gemini en Raspberry</title><link href="https://s-nt-s.github.io/gemini/" rel="alternate"></link><published>2023-02-26T00:00:00+01:00</published><updated>2023-02-26T00:00:00+01:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2023-02-26:/gemini/</id><summary type="html">&lt;p&gt;Este método ha sido probado en una Raspberry Pi 3&lt;/p&gt;
+&lt;h2&gt;Estructura de carpetas&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;mkdir -p ~/gemini/&lt;span class="o"&gt;{&lt;/span&gt;content,certificates&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="gp"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Hola mundo"&lt;/span&gt; &amp;gt; ~/gemini/replace.by.your.domain.com/index.gmi
+&lt;span class="gp"&gt;$ &lt;/span&gt;ln -s content/ replace.by.your.domain.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;NOTA&lt;/strong&gt;: En enlace simbolico es para tener una manera fácil
+de cambiar el …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Este método ha sido probado en una Raspberry Pi 3&lt;/p&gt;
+&lt;h2&gt;Estructura de carpetas&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;mkdir -p ~/gemini/&lt;span class="o"&gt;{&lt;/span&gt;content,certificates&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="gp"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Hola mundo"&lt;/span&gt; &amp;gt; ~/gemini/replace.by.your.domain.com/index.gmi
+&lt;span class="gp"&gt;$ &lt;/span&gt;ln -s content/ replace.by.your.domain.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;NOTA&lt;/strong&gt;: En enlace simbolico es para tener una manera fácil
+de cambiar el dominio de la web sin tener que editar el
+fichero &lt;code&gt;agate.service&lt;/code&gt; creado más adelante.&lt;/p&gt;
+&lt;h2&gt;Descargar &lt;code&gt;agate&lt;/code&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; ~/gemini
+&lt;span class="gp"&gt;$ &lt;/span&gt;wget -O - &lt;span class="k"&gt;$(&lt;/span&gt;curl -s https://api.github.com/repos/mbrubeck/agate/releases/latest &lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="s2"&gt;"browser_download_url.*agate.armv7-unknown-linux.*.gz"&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; cut -d&lt;span class="s1"&gt;'"'&lt;/span&gt; -f4&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; gunzip &amp;gt; agate-server.bin
+&lt;span class="gp"&gt;$ &lt;/span&gt;chmod +x agate-server.bin
+&lt;span class="gp"&gt;$ &lt;/span&gt;./agate-server.bin --version
+&lt;span class="go"&gt;agate 3.2.4&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Crear servicio&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;cat &amp;gt; agate.service &amp;lt;&amp;lt;EOL
+&lt;span class="go"&gt;[Unit]&lt;/span&gt;
+&lt;span class="go"&gt;Description=Agate gemini server&lt;/span&gt;
+&lt;span class="go"&gt;After=network.target&lt;/span&gt;
+
+&lt;span class="go"&gt;[Service]&lt;/span&gt;
+&lt;span class="go"&gt;WorkingDirectory=${HOME}/gemini&lt;/span&gt;
+&lt;span class="go"&gt;ExecStart=/bin/sh -c 'find ${HOME}/gemini/ -maxdepth 1 -type l ! -xtype l | xargs basename | xargs ${HOME}/gemini/agate-server.bin --lang es-ES --hostname'&lt;/span&gt;
+
+&lt;span class="go"&gt;Restart=always&lt;/span&gt;
+&lt;span class="go"&gt;RestartSec=1&lt;/span&gt;
+
+&lt;span class="go"&gt;StandardOutput=syslog&lt;/span&gt;
+&lt;span class="go"&gt;StandardError=syslog&lt;/span&gt;
+&lt;span class="go"&gt;SyslogIdentifier=gemini&lt;/span&gt;
+
+&lt;span class="go"&gt;[Install]&lt;/span&gt;
+&lt;span class="go"&gt;WantedBy=multi-user.target&lt;/span&gt;
+&lt;span class="go"&gt;EOL&lt;/span&gt;
+&lt;span class="gp"&gt;$ &lt;/span&gt;sudo mv agate.service /etc/systemd/system/agate.service
+&lt;span class="gp"&gt;$ &lt;/span&gt;sudo systemctl &lt;span class="nb"&gt;enable&lt;/span&gt; agate
+&lt;span class="gp"&gt;$ &lt;/span&gt;sudo systemctl start agate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Clientes&lt;/h2&gt;
+&lt;p&gt;Ver &lt;a href="https://gemini.circumlunar.space/clients.html"&gt;gemini.circumlunar.space/clients.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Fuentes&lt;/strong&gt;: &lt;a href="https://github.com/mbrubeck/agate"&gt;github/mbrubeck&lt;/a&gt;, &lt;a href="https://www.ochobitshacenunbyte.com/2021/11/15/como-crear-una-capsula-gemini-en-linux/"&gt;ochobitshacenunbyte.com&lt;/a&gt;&lt;/p&gt;</content><category term="Web"></category><category term="Raspberry Pi"></category><category term="gemini"></category><category term="linux"></category></entry><entry><title>AWS CloudFront con LetsEncrypt y Freenom</title><link href="https://s-nt-s.github.io/cloudfront_letsencrypt_freenom/" rel="alternate"></link><published>2021-04-09T00:00:00+02:00</published><updated>2021-04-09T00:00:00+02:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2021-04-09:/cloudfront_letsencrypt_freenom/</id><summary type="html">&lt;ol&gt;
 &lt;li&gt;Registrarse en &lt;a href="https://www.freenom.com"&gt;freenom.com&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Crear el dominio &lt;code&gt;example.ml&lt;/code&gt; (&lt;a href="https://my.freenom.com/domains.php"&gt;Services -&amp;gt; Register a New Domain&lt;/a&gt; -&amp;gt; ...)&lt;/li&gt;
 &lt;li&gt;Ir a &lt;a href="https://console.aws.amazon.com/route53/v2/home#Dashboard"&gt;AWS Route53&lt;/a&gt; -&amp;gt; &lt;code&gt;Create hosted zone&lt;/code&gt;:&lt;ul&gt;
