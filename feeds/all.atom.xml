@@ -2,14 +2,14 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Apuntes</title><link href="https://s-nt-s.github.io/" rel="alternate"></link><link href="https://s-nt-s.github.io/feeds/all.atom.xml" rel="self"></link><id>https://s-nt-s.github.io/</id><updated>2023-02-26T00:00:00+01:00</updated><subtitle>(mejor aquí que en un txt perdido)</subtitle><entry><title>Servidor Gemini en Raspberry</title><link href="https://s-nt-s.github.io/gemini/" rel="alternate"></link><published>2023-02-26T00:00:00+01:00</published><updated>2023-02-26T00:00:00+01:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2023-02-26:/gemini/</id><summary type="html">&lt;p&gt;Este método ha sido probado en una Raspberry Pi 3&lt;/p&gt;
 &lt;h2&gt;Estructura de carpetas&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;mkdir -p ~/gemini/&lt;span class="o"&gt;{&lt;/span&gt;content,certificates&lt;span class="o"&gt;}&lt;/span&gt;
-&lt;span class="gp"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Hola mundo"&lt;/span&gt; &amp;gt; ~/gemini/replace.by.your.domain.com/index.gmi
+&lt;span class="gp"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Hola mundo"&lt;/span&gt; &amp;gt; ~/gemini/content/index.gmi
 &lt;span class="gp"&gt;$ &lt;/span&gt;ln -s content/ replace.by.your.domain.com
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;strong&gt;NOTA&lt;/strong&gt;: En enlace simbolico es para tener una manera fácil
-de cambiar el …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Este método ha sido probado en una Raspberry Pi 3&lt;/p&gt;
+de cambiar el dominio de la web …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Este método ha sido probado en una Raspberry Pi 3&lt;/p&gt;
 &lt;h2&gt;Estructura de carpetas&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;mkdir -p ~/gemini/&lt;span class="o"&gt;{&lt;/span&gt;content,certificates&lt;span class="o"&gt;}&lt;/span&gt;
-&lt;span class="gp"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Hola mundo"&lt;/span&gt; &amp;gt; ~/gemini/replace.by.your.domain.com/index.gmi
+&lt;span class="gp"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"Hola mundo"&lt;/span&gt; &amp;gt; ~/gemini/content/index.gmi
 &lt;span class="gp"&gt;$ &lt;/span&gt;ln -s content/ replace.by.your.domain.com
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;strong&gt;NOTA&lt;/strong&gt;: En enlace simbolico es para tener una manera fácil
