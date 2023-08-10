@@ -36,63 +36,63 @@ a diferencia del resto del panel</p>
 <p><strong>Solución</strong>: Depende de si estamos usando <code>gtk 2</code> o <code>gtk 3</code>.</p>
 <h2>Solución para <code>gtk 2</code></h2>
 <p>Añadir al fichero <code>~/.gtkrc-2.0</code> las siguientes lineas:</p>
-<div class="highlight"><pre><span></span><code><span class="n">style</span><span class="w"> </span><span class="ss">"whisker-menu-numix-dark-theme"</span><span class="w"></span>
-<span class="err">{</span><span class="w"></span>
-<span class="n">base</span><span class="o">[</span><span class="n">NORMAL</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#2B2B2B"</span><span class="w"></span>
-<span class="n">base</span><span class="o">[</span><span class="n">ACTIVE</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#D64937"</span><span class="w"></span>
-<span class="nc">text</span><span class="o">[</span><span class="n">NORMAL</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#ccc"</span><span class="w"></span>
-<span class="nc">text</span><span class="o">[</span><span class="n">ACTIVE</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#fff"</span><span class="w"></span>
-<span class="n">bg</span><span class="o">[</span><span class="n">NORMAL</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#2B2B2B"</span><span class="w"></span>
-<span class="n">bg</span><span class="o">[</span><span class="n">ACTIVE</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#D64937"</span><span class="w"></span>
-<span class="n">bg</span><span class="o">[</span><span class="n">PRELIGHT</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#D64937"</span><span class="w"></span>
-<span class="n">fg</span><span class="o">[</span><span class="n">NORMAL</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#ccc"</span><span class="w"></span>
-<span class="n">fg</span><span class="o">[</span><span class="n">ACTIVE</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#fff"</span><span class="w"></span>
-<span class="n">fg</span><span class="o">[</span><span class="n">PRELIGHT</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#fff"</span><span class="w"></span>
-<span class="err">}</span><span class="w"></span>
-<span class="n">widget</span><span class="w"> </span><span class="ss">"whiskermenu-window*"</span><span class="w"> </span><span class="n">style</span><span class="w"> </span><span class="ss">"whisker-menu-numix-dark-theme"</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="n">style</span><span class="w"> </span><span class="ss">"whisker-menu-numix-dark-theme"</span>
+<span class="err">{</span>
+<span class="n">base</span><span class="o">[</span><span class="n">NORMAL</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#2B2B2B"</span>
+<span class="n">base</span><span class="o">[</span><span class="n">ACTIVE</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#D64937"</span>
+<span class="nc">text</span><span class="o">[</span><span class="n">NORMAL</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#ccc"</span>
+<span class="nc">text</span><span class="o">[</span><span class="n">ACTIVE</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#fff"</span>
+<span class="n">bg</span><span class="o">[</span><span class="n">NORMAL</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#2B2B2B"</span>
+<span class="n">bg</span><span class="o">[</span><span class="n">ACTIVE</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#D64937"</span>
+<span class="n">bg</span><span class="o">[</span><span class="n">PRELIGHT</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#D64937"</span>
+<span class="n">fg</span><span class="o">[</span><span class="n">NORMAL</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#ccc"</span>
+<span class="n">fg</span><span class="o">[</span><span class="n">ACTIVE</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#fff"</span>
+<span class="n">fg</span><span class="o">[</span><span class="n">PRELIGHT</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">"#fff"</span>
+<span class="err">}</span>
+<span class="n">widget</span><span class="w"> </span><span class="ss">"whiskermenu-window*"</span><span class="w"> </span><span class="n">style</span><span class="w"> </span><span class="ss">"whisker-menu-numix-dark-theme"</span>
 </code></pre></div>
 <h2>Solución para <code>gtk 3</code></h2>
 <p><strong>Opción a)</strong>: Definir el <code>tema oscuro</code> como <code>tema por defecto</code> añadiendo al
 fichero <code>~/.config/gtk-3.0/settings.ini</code> las siguientes lineas:</p>
 <div class="highlight"><pre><span></span><code><span class="k">[Settings]</span>
-<span class="na">gtk-application-prefer-dark-theme</span> <span class="o">=</span> <span class="s">true</span>
+<span class="na">gtk-application-prefer-dark-theme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">true</span>
 </code></pre></div>
 <p>Pero esto tiene como desventaja que puede volver oscuras otras aplicaciones
 menos preparadas para ello y que por lo tanto se verán peor.</p>
 <p><strong>Opción b)</strong>: Editar los estilos de <code>whisker</code> añadiendo al fichero
 <code>~/.config/gtk-3.0/gtk.css</code> las lineas:</p>
-<div class="highlight"><pre><span></span><code><span class="p">#</span><span class="nn">whiskermenu-window</span> <span class="o">*</span> <span class="p">{</span>
-  <span class="k">border</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="k">outline</span><span class="p">:</span> <span class="kc">none</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="p">#</span><span class="nn">whiskermenu-window</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">outline</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="p">#</span><span class="nn">whiskermenu-window</span> <span class="p">{</span>
-  <span class="k">background-color</span><span class="p">:</span> <span class="mh">#444</span><span class="p">;</span>
-  <span class="k">color</span><span class="p">:</span> <span class="mh">#ccc</span><span class="p">;</span>
+<span class="p">#</span><span class="nn">whiskermenu-window</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#444</span><span class="p">;</span>
+<span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#ccc</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="p">#</span><span class="nn">whiskermenu-window</span> <span class="nt">entry</span> <span class="p">{</span>
-  <span class="k">background-color</span><span class="p">:</span> <span class="mh">#555</span><span class="p">;</span>
-  <span class="k">color</span><span class="p">:</span> <span class="mh">#eee</span><span class="p">;</span>
+<span class="p">#</span><span class="nn">whiskermenu-window</span><span class="w"> </span><span class="nt">entry</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#555</span><span class="p">;</span>
+<span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#eee</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="p">#</span><span class="nn">whiskermenu-window</span> <span class="nt">button</span> <span class="p">{</span>
-  <span class="k">background-color</span><span class="p">:</span> <span class="mh">#444</span><span class="p">;</span>
-  <span class="k">color</span><span class="p">:</span> <span class="mh">#ccc</span><span class="p">;</span>
+<span class="p">#</span><span class="nn">whiskermenu-window</span><span class="w"> </span><span class="nt">button</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#444</span><span class="p">;</span>
+<span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#ccc</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="p">#</span><span class="nn">whiskermenu-window</span> <span class="nt">treeview</span> <span class="p">{</span>
-  <span class="k">background-color</span><span class="p">:</span> <span class="mh">#3e3e3e</span><span class="p">;</span>
-  <span class="k">color</span><span class="p">:</span> <span class="mh">#ccc</span><span class="p">;</span>
+<span class="p">#</span><span class="nn">whiskermenu-window</span><span class="w"> </span><span class="nt">treeview</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#3e3e3e</span><span class="p">;</span>
+<span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#ccc</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="p">#</span><span class="nn">whiskermenu-window</span> <span class="nt">button</span><span class="p">:</span><span class="nd">focus</span><span class="o">,</span>
-<span class="p">#</span><span class="nn">whiskermenu-window</span> <span class="nt">button</span><span class="p">:</span><span class="nd">hover</span><span class="o">,</span>
-<span class="p">#</span><span class="nn">whiskermenu-window</span> <span class="nt">treeview</span><span class="p">:</span><span class="nd">selected</span><span class="o">,</span>
-<span class="p">#</span><span class="nn">whiskermenu-window</span> <span class="nt">treeview</span><span class="p">:</span><span class="nd">hover</span>
+<span class="p">#</span><span class="nn">whiskermenu-window</span><span class="w"> </span><span class="nt">button</span><span class="p">:</span><span class="nd">focus</span><span class="o">,</span>
+<span class="p">#</span><span class="nn">whiskermenu-window</span><span class="w"> </span><span class="nt">button</span><span class="p">:</span><span class="nd">hover</span><span class="o">,</span>
+<span class="p">#</span><span class="nn">whiskermenu-window</span><span class="w"> </span><span class="nt">treeview</span><span class="p">:</span><span class="nd">selected</span><span class="o">,</span>
+<span class="p">#</span><span class="nn">whiskermenu-window</span><span class="w"> </span><span class="nt">treeview</span><span class="p">:</span><span class="nd">hover</span>
 <span class="p">{</span>
-  <span class="k">background-color</span><span class="p">:</span> <span class="mh">#D64937</span><span class="p">;</span>
-  <span class="k">color</span><span class="p">:</span> <span class="mh">#fff</span><span class="p">;</span>
+<span class="w">  </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#D64937</span><span class="p">;</span>
+<span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#fff</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
 <p><strong>Fuentes</strong>: <a href="https://mysudo.wordpress.com/2015/04/25/xfce-und-numix-whisker-menu-dark-theme/" target="_blank">mysudo - wordpress</a>, <a href="https://github.com/numixproject/numix-gtk-theme/issues/666" target="_blank">numixproject - github</a></p>

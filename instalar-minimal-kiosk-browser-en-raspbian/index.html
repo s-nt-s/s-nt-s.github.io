@@ -32,7 +32,7 @@ Raspberry Pi</a> </p>
 <p><strong>Problema</strong>: Queremos ver webs y alguna cosilla más desde nuestra
 Raspbery pero no queremos arrancar un entorno de escritorio completo</p>
 <p><strong>Solución</strong>: Instalar Minimal Kiosk Browser</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span><span class="nb">cd</span> /tmp
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span><span class="nb">cd</span><span class="w"> </span>/tmp
 <span class="go">pi@bot /tmp wget http://steinerdatenbank.de/software/kweb-1.5.4.1.tar.gz</span>
 <span class="go">...</span>
 <span class="go">pi@bot /tmp tar -xzf kweb-1.5.4.1.tar.gz</span>
@@ -43,12 +43,12 @@ Raspbery pero no queremos arrancar un entorno de escritorio completo</p>
 <span class="go">pi@bot /tmp/kweb-1.5.4.1 sudo ./install</span>
 </code></pre></div>
 <p>Para ejecutar sin tener que arrancar el entorno de escritorio:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>xinit ./ktop
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>xinit<span class="w"> </span>./ktop
 </code></pre></div>
 <p>O para facilitar su uso podemos <a href="http://felinfo.blogspot.com.es/2011/12/creacion-y-uso-de-alias-de-comandos.html" target="_blank">crear un
 alias</a></p>
 <p><code>~/.bashrc</code></p>
-<div class="highlight"><pre><span></span><code><span class="err">alias ktop="xinit ~/ktop"</span>
+<div class="highlight"><pre><span></span><code>alias ktop="xinit ~/ktop"
 </code></pre></div>
 <p>Documentación: <a href="http://steinerdatenbank.de/software/kweb_manual.pdf" target="_blank">kweb
 manual</a>,

@@ -37,64 +37,64 @@ físicamente a él para reiniciarlo no es una buena solución.</p>
 conexión del ethernet y levantarlo en caso de caída.</p>
 <p><strong>1-</strong> Crear script para ver el estado del ethernet y levantarlo si es
 necesario.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo touch /usr/local/bin/eth
-<span class="gp">pi@bot ~ $ </span>sudo chmod <span class="m">777</span> /usr/local/bin/eth
-<span class="gp">pi@bot ~ $ </span>sudo nano /usr/local/bin/eth
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>touch<span class="w"> </span>/usr/local/bin/eth
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">777</span><span class="w"> </span>/usr/local/bin/eth
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>nano<span class="w"> </span>/usr/local/bin/eth
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
-ok<span class="o">()</span> <span class="o">{</span>
-    <span class="nv">STATE</span><span class="o">=</span><span class="k">$(</span>ifconfig eth0 <span class="p">|</span> grep <span class="s2">"inet addr:"</span> <span class="p">|</span> sed <span class="s1">'s/^ *inet addr/Lan/'</span> <span class="p">|</span> sed <span class="s1">'s/  / /g'</span><span class="k">)</span>
-    <span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>curl -s icanhazip.com<span class="k">)</span>
-    <span class="k">if</span> <span class="o">[</span> ! -z <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">echo</span> -n <span class="s2">"Ip:</span><span class="nv">$IP</span><span class="s2"> "</span>
-    <span class="k">else</span>
-        <span class="nb">echo</span> -n <span class="s2">"IP ERROR - "</span>
-    <span class="k">fi</span>
-    <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$STATE</span><span class="s2">"</span>
+ok<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="nv">STATE</span><span class="o">=</span><span class="k">$(</span>ifconfig<span class="w"> </span>eth0<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"inet addr:"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">'s/^ *inet addr/Lan/'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">'s/  / /g'</span><span class="k">)</span>
+<span class="w">    </span><span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>icanhazip.com<span class="k">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-z<span class="w"> </span><span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">"Ip:</span><span class="nv">$IP</span><span class="s2"> "</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">"IP ERROR - "</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$STATE</span><span class="s2">"</span>
 <span class="o">}</span>
 
-<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"--log"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> -n <span class="k">$(</span>date <span class="s2">"+%d/%m/%Y %H:%M &gt; "</span><span class="k">)</span><span class="s2">""</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"--log"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="k">$(</span>date<span class="w"> </span><span class="s2">"+%d/%m/%Y %H:%M &gt; "</span><span class="k">)</span><span class="s2">""</span>
 <span class="k">fi</span>
 
-<span class="k">if</span> ifconfig eth0 <span class="p">|</span> grep -q <span class="s2">"inet addr:"</span><span class="p">;</span> <span class="k">then</span>
-    ok
-    <span class="nb">exit</span> <span class="m">0</span>
+<span class="k">if</span><span class="w"> </span>ifconfig<span class="w"> </span>eth0<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span><span class="s2">"inet addr:"</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>ok
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
 <span class="k">fi</span>
 
-<span class="nv">ERR</span><span class="o">=</span><span class="k">$(</span>ifup --force eth0 <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="k">)</span>
+<span class="nv">ERR</span><span class="o">=</span><span class="k">$(</span>ifup<span class="w"> </span>--force<span class="w"> </span>eth0<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="k">)</span>
 <span class="nv">OUT</span><span class="o">=</span><span class="nv">$?</span>
-<span class="k">if</span> <span class="o">[</span> <span class="nv">$OUT</span> -eq <span class="m">0</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> -n <span class="s2">"RESET OK - "</span>
-    ok
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$OUT</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">"RESET OK - "</span>
+<span class="w">    </span>ok
 <span class="k">else</span>
-    <span class="nb">echo</span> <span class="s2">"RESET FAIL - </span><span class="nv">$ERR</span><span class="s2">"</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"RESET FAIL - </span><span class="nv">$ERR</span><span class="s2">"</span>
 <span class="k">fi</span>
 </code></pre></div>
 <p><strong>2-</strong> Ejemplo de uso desde linea de comandos</p>
 <div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>eth
 <span class="go">Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0</span>
-<span class="gp">pi@bot ~ $ </span>eth --log
+<span class="gp">pi@bot ~ $ </span>eth<span class="w"> </span>--log
 <span class="go">23/03/2014 21:14 &gt; Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0</span>
-<span class="gp">pi@bot ~ $ </span>sudo ifdown eth0
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>ifdown<span class="w"> </span>eth0
 <span class="go">...</span>
 <span class="gp">pi@bot ~ $ </span>eth
 <span class="go">RESET FAIL - ifup: failed to open statefile /run/network/ifstate: Permission denied</span>
-<span class="gp">pi@bot ~ $ </span>sudo eth
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>eth
 <span class="go">RESET OK - Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0</span>
 </code></pre></div>
 <p><strong>3-</strong> Programar tarea cada 5 minutos</p>
 <p>Editar el crontab de usuario root y añadir las siguientes lineas al
 final del fichero</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo nano /etc/crontab
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/crontab
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Cada 5 minutos testeamos el ethernet</span>
-<span class="o">*/</span><span class="mi">5</span> <span class="o">*</span>   <span class="o">*</span> <span class="o">*</span> <span class="o">*</span>   <span class="n">root</span>    <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">eth</span> <span class="o">--</span><span class="nb">log</span>  <span class="o">|</span> <span class="n">grep</span> <span class="s2">"RESET\|ERROR"</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">eth</span><span class="o">.</span><span class="n">log</span>
+<span class="o">*/</span><span class="mi">5</span><span class="w"> </span><span class="o">*</span><span class="w">   </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">*</span><span class="w">   </span><span class="n">root</span><span class="w">    </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">eth</span><span class="w"> </span><span class="o">--</span><span class="nb">log</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="s2">"RESET\|ERROR"</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">eth</span><span class="o">.</span><span class="n">log</span>
 </code></pre></div>
 <p><strong>4-</strong> Ejemplos de log generado por crontab</p>
-<div class="highlight"><pre><span></span><code><span class="err">20/03/2014 07:05 &gt; RESET OK - Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0</span>
-<span class="err">20/03/2014 16:05 &gt; RESET OK - Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0</span>
-<span class="err">21/03/2014 17:05 &gt; RESET OK - Ip:81.65.17.125 Lan:192.168.1.69 Bcast:192.168.1.255 Mask:255.255.255.0</span>
+<div class="highlight"><pre><span></span><code><span class="mf">20</span><span class="o">/</span><span class="mf">03</span><span class="o">/</span><span class="mf">2014</span><span class="w"> </span><span class="mf">07</span><span class="p">:</span><span class="mf">05</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">RESET</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Ip</span><span class="p">:</span><span class="mf">81.65.17.125</span><span class="w"> </span><span class="n">Lan</span><span class="p">:</span><span class="mf">192.168.1.69</span><span class="w"> </span><span class="n">Bcast</span><span class="p">:</span><span class="mf">192.168.1.255</span><span class="w"> </span><span class="n">Mask</span><span class="p">:</span><span class="mf">255.255.255.0</span>
+<span class="mf">20</span><span class="o">/</span><span class="mf">03</span><span class="o">/</span><span class="mf">2014</span><span class="w"> </span><span class="mf">16</span><span class="p">:</span><span class="mf">05</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">RESET</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Ip</span><span class="p">:</span><span class="mf">81.65.17.125</span><span class="w"> </span><span class="n">Lan</span><span class="p">:</span><span class="mf">192.168.1.69</span><span class="w"> </span><span class="n">Bcast</span><span class="p">:</span><span class="mf">192.168.1.255</span><span class="w"> </span><span class="n">Mask</span><span class="p">:</span><span class="mf">255.255.255.0</span>
+<span class="mf">21</span><span class="o">/</span><span class="mf">03</span><span class="o">/</span><span class="mf">2014</span><span class="w"> </span><span class="mf">17</span><span class="p">:</span><span class="mf">05</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">RESET</span><span class="w"> </span><span class="n">OK</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Ip</span><span class="p">:</span><span class="mf">81.65.17.125</span><span class="w"> </span><span class="n">Lan</span><span class="p">:</span><span class="mf">192.168.1.69</span><span class="w"> </span><span class="n">Bcast</span><span class="p">:</span><span class="mf">192.168.1.255</span><span class="w"> </span><span class="n">Mask</span><span class="p">:</span><span class="mf">255.255.255.0</span>
 </code></pre></div>
 <p>Fuente:
 <a href="http://www.samhobbs.co.uk/2013/11/fix-for-ethernet-connection-drop-on-raspberry-pi/" target="_blank">samhobbs</a>

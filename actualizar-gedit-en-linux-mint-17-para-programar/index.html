@@ -33,7 +33,7 @@ mint</a> </p>
 <p><strong>Problema</strong>: Queremos usar los plugins de gedit pero nuestro Linux Mint
 viene con una versión anterior de gedit que es incompatible con los
 plugins del repositorio</p>
-<div class="highlight"><pre><span></span><code><span class="gp">mint@bot ~ $ </span>sudo apt-get install gedit-plugins
+<div class="highlight"><pre><span></span><code><span class="gp">mint@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>gedit-plugins
 <span class="go">Leyendo lista de paquetes... Hecho</span>
 <span class="go">Creando árbol de dependencias</span>
 <span class="go">Leyendo la información de estado... Hecho</span>
@@ -48,12 +48,12 @@ plugins del repositorio</p>
 </code></pre></div>
 <p><strong>Solución</strong>: Actualizar gedit</p>
 <p><strong>1</strong>- Eliminamos el antiguo gedit e instalamos el nuevo</p>
-<div class="highlight"><pre><span></span><code><span class="gp">mint@bot ~ $ </span>sudo apt purge gedit gedit-common
+<div class="highlight"><pre><span></span><code><span class="gp">mint@bot ~ $ </span>sudo<span class="w"> </span>apt<span class="w"> </span>purge<span class="w"> </span>gedit<span class="w"> </span>gedit-common
 <span class="go">...</span>
 <span class="go">Los siguientes paquetes se ELIMINARÁN:</span>
 <span class="go">gedit* gedit-common*</span>
 <span class="go">...</span>
-<span class="gp">mint@bot ~ $ </span>sudo apt install gedit/trusty gedit-common/trusty
+<span class="gp">mint@bot ~ $ </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>gedit/trusty<span class="w"> </span>gedit-common/trusty
 <span class="go">...</span>
 <span class="go">Versión seleccionada «3.10.4-0ubuntu4» (Ubuntu:14.04/trusty [amd64]) para «gedit»</span>
 <span class="go">Versión seleccionada «3.10.4-0ubuntu4» (Ubuntu:14.04/trusty [all]) para «gedit-common»</span>
@@ -65,7 +65,7 @@ plugins del repositorio</p>
 <span class="go">...</span>
 </code></pre></div>
 <p><strong>2</strong>- Instalar plugins</p>
-<div class="highlight"><pre><span></span><code><span class="gp">mint@bot ~ $ </span>sudo apt install gedit-plugins/trusty
+<div class="highlight"><pre><span></span><code><span class="gp">mint@bot ~ $ </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>gedit-plugins/trusty
 <span class="go">...</span>
 <span class="go">Versión seleccionada «3.10.1-1ubuntu2» (Ubuntu:14.04/trusty [amd64]) para «gedit-plugins»</span>
 <span class="go">Se instalarán los siguientes paquetes extras:</span>
@@ -78,11 +78,11 @@ plugins del repositorio</p>
 <span class="go">...</span>
 </code></pre></div>
 <p><strong>3-</strong> Instalar Gmate</p>
-<div class="highlight"><pre><span></span><code><span class="gp">mint@bot ~ $ </span>sudo apt-add-repository ppa:ubuntu-on-rails/ppa
+<div class="highlight"><pre><span></span><code><span class="gp">mint@bot ~ $ </span>sudo<span class="w"> </span>apt-add-repository<span class="w"> </span>ppa:ubuntu-on-rails/ppa
 <span class="go">...</span>
-<span class="gp">mint@bot ~ $ </span>sudo apt-get update
+<span class="gp">mint@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
 <span class="go">...</span>
-<span class="gp">mint@bot ~ $ </span>sudo apt-get install gedit-gmate
+<span class="gp">mint@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>gedit-gmate
 <span class="go">...</span>
 <span class="go">Se instalarán los siguientes paquetes NUEVOS:</span>
 <span class="go">gedit-gmate</span>

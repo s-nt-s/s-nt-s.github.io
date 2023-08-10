@@ -52,13 +52,13 @@ cuenta hagas commit en un repositorio con el usuario equivocado</li>
 y crearemos dos configuraciones distintas en <code>.ssh/config</code> para
 acceder al servidor.</p>
 <p><strong>1</strong>- Generar las <code>claves SSH</code></p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ssh-keygen -t rsa -b <span class="m">4096</span> -C <span class="s2">"user1@example.com"</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>rsa<span class="w"> </span>-b<span class="w"> </span><span class="m">4096</span><span class="w"> </span>-C<span class="w"> </span><span class="s2">"user1@example.com"</span>
 <span class="go">Generating public/private rsa key pair.</span>
 <span class="go">Enter a file in which to save the key (/home/you/.ssh/id_rsa): /home/you/.ssh/user1</span>
 <span class="go">Enter passphrase (empty for no passphrase): [Type a passphrase]</span>
 <span class="go">Enter same passphrase again: [Type passphrase again]</span>
 
-<span class="gp">$ </span>ssh-keygen -t rsa -b <span class="m">4096</span> -C <span class="s2">"user2@example.com"</span>
+<span class="gp">$ </span>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>rsa<span class="w"> </span>-b<span class="w"> </span><span class="m">4096</span><span class="w"> </span>-C<span class="w"> </span><span class="s2">"user2@example.com"</span>
 <span class="go">Generating public/private rsa key pair.</span>
 <span class="go">Enter a file in which to save the key (/home/you/.ssh/id_rsa): /home/you/.ssh/user2</span>
 <span class="go">Enter passphrase (empty for no passphrase): [Type a passphrase]</span>
@@ -69,20 +69,20 @@ acceder al servidor.</p>
 <p><strong>2</strong>- Configurar <code>SSH</code></p>
 <p>Suponiendo que <code>user1</code> es el usuario que queremos usar por defecto
 editamos <code>.ssh/config</code> de la siguiente manera:</p>
-<div class="highlight"><pre><span></span><code><span class="k">Host</span> <span class="n">github</span><span class="p">.</span><span class="n">com</span>
-<span class="n">HostName</span> <span class="n">github</span><span class="p">.</span><span class="n">com</span>
-<span class="k">User</span> <span class="n">git</span>
-<span class="n">IdentityFile</span> <span class="o">~/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span><span class="n">user1</span>
+<div class="highlight"><pre><span></span><code>Host github.com
+HostName github.com
+User git
+IdentityFile ~/.ssh/user1
 
-<span class="k">Host</span> <span class="n">github</span><span class="o">-</span><span class="n">user2</span>
-<span class="n">HostName</span> <span class="n">github</span><span class="p">.</span><span class="n">com</span>
-<span class="k">User</span> <span class="n">git</span>
-<span class="n">IdentityFile</span> <span class="o">~/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span><span class="n">user2</span>
+Host github-user2
+HostName github.com
+User git
+IdentityFile ~/.ssh/user2
 </code></pre></div>
 <p><strong>3</strong>- Configurar los repositorios</p>
 <p>La clave esta en clonar cada repositorio con el <code>host ssh</code> adecuado.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git clone git@github.com:user-random/project1.git
-<span class="gp">$ </span>git clone git@github-user2:user-random/project2.git
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:user-random/project1.git
+<span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>git@github-user2:user-random/project2.git
 </code></pre></div>
 <p>De manera que en <code>project1</code> tendremos un proyecto que accede al
 servidor con el usuario <code>user1</code> y en <code>project2</code> tendremos un proyecto
@@ -91,23 +91,23 @@ que accede al servidor con el usuario <code>user2</code>.</p>
 <p>Como hemos dicho que <code>user1</code> va a ser nuestro usuario por defecto y
 en <code>GitHub</code> es más habitual clonar usando <code>https</code>, podemos configurar
 <code>git</code> para que transforme las urls directamente a <code>ssh</code> de esta manera:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git config --global url.ssh://git@github.com/.insteadOf https://github.com/
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>url.ssh://git@github.com/.insteadOf<span class="w"> </span>https://github.com/
 </code></pre></div>
 <p>Esto hará que hacer:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git clone https://github.com/user-random/project1
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/user-random/project1
 </code></pre></div>
 <p>sea equivalente a hacer:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git clone git@github.com:user-random/project1.git
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:user-random/project1.git
 </code></pre></div>
 <p>y como en <code>.ssh/config</code> la entrada para <code>github.com</code> es la de <code>user1</code>,
 se usara su clave para el acceso.</p>
 <h2>¿Cómo hacer commit con distinto usuario?</h2>
 <p>Manualmente podemos ir a cada repositorio y definir una configuración local:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">cd</span> project1
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>project1
 <span class="go">project2/ $ git config --local user.name user1</span>
 <span class="go">project2/ $ git config --local user.email user1@example.com</span>
-<span class="gp">$ </span><span class="nb">cd</span> ..
-<span class="gp">$ </span><span class="nb">cd</span> project2
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>..
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>project2
 <span class="go">project2/ $ git config --local user.name user2</span>
 <span class="go">project2/ $ git config --local user.email user2@example.com</span>
 </code></pre></div>
@@ -128,28 +128,28 @@ local, podemos obligar a que sea un requisito haciendo:</p>
 todos los proyectos de <code>user2</code> en <code>~/wks2</code> podemos añadir
 en <code>~/.gitconfig</code> las lineas:</p>
 <div class="highlight"><pre><span></span><code><span class="k">[includeIf "gitdir:~/wks1/"]</span>
-    <span class="na">path</span> <span class="o">=</span> <span class="s">~/wks1/.gitconfig</span>
+<span class="w">    </span><span class="na">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">~/wks1/.gitconfig</span>
 <span class="k">[includeIf "gitdir:~/wks/"]</span>
-    <span class="na">path</span> <span class="o">=</span> <span class="s">~/wks2/.gitconfig</span>
+<span class="w">    </span><span class="na">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">~/wks2/.gitconfig</span>
 </code></pre></div>
 <p>y escribir <code>~/wks1/.gitconfig</code> con el contenido:</p>
 <div class="highlight"><pre><span></span><code><span class="k">[user]</span>
-<span class="na">name</span> <span class="o">=</span> <span class="s">user1</span>
-<span class="na">email</span> <span class="o">=</span> <span class="s">user1@example.com</span>
+<span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">user1</span>
+<span class="na">email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">user1@example.com</span>
 </code></pre></div>
 <p>y <code>~/wks1/.gitconfig</code> con el contenido:</p>
 <div class="highlight"><pre><span></span><code><span class="k">[user]</span>
-<span class="na">name</span> <span class="o">=</span> <span class="s">user2</span>
-<span class="na">email</span> <span class="o">=</span> <span class="s">user2@example.com</span>
+<span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">user2</span>
+<span class="na">email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">user2@example.com</span>
 </code></pre></div>
 <h3>Crear un hook para git clone</h3>
 <p>En realidad no existe <code>hook</code> para <code>clone</code>, pero podemos usar el <code>hook</code>
 <code>post-checkout</code> que se ejecuta tras un <code>checkout</code>, lo cual siempre
 sucede cuando se hace <code>clone</code> (a no ser que se use el argumento <code>--no-checkout</code>).</p>
 <p>Para ello hacemos:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir -p ~/.git/hooks
-<span class="gp">$ </span>git config --global core.hooksPath ~/.git/hooks
-<span class="gp">$ </span>touch ~/.git/hooks/post-checkout
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/.git/hooks
+<span class="gp">$ </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>core.hooksPath<span class="w"> </span>~/.git/hooks
+<span class="gp">$ </span>touch<span class="w"> </span>~/.git/hooks/post-checkout
 </code></pre></div>
 <p>y en <code>~/.git/hooks/post-checkout</code> ponemos este script:</p>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/python</span>
@@ -198,7 +198,7 @@ puedes reescribir el autor de los commits con el siguiente
 script:</p>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 
-git filter-branch --env-filter <span class="s1">'</span>
+git<span class="w"> </span>filter-branch<span class="w"> </span>--env-filter<span class="w"> </span><span class="s1">'</span>
 <span class="s1">OLD_EMAIL="user2@example.com"</span>
 <span class="s1">CORRECT_NAME="user1"</span>
 <span class="s1">CORRECT_EMAIL="user1@example.com"</span>
@@ -212,7 +212,7 @@ git filter-branch --env-filter <span class="s1">'</span>
 <span class="s1">    export GIT_AUTHOR_NAME="$CORRECT_NAME"</span>
 <span class="s1">    export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"</span>
 <span class="s1">fi</span>
-<span class="s1">'</span> --tag-name-filter cat -- --branches --tags
+<span class="s1">'</span><span class="w"> </span>--tag-name-filter<span class="w"> </span>cat<span class="w"> </span>--<span class="w"> </span>--branches<span class="w"> </span>--tags
 </code></pre></div>
 <p>adecuando las variables <code>OLD_EMAIL</code>, <code>CORRECT_NAME</code> y <code>CORRECT_EMAIL</code>
 a tu caso.</p>

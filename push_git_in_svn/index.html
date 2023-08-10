@@ -46,9 +46,9 @@ y configurar nuestra rama <code>git</code> y la extensión <code>git svn</code> 
 <p>Para el tutorial supondremos que el repositorio <code>git</code> esta en <code>git@github.com:my-user/my-repo.git</code>
 y el <code>trunk</code> del <code>svn</code> esta en <code>https://my-svn-server.com/my-repos/trunk/my-repo</code></p>
 <h2>Prerequisitos</h2>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo apt-get install git git-svn
-<span class="gp">$ </span>git clone git@github.com:my-user/my-repo.git
-<span class="gp">$ </span><span class="nb">cd</span> my-repo
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span>git-svn
+<span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:my-user/my-repo.git
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>my-repo
 </code></pre></div>
 <h2>Configuración</h2>
 <p><strong>1-</strong> Creamos la rama:</p>
@@ -79,22 +79,22 @@ y el <code>trunk</code> del <code>svn</code> esta en <code>https://my-svn-server
 </code></pre></div>
 <p>Podemos crear un script con los anteriores comandos para automatizar el proceso:</p>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
-<span class="nb">set</span> -e
+<span class="nb">set</span><span class="w"> </span>-e
 <span class="c1"># Comprobar que svnsync y master existen</span>
-git show-branch svnsync master
+git<span class="w"> </span>show-branch<span class="w"> </span>svnsync<span class="w"> </span>master
 <span class="c1"># Ir a master y actualizarlo</span>
-git checkout master
-git pull origin master
+git<span class="w"> </span>checkout<span class="w"> </span>master
+git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>master
 <span class="c1"># Ir a svnsync</span>
-git checkout svnsync
+git<span class="w"> </span>checkout<span class="w"> </span>svnsync
 <span class="c1"># Revertirlo a su última versión consolidada</span>
-git svn rebase
+git<span class="w"> </span>svn<span class="w"> </span>rebase
 <span class="c1"># Mezclar master en svnsync</span>
-git merge -X theirs --allow-unrelated-histories master
+git<span class="w"> </span>merge<span class="w"> </span>-X<span class="w"> </span>theirs<span class="w"> </span>--allow-unrelated-histories<span class="w"> </span>master
 <span class="c1"># Hacer commit local en git</span>
-git commit
+git<span class="w"> </span>commit
 <span class="c1"># Subir cambios al svn</span>
-git svn dcommit
+git<span class="w"> </span>svn<span class="w"> </span>dcommit
 </code></pre></div>
 <p><strong>Z-</strong> Deshacer todo (si necesitas repetir el proceso desde cero y te esta dando problemas)</p>
 <p><strong>Z.a)</strong> Borrar rama <code>svnsync</code></p>
@@ -103,17 +103,17 @@ git svn dcommit
 </code></pre></div>
 <p><strong>Z.b)</strong> Borrar del .git/config las lineas:</p>
 <div class="highlight"><pre><span></span><code><span class="k">[svn-remote "svn"]</span>
-    <span class="na">url</span> <span class="o">=</span> <span class="s">https://my-svn-server.com/my-repos</span>
-    <span class="na">fetch</span> <span class="o">=</span> <span class="s">trunk/my-repo:refs/remotes/origin/trunk</span>
+<span class="w">    </span><span class="na">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">https://my-svn-server.com/my-repos</span>
+<span class="w">    </span><span class="na">fetch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">trunk/my-repo:refs/remotes/origin/trunk</span>
 </code></pre></div>
 <p><strong>Z.c)</strong> Borrar histórico <code>svn</code></p>
 <div class="highlight"><pre><span></span><code><span class="go">my-repo $ sudo rm -R .git/svn</span>
 </code></pre></div>
 <p><strong>Z.d)</strong> Si esto no funciona, no queda más remedio que empezar verdaderamente desde 0 (acuérdate de salvar tus cambios antes):</p>
 <div class="highlight"><pre><span></span><code><span class="go">my-repo $ cd ..</span>
-<span class="gp">$ </span>sudo rm -R my-repo
-<span class="gp">$ </span>git clone git@github.com:my-user/my-repo.git
-<span class="gp">$ </span><span class="nb">cd</span> my-repo
+<span class="gp">$ </span>sudo<span class="w"> </span>rm<span class="w"> </span>-R<span class="w"> </span>my-repo
+<span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:my-user/my-repo.git
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>my-repo
 </code></pre></div>
 <p><strong>Fuentes</strong>: <a href="https://ben.lobaugh.net/blog/147853/creating-a-two-way-sync-between-a-github-repository-and-subversion" target="_blank">ben.lobaugh.net</a>,
 <a href="https://blog.justincarmony.com/2011/02/21/using-git-with-subversion" target="_blank">blog.justincarmony.com</a>,

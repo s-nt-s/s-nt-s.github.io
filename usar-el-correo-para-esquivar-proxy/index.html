@@ -49,7 +49,7 @@ solo paso el archivo en una carpeta imap del servidor de correo.</p>
 <p><strong>1-</strong> Preparar en nuestro equipo libre los archivos</p>
 <p>Creamos un zip por volúmenes según el tamaño máximo permitido por la
 cuenta de correo que vamos a usar</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>zip -r -s 40m -0 -Pmailzip /tmp/mail.zip /data
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>zip<span class="w"> </span>-r<span class="w"> </span>-s<span class="w"> </span>40m<span class="w"> </span>-0<span class="w"> </span>-Pmailzip<span class="w"> </span>/tmp/mail.zip<span class="w"> </span>/data
 </code></pre></div>
 <p>El parámetro -Pmailzip define "mailzip" como contraseña del zip
 resultante, con esto evitamos que el servidor rechace el mail por alguno
@@ -57,142 +57,142 @@ de sus contenidos (por ejemplo, un ejecutable).</p>
 <p><strong>2-</strong> Creamos el script y su archivo de configuración en nuestro equipo
 libre (<code>mail.pl</code>)</p>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/perl -w</span>
-<span class="k">use</span> <span class="nn">Mail::IMAPClient</span><span class="p">;</span>
-<span class="k">use</span> <span class="nn">MIME::Lite</span><span class="p">;</span>
-<span class="k">use</span> <span class="nn">Cwd</span> <span class="s">'abs_path'</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">Mail::IMAPClient</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">MIME::Lite</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">Cwd</span><span class="w"> </span><span class="s">'abs_path'</span><span class="p">;</span>
 
-<span class="nb">local</span> <span class="vg">$|</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nb">local</span><span class="w"> </span><span class="vg">$|</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 
-<span class="k">my</span> <span class="nv">$imap</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">$quota</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">%cfg</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">$seg</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="c1">#seguimiento</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$imap</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$quota</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">%cfg</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$seg</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">#seguimiento</span>
 
-<span class="k">sub</span> <span class="nf">save</span> <span class="p">{</span>
-    <span class="k">my</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span><span class="nv">$txt</span><span class="p">,</span><span class="nv">$total</span><span class="p">,</span><span class="nv">$count</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
-    <span class="k">my</span> <span class="nv">$name</span><span class="o">=</span><span class="nv">$file</span><span class="p">;</span>
-    <span class="nv">$name</span><span class="o">=~</span> <span class="sr">s/^.+\///</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$total</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span><span class="k">print</span> <span class="s">"Subiendo $name ... "</span><span class="p">;}</span>
-    <span class="k">else</span> <span class="p">{</span><span class="k">print</span> <span class="s">"Subiendo $count de $total: $name ... "</span><span class="p">;}</span>
-    <span class="k">my</span> <span class="nv">$msg</span> <span class="o">=</span> <span class="nn">MIME::Lite</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span>
-            <span class="n">From</span>    <span class="o">=&gt;</span><span class="s">'up@bot.com'</span><span class="p">,</span>
-            <span class="n">To</span>      <span class="o">=&gt;</span><span class="s">'down@bot.com'</span><span class="p">,</span>
-            <span class="n">Subject</span> <span class="o">=&gt;</span><span class="s">'Up ['</span> <span class="o">.</span><span class="nv">$count</span> <span class="o">.</span> <span class="s">'/'</span> <span class="o">.</span> <span class="nv">$total</span> <span class="o">.</span> <span class="s">']: '</span> <span class="o">.</span> <span class="nv">$name</span><span class="p">,</span>
-            <span class="n">Type</span>    <span class="o">=&gt;</span><span class="s">'multipart/mixed'</span>
-    <span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$txt</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$msg</span><span class="o">-&gt;</span><span class="n">attach</span><span class="p">(</span><span class="n">Type</span> <span class="o">=&gt;</span> <span class="s">'TEXT'</span><span class="p">,</span> <span class="n">Data</span> <span class="o">=&gt;</span> <span class="nv">$txt</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nv">$msg</span><span class="o">-&gt;</span><span class="n">attach</span><span class="p">(</span>
-            <span class="n">Type</span>        <span class="o">=&gt;</span><span class="s">'application/zip'</span><span class="p">,</span>
-            <span class="n">Path</span>        <span class="o">=&gt;</span> <span class="nv">$file</span><span class="p">,</span>
-            <span class="n">Filename</span>    <span class="o">=&gt;</span> <span class="nv">$name</span><span class="p">,</span>
-            <span class="n">Disposition</span> <span class="o">=&gt;</span> <span class="s">'attachment'</span>
-    <span class="p">);</span>
-    <span class="k">my</span> <span class="nv">$id</span><span class="o">=</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">append_string</span><span class="p">(</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Folder</span><span class="p">(),</span><span class="nv">$msg</span><span class="o">-&gt;</span><span class="n">as_string</span><span class="p">);</span>
-    <span class="k">print</span> <span class="s">"OK\n"</span><span class="p">;</span>
+<span class="k">sub</span><span class="w"> </span><span class="nf">save</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">my</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span><span class="nv">$txt</span><span class="p">,</span><span class="nv">$total</span><span class="p">,</span><span class="nv">$count</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@_</span><span class="p">;</span>
+<span class="w">    </span><span class="k">my</span><span class="w"> </span><span class="nv">$name</span><span class="o">=</span><span class="nv">$file</span><span class="p">;</span>
+<span class="w">    </span><span class="nv">$name</span><span class="o">=~</span><span class="w"> </span><span class="sr">s/^.+\///</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$total</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">print</span><span class="w"> </span><span class="s">"Subiendo $name ... "</span><span class="p">;}</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="k">print</span><span class="w"> </span><span class="s">"Subiendo $count de $total: $name ... "</span><span class="p">;}</span>
+<span class="w">    </span><span class="k">my</span><span class="w"> </span><span class="nv">$msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nn">MIME::Lite</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span>
+<span class="w">            </span><span class="n">From</span><span class="w">    </span><span class="o">=&gt;</span><span class="s">'up@bot.com'</span><span class="p">,</span>
+<span class="w">            </span><span class="n">To</span><span class="w">      </span><span class="o">=&gt;</span><span class="s">'down@bot.com'</span><span class="p">,</span>
+<span class="w">            </span><span class="n">Subject</span><span class="w"> </span><span class="o">=&gt;</span><span class="s">'Up ['</span><span class="w"> </span><span class="o">.</span><span class="nv">$count</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">'/'</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">$total</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">']: '</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">$name</span><span class="p">,</span>
+<span class="w">            </span><span class="n">Type</span><span class="w">    </span><span class="o">=&gt;</span><span class="s">'multipart/mixed'</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$txt</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">$msg</span><span class="o">-&gt;</span><span class="n">attach</span><span class="p">(</span><span class="n">Type</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">'TEXT'</span><span class="p">,</span><span class="w"> </span><span class="n">Data</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nv">$txt</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nv">$msg</span><span class="o">-&gt;</span><span class="n">attach</span><span class="p">(</span>
+<span class="w">            </span><span class="n">Type</span><span class="w">        </span><span class="o">=&gt;</span><span class="s">'application/zip'</span><span class="p">,</span>
+<span class="w">            </span><span class="n">Path</span><span class="w">        </span><span class="o">=&gt;</span><span class="w"> </span><span class="nv">$file</span><span class="p">,</span>
+<span class="w">            </span><span class="n">Filename</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="nv">$name</span><span class="p">,</span>
+<span class="w">            </span><span class="n">Disposition</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">'attachment'</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">    </span><span class="k">my</span><span class="w"> </span><span class="nv">$id</span><span class="o">=</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">append_string</span><span class="p">(</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Folder</span><span class="p">(),</span><span class="nv">$msg</span><span class="o">-&gt;</span><span class="n">as_string</span><span class="p">);</span>
+<span class="w">    </span><span class="k">print</span><span class="w"> </span><span class="s">"OK\n"</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">sub</span> <span class="nf">space</span> <span class="p">{</span>
-    <span class="k">my</span> <span class="p">(</span><span class="nv">$file</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
-    <span class="k">my</span> <span class="nv">$size</span><span class="o">=</span><span class="p">((</span><span class="o">-</span><span class="n">s</span> <span class="nv">$file</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="p">);</span>
-    <span class="k">my</span> <span class="nv">$free</span><span class="o">=</span><span class="nv">$quota</span><span class="o">-</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">quota_usage</span><span class="p">();</span>
-    <span class="k">return</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$size</span><span class="o">&lt;</span><span class="nv">$free</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$seg</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">print</span> <span class="s">"Esperando a que el usuario libere "</span> <span class="o">.</span> <span class="nb">int</span><span class="p">((</span><span class="nv">$size</span><span class="o">-</span><span class="nv">$free</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span> <span class="o">+</span> <span class="mf">0.99</span><span class="p">)</span> <span class="o">.</span> <span class="s">"MB del servidor... "</span><span class="p">;</span>
-        <span class="k">while</span> <span class="p">(</span><span class="nv">$size</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">$quota</span><span class="o">-</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">quota_usage</span><span class="p">()))</span> <span class="p">{</span><span class="nb">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">);}</span>
-        <span class="k">print</span> <span class="s">"OK\n"</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="k">print</span> <span class="s">"Pulse enter para purgar "</span><span class="o">.</span> <span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Folder</span><span class="p">()</span> <span class="o">.</span> <span class="s">" ..."</span><span class="p">;</span>
-        <span class="sr">&lt;STDIN&gt;</span><span class="p">;</span>
-        <span class="n">purge</span><span class="p">();</span>
-    <span class="p">}</span>
+<span class="k">sub</span><span class="w"> </span><span class="nf">space</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">my</span><span class="w"> </span><span class="p">(</span><span class="nv">$file</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@_</span><span class="p">;</span>
+<span class="w">    </span><span class="k">my</span><span class="w"> </span><span class="nv">$size</span><span class="o">=</span><span class="p">((</span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="nv">$file</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="p">);</span>
+<span class="w">    </span><span class="k">my</span><span class="w"> </span><span class="nv">$free</span><span class="o">=</span><span class="nv">$quota</span><span class="o">-</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">quota_usage</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$size</span><span class="o">&lt;</span><span class="nv">$free</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$seg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">print</span><span class="w"> </span><span class="s">"Esperando a que el usuario libere "</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nb">int</span><span class="p">((</span><span class="nv">$size</span><span class="o">-</span><span class="nv">$free</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.99</span><span class="p">)</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">"MB del servidor... "</span><span class="p">;</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nv">$size</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">$quota</span><span class="o">-</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">quota_usage</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span><span class="nb">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">);}</span>
+<span class="w">        </span><span class="k">print</span><span class="w"> </span><span class="s">"OK\n"</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">print</span><span class="w"> </span><span class="s">"Pulse enter para purgar "</span><span class="o">.</span><span class="w"> </span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Folder</span><span class="p">()</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">" ..."</span><span class="p">;</span>
+<span class="w">        </span><span class="sr">&lt;STDIN&gt;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">purge</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 
-<span class="k">sub</span> <span class="nf">purge</span> <span class="p">{</span>
-    <span class="k">my</span> <span class="nv">@dvs</span><span class="o">=</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">messages</span>  <span class="ow">or</span> <span class="nb">die</span> <span class="s">"Could not messages: $@\n"</span><span class="p">;</span>
-    <span class="k">foreach</span> <span class="k">my</span> <span class="nv">$dv</span> <span class="p">(</span><span class="nv">@dvs</span><span class="p">){</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">delete_message</span><span class="p">(</span><span class="nv">$dv</span><span class="p">);}</span>
-    <span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">expunge</span><span class="p">(</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Folder</span><span class="p">());</span>
+<span class="k">sub</span><span class="w"> </span><span class="nf">purge</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">my</span><span class="w"> </span><span class="nv">@dvs</span><span class="o">=</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">messages</span><span class="w">  </span><span class="ow">or</span><span class="w"> </span><span class="nb">die</span><span class="w"> </span><span class="s">"Could not messages: $@\n"</span><span class="p">;</span>
+<span class="w">    </span><span class="k">foreach</span><span class="w"> </span><span class="k">my</span><span class="w"> </span><span class="nv">$dv</span><span class="w"> </span><span class="p">(</span><span class="nv">@dvs</span><span class="p">){</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">delete_message</span><span class="p">(</span><span class="nv">$dv</span><span class="p">);}</span>
+<span class="w">    </span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">expunge</span><span class="p">(</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Folder</span><span class="p">());</span>
 <span class="p">}</span>
 
-<span class="k">sub</span> <span class="nf">setCfg</span> <span class="p">{</span>
-    <span class="k">my</span> <span class="nv">$fl</span><span class="o">=</span><span class="nv">$_</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$fl</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$fl</span><span class="o">=</span><span class="nv">$0</span><span class="p">;</span>
-        <span class="nv">$fl</span><span class="o">=~</span> <span class="sr">s/^.+\/|\..+$//g</span><span class="p">;</span>
-        <span class="nv">$fl</span><span class="o">=</span> <span class="nv">$ENV</span><span class="p">{</span><span class="s">"HOME"</span><span class="p">}</span> <span class="o">.</span> <span class="s">"/."</span> <span class="o">.</span> <span class="nv">$fl</span> <span class="o">.</span> <span class="s">".cnf"</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nb">open</span> <span class="p">(</span><span class="n">CFG</span><span class="p">,</span> <span class="nv">$fl</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">die</span> <span class="s">"No se pueo abrir el fichero e configuracion: $fl\n"</span> <span class="o">.</span> <span class="vg">$@</span><span class="p">;</span>
-    <span class="nv">%cfg</span><span class="o">=</span><span class="p">();</span>
-    <span class="k">while</span> <span class="p">(</span><span class="k">my</span> <span class="nv">$line</span><span class="o">=</span><span class="sr">&lt;CFG&gt;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$line</span><span class="o">=~</span> <span class="sr">s/^\s+|\s+$|\s+#.*$//g</span><span class="p">;</span>
-        <span class="k">next</span> <span class="k">if</span> <span class="p">(</span><span class="nb">substr</span><span class="p">(</span><span class="nv">$line</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">eq</span> <span class="s">"#"</span><span class="p">);</span>
-        <span class="p">(</span><span class="k">my</span> <span class="nv">$k</span><span class="p">,</span><span class="k">my</span> <span class="nv">$v</span><span class="p">)</span> <span class="o">=</span> <span class="nb">split</span> <span class="sr">/\s*=\s*/</span><span class="p">,</span> <span class="nv">$line</span><span class="p">;</span>
-        <span class="nv">$cfg</span><span class="p">{</span><span class="nv">$k</span><span class="p">}</span> <span class="o">=</span> <span class="nv">$v</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nb">close</span><span class="p">(</span><span class="n">CFG</span><span class="p">);</span>
+<span class="k">sub</span><span class="w"> </span><span class="nf">setCfg</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">my</span><span class="w"> </span><span class="nv">$fl</span><span class="o">=</span><span class="nv">$_</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="w"> </span><span class="nv">$fl</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">$fl</span><span class="o">=</span><span class="nv">$0</span><span class="p">;</span>
+<span class="w">        </span><span class="nv">$fl</span><span class="o">=~</span><span class="w"> </span><span class="sr">s/^.+\/|\..+$//g</span><span class="p">;</span>
+<span class="w">        </span><span class="nv">$fl</span><span class="o">=</span><span class="w"> </span><span class="nv">$ENV</span><span class="p">{</span><span class="s">"HOME"</span><span class="p">}</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">"/."</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">$fl</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">".cnf"</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nb">open</span><span class="w"> </span><span class="p">(</span><span class="n">CFG</span><span class="p">,</span><span class="w"> </span><span class="nv">$fl</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nb">die</span><span class="w"> </span><span class="s">"No se pueo abrir el fichero e configuracion: $fl\n"</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="vg">$@</span><span class="p">;</span>
+<span class="w">    </span><span class="nv">%cfg</span><span class="o">=</span><span class="p">();</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="k">my</span><span class="w"> </span><span class="nv">$line</span><span class="o">=</span><span class="sr">&lt;CFG&gt;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">$line</span><span class="o">=~</span><span class="w"> </span><span class="sr">s/^\s+|\s+$|\s+#.*$//g</span><span class="p">;</span>
+<span class="w">        </span><span class="k">next</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">substr</span><span class="p">(</span><span class="nv">$line</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="ow">eq</span><span class="w"> </span><span class="s">"#"</span><span class="p">);</span>
+<span class="w">        </span><span class="p">(</span><span class="k">my</span><span class="w"> </span><span class="nv">$k</span><span class="p">,</span><span class="k">my</span><span class="w"> </span><span class="nv">$v</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">split</span><span class="w"> </span><span class="sr">/\s*=\s*/</span><span class="p">,</span><span class="w"> </span><span class="nv">$line</span><span class="p">;</span>
+<span class="w">        </span><span class="nv">$cfg</span><span class="p">{</span><span class="nv">$k</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$v</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nb">close</span><span class="p">(</span><span class="n">CFG</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="k">sub</span> <span class="nf">imap</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$imap</span> <span class="o">||</span> <span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">IsUnconnected</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">%cfg</span><span class="p">)</span> <span class="p">{</span><span class="n">setCfg</span><span class="p">()};</span>
-        <span class="k">print</span> <span class="s">"Conectando a $cfg{User}/$cfg{Folder} ... "</span> <span class="p">;</span>
-        <span class="nv">$imap</span> <span class="o">=</span> <span class="nn">Mail::IMAPClient</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span><span class="nv">%cfg</span><span class="p">)</span> <span class="o">||</span> <span class="nb">die</span> <span class="s">"\n$@\n"</span><span class="p">;</span>
-        <span class="nv">$imap</span><span class="o">-&gt;</span><span class="nb">select</span><span class="p">(</span><span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">Folder</span><span class="p">());</span>
-        <span class="k">print</span> <span class="s">"OK\n"</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nv">$imap</span><span class="p">;</span>
+<span class="k">sub</span><span class="w"> </span><span class="nf">imap</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nv">$imap</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">IsUnconnected</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="w"> </span><span class="nv">%cfg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="n">setCfg</span><span class="p">()};</span>
+<span class="w">        </span><span class="k">print</span><span class="w"> </span><span class="s">"Conectando a $cfg{User}/$cfg{Folder} ... "</span><span class="w"> </span><span class="p">;</span>
+<span class="w">        </span><span class="nv">$imap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nn">Mail::IMAPClient</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span><span class="nv">%cfg</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">die</span><span class="w"> </span><span class="s">"\n$@\n"</span><span class="p">;</span>
+<span class="w">        </span><span class="nv">$imap</span><span class="o">-&gt;</span><span class="nb">select</span><span class="p">(</span><span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">Folder</span><span class="p">());</span>
+<span class="w">        </span><span class="k">print</span><span class="w"> </span><span class="s">"OK\n"</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">$imap</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">my</span> <span class="nv">$purge</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">@files</span><span class="o">=</span><span class="p">();</span>
-<span class="k">foreach</span> <span class="k">my</span> <span class="nv">$a</span> <span class="p">(</span><span class="nv">@ARGV</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$a</span> <span class="ow">eq</span> <span class="s">"--key"</span><span class="p">)</span> <span class="p">{</span><span class="nv">$seg</span><span class="o">=</span><span class="mi">0</span><span class="p">;}</span>
-    <span class="k">elsif</span> <span class="p">(</span><span class="nv">$a</span> <span class="ow">eq</span> <span class="s">"--purge"</span><span class="p">)</span> <span class="p">{</span><span class="nv">$purge</span><span class="o">=</span><span class="mi">1</span><span class="p">;}</span>
-    <span class="k">next</span> <span class="k">unless</span> <span class="p">(</span><span class="o">-</span><span class="n">f</span> <span class="nv">$a</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$a</span> <span class="o">=~</span><span class="sr"> /.+\.z(ip|\d+)$/</span><span class="p">)</span> <span class="p">{</span><span class="nb">push</span> <span class="p">(</span><span class="nv">@files</span><span class="p">,</span> <span class="n">abs_path</span><span class="p">(</span><span class="nv">$a</span><span class="p">));}</span>
-    <span class="k">elsif</span> <span class="p">(</span><span class="nv">$a</span> <span class="o">=~</span><span class="sr"> /.+\.cnf$/</span><span class="p">)</span> <span class="p">{</span><span class="n">setCfg</span><span class="p">(</span><span class="nv">$a</span><span class="p">);}</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$purge</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">@files</span><span class="o">=</span><span class="p">();</span>
+<span class="k">foreach</span><span class="w"> </span><span class="k">my</span><span class="w"> </span><span class="nv">$a</span><span class="w"> </span><span class="p">(</span><span class="nv">@ARGV</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$a</span><span class="w"> </span><span class="ow">eq</span><span class="w"> </span><span class="s">"--key"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="nv">$seg</span><span class="o">=</span><span class="mi">0</span><span class="p">;}</span>
+<span class="w">    </span><span class="k">elsif</span><span class="w"> </span><span class="p">(</span><span class="nv">$a</span><span class="w"> </span><span class="ow">eq</span><span class="w"> </span><span class="s">"--purge"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="nv">$purge</span><span class="o">=</span><span class="mi">1</span><span class="p">;}</span>
+<span class="w">    </span><span class="k">next</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="nv">$a</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$a</span><span class="w"> </span><span class="o">=~</span><span class="sr"> /.+\.z(ip|\d+)$/</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="nb">push</span><span class="w"> </span><span class="p">(</span><span class="nv">@files</span><span class="p">,</span><span class="w"> </span><span class="n">abs_path</span><span class="p">(</span><span class="nv">$a</span><span class="p">));}</span>
+<span class="w">    </span><span class="k">elsif</span><span class="w"> </span><span class="p">(</span><span class="nv">$a</span><span class="w"> </span><span class="o">=~</span><span class="sr"> /.+\.cnf$/</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="n">setCfg</span><span class="p">(</span><span class="nv">$a</span><span class="p">);}</span>
 <span class="p">}</span>
 
-<span class="k">my</span> <span class="nv">$t</span><span class="o">=</span><span class="nb">scalar</span> <span class="p">(</span><span class="nv">@files</span><span class="p">);</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$t</span><span class="o">=</span><span class="nb">scalar</span><span class="w"> </span><span class="p">(</span><span class="nv">@files</span><span class="p">);</span>
 
-<span class="nb">die</span> <span class="s">"Debe pasar una lista de ficheros zip\n"</span> <span class="k">unless</span> <span class="nv">$t</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">;</span>
+<span class="nb">die</span><span class="w"> </span><span class="s">"Debe pasar una lista de ficheros zip\n"</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="nv">$t</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">;</span>
 
-<span class="k">if</span> <span class="p">(</span><span class="nv">$purge</span><span class="p">)</span> <span class="p">{</span><span class="n">purge</span><span class="p">();}</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$purge</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="n">purge</span><span class="p">();}</span>
 
 <span class="nv">$quota</span><span class="o">=</span><span class="n">imap</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">quota</span><span class="p">()</span><span class="o">-</span><span class="p">(</span><span class="mi">1024</span><span class="o">*</span><span class="mi">5</span><span class="p">);</span>
-<span class="k">my</span> <span class="nv">$free</span><span class="o">=</span><span class="p">(</span><span class="nv">$quota</span><span class="o">-</span><span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">quota_usage</span><span class="p">());</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$free</span><span class="o">=</span><span class="p">(</span><span class="nv">$quota</span><span class="o">-</span><span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">quota_usage</span><span class="p">());</span>
 
-<span class="k">my</span> <span class="nv">$aux</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">$max</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="k">foreach</span> <span class="k">my</span> <span class="nv">$f</span> <span class="p">(</span><span class="nv">@files</span><span class="p">){</span>
-    <span class="nv">$aux</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">s</span> <span class="nv">$f</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="p">;</span>
-    <span class="nb">die</span> <span class="s">"El fichero $f ["</span> <span class="o">.</span> <span class="nb">int</span><span class="p">((</span><span class="nv">$aux</span><span class="sr">/1024) + 0.99) . "MB] ocupa más de lo que el servidor puede almacenar [". int($quota/</span><span class="mi">1024</span><span class="p">)</span> <span class="o">.</span> <span class="s">"MB]\n"</span> <span class="k">unless</span> <span class="nv">$aux</span><span class="o">&lt;</span><span class="nv">$quota</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$aux</span><span class="o">&gt;</span><span class="nv">$max</span><span class="p">)</span> <span class="p">{</span><span class="nv">$max</span><span class="o">=</span><span class="nv">$aux</span><span class="p">};</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$aux</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$max</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="k">foreach</span><span class="w"> </span><span class="k">my</span><span class="w"> </span><span class="nv">$f</span><span class="w"> </span><span class="p">(</span><span class="nv">@files</span><span class="p">){</span>
+<span class="w">    </span><span class="nv">$aux</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="nv">$f</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="p">;</span>
+<span class="w">    </span><span class="nb">die</span><span class="w"> </span><span class="s">"El fichero $f ["</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nb">int</span><span class="p">((</span><span class="nv">$aux</span><span class="sr">/1024) + 0.99) . "MB] ocupa más de lo que el servidor puede almacenar [". int($quota/</span><span class="mi">1024</span><span class="p">)</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">"MB]\n"</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="nv">$aux</span><span class="o">&lt;</span><span class="nv">$quota</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$aux</span><span class="o">&gt;</span><span class="nv">$max</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="nv">$max</span><span class="o">=</span><span class="nv">$aux</span><span class="p">};</span>
 <span class="p">}</span>
-<span class="nb">die</span> <span class="s">"Necesita liberar al menos "</span> <span class="o">.</span> <span class="nb">int</span><span class="p">((</span><span class="nv">$max</span><span class="o">/</span><span class="mi">1024</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.99</span><span class="p">)</span> <span class="o">.</span> <span class="s">"MB antes de empezar\n"</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$max</span><span class="o">&gt;</span><span class="nv">$free</span><span class="p">);</span>
+<span class="nb">die</span><span class="w"> </span><span class="s">"Necesita liberar al menos "</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nb">int</span><span class="p">((</span><span class="nv">$max</span><span class="o">/</span><span class="mi">1024</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.99</span><span class="p">)</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">"MB antes de empezar\n"</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$max</span><span class="o">&gt;</span><span class="nv">$free</span><span class="p">);</span>
 
-<span class="k">my</span> <span class="nv">$c</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">$m</span><span class="o">=</span><span class="nb">join</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span><span class="nv">@ARGV</span><span class="p">);</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$c</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$m</span><span class="o">=</span><span class="nb">join</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span><span class="nv">@ARGV</span><span class="p">);</span>
 
-<span class="k">foreach</span> <span class="k">my</span> <span class="nv">$f</span> <span class="p">(</span><span class="nv">@files</span><span class="p">){</span>
-    <span class="n">space</span><span class="p">(</span><span class="nv">$f</span><span class="p">);</span>
-    <span class="n">save</span><span class="p">(</span><span class="nv">$f</span><span class="p">,</span><span class="nv">$m</span><span class="p">,</span><span class="nv">$t</span><span class="p">,</span><span class="nv">$c</span><span class="o">++</span><span class="p">);</span>
+<span class="k">foreach</span><span class="w"> </span><span class="k">my</span><span class="w"> </span><span class="nv">$f</span><span class="w"> </span><span class="p">(</span><span class="nv">@files</span><span class="p">){</span>
+<span class="w">    </span><span class="n">space</span><span class="p">(</span><span class="nv">$f</span><span class="p">);</span>
+<span class="w">    </span><span class="n">save</span><span class="p">(</span><span class="nv">$f</span><span class="p">,</span><span class="nv">$m</span><span class="p">,</span><span class="nv">$t</span><span class="p">,</span><span class="nv">$c</span><span class="o">++</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="k">if</span> <span class="p">(</span><span class="nv">$imap</span> <span class="o">&amp;&amp;</span> <span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">IsConnected</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">disconnect</span> <span class="ow">or</span> <span class="nb">die</span> <span class="s">"Could not disconnect: $@\n"</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$imap</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">IsConnected</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">$imap</span><span class="o">-&gt;</span><span class="n">disconnect</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nb">die</span><span class="w"> </span><span class="s">"Could not disconnect: $@\n"</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
 <p><code>.up.cnf</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="err">Server    = imap.cep.correos.es</span>
-<span class="err">Port      = 993</span>
-<span class="err">User      = BARTOLO.PIROLO.57658Z@correos.es</span>
-<span class="err">Password  = 123456</span>
-<span class="err">Peek      = 1</span>
-<span class="err">Uid       = 1</span>
-<span class="err">Ssl       = 1</span>
-<span class="err">Folder    = dv</span>
+<div class="highlight"><pre><span></span><code><span class="n">Server</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">imap</span><span class="p">.</span><span class="n">cep</span><span class="p">.</span><span class="n">correos</span><span class="p">.</span><span class="n">es</span>
+<span class="n">Port</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">993</span>
+<span class="k">User</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">BARTOLO</span><span class="p">.</span><span class="n">PIROLO</span><span class="mf">.57658</span><span class="n">Z</span><span class="nv">@correos</span><span class="p">.</span><span class="n">es</span>
+<span class="n">Password</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">123456</span>
+<span class="n">Peek</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">Uid</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">Ssl</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">Folder</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">dv</span>
 </code></pre></div>
 <p>dv (el valor del campo "Folder") es el nombre de la carpeta que hemos
 creado en nuestra cuenta de correo para servir a este propósito, de
@@ -203,7 +203,7 @@ correo normal.</p>
 de correo y esperará a que nosotros, desde el equipo enjaulado y tras
 haber descargado los adjuntos, liberemos espacio para continuar
 automáticamente.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>./mail.pl /tmp/mail.z*
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>./mail.pl<span class="w"> </span>/tmp/mail.z*
 <span class="go">Conectando a BARTOLO.PIROLO.57658Z@correos.es/dv ... OK</span>
 <span class="go">Subiendo 1 de 4: mail.z01 ... OK</span>
 <span class="go">Subiendo 2 de 4: mail.z02 ... OK</span>

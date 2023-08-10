@@ -34,21 +34,21 @@ Sistemas</a>
 <li>Instalación de OpenWrt: <a href="https://openwrt.org/toh/nexx/wt3020" target="_blank">OpenWrt</a></li>
 </ul>
 <p><strong>2-</strong> Instalación paquetes necesarios</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ssh root@192.168.8.1
-<span class="gp">root@OpenWrt:~# </span>opkg update
-<span class="gp">root@OpenWrt:~# </span>opkg install aircrack-ng airmon-ng kmod-usb-storage kmod-fs-ext4 kmod-usb-storage-extras block-mount kmod-scsi-core screen reaver
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ssh<span class="w"> </span>root@192.168.8.1
+<span class="gp">root@OpenWrt:~# </span>opkg<span class="w"> </span>update
+<span class="gp">root@OpenWrt:~# </span>opkg<span class="w"> </span>install<span class="w"> </span>aircrack-ng<span class="w"> </span>airmon-ng<span class="w"> </span>kmod-usb-storage<span class="w"> </span>kmod-fs-ext4<span class="w"> </span>kmod-usb-storage-extras<span class="w"> </span>block-mount<span class="w"> </span>kmod-scsi-core<span class="w"> </span>screen<span class="w"> </span>reaver
 </code></pre></div>
 <p>Esto instala <code>aircrack</code>, <code>reaver</code>, los paquetes para montar memorias usb y la utilidad <code>screen</code>.</p>
 <p>Hoy por hoy, <code>reaver</code> y sobre todo su utilidad <code>wash</code> no funciona con la
 librería <code>libpcap</code> que trae <code>OpenWrt</code> (la <code>1.9.1-1</code> en el momento de escribir esto),
 por ello puede hacer falta hacerla un downgrade:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">cd</span> /tmp
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>/tmp
 <span class="go">/tmp $ wget http://www.revolucionsocial.com/wp-content/uploads/2017/02/libpcap_1.3.0-1_ramips_24kec.ipk_.zip</span>
 <span class="go">/tmp $ unzip libpcap_1.3.0-1_ramips_24kec.ipk_.zip</span>
 <span class="go">/tmp $ scp ./libpcap_1.3.0-1_ramips_24kec.ipk root@192.168.8.1:/tmp/</span>
 <span class="go">/tmp $ ssh root@192.168.8.1</span>
-<span class="gp">root@OpenWrt:~# </span>opkg remove libpcap --force-depends
-<span class="gp">root@OpenWrt:~# </span>opkg install /tmp/libpcap_1.3.0-1_ramips_24kec.ipk --force-downgrade
+<span class="gp">root@OpenWrt:~# </span>opkg<span class="w"> </span>remove<span class="w"> </span>libpcap<span class="w"> </span>--force-depends
+<span class="gp">root@OpenWrt:~# </span>opkg<span class="w"> </span>install<span class="w"> </span>/tmp/libpcap_1.3.0-1_ramips_24kec.ipk<span class="w"> </span>--force-downgrade
 </code></pre></div>
 <p><strong>3-</strong> Montar usb</p>
 <p>Algunos tutoriales hace directamente <a href="https://openwrt.org/docs/guide-user/additional-software/extroot_configuration" target="_blank"><code>extroot</code></a>
@@ -59,40 +59,40 @@ el pendrive para dar más memoria en forma de <code>swap</code> y más espacio
 para guardar los paquetes capturados por <code>aircrack</code>.</p>
 <p>Para ello habremos particionado previamente nuestro pendrive
 en dos particiones <code>ext4</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">root@OpenWrt:~# </span>mkdir /mnt/usb
-<span class="gp">root@OpenWrt:~# </span>touch /mnt/usb/NO_MOUNT
-<span class="gp">root@OpenWrt:~# </span>mkswap /dev/sda1
-<span class="gp">root@OpenWrt:~# </span>swapon /dev/sda1
-<span class="gp">root@OpenWrt:~# </span>mount -t ext4 /dev/sda2 /mnt/usb -o rw,async
+<div class="highlight"><pre><span></span><code><span class="gp">root@OpenWrt:~# </span>mkdir<span class="w"> </span>/mnt/usb
+<span class="gp">root@OpenWrt:~# </span>touch<span class="w"> </span>/mnt/usb/NO_MOUNT
+<span class="gp">root@OpenWrt:~# </span>mkswap<span class="w"> </span>/dev/sda1
+<span class="gp">root@OpenWrt:~# </span>swapon<span class="w"> </span>/dev/sda1
+<span class="gp">root@OpenWrt:~# </span>mount<span class="w"> </span>-t<span class="w"> </span>ext4<span class="w"> </span>/dev/sda2<span class="w"> </span>/mnt/usb<span class="w"> </span>-o<span class="w"> </span>rw,async
 </code></pre></div>
 <p><strong>4-</strong> Poner interfaz en mono monitor</p>
-<div class="highlight"><pre><span></span><code><span class="gp">root@OpenWrt:~# </span>iw phy phy0 interface add mon0 <span class="nb">type</span> monitor
-<span class="gp">root@OpenWrt:~# </span>ifconfig mon0 up
+<div class="highlight"><pre><span></span><code><span class="gp">root@OpenWrt:~# </span>iw<span class="w"> </span>phy<span class="w"> </span>phy0<span class="w"> </span>interface<span class="w"> </span>add<span class="w"> </span>mon0<span class="w"> </span><span class="nb">type</span><span class="w"> </span>monitor
+<span class="gp">root@OpenWrt:~# </span>ifconfig<span class="w"> </span>mon0<span class="w"> </span>up
 </code></pre></div>
 <p><strong>5-</strong> Capturar paquetes</p>
 <div class="highlight"><pre><span></span><code><span class="gp">root@OpenWrt:~# </span>screen
-<span class="gp">root@OpenWrt:~# </span>airodump-ng --ivs --write capture --beacons mon0
+<span class="gp">root@OpenWrt:~# </span>airodump-ng<span class="w"> </span>--ivs<span class="w"> </span>--write<span class="w"> </span>capture<span class="w"> </span>--beacons<span class="w"> </span>mon0
 <span class="go">^Ctrl+A+D</span>
 <span class="gp">root@OpenWrt:~# </span><span class="nb">exit</span>
 </code></pre></div>
 <p><code>screen</code> se usa para poder abandonar el terminal sin peder el trabajo en curso.</p>
 <p><strong>6-</strong> Recoger los datos</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ssh root@192.168.8.1
-<span class="gp">root@OpenWrt:~# </span>screen -ls
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ssh<span class="w"> </span>root@192.168.8.1
+<span class="gp">root@OpenWrt:~# </span>screen<span class="w"> </span>-ls
 <span class="go">There is a screen on:</span>
 <span class="go">    1614.pts-0.OpenWrt  (Detached)</span>
 <span class="go">1 Socket in /tmp/screens/S-root.</span>
-<span class="gp">root@OpenWrt:~# </span>screen -r <span class="m">1614</span>
+<span class="gp">root@OpenWrt:~# </span>screen<span class="w"> </span>-r<span class="w"> </span><span class="m">1614</span>
 <span class="go">^Ctrl+C</span>
 <span class="gp">root@OpenWrt:~# </span><span class="nb">exit</span>
-<span class="gp">root@OpenWrt:~# </span>swapoff /dev/sda1
-<span class="gp">root@OpenWrt:~# </span>umount /mnt/usb
+<span class="gp">root@OpenWrt:~# </span>swapoff<span class="w"> </span>/dev/sda1
+<span class="gp">root@OpenWrt:~# </span>umount<span class="w"> </span>/mnt/usb
 <span class="gp">root@OpenWrt:~# </span><span class="nb">exit</span>
 </code></pre></div>
 <p>Sacamos el pendrive y nos lo llevamos a un ordenador más potente donde analizar
 los datos</p>
 <p><strong>7-</strong> Analizar los datos</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>aircrack-ng capture-01.ivs
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>aircrack-ng<span class="w"> </span>capture-01.ivs
 </code></pre></div>
 <hr/>
 <p><strong>Fuentes</strong>: <a href="https://openwrt.org/es/doc/howto/usb.storage" target="_blank">openwrt.org - usb.storage</a>,

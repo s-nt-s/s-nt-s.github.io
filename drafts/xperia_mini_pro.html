@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Actualizar Sony Ericsson Xperia Mini Pro</title>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<meta content="#da532c" name="msapplication-TileColor"/>
+<meta content="#ffffff" name="theme-color"/>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/drafts/xperia_mini_pro.html" rel="bookmark" title="Permalink to Actualizar Sony Ericsson Xperia Mini Pro">Actualizar Sony Ericsson Xperia Mini Pro</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2023-05-16T00:00:00+02:00" title="Publicado el 2023-05-16">2023-05-16</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 17 entradas más sobre Sistemas">
+Sistemas</a>
+<span class="bubble tag tg_android" title="No hay más entradas con esta etiqueta">android</span> </p>
+<p>
+<span class="bubble">59 lineas</span> <span class="bubble wc">347 palabras</span> <span class="bubble wc">2.576 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<h2>Estado inicial</h2>
+<ul>
+<li>Movil: Sony Ericsson Xperia Mini Pro</li>
+<li>Número de modelo: SK17i</li>
+<li>Version de Android: 4.0.4</li>
+<li>Versión de jernel: 2.6.32.9-perf BuildUser@BuildUser #1</li>
+<li>Número de compilación: 4.1.B.0.587</li>
+<li><a href="https://android.scenebeta.com/archivos/android/Captura3TutorialDesbloquearBootloaderXperiaX8X10MiniX10MiniPro.png" target="_blank">Número de etiqueta tras la batería</a>: 11W44</li>
+</ul>
+<h2>Recursos necesarios</h2>
+<ul>
+<li>Tarjeta SD (utilizo una SDGC Philips A1 V10 de 32GB)</li>
+<li>Imagen lineage-14.1:<ul>
+<li><a href="https://mega.nz/folder/bt0VzQDA#6OD6YFjCKYUkX6GRhNOBDg/file/CsEQwSzT" target="_blank">lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip</a> via <a href="https://mega.nz/folder/bt0VzQDA#6OD6YFjCKYUkX6GRhNOBDg/folder/mlcgQD7I" target="_blank">mega.nz</a></li>
+<li>~~<a href="https://archive.org/download/LegacyXperia_SEMC_2011/lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip" target="_blank">archive.org -&gt; lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip</a> via <a href="https://archive.org/details/LegacyXperia_SEMC_2011" target="_blank">archive.org</a>~~ (no funciona según <a href="https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-85851293" target="_blank">xda-developers.com</a>)</li>
+</ul>
+</li>
+<li><code>adb</code> y <code>fastboot</code> (antes <code>android-tools-adb</code> y <code>android-tools-fastboot</code> segun <a href="https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-80979763" target="_blank">xda-developers.com</a>)</li>
+<li>Tener desbloqueado el modo <code>bootloader</code></li>
+</ul>
+<h2>Pasos a seguir</h2>
+<h3>Prerrequisitos</h3>
+<div class="highlight"><pre><span></span><code><span class="gp"># </span>Formatear<span class="w"> </span>SD<span class="w"> </span>con<span class="w"> </span>una<span class="w"> </span>unica<span class="w"> </span>partición<span class="w"> </span>en<span class="w"> </span>formato<span class="w"> </span>ext4
+<span class="gp">$ </span>sudo<span class="w"> </span>umount<span class="w"> </span>/dev/mmcblk0p1
+<span class="gp">$ </span>sudo<span class="w"> </span>mkfs<span class="w"> </span>-t<span class="w"> </span>ext4<span class="w"> </span>/dev/mmcblk0
+<span class="gp">$ </span>sudo<span class="w"> </span>umount<span class="w"> </span>/dev/mmcblk0
+
+<span class="gp"># </span>Descomprimir<span class="w"> </span>lineage-*.zip
+<span class="gp">$ </span>unzip<span class="w"> </span>lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango
+
+<span class="gp"># </span>Instalar<span class="w"> </span>adb<span class="w"> </span>y<span class="w"> </span>fastboot
+<span class="gp">$ </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>adb<span class="w"> </span>fastboot
+</code></pre></div>
+<h3>Verificar dispositivo</h3>
+<ol>
+<li>Encender el movil</li>
+<li>Conectar al ordenador por usb</li>
+<li>Marcar <code>Ajustes -&gt; opciones de desarrollador -&gt; Depuración USB</code></li>
+<li>Ejecutar los siguientes comandos:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>adb<span class="w"> </span>devices
+<span class="go">List of devices attached</span>
+<span class="go">BX902QUGBW  device</span>
+<span class="gp">$ </span>adb<span class="w"> </span>reboot<span class="w"> </span>bootloader
+<span class="gp">$ </span>fastboot<span class="w"> </span>devices
+</code></pre></div>
+<p>Si <code>adb reboot bootloader</code> no funciona
+(no reinicia en modo bootloader, simplenete reinicia sin más)
+<a href="https://www.htcmania.com/archive/index.php/t-323099.html" target="_blank">verificar que el modo bootloader este desbloqueado</a>:</p>
+<ol>
+<li>Marcar <code>*#*#7378423#*#*</code></li>
+<li>Ir a <code>Service info" -&gt; Configuration -&gt; Rooting Status -&gt; Bootloader unlock allowed</code></li>
+</ol>
+<p>Si el valor es <code>Yes</code> esta desbloqueado, si es <code>No</code> hacer lo siguiente:</p>
+<ol>
+<li>Apagar el movil</li>
+<li>Simultaneamente:<ul>
+<li>presional la tecla de aumentar volumne</li>
+<li>enchufar por usb al ordenador</li>
+</ul>
+</li>
+</ol>
+<p>powered off, plugging in USB cable while pressing volume-up, blue LED will indicate fastboot mode</p>
+<h3>Descomprimir lineage-*.zip</h3>
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp"># </span>Formatear<span class="w"> </span>SD<span class="w"> </span>con<span class="w"> </span>una<span class="w"> </span>unica<span class="w"> </span>partición<span class="w"> </span>en<span class="w"> </span>formato<span class="w"> </span>ext4
+<span class="gp">$</span>
+
+<span class="gp"># </span>Descomprimir<span class="w"> </span>lineage-*.zip
+<span class="gp">$ </span>unzip<span class="w"> </span>lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango
+
+<span class="gp"># </span>Flash<span class="w"> </span>boot.img
+<span class="gp">$ </span>fastboot<span class="w"> </span>flash<span class="w"> </span>boot<span class="w"> </span>boot.img
+</code></pre></div>
+<ol>
+<li>
+<p>External memory card is required to install the rom (Ext4 only 1 partition). At least around 4gb, must be very fast (Class 10 u3), and should be at around 8gb if possible. All apps, data, etc will go here.</p>
+</li>
+<li>
+<p>Flash boot.img (In fastboot mode).</p>
+</li>
+<li>
+<p>Go wipe, swipe. Go advanced wipe and wipe system.</p>
+</li>
+<li>
+<p>Go advanced --&gt; sideload. Connect USB and type 'adb sideload rom-14.1-xxx.zip' &amp; after type 'adb sideload opengapps-7.1-xxx.zip'</p>
+</li>
+<li>
+<p>Reboot to system. Ignore any warning message.</p>
+</li>
+</ol>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/content/posts/2023-05-16_xperia_mini_pro.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/drafts/xperia_mini_pro.html" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

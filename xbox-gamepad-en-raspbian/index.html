@@ -30,11 +30,11 @@ Raspberry Pi</a> <span class="bubble tag tg_videojuegos" title="No hay más entr
 <article>
 <div class="entry-content">
 <p>1- Instalar los dirvers</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo apt-get install xboxdrv
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>xboxdrv
 </code></pre></div>
 <p>2- Conectar el receptor wireless</p>
 <p>3- Comprobar que se ha detectado</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>dmesg <span class="p">|</span> grep Xbox
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Xbox
 <span class="go">[ 5217.724011] usb 1-1.2: Product: Xbox 360 Wireless Receiver for Windows</span>
 <span class="go">[ 5218.106219] input: Xbox 360 Wireless Receiver as /devices/platform/bcm2708_usb/usb1/1-1/1-1.2/1-1.2:1.0/input/input2</span>
 <span class="go">[ 5218.118192] input: Xbox 360 Wireless Receiver as /devices/platform/bcm2708_usb/usb1/1-1/1-1.2/1-1.2:1.2/input/input3</span>
@@ -42,7 +42,7 @@ Raspberry Pi</a> <span class="bubble tag tg_videojuegos" title="No hay más entr
 <span class="go">[ 5218.131507] input: Xbox 360 Wireless Receiver as /devices/platform/bcm2708_usb/usb1/1-1/1-1.2/1-1.2:1.6/input/input5</span>
 </code></pre></div>
 <p>4- Conectar gamepad</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bo ~ $ </span>sudo xboxdrv --trigger-as-button --wid <span class="m">0</span> --led <span class="m">2</span> --deadzone <span class="m">4000</span>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bo ~ $ </span>sudo<span class="w"> </span>xboxdrv<span class="w"> </span>--trigger-as-button<span class="w"> </span>--wid<span class="w"> </span><span class="m">0</span><span class="w"> </span>--led<span class="w"> </span><span class="m">2</span><span class="w"> </span>--deadzone<span class="w"> </span><span class="m">4000</span>
 <span class="go">xboxdrv 0.8.4 - http://pingus.seul.org/~grumbel/xboxdrv/ </span>
 <span class="go">Copyright © 2008-2011 Ingo Ruhnke &lt;grumbel@gmx.de&gt; </span>
 <span class="go">Licensed under GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt; </span>

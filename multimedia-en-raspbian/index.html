@@ -33,9 +33,9 @@ perl</a> </p>
 <div class="entry-content">
 <p><strong>A) Vídeo</strong></p>
 <p><strong>1-</strong> Script para lanzar omxplayer con nuestras opciones habituales</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo touch /usr/local/bin/play
-<span class="gp">pi@bot ~ $ </span>sudo chmod <span class="m">777</span> /usr/local/bin/play
-<span class="gp">pi@bot ~ $ </span>sudo nano /usr/local/bin/play
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>touch<span class="w"> </span>/usr/local/bin/play
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">777</span><span class="w"> </span>/usr/local/bin/play
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>nano<span class="w"> </span>/usr/local/bin/play
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 
@@ -43,190 +43,190 @@ perl</a> </p>
 <span class="nv">sub</span><span class="o">=</span><span class="s2">""</span>
 <span class="nv">vid</span><span class="o">=</span><span class="s2">""</span>
 <span class="nv">OPTS</span><span class="o">=</span><span class="s2">""</span>
-<span class="k">while</span> <span class="o">((</span> <span class="nv">$#</span> <span class="o">))</span>
+<span class="k">while</span><span class="w"> </span><span class="o">((</span><span class="w"> </span><span class="nv">$#</span><span class="w"> </span><span class="o">))</span>
 <span class="k">do</span>
-        <span class="k">case</span> <span class="nv">$1</span> <span class="k">in</span>
-        -s <span class="o">)</span>
-                <span class="nv">seg</span><span class="o">=</span><span class="k">$((</span><span class="nv">$2</span><span class="o">+</span><span class="nv">$seg</span><span class="k">))</span>
-                <span class="nb">shift</span>
-        <span class="p">;;</span>
-        -m <span class="o">)</span>
-                <span class="nv">seg</span><span class="o">=</span><span class="k">$((</span><span class="o">(</span><span class="nv">$2</span> <span class="o">*</span> <span class="m">60</span><span class="o">)+</span><span class="nv">$seg</span><span class="k">))</span>
-                <span class="nb">shift</span>
-        <span class="p">;;</span>
-        -*<span class="o">)</span>
-                <span class="nv">OPTS</span><span class="o">=</span><span class="s2">"</span><span class="nv">$OPTS</span><span class="s2"> </span><span class="nv">$1</span><span class="s2">"</span>
-        <span class="p">;;</span>
-        *<span class="o">)</span>
-                <span class="nv">ext</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">2</span><span class="p">##*.</span><span class="si">}</span><span class="s2">"</span>
-                <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$ext</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"srt"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-                        <span class="nv">sub</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
-                <span class="k">else</span>
-                        <span class="nv">vid</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
-                <span class="k">fi</span>
-        <span class="p">;;</span>
-        <span class="k">esac</span>
-        <span class="nb">shift</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="nv">$1</span><span class="w"> </span><span class="k">in</span>
+<span class="w">        </span>-s<span class="w"> </span><span class="o">)</span>
+<span class="w">                </span><span class="nv">seg</span><span class="o">=</span><span class="k">$((</span><span class="nv">$2</span><span class="o">+</span><span class="nv">$seg</span><span class="k">))</span>
+<span class="w">                </span><span class="nb">shift</span>
+<span class="w">        </span><span class="p">;;</span>
+<span class="w">        </span>-m<span class="w"> </span><span class="o">)</span>
+<span class="w">                </span><span class="nv">seg</span><span class="o">=</span><span class="k">$((</span><span class="o">(</span><span class="nv">$2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">60</span><span class="o">)+</span><span class="nv">$seg</span><span class="k">))</span>
+<span class="w">                </span><span class="nb">shift</span>
+<span class="w">        </span><span class="p">;;</span>
+<span class="w">        </span>-*<span class="o">)</span>
+<span class="w">                </span><span class="nv">OPTS</span><span class="o">=</span><span class="s2">"</span><span class="nv">$OPTS</span><span class="s2"> </span><span class="nv">$1</span><span class="s2">"</span>
+<span class="w">        </span><span class="p">;;</span>
+<span class="w">        </span>*<span class="o">)</span>
+<span class="w">                </span><span class="nv">ext</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">2</span><span class="p">##*.</span><span class="si">}</span><span class="s2">"</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">"</span><span class="nv">$ext</span><span class="s2">"</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"srt"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                        </span><span class="nv">sub</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+<span class="w">                </span><span class="k">else</span>
+<span class="w">                        </span><span class="nv">vid</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+<span class="w">                </span><span class="k">fi</span>
+<span class="w">        </span><span class="p">;;</span>
+<span class="w">        </span><span class="k">esac</span>
+<span class="w">        </span><span class="nb">shift</span>
 <span class="k">done</span>
 
-<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$vid</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">""</span> <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> ! -f <span class="s2">"</span><span class="nv">$vid</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">echo</span> <span class="s2">"Debe pasar un video como parámetro"</span>
-        <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">"</span><span class="nv">$vid</span><span class="s2">"</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">""</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="s2">"</span><span class="nv">$vid</span><span class="s2">"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"Debe pasar un video como parámetro"</span>
+<span class="w">        </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
 <span class="k">fi</span>
 
-<span class="k">if</span> <span class="o">[</span> <span class="nv">$seg</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nv">seg</span><span class="o">=</span><span class="s2">""</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$seg</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nv">seg</span><span class="o">=</span><span class="s2">""</span>
 <span class="k">else</span>
-        <span class="nv">seg</span><span class="o">=</span><span class="s2">"--pos </span><span class="si">${</span><span class="nv">seg</span><span class="si">}</span><span class="s2">"</span>
+<span class="w">        </span><span class="nv">seg</span><span class="o">=</span><span class="s2">"--pos </span><span class="si">${</span><span class="nv">seg</span><span class="si">}</span><span class="s2">"</span>
 <span class="k">fi</span>
-<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$sub</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">""</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nv">sub</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">vid</span><span class="p">%%.*</span><span class="si">}</span><span class="s2">.srt"</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">"</span><span class="nv">$sub</span><span class="s2">"</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">""</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nv">sub</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">vid</span><span class="p">%%.*</span><span class="si">}</span><span class="s2">.srt"</span>
 <span class="k">fi</span>
-<span class="k">if</span> <span class="o">[</span> -f  <span class="s2">"</span><span class="nv">$sub</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nv">sub</span><span class="o">=</span><span class="s2">"--subtitles </span><span class="nv">$sub</span><span class="s2">"</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w">  </span><span class="s2">"</span><span class="nv">$sub</span><span class="s2">"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nv">sub</span><span class="o">=</span><span class="s2">"--subtitles </span><span class="nv">$sub</span><span class="s2">"</span>
 <span class="k">else</span>
-        <span class="nv">sub</span><span class="o">=</span><span class="s2">""</span>
+<span class="w">        </span><span class="nv">sub</span><span class="o">=</span><span class="s2">""</span>
 <span class="k">fi</span>
 
 <span class="c1"># Cambiar opcion local por hdmi si se quiere usar la salida de audio digital</span>
-omxplayer -o <span class="nb">local</span> --blank --vol -300 <span class="si">${</span><span class="nv">seg</span><span class="si">}</span> <span class="si">${</span><span class="nv">OPTS</span><span class="si">}</span> <span class="si">${</span><span class="nv">vid</span><span class="si">}</span> <span class="si">${</span><span class="nv">sub</span><span class="si">}</span>
+omxplayer<span class="w"> </span>-o<span class="w"> </span><span class="nb">local</span><span class="w"> </span>--blank<span class="w"> </span>--vol<span class="w"> </span>-300<span class="w"> </span><span class="si">${</span><span class="nv">seg</span><span class="si">}</span><span class="w"> </span><span class="si">${</span><span class="nv">OPTS</span><span class="si">}</span><span class="w"> </span><span class="si">${</span><span class="nv">vid</span><span class="si">}</span><span class="w"> </span><span class="si">${</span><span class="nv">sub</span><span class="si">}</span>
 </code></pre></div>
 <p>Ejemplos de uso:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>play video.avi
-<span class="gp">pi@bot ~ $ </span>play video.avi sub.srt
-<span class="gp">pi@bot ~ $ </span>play -s <span class="m">10</span> -m <span class="m">2</span> video.avi
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>play<span class="w"> </span>video.avi
+<span class="gp">pi@bot ~ $ </span>play<span class="w"> </span>video.avi<span class="w"> </span>sub.srt
+<span class="gp">pi@bot ~ $ </span>play<span class="w"> </span>-s<span class="w"> </span><span class="m">10</span><span class="w"> </span>-m<span class="w"> </span><span class="m">2</span><span class="w"> </span>video.avi
 </code></pre></div>
 <p>2- Crear script para buscar vídeos en youtube y meneame, y reproducir
 medios online</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo apt-get install youtube-dl
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>youtube-dl
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $ </span>sudo youtube-dl -U
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>youtube-dl<span class="w"> </span>-U
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $ </span>sudo touch /usr/local/bin/ytb
-<span class="gp">pi@bot ~ $ </span>sudo chmod <span class="m">777</span> /usr/local/bin/ytb
-<span class="gp">pi@bot ~ $ </span>sudo nano /usr/local/bin/ytb
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>touch<span class="w"> </span>/usr/local/bin/ytb
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">777</span><span class="w"> </span>/usr/local/bin/ytb
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>nano<span class="w"> </span>/usr/local/bin/ytb
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/perl -w</span>
-<span class="k">use</span> <span class="nn">XML::Simple</span><span class="p">;</span>
-<span class="k">use</span> <span class="nn">LWP::Simple</span><span class="p">;</span>
-<span class="k">use</span> <span class="nn">HTML::Entities</span><span class="p">;</span>
-<span class="k">use</span> <span class="nn">utf8</span><span class="p">;</span>                <span class="c1"># en este programa hay caracteres escritos en utf8</span>
-<span class="k">use</span> <span class="nn">open</span> <span class="n">OUT</span> <span class="o">=&gt;</span> <span class="s">':utf8'</span><span class="p">;</span> <span class="c1"># la salida del programa será en utf8</span>
-<span class="k">use</span> <span class="nn">open</span> <span class="s">':std'</span><span class="p">;</span>         <span class="c1"># la salida STDOUT (el print()) también será en utf8</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">XML::Simple</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">LWP::Simple</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">HTML::Entities</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">utf8</span><span class="p">;</span><span class="w">                </span><span class="c1"># en este programa hay caracteres escritos en utf8</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">open</span><span class="w"> </span><span class="n">OUT</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s">':utf8'</span><span class="p">;</span><span class="w"> </span><span class="c1"># la salida del programa será en utf8</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">open</span><span class="w"> </span><span class="s">':std'</span><span class="p">;</span><span class="w">         </span><span class="c1"># la salida STDOUT (el print()) también será en utf8</span>
 
 <span class="c1"># Cambiar opcion local por hdmi si se quiere usar la salida de audio digital</span>
-<span class="k">my</span> <span class="nv">$omx</span><span class="o">=</span><span class="s">"omxplayer -o local --blank --vol -300"</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$omx</span><span class="o">=</span><span class="s">"omxplayer -o local --blank --vol -300"</span><span class="p">;</span>
 
-<span class="k">my</span> <span class="nv">$fuente</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">$respuesta</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">$suerte</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$fuente</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$respuesta</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$suerte</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 
-<span class="k">sub</span> <span class="nf">ask</span><span class="p">{</span>
-        <span class="nb">local</span> <span class="vg">$|</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1"># activate autoflush to immediately show the prompt</span>
-        <span class="k">print</span> <span class="s">"¿Reproducir / Descargar? (r/d): "</span><span class="p">;</span>
-        <span class="nb">chomp</span><span class="p">(</span><span class="nv">$respuesta</span> <span class="o">=</span> <span class="sr">&lt;STDIN&gt;</span><span class="p">);</span>
-        <span class="nv">$respuesta</span><span class="o">=</span><span class="nb">lc</span><span class="p">(</span><span class="nv">$respuesta</span><span class="p">);</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nv">$respuesta</span> <span class="ow">eq</span> <span class="s">"r"</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nv">$respuesta</span> <span class="ow">eq</span> <span class="s">"d"</span><span class="p">);</span>
+<span class="k">sub</span><span class="w"> </span><span class="nf">ask</span><span class="p">{</span>
+<span class="w">        </span><span class="nb">local</span><span class="w"> </span><span class="vg">$|</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1"># activate autoflush to immediately show the prompt</span>
+<span class="w">        </span><span class="k">print</span><span class="w"> </span><span class="s">"¿Reproducir / Descargar? (r/d): "</span><span class="p">;</span>
+<span class="w">        </span><span class="nb">chomp</span><span class="p">(</span><span class="nv">$respuesta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sr">&lt;STDIN&gt;</span><span class="p">);</span>
+<span class="w">        </span><span class="nv">$respuesta</span><span class="o">=</span><span class="nb">lc</span><span class="p">(</span><span class="nv">$respuesta</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="nv">$respuesta</span><span class="w"> </span><span class="ow">eq</span><span class="w"> </span><span class="s">"r"</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="nv">$respuesta</span><span class="w"> </span><span class="ow">eq</span><span class="w"> </span><span class="s">"d"</span><span class="p">);</span>
 <span class="p">}</span>
-<span class="k">sub</span> <span class="nf">play</span> <span class="p">{</span>
-        <span class="k">my</span> <span class="p">(</span><span class="nv">$url</span><span class="p">,</span><span class="nv">$cmd</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nv">$respuesta</span> <span class="ow">eq</span> <span class="s">"d"</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nv">$cmd</span> <span class="o">=</span> <span class="s">"youtube-dl --continue --no-overwrites --restrict-filenames --sub-lang es,en -o '~/Download/%(title)s-%(extractor)s_%(id)s.%(ext)s' "</span> <span class="o">.</span> <span class="nv">$url</span> <span class="o">.</span> <span class="s">" --exec '"</span> <span class="o">.</span> <span class="nv">$omx</span> <span class="o">.</span> <span class="s">" {}'"</span><span class="p">;</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nv">$url</span> <span class="o">=</span><span class="sb">`youtube-dl --max-quality 35 -g "$url"`</span><span class="p">;</span>
-                <span class="nv">$url</span> <span class="o">=~</span> <span class="sr">s/^\s+|\s+$//g</span><span class="p">;</span>
-                <span class="k">return</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$url</span><span class="p">);</span>
-                <span class="nv">$cmd</span><span class="o">=</span> <span class="p">(</span><span class="nv">$omx</span> <span class="o">.</span> <span class="s">" \""</span> <span class="o">.</span> <span class="nv">$url</span> <span class="o">.</span> <span class="s">"\""</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="c1">#print $cmd . "\n";</span>
-        <span class="nb">exec</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">)</span> <span class="k">if</span> <span class="nv">$suerte</span> <span class="o">==</span> <span class="mi">1</span><span class="p">;</span>
-        <span class="nb">system</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">);</span>
+<span class="k">sub</span><span class="w"> </span><span class="nf">play</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">my</span><span class="w"> </span><span class="p">(</span><span class="nv">$url</span><span class="p">,</span><span class="nv">$cmd</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@_</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$respuesta</span><span class="w"> </span><span class="ow">eq</span><span class="w"> </span><span class="s">"d"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nv">$cmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"youtube-dl --continue --no-overwrites --restrict-filenames --sub-lang es,en -o '~/Download/%(title)s-%(extractor)s_%(id)s.%(ext)s' "</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">$url</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">" --exec '"</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">$omx</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">" {}'"</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nv">$url</span><span class="w"> </span><span class="o">=</span><span class="sb">`youtube-dl --max-quality 35 -g "$url"`</span><span class="p">;</span>
+<span class="w">                </span><span class="nv">$url</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/^\s+|\s+$//g</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nv">$url</span><span class="p">);</span>
+<span class="w">                </span><span class="nv">$cmd</span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nv">$omx</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">" \""</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">$url</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">"\""</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="c1">#print $cmd . "\n";</span>
+<span class="w">        </span><span class="nb">exec</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">$suerte</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="nb">system</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">);</span>
 <span class="p">}</span>
-<span class="k">sub</span> <span class="nf">spc</span> <span class="p">{</span>
-        <span class="k">my</span> <span class="p">(</span><span class="nv">$txt</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
-        <span class="nv">$txt</span> <span class="o">=~</span> <span class="sr">s/\s\s+/ /g</span><span class="p">;</span>
-        <span class="nv">$txt</span> <span class="o">=~</span> <span class="sr">s/\.\.+/\./g</span><span class="p">;</span>
-        <span class="nv">$txt</span> <span class="o">=~</span> <span class="sr">s/  +/ /g</span><span class="p">;</span>
-        <span class="nv">$txt</span> <span class="o">=~</span> <span class="sr">s/^ +| +$//g</span><span class="p">;</span>
-        <span class="k">return</span> <span class="nv">$txt</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="k">sub</span> <span class="nf">cln</span> <span class="p">{</span>
-        <span class="k">my</span> <span class="p">(</span><span class="nv">$link</span><span class="p">,</span><span class="nv">$title</span><span class="p">,</span><span class="nv">$des</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
-        <span class="nv">$link</span><span class="o">=~</span> <span class="sr">s/\&amp;.*//</span><span class="p">;</span>
-        <span class="nv">$title</span> <span class="o">=</span> <span class="n">spc</span><span class="p">(</span><span class="nv">$title</span><span class="p">);</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nv">$link</span><span class="p">,</span><span class="nv">$title</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$des</span><span class="p">);</span>
-        <span class="nv">$des</span><span class="o">=</span><span class="n">decode_entities</span><span class="p">(</span><span class="nv">$des</span><span class="p">);</span>
-        <span class="nv">$des</span> <span class="o">=~</span> <span class="sr">s/^.+\/&gt;&lt;p&gt;|&lt;\/p&gt;.+$//g</span><span class="p">;</span>
-        <span class="nv">$des</span> <span class="o">=~</span> <span class="sr">s/&lt;[^&gt;]+&gt;/ /g</span><span class="p">;</span>
-        <span class="nv">$des</span> <span class="o">=</span> <span class="n">spc</span><span class="p">(</span><span class="nv">$des</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nv">$fuente</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nv">$des</span> <span class="o">=~</span> <span class="sr">s/^\Q$title\E\s*//ig</span><span class="p">;</span>
-                <span class="nv">$des</span> <span class="o">=~</span> <span class="sr">s/\.? *From: .+ Views:[ \d ]+ ratings Time: (\d+:\d+(:\d+)?) .+$//</span><span class="p">;</span>
-                <span class="nv">$des</span> <span class="o">=~</span> <span class="sr">s/^ +| +$//g</span><span class="p">;</span>
-                <span class="nv">$title</span><span class="o">=</span> <span class="nv">$1</span> <span class="o">.</span> <span class="s">" - "</span> <span class="o">.</span> <span class="nv">$title</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$1</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nv">$link</span><span class="p">,</span><span class="nv">$title</span><span class="p">,</span><span class="nv">$des</span><span class="p">);</span>
+<span class="k">sub</span><span class="w"> </span><span class="nf">spc</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">my</span><span class="w"> </span><span class="p">(</span><span class="nv">$txt</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@_</span><span class="p">;</span>
+<span class="w">        </span><span class="nv">$txt</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/\s\s+/ /g</span><span class="p">;</span>
+<span class="w">        </span><span class="nv">$txt</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/\.\.+/\./g</span><span class="p">;</span>
+<span class="w">        </span><span class="nv">$txt</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/  +/ /g</span><span class="p">;</span>
+<span class="w">        </span><span class="nv">$txt</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/^ +| +$//g</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">$txt</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="nb">die</span> <span class="s">"Ha de pasar como mínimo un parametro"</span> <span class="k">unless</span> <span class="nv">$#ARGV</span> <span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span>
-
-<span class="k">my</span> <span class="nv">$url</span><span class="o">=</span><span class="nb">undef</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">$filtro</span><span class="o">=</span><span class="nb">undef</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">$lk</span><span class="o">=</span><span class="s">"link"</span><span class="p">;</span>
-
-<span class="k">while</span><span class="p">(</span><span class="nv">@ARGV</span> <span class="o">&amp;&amp;</span> <span class="nv">$ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=~</span> <span class="sr">m/^-/</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$_</span><span class="o">=</span><span class="nb">shift</span><span class="p">(</span><span class="nv">@ARGV</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nv">$_</span> <span class="ow">eq</span> <span class="s">"-m"</span> <span class="p">)</span> <span class="p">{</span>
-                <span class="nv">$fuente</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-        <span class="p">}</span> <span class="k">elsif</span> <span class="p">(</span><span class="nv">$_</span> <span class="ow">eq</span> <span class="s">"-s"</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nv">$suerte</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-        <span class="p">}</span> <span class="k">elsif</span> <span class="p">(</span><span class="nv">$_</span> <span class="ow">eq</span> <span class="s">"-d"</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nv">$respuesta</span><span class="o">=</span><span class="s">"d"</span><span class="p">;</span>
-        <span class="p">}</span>
-<span class="p">}</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$#ARGV</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nv">$ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=~</span> <span class="sr">m/^https?:\/\//</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$suerte</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-        <span class="n">play</span><span class="p">(</span><span class="nv">$ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-        <span class="nb">die</span><span class="p">;</span>
+<span class="k">sub</span><span class="w"> </span><span class="nf">cln</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">my</span><span class="w"> </span><span class="p">(</span><span class="nv">$link</span><span class="p">,</span><span class="nv">$title</span><span class="p">,</span><span class="nv">$des</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@_</span><span class="p">;</span>
+<span class="w">        </span><span class="nv">$link</span><span class="o">=~</span><span class="w"> </span><span class="sr">s/\&amp;.*//</span><span class="p">;</span>
+<span class="w">        </span><span class="nv">$title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spc</span><span class="p">(</span><span class="nv">$title</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="nv">$link</span><span class="p">,</span><span class="nv">$title</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nv">$des</span><span class="p">);</span>
+<span class="w">        </span><span class="nv">$des</span><span class="o">=</span><span class="n">decode_entities</span><span class="p">(</span><span class="nv">$des</span><span class="p">);</span>
+<span class="w">        </span><span class="nv">$des</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/^.+\/&gt;&lt;p&gt;|&lt;\/p&gt;.+$//g</span><span class="p">;</span>
+<span class="w">        </span><span class="nv">$des</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/&lt;[^&gt;]+&gt;/ /g</span><span class="p">;</span>
+<span class="w">        </span><span class="nv">$des</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spc</span><span class="p">(</span><span class="nv">$des</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$fuente</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nv">$des</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/^\Q$title\E\s*//ig</span><span class="p">;</span>
+<span class="w">                </span><span class="nv">$des</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/\.? *From: .+ Views:[ \d ]+ ratings Time: (\d+:\d+(:\d+)?) .+$//</span><span class="p">;</span>
+<span class="w">                </span><span class="nv">$des</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/^ +| +$//g</span><span class="p">;</span>
+<span class="w">                </span><span class="nv">$title</span><span class="o">=</span><span class="w"> </span><span class="nv">$1</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">" - "</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">$title</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$1</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="nv">$link</span><span class="p">,</span><span class="nv">$title</span><span class="p">,</span><span class="nv">$des</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="k">if</span> <span class="p">(</span><span class="nv">$fuente</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$lk</span><span class="o">=</span><span class="s">"meneame:url"</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nv">@ARGV</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nv">$url</span><span class="o">=</span><span class="s">"https://www.meneame.net/rss/search?w=links&amp;p=title&amp;s=published&amp;q="</span> <span class="o">.</span> <span class="nb">join</span><span class="p">(</span><span class="s">"+"</span><span class="p">,</span><span class="nv">@ARGV</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nv">$url</span><span class="o">=</span><span class="s">"https://www.meneame.net/rss?q=youtube&amp;w=links&amp;p=url&amp;s=published&amp;h=&amp;o=date"</span><span class="p">;</span>
-        <span class="p">}</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nv">$url</span><span class="o">=</span><span class="s">"http://gdata.youtube.com/feeds/base/videos?v=2&amp;alt=rss&amp;q="</span> <span class="o">.</span> <span class="nb">join</span><span class="p">(</span><span class="s">"+"</span><span class="p">,</span><span class="nv">@ARGV</span><span class="p">);</span>
+<span class="nb">die</span><span class="w"> </span><span class="s">"Ha de pasar como mínimo un parametro"</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="nv">$#ARGV</span><span class="w"> </span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">my</span><span class="w"> </span><span class="nv">$url</span><span class="o">=</span><span class="nb">undef</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$filtro</span><span class="o">=</span><span class="nb">undef</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$lk</span><span class="o">=</span><span class="s">"link"</span><span class="p">;</span>
+
+<span class="k">while</span><span class="p">(</span><span class="nv">@ARGV</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">$ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">m/^-/</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">$_</span><span class="o">=</span><span class="nb">shift</span><span class="p">(</span><span class="nv">@ARGV</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$_</span><span class="w"> </span><span class="ow">eq</span><span class="w"> </span><span class="s">"-m"</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nv">$fuente</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">elsif</span><span class="w"> </span><span class="p">(</span><span class="nv">$_</span><span class="w"> </span><span class="ow">eq</span><span class="w"> </span><span class="s">"-s"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nv">$suerte</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">elsif</span><span class="w"> </span><span class="p">(</span><span class="nv">$_</span><span class="w"> </span><span class="ow">eq</span><span class="w"> </span><span class="s">"-d"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nv">$respuesta</span><span class="o">=</span><span class="s">"d"</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$#ARGV</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">$ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">m/^https?:\/\//</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">$suerte</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">play</span><span class="p">(</span><span class="nv">$ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="w">        </span><span class="nb">die</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">my</span> <span class="nv">$content</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="nv">$url</span><span class="p">);</span>
-<span class="k">my</span> <span class="nv">$xml</span> <span class="o">=</span><span class="n">XMLin</span><span class="p">(</span><span class="nv">$content</span><span class="p">,</span> <span class="n">ForceArray</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s">'item'</span><span class="p">]);</span>
-
-<span class="k">my</span> <span class="nv">@r</span> <span class="o">=</span> <span class="nv">@</span><span class="p">{</span> <span class="nv">$xml</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">channel</span><span class="p">}</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">item</span><span class="p">}</span> <span class="p">};</span>
-
-<span class="k">if</span> <span class="p">(</span><span class="nv">$fuente</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">@r</span> <span class="o">=</span> <span class="nb">grep</span> <span class="p">{</span>
-                <span class="nv">$_</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'meneame:comments'</span><span class="p">}</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="o">&amp;&amp;</span>
-                <span class="nv">$_</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'meneame:url'</span><span class="p">}</span> <span class="o">=~</span><span class="sr">/(youtube|vimeo)\.com|youtu\.be/</span><span class="p">;</span>
-        <span class="p">}</span> <span class="nv">@r</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$fuente</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">$lk</span><span class="o">=</span><span class="s">"meneame:url"</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">@ARGV</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nv">$url</span><span class="o">=</span><span class="s">"https://www.meneame.net/rss/search?w=links&amp;p=title&amp;s=published&amp;q="</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nb">join</span><span class="p">(</span><span class="s">"+"</span><span class="p">,</span><span class="nv">@ARGV</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nv">$url</span><span class="o">=</span><span class="s">"https://www.meneame.net/rss?q=youtube&amp;w=links&amp;p=url&amp;s=published&amp;h=&amp;o=date"</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">$url</span><span class="o">=</span><span class="s">"http://gdata.youtube.com/feeds/base/videos?v=2&amp;alt=rss&amp;q="</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nb">join</span><span class="p">(</span><span class="s">"+"</span><span class="p">,</span><span class="nv">@ARGV</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="k">print</span> <span class="s">"No hay resultados\n"</span> <span class="ow">and</span> <span class="nb">exit</span> <span class="k">unless</span> <span class="p">(</span><span class="nv">@r</span><span class="p">);</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="nv">$url</span><span class="p">);</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$xml</span><span class="w"> </span><span class="o">=</span><span class="n">XMLin</span><span class="p">(</span><span class="nv">$content</span><span class="p">,</span><span class="w"> </span><span class="n">ForceArray</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="s">'item'</span><span class="p">]);</span>
 
-<span class="k">my</span> <span class="nv">$count</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">@r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@</span><span class="p">{</span><span class="w"> </span><span class="nv">$xml</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">channel</span><span class="p">}</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">item</span><span class="p">}</span><span class="w"> </span><span class="p">};</span>
 
-<span class="k">foreach</span> <span class="k">my</span> <span class="nv">$ult</span> <span class="p">(</span><span class="nv">@r</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">print</span> <span class="s">"\n"</span> <span class="k">if</span> <span class="nv">$count</span><span class="o">++</span><span class="p">;</span>
-        <span class="k">my</span> <span class="p">(</span><span class="nv">$l</span><span class="p">,</span><span class="nv">$t</span><span class="p">,</span><span class="nv">$d</span><span class="p">)</span> <span class="o">=</span> <span class="n">cln</span><span class="p">(</span><span class="nv">$ult</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$lk</span><span class="p">},</span> <span class="nv">$ult</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">title</span><span class="p">},</span> <span class="nv">$ult</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">description</span><span class="p">});</span>
-        <span class="k">print</span> <span class="p">((</span><span class="nv">$t</span> <span class="o">.</span> <span class="s">"\n"</span> <span class="o">.</span> <span class="nv">$d</span> <span class="o">.</span> <span class="s">"\n"</span> <span class="o">.</span> <span class="nv">$l</span> <span class="o">.</span> <span class="s">"\n"</span><span class="p">)</span>  <span class="o">=~</span> <span class="sr">s/\n\n+/\n/g</span><span class="n">r</span><span class="p">);</span>
-        <span class="n">play</span><span class="p">(</span><span class="nv">$l</span><span class="p">)</span> <span class="k">if</span> <span class="nv">$suerte</span> <span class="o">||</span> <span class="n">ask</span><span class="p">();</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$fuente</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">@r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">grep</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nv">$_</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'meneame:comments'</span><span class="p">}</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">                </span><span class="nv">$_</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'meneame:url'</span><span class="p">}</span><span class="w"> </span><span class="o">=~</span><span class="sr">/(youtube|vimeo)\.com|youtu\.be/</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="nv">@r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">"No hay resultados\n"</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="p">(</span><span class="nv">@r</span><span class="p">);</span>
+
+<span class="k">my</span><span class="w"> </span><span class="nv">$count</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">foreach</span><span class="w"> </span><span class="k">my</span><span class="w"> </span><span class="nv">$ult</span><span class="w"> </span><span class="p">(</span><span class="nv">@r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">print</span><span class="w"> </span><span class="s">"\n"</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">$count</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="k">my</span><span class="w"> </span><span class="p">(</span><span class="nv">$l</span><span class="p">,</span><span class="nv">$t</span><span class="p">,</span><span class="nv">$d</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cln</span><span class="p">(</span><span class="nv">$ult</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$lk</span><span class="p">},</span><span class="w"> </span><span class="nv">$ult</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">title</span><span class="p">},</span><span class="w"> </span><span class="nv">$ult</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">description</span><span class="p">});</span>
+<span class="w">        </span><span class="k">print</span><span class="w"> </span><span class="p">((</span><span class="nv">$t</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">"\n"</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">$d</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">"\n"</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">$l</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">"\n"</span><span class="p">)</span><span class="w">  </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/\n\n+/\n/g</span><span class="n">r</span><span class="p">);</span>
+<span class="w">        </span><span class="n">play</span><span class="p">(</span><span class="nv">$l</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">$suerte</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ask</span><span class="p">();</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>Ejemplos de uso:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>ytb show must go on
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>ytb<span class="w"> </span>show<span class="w"> </span>must<span class="w"> </span>go<span class="w"> </span>on
 <span class="go">04:15 - Queen - 'The Show Must Go On' (Music Video)</span>
 <span class="go">The official 'The Show Must Go On' music video. Taken from Queen - 'Innuendo'</span>
 <span class="go">http://www.youtube.com/watch?v=4ADh8Fs3YdU</span>
@@ -236,14 +236,14 @@ medios online</p>
 <span class="go">Subtitle count: 0, state: off, index: 1, delay: 0</span>
 <span class="go">V:PortSettingsChanged: 352x264@24.94 interlace:0 deinterlace:0 par:1.00 layer:0</span>
 <span class="go">have a nice day ;)</span>
-<span class="gp">pi@bot ~ $ </span>ytb http://www.youtube.com/watch?v<span class="o">=</span>1hiasK3oE3k
+<span class="gp">pi@bot ~ $ </span>ytb<span class="w"> </span>http://www.youtube.com/watch?v<span class="o">=</span>1hiasK3oE3k
 <span class="go">Video codec omx-h264 width 640 height 360 profile 578 fps 25.000000</span>
 <span class="go">Audio codec aac channels 2 samplerate 44100 bitspersample 16</span>
 <span class="go">Subtitle count: 0, state: off, index: 1, delay: 0</span>
 <span class="go">V:PortSettingsChanged: 640x360@25.00 interlace:0 deinterlace:0 par:1.00 layer:0</span>
 <span class="go">Stopped at: 00:00:03</span>
 <span class="go">have a nice day ;)</span>
-<span class="gp">pi@bot~ $ </span>ytb -d http://www.youtube.com/watch?v<span class="o">=</span>4ADh8Fs3YdU
+<span class="gp">pi@bot~ $ </span>ytb<span class="w"> </span>-d<span class="w"> </span>http://www.youtube.com/watch?v<span class="o">=</span>4ADh8Fs3YdU
 <span class="go">[youtube] Setting language</span>
 <span class="go">[youtube] Confirming age</span>
 <span class="go">[youtube] 4ADh8Fs3YdU: Downloading webpage</span>
@@ -260,7 +260,7 @@ medios online</p>
 <span class="go">V:PortSettingsChanged: 352x264@24.94 interlace:0 deinterlace:0 par:1.00 layer:0</span>
 <span class="go">Stopped at: 00:00:01</span>
 <span class="go">have a nice day ;)</span>
-<span class="gp">pi@bot ~ $ </span>ytb -m
+<span class="gp">pi@bot ~ $ </span>ytb<span class="w"> </span>-m
 <span class="go">Marine sobrevive a un disparo en la cabeza gracias a su casco de kevlar</span>
 <span class="go">Vídeo de como un marine sobrevive a un disparo en la cabeza de un francotirador talibán. El disparo se produce en el 0:45.</span>
 <span class="go">https://www.youtube.com/watch?v=gBjUv_T9CYU</span>
@@ -284,47 +284,47 @@ medios online</p>
 <li>Si se le pasa una url reproduce directamente ese vídeo</li>
 </ul>
 <p><strong>B) Imágenes</strong></p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>apt-get install fbi
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>apt-get<span class="w"> </span>install<span class="w"> </span>fbi
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $ </span>fbi -a *.jpg
+<span class="gp">pi@bot ~ $ </span>fbi<span class="w"> </span>-a<span class="w"> </span>*.jpg
 </code></pre></div>
 <p><strong>C) Musica</strong></p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo apt-get install moc
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>moc
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $ </span><span class="nb">cd</span> .moc
-<span class="gp">pi@bot ~/.moc $ </span>cp /usr/share/doc/moc/examples/config.example.gz .
-<span class="gp">pi@bot ~/.moc $ </span>gzip -d config.example.gz
-<span class="gp">pi@bot ~/.moc $ </span>mv config.example config
-<span class="gp">pi@bot ~/.moc $ </span>nano config
+<span class="gp">pi@bot ~ $ </span><span class="nb">cd</span><span class="w"> </span>.moc
+<span class="gp">pi@bot ~/.moc $ </span>cp<span class="w"> </span>/usr/share/doc/moc/examples/config.example.gz<span class="w"> </span>.
+<span class="gp">pi@bot ~/.moc $ </span>gzip<span class="w"> </span>-d<span class="w"> </span>config.example.gz
+<span class="gp">pi@bot ~/.moc $ </span>mv<span class="w"> </span>config.example<span class="w"> </span>config
+<span class="gp">pi@bot ~/.moc $ </span>nano<span class="w"> </span>config
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="err">...</span>
-<span class="err">Allow24bitOutput        = yes</span>
-<span class="err">...</span>
+<div class="highlight"><pre><span></span><code>...
+Allow24bitOutput        = yes
+...
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>mocp
 </code></pre></div>
 <p>Si no se oye el audio y se quiere usar la salida analogía jack probar
 con:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>amixer cset <span class="nv">numid</span><span class="o">=</span><span class="m">3</span> <span class="m">1</span>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>amixer<span class="w"> </span>cset<span class="w"> </span><span class="nv">numid</span><span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="m">1</span>
 </code></pre></div>
 <p>Si el control del volumen por defecto no funciona probar lo siguiente:</p>
-<div class="highlight"><pre><span></span><code><span class="err">...</span>
-<span class="err">ExecCommand1  = "amixer set PCM 100- &gt; /dev/null" #decrementa 1%</span>
-<span class="err">ExecCommand2  = "amixer set PCM 100+ &gt; /dev/null" #incrementa 1%</span>
-<span class="err">ExecCommand3  = "amixer set PCM 1000- &gt; /dev/null" #decrementa 10%</span>
-<span class="err">ExecCommand4  = "amixer set PCM 1000+ &gt; /dev/null" #incrementa 10%</span>
-<span class="err">ExecCommand9  = "amixer cset numid=1 -- 80% &gt; /dev/null" #pone el audio al 80%</span>
-<span class="err">ExecCommand10 = "amixer cset numid=1 -- 0% &gt; /dev/null" #pone el audio al 0%</span>
-<span class="err">...</span>
+<div class="highlight"><pre><span></span><code>...
+ExecCommand1  = "amixer set PCM 100- &gt; /dev/null" #decrementa 1%
+ExecCommand2  = "amixer set PCM 100+ &gt; /dev/null" #incrementa 1%
+ExecCommand3  = "amixer set PCM 1000- &gt; /dev/null" #decrementa 10%
+ExecCommand4  = "amixer set PCM 1000+ &gt; /dev/null" #incrementa 10%
+ExecCommand9  = "amixer cset numid=1 -- 80% &gt; /dev/null" #pone el audio al 80%
+ExecCommand10 = "amixer cset numid=1 -- 0% &gt; /dev/null" #pone el audio al 0%
+...
 </code></pre></div>
 <p>y usa F1, F2, F3, F4, F9 y F10 para gestionar el volumen.</p>
 <p><strong>BONUS</strong>: Problema con las eñes y tildes en los subtitulos al usar
 omxplayer</p>
 <p>Comprobamos el tipo de fichero y si es ISO-8859 lo convertimos a utf-8
 con iconv</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>file sub_ori.srt
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>file<span class="w"> </span>sub_ori.srt
 <span class="go">sub_ori.srt: ISO-8859 text, with CRLF line terminators</span>
-<span class="gp">pi@bot ~ $ </span>iconv --from-code<span class="o">=</span>iso-8859-1 --to-code<span class="o">=</span>utf-8 sub_ori.srt -o sub_fix.srt
+<span class="gp">pi@bot ~ $ </span>iconv<span class="w"> </span>--from-code<span class="o">=</span>iso-8859-1<span class="w"> </span>--to-code<span class="o">=</span>utf-8<span class="w"> </span>sub_ori.srt<span class="w"> </span>-o<span class="w"> </span>sub_fix.srt
 </code></pre></div>
 <p>Fuentes: <a href="http://www.diverteka.com/?p=899" target="_blank">diverteka</a>,
 <a href="http://hackingthesystem4fun.blogspot.com.es/2012/04/ver-imagenes-sin-x-en-una-tty.html" target="_blank">hackingthesystem4fun.blogspot.com.es</a>,

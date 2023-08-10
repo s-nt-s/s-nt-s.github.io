@@ -37,14 +37,14 @@ script para mandarnos notificaciones</p>
 <p><strong>Solución</strong>: usar xmpp y crear un grupo con permisos para usar este
 comando</p>
 <p><strong>1-</strong> Instalar sendxmpp y crear comando</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo apt-get install sendxmpp
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>sendxmpp
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $ </span>sudo touch /usr/local/bin/say
-<span class="gp">pi@bot ~ $ </span>sudo chmod <span class="m">710</span> /usr/local/bin/say
-<span class="gp">pi@bot ~ $ </span>sudo nano /usr/local/bin/say
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>touch<span class="w"> </span>/usr/local/bin/say
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">710</span><span class="w"> </span>/usr/local/bin/say
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>nano<span class="w"> </span>/usr/local/bin/say
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
-<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$*</span><span class="s2">"</span> <span class="p">|</span> sendxmpp -u usuario -p contraseña -j servidor_jabber -o dominio -t destinatario
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$*</span><span class="s2">"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sendxmpp<span class="w"> </span>-u<span class="w"> </span>usuario<span class="w"> </span>-p<span class="w"> </span>contraseña<span class="w"> </span>-j<span class="w"> </span>servidor_jabber<span class="w"> </span>-o<span class="w"> </span>dominio<span class="w"> </span>-t<span class="w"> </span>destinatario
 
 <span class="c1">#Ejemplo con gmail:</span>
 <span class="c1">#sendxmpp -t -u mygmailuser -o gmail.com -p mygmailpassword another@jabber.com</span>
@@ -57,55 +57,55 @@ usuarios que no queremos que sean sudo ni puedan leer el codigo del
 script, para ello veremos los siguientes pasos</p>
 <p><strong>2-</strong> Crear grupo que podrá enviar mensajes y darle permisos para
 ejecutar el comando</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo groupadd snd
-<span class="gp">pi@bot ~ $ </span>sudo visudo
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>groupadd<span class="w"> </span>snd
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>visudo
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="k">[...]</span>
-<span class="na">%snd    ALL</span> <span class="o">=</span> <span class="s">NOPASSWD: /usr/local/bin/say</span>
+<div class="highlight"><pre><span></span><code><span class="p">[...]</span>
+<span class="nf">%snd</span><span class="w">    </span><span class="n">ALL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NOPASSWD</span><span class="o">:</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">say</span>
 </code></pre></div>
 <p><strong>3-</strong> Ejemplo con transmission: aviso de descarga finalizada.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo adduser debian-transmission snd
-<span class="gp">pi@bot ~ $ </span>nano /dwn/complete.sh
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>adduser<span class="w"> </span>debian-transmission<span class="w"> </span>snd
+<span class="gp">pi@bot ~ $ </span>nano<span class="w"> </span>/dwn/complete.sh
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
-sudo say DECARGADO: <span class="s2">"</span><span class="nv">$TR_TORRENT_NAME</span><span class="s2">"</span>
+sudo<span class="w"> </span>say<span class="w"> </span>DECARGADO:<span class="w"> </span><span class="s2">"</span><span class="nv">$TR_TORRENT_NAME</span><span class="s2">"</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo service transmission-daemon stop
-<span class="gp">pi@bot ~ $ </span>sudo nano /var/lib/transmission-daemon/info/settings.json
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>service<span class="w"> </span>transmission-daemon<span class="w"> </span>stop
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>nano<span class="w"> </span>/var/lib/transmission-daemon/info/settings.json
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="err">...</span>
-    <span class="nt">"script-torrent-done-filename"</span><span class="p">:</span> <span class="s2">"/dwn/complete.sh"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"script-torrent-done-filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/dwn/complete.sh"</span><span class="p">,</span>
 <span class="err">...</span>
 <span class="p">}</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo service transmission-daemon start
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>service<span class="w"> </span>transmission-daemon<span class="w"> </span>start
 </code></pre></div>
 <p><strong>4-</strong> Ejemplo con PAM: aviso de usuario conectado por ssh.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~/wks/scripts $ </span>touch notif-login.sh
-<span class="gp">pi@bot ~/wks/scripts $ </span>chmod +x notif-login.sh
-<span class="gp">pi@bot ~/wks/scripts $ </span>nano notif-login.sh
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~/wks/scripts $ </span>touch<span class="w"> </span>notif-login.sh
+<span class="gp">pi@bot ~/wks/scripts $ </span>chmod<span class="w"> </span>+x<span class="w"> </span>notif-login.sh
+<span class="gp">pi@bot ~/wks/scripts $ </span>nano<span class="w"> </span>notif-login.sh
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
-<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$PAM_TYPE</span><span class="s2">"</span> !<span class="o">=</span> <span class="s2">"open_session"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">exit</span> <span class="m">0</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">"</span><span class="nv">$PAM_TYPE</span><span class="s2">"</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="s2">"open_session"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
 <span class="k">fi</span>
-<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="si">${</span><span class="nv">PAM_RHOST</span><span class="p">:</span><span class="nv">0</span><span class="p">:</span><span class="nv">10</span><span class="si">}</span><span class="s2">"</span> <span class="o">=</span> <span class="s2">"192.168.1."</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">exit</span> <span class="m">0</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">PAM_RHOST</span><span class="p">:</span><span class="nv">0</span><span class="p">:</span><span class="nv">10</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"192.168.1."</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
 <span class="k">fi</span>
 
 <span class="nv">USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PAM_USER</span><span class="s2">@</span><span class="nv">$PAM_RHOST</span><span class="s2">"</span>
-<span class="k">if</span> <span class="o">[</span> -z <span class="s2">"</span><span class="nv">$PAM_RHOST</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nv">USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PAM_USER</span><span class="s2">"</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">"</span><span class="nv">$PAM_RHOST</span><span class="s2">"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nv">USER</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PAM_USER</span><span class="s2">"</span>
 <span class="k">fi</span>
 
-sudo say <span class="k">$(</span>date <span class="s2">"+%d/%m/%Y %H:%M"</span><span class="k">)</span><span class="s2">" &gt; </span><span class="nv">$USER</span><span class="s2"> inicia </span><span class="nv">$PAM_SERVICE</span><span class="s2"> en TTY </span><span class="nv">$PAM_TTY</span><span class="s2">"</span> <span class="p">&amp;</span>
+sudo<span class="w"> </span>say<span class="w"> </span><span class="k">$(</span>date<span class="w"> </span><span class="s2">"+%d/%m/%Y %H:%M"</span><span class="k">)</span><span class="s2">" &gt; </span><span class="nv">$USER</span><span class="s2"> inicia </span><span class="nv">$PAM_SERVICE</span><span class="s2"> en TTY </span><span class="nv">$PAM_TTY</span><span class="s2">"</span><span class="w"> </span><span class="p">&amp;</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo nano /etc/pam.d/sshd
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/pam.d/sshd
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="err"># PAM configuration for the Secure Shell service</span>
-<span class="err"># ...</span>
-<span class="err">session optional pam_exec.so /home/pi/wks/scripts/notif-login.sh</span>
+<div class="highlight"><pre><span></span><code><span class="gh">#</span> PAM configuration for the Secure Shell service
+<span class="gh">#</span> ...
+session optional pam_exec.so /home/pi/wks/scripts/notif-login.sh
 </code></pre></div>
 </div><!-- /.entry-content -->
 </article>

@@ -37,98 +37,98 @@ mirar en el histórico de comandos usados</p>
 <p><strong>Solución 2</strong>: Hacer un script que analice el histórico y nos saque la
 información más relevante</p>
 <p><strong>1-</strong> Configurar histórico (<code>~/.bashrc</code>)</p>
-<div class="highlight"><pre><span></span><code><span class="err">...</span>
-<span class="err">#No guardar en el histórico duplicados consecutivos</span>
-<span class="err">HISTCONTROL=ignoredups</span>
-<span class="err">#No guardar en el histórico comandos sencillos de uso habitual</span>
-<span class="err">HISTIGNORE="pwd:ls:ls -lah:date:cd"</span>
-<span class="err">...</span>
+<div class="highlight"><pre><span></span><code>...
+#No guardar en el histórico duplicados consecutivos
+HISTCONTROL=ignoredups
+#No guardar en el histórico comandos sencillos de uso habitual
+HISTIGNORE="pwd:ls:ls -lah:date:cd"
+...
 </code></pre></div>
 <p><strong>2-</strong> Crear script (<code>/usr/local/bin/uso</code>)</p>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/perl -w</span>
-<span class="k">use</span> <span class="nn">Cwd</span> <span class="s">'abs_path'</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">Cwd</span><span class="w"> </span><span class="s">'abs_path'</span><span class="p">;</span>
 
-<span class="k">my</span> <span class="p">(</span><span class="nv">$hst</span><span class="p">,</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">$icm</span><span class="p">,</span><span class="nv">$filter</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="nb">undef</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
-<span class="k">while</span><span class="p">(</span><span class="nv">@ARGV</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nv">$_</span><span class="o">=</span><span class="nb">shift</span><span class="p">(</span><span class="nv">@ARGV</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$_</span> <span class="o">=~</span><span class="sr"> /\d+/</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$tp</span><span class="o">=</span><span class="nv">$_</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">elsif</span> <span class="p">(</span><span class="nv">$_</span> <span class="ow">eq</span> <span class="s">"-c"</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$icm</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">elsif</span> <span class="p">(</span><span class="o">-</span><span class="n">f</span> <span class="nv">$_</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$hst</span><span class="o">=</span><span class="nv">$_</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nv">$filter</span><span class="o">=</span><span class="nv">$_</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="k">my</span><span class="w"> </span><span class="p">(</span><span class="nv">$hst</span><span class="p">,</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">$icm</span><span class="p">,</span><span class="nv">$filter</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="nb">undef</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="k">while</span><span class="p">(</span><span class="nv">@ARGV</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">$_</span><span class="o">=</span><span class="nb">shift</span><span class="p">(</span><span class="nv">@ARGV</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$_</span><span class="w"> </span><span class="o">=~</span><span class="sr"> /\d+/</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">$tp</span><span class="o">=</span><span class="nv">$_</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">elsif</span><span class="w"> </span><span class="p">(</span><span class="nv">$_</span><span class="w"> </span><span class="ow">eq</span><span class="w"> </span><span class="s">"-c"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">$icm</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">elsif</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="nv">$_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">$hst</span><span class="o">=</span><span class="nv">$_</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">$filter</span><span class="o">=</span><span class="nv">$_</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$tp</span><span class="o">==-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span><span class="nv">$tp</span><span class="o">=</span><span class="p">(</span><span class="nv">$filter</span><span class="p">?</span><span class="mi">5</span><span class="p">:</span><span class="mi">10</span><span class="p">);}</span>
-<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$hst</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nv">$hst</span><span class="o">=</span><span class="s">"$ENV{HOME}/.bash_history"</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$tp</span><span class="o">==-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="nv">$tp</span><span class="o">=</span><span class="p">(</span><span class="nv">$filter</span><span class="p">?</span><span class="mi">5</span><span class="p">:</span><span class="mi">10</span><span class="p">);}</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nv">$hst</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">$hst</span><span class="o">=</span><span class="s">"$ENV{HOME}/.bash_history"</span><span class="p">;</span>
 <span class="p">}</span>
-<span class="k">my</span> <span class="nv">$home</span><span class="o">=</span> <span class="n">abs_path</span><span class="p">(</span><span class="nv">$hst</span><span class="p">);</span>
-<span class="nv">$home</span> <span class="o">=~</span> <span class="sr">s/\/[^\/]+$/\//</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$home</span><span class="o">=</span><span class="w"> </span><span class="n">abs_path</span><span class="p">(</span><span class="nv">$hst</span><span class="p">);</span>
+<span class="nv">$home</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/\/[^\/]+$/\//</span><span class="p">;</span>
 
-<span class="k">sub</span> <span class="nf">report_top</span> <span class="p">{</span>
-    <span class="k">my</span><span class="p">(</span> <span class="nv">$top_count</span><span class="p">,</span> <span class="nv">%hash</span> <span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
-    <span class="k">my</span> <span class="nv">@top_commands</span>  <span class="o">=</span> <span class="nb">sort</span> <span class="p">{</span> <span class="nv">$hash</span><span class="p">{</span><span class="nv">$b</span><span class="p">}</span> <span class="sr">&lt;=&gt;</span> <span class="nv">$hash</span><span class="p">{</span><span class="nv">$a</span><span class="p">}</span> <span class="p">}</span> <span class="nb">keys</span> <span class="nv">%hash</span><span class="p">;</span>
-    <span class="k">my</span> <span class="nv">$max_width</span> <span class="o">=</span> <span class="nb">length</span> <span class="nv">$hash</span><span class="p">{</span><span class="nv">$top_commands</span><span class="p">[</span><span class="mi">0</span><span class="p">]};</span>
-    <span class="k">while</span><span class="p">(</span> <span class="k">my</span><span class="p">(</span> <span class="nv">$i</span><span class="p">,</span> <span class="nv">$value</span> <span class="p">)</span> <span class="o">=</span> <span class="nb">each</span> <span class="nv">@top_commands</span> <span class="p">)</span> <span class="p">{</span>
-        <span class="k">last</span> <span class="k">if</span> <span class="nv">$i</span> <span class="o">&gt;=</span> <span class="nv">$top_count</span> <span class="o">&amp;&amp;</span> <span class="nv">$top_count</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">;</span>
-        <span class="c1">#printf '%*d %s' . "\n", $max_width, $hash{$top_commands[$i]}, $top_commands[$i];</span>
-        <span class="k">print</span> <span class="nv">$top_commands</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="o">.</span> <span class="s">"\n"</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="k">sub</span><span class="w"> </span><span class="nf">report_top</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">my</span><span class="p">(</span><span class="w"> </span><span class="nv">$top_count</span><span class="p">,</span><span class="w"> </span><span class="nv">%hash</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@_</span><span class="p">;</span>
+<span class="w">    </span><span class="k">my</span><span class="w"> </span><span class="nv">@top_commands</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nb">sort</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">$hash</span><span class="p">{</span><span class="nv">$b</span><span class="p">}</span><span class="w"> </span><span class="sr">&lt;=&gt;</span><span class="w"> </span><span class="nv">$hash</span><span class="p">{</span><span class="nv">$a</span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="nb">keys</span><span class="w"> </span><span class="nv">%hash</span><span class="p">;</span>
+<span class="w">    </span><span class="k">my</span><span class="w"> </span><span class="nv">$max_width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">length</span><span class="w"> </span><span class="nv">$hash</span><span class="p">{</span><span class="nv">$top_commands</span><span class="p">[</span><span class="mi">0</span><span class="p">]};</span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="w"> </span><span class="k">my</span><span class="p">(</span><span class="w"> </span><span class="nv">$i</span><span class="p">,</span><span class="w"> </span><span class="nv">$value</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">each</span><span class="w"> </span><span class="nv">@top_commands</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">last</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">$i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="nv">$top_count</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">$top_count</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="c1">#printf '%*d %s' . "\n", $max_width, $hash{$top_commands[$i]}, $top_commands[$i];</span>
+<span class="w">        </span><span class="k">print</span><span class="w"> </span><span class="nv">$top_commands</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">"\n"</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
-<span class="k">sub</span> <span class="nf">gFile</span> <span class="p">{</span>
-    <span class="k">my</span> <span class="nv">$r</span><span class="o">=</span><span class="nb">shift</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">-</span><span class="n">f</span> <span class="nv">$r</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">abs_path</span><span class="p">(</span><span class="nv">$r</span><span class="p">);</span>
-    <span class="p">}</span> 
-    <span class="k">my</span> <span class="nv">$p</span><span class="o">=</span><span class="nb">index</span><span class="p">(</span><span class="nv">$r</span><span class="p">,</span><span class="s">"/"</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$p</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nv">$r</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">-</span><span class="n">f</span> <span class="p">(</span><span class="nv">$home</span> <span class="o">.</span> <span class="nv">$r</span><span class="p">))</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">abs_path</span><span class="p">((</span><span class="nv">$home</span> <span class="o">.</span> <span class="nv">$r</span><span class="p">));</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$p</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$r</span><span class="o">=</span><span class="sb">`sudo test -e $r &amp;&amp; sudo readlink -f $r || echo 0`</span><span class="p">;</span>
-        <span class="nb">chomp</span><span class="p">(</span><span class="nv">$r</span><span class="p">);</span>
-        <span class="k">return</span> <span class="nv">$r</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nb">undef</span><span class="p">;</span>
+<span class="k">sub</span><span class="w"> </span><span class="nf">gFile</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">my</span><span class="w"> </span><span class="nv">$r</span><span class="o">=</span><span class="nb">shift</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="nv">$r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">abs_path</span><span class="p">(</span><span class="nv">$r</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span>
+<span class="w">    </span><span class="k">my</span><span class="w"> </span><span class="nv">$p</span><span class="o">=</span><span class="nb">index</span><span class="p">(</span><span class="nv">$r</span><span class="p">,</span><span class="s">"/"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$p</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">$r</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="p">(</span><span class="nv">$home</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">$r</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">abs_path</span><span class="p">((</span><span class="nv">$home</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">$r</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$p</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">$r</span><span class="o">=</span><span class="sb">`sudo test -e $r &amp;&amp; sudo readlink -f $r || echo 0`</span><span class="p">;</span>
+<span class="w">        </span><span class="nb">chomp</span><span class="p">(</span><span class="nv">$r</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nv">$r</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">undef</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="nb">open</span> <span class="p">(</span><span class="n">HISTORY</span><span class="p">,</span> <span class="s">"&lt;"</span><span class="p">,</span> <span class="nv">$hst</span><span class="p">)</span>  <span class="ow">or</span> <span class="nb">die</span> <span class="s">"Cannot open $hst: $!"</span><span class="p">;</span>
+<span class="nb">open</span><span class="w"> </span><span class="p">(</span><span class="n">HISTORY</span><span class="p">,</span><span class="w"> </span><span class="s">"&lt;"</span><span class="p">,</span><span class="w"> </span><span class="nv">$hst</span><span class="p">)</span><span class="w">  </span><span class="ow">or</span><span class="w"> </span><span class="nb">die</span><span class="w"> </span><span class="s">"Cannot open $hst: $!"</span><span class="p">;</span>
 
-<span class="k">my</span> <span class="nv">$b</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">$cmd</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">@fls</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">%files</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">%cmds</span><span class="p">;</span>
-<span class="k">while</span> <span class="p">(</span><span class="nv">$cmd</span><span class="o">=</span><span class="sr">&lt;HISTORY&gt;</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nb">chomp</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">);</span>
-    <span class="nv">$cmd</span> <span class="o">=~</span> <span class="sr">s/  +/ /g</span><span class="p">;</span>
-    <span class="nv">$cmd</span> <span class="o">=~</span> <span class="sr">s/(^ +| +$)//g</span><span class="p">;</span>
-    <span class="nv">$cmd</span> <span class="o">=~</span> <span class="sr">s/^sudo +//</span><span class="p">;</span>
-    <span class="k">next</span> <span class="k">if</span> <span class="nb">length</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">5</span> <span class="o">||</span> <span class="nb">index</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">,</span><span class="s">" "</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">1</span> <span class="o">||</span> <span class="nv">$cmd</span> <span class="o">=~</span><span class="sr"> /(whereis|kill|cd|ls|su|uso) /</span> <span class="o">||</span> <span class="p">(</span><span class="nv">$filter</span> <span class="o">&amp;&amp;</span> <span class="nb">index</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">,</span><span class="nv">$filter</span><span class="p">)</span><span class="o">==-</span><span class="mi">1</span><span class="p">);</span>
-    <span class="nv">$b</span><span class="o">=</span><span class="p">(</span><span class="nv">$cmd</span> <span class="o">=~</span><span class="sr"> /^(nano|tail|head|cat) /</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$icm</span> <span class="o">&amp;&amp;</span> <span class="nv">$b</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">@fls</span><span class="o">=</span><span class="nb">split</span><span class="p">(</span><span class="sr">/ /</span><span class="p">,</span><span class="nv">$cmd</span><span class="p">);</span>
-        <span class="nb">shift</span><span class="p">(</span><span class="nv">@fls</span><span class="p">);</span>
-        <span class="k">foreach</span> <span class="k">my</span> <span class="nv">$fl</span> <span class="p">(</span><span class="nv">@fls</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="nv">$fl</span><span class="p">,</span><span class="s">"/"</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nv">$files</span><span class="p">{</span><span class="nv">$fl</span><span class="p">})</span> <span class="p">{</span><span class="nv">$files</span><span class="p">{</span><span class="nv">$fl</span><span class="p">}</span><span class="o">++</span><span class="p">}</span>
-            <span class="k">elsif</span> <span class="p">((</span><span class="nv">$fl</span><span class="o">=</span><span class="n">gFile</span><span class="p">(</span><span class="nv">$fl</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="nb">index</span><span class="p">(</span><span class="nv">$fl</span><span class="p">,</span><span class="nv">$home</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span><span class="nv">$files</span><span class="p">{</span><span class="nv">$fl</span><span class="p">}</span><span class="o">++</span><span class="p">;}</span>
-        <span class="p">}</span>
-        <span class="k">next</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$icm</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nv">$b</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nv">$cmds</span><span class="p">{</span><span class="nv">$cmd</span><span class="p">}</span><span class="o">++</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$b</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$cmd</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">@fls</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">%files</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">%cmds</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nv">$cmd</span><span class="o">=</span><span class="sr">&lt;HISTORY&gt;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">chomp</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">);</span>
+<span class="w">    </span><span class="nv">$cmd</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/  +/ /g</span><span class="p">;</span>
+<span class="w">    </span><span class="nv">$cmd</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/(^ +| +$)//g</span><span class="p">;</span>
+<span class="w">    </span><span class="nv">$cmd</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">s/^sudo +//</span><span class="p">;</span>
+<span class="w">    </span><span class="k">next</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">length</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">5</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">index</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">,</span><span class="s">" "</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nv">$cmd</span><span class="w"> </span><span class="o">=~</span><span class="sr"> /(whereis|kill|cd|ls|su|uso) /</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="nv">$filter</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">index</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">,</span><span class="nv">$filter</span><span class="p">)</span><span class="o">==-</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="nv">$b</span><span class="o">=</span><span class="p">(</span><span class="nv">$cmd</span><span class="w"> </span><span class="o">=~</span><span class="sr"> /^(nano|tail|head|cat) /</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nv">$icm</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">$b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">@fls</span><span class="o">=</span><span class="nb">split</span><span class="p">(</span><span class="sr">/ /</span><span class="p">,</span><span class="nv">$cmd</span><span class="p">);</span>
+<span class="w">        </span><span class="nb">shift</span><span class="p">(</span><span class="nv">@fls</span><span class="p">);</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="k">my</span><span class="w"> </span><span class="nv">$fl</span><span class="w"> </span><span class="p">(</span><span class="nv">@fls</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="nv">$fl</span><span class="p">,</span><span class="s">"/"</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">$files</span><span class="p">{</span><span class="nv">$fl</span><span class="p">})</span><span class="w"> </span><span class="p">{</span><span class="nv">$files</span><span class="p">{</span><span class="nv">$fl</span><span class="p">}</span><span class="o">++</span><span class="p">}</span>
+<span class="w">            </span><span class="k">elsif</span><span class="w"> </span><span class="p">((</span><span class="nv">$fl</span><span class="o">=</span><span class="n">gFile</span><span class="p">(</span><span class="nv">$fl</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">index</span><span class="p">(</span><span class="nv">$fl</span><span class="p">,</span><span class="nv">$home</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="nv">$files</span><span class="p">{</span><span class="nv">$fl</span><span class="p">}</span><span class="o">++</span><span class="p">;}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">next</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$icm</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="nv">$b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">$cmds</span><span class="p">{</span><span class="nv">$cmd</span><span class="p">}</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 <span class="nb">close</span><span class="p">(</span><span class="n">HISTORY</span><span class="p">);</span>
 
-<span class="k">if</span> <span class="p">(</span><span class="nb">keys</span><span class="p">(</span><span class="nv">%files</span><span class="p">))</span> <span class="p">{</span><span class="n">report_top</span><span class="p">(</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">%files</span><span class="p">);}</span>
-<span class="k">if</span> <span class="p">(</span><span class="nb">keys</span><span class="p">(</span><span class="nv">%cmds</span><span class="p">))</span> <span class="p">{</span><span class="n">report_top</span><span class="p">(</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">%cmds</span><span class="p">);}</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">keys</span><span class="p">(</span><span class="nv">%files</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="n">report_top</span><span class="p">(</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">%files</span><span class="p">);}</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">keys</span><span class="p">(</span><span class="nv">%cmds</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="n">report_top</span><span class="p">(</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">%cmds</span><span class="p">);}</span>
 </code></pre></div>
 <p><strong>3-</strong> Parámetros</p>
 <ul>
@@ -154,7 +154,7 @@ información más relevante</p>
 <span class="go">/home/bot/HAL/riddim/plugins/hashtag.lua</span>
 <span class="go">/root/.centerim/config</span>
 <span class="go">/etc/hosts</span>
-<span class="gp">pi@bot ~ $ </span>uso -c
+<span class="gp">pi@bot ~ $ </span>uso<span class="w"> </span>-c
 <span class="go">/etc/init.d/prosody restart</span>
 <span class="go">history | hf</span>
 <span class="go">atajo prosody</span>
@@ -165,23 +165,23 @@ información más relevante</p>
 <span class="go">/usr/local/bin/dwn</span>
 <span class="go">lua HAL/riddim/init.lua</span>
 <span class="go">hg clone http://code.matthewwild.co.uk/verse/ verse</span>
-<span class="gp">pi@bot ~ $ </span>uso <span class="m">2</span>
+<span class="gp">pi@bot ~ $ </span>uso<span class="w"> </span><span class="m">2</span>
 <span class="go">/var/log/prosody/prosody.log</span>
 <span class="go">/usr/local/bin/hf</span>
-<span class="gp">pi@bot ~ $ </span>uso prosody
+<span class="gp">pi@bot ~ $ </span>uso<span class="w"> </span>prosody
 <span class="go">/var/log/prosody/prosody.log</span>
 <span class="go">/var/log/prosody/prosody.err</span>
 <span class="go">/usr/lib/prosody/modules/mod_takenote.lua</span>
 <span class="go">/usr/bin/prosody</span>
 <span class="go">/var/log/prosody/prosody.not</span>
-<span class="gp">pi@bot ~ $ </span>sudo uso /home/bot/.bash_history -c lua <span class="m">1</span>
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>uso<span class="w"> </span>/home/bot/.bash_history<span class="w"> </span>-c<span class="w"> </span>lua<span class="w"> </span><span class="m">1</span>
 <span class="go">lua riddim/init.lua</span>
 </code></pre></div>
 <p><strong>4-</strong> Apéndice</p>
 <p><code>.bash_history</code> no se actualiza en tiempo real así que si necesitamos que
 nuestro script analice hasta el últimisimo comando ejecutado debemos
 forzar antes una actualización mediante el comando:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span><span class="nb">history</span> -a
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span><span class="nb">history</span><span class="w"> </span>-a
 </code></pre></div>
 <p>No integramos la llamada a "history -a" dentro de nuestro script porque
 necesita ser ejecutado directamente por el usuario para garantizar que

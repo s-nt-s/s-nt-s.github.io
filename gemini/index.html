@@ -33,13 +33,13 @@ linux</a> </p>
 <p>Este método ha sido probado en una Raspberry Pi 3</p>
 <h2>Estructura de carpetas</h2>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nv">GEMINI_DOMAIN</span><span class="o">=</span>replace.by.your.domain.com
-<span class="gp">$ </span>mkdir -p ~/gemini/<span class="nv">$GEMINI_DOMAIN</span>
-<span class="gp">$ </span><span class="nb">echo</span> <span class="s2">"Hola mundo"</span> &gt; ~/gemini/<span class="nv">$GEMINI_DOMAIN</span>/index.gmi
+<span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/gemini/<span class="nv">$GEMINI_DOMAIN</span>
+<span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"Hola mundo"</span><span class="w"> </span>&gt;<span class="w"> </span>~/gemini/<span class="nv">$GEMINI_DOMAIN</span>/index.gmi
 </code></pre></div>
 <h2>Descargar <code>agate</code> y crear script de arranque</h2>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">cd</span> ~/gemini
-<span class="gp">$ </span>wget -O - <span class="k">$(</span>curl -s https://api.github.com/repos/mbrubeck/agate/releases/latest <span class="p">|</span> grep <span class="s2">"browser_download_url.*agate.armv7-unknown-linux.*.gz"</span> <span class="p">|</span> cut -d<span class="s1">'"'</span> -f4<span class="k">)</span> <span class="p">|</span> gunzip &gt; agate-server.bin
-<span class="gp">$ </span>cat &gt; agate-server.sh &lt;&lt;EOL
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>~/gemini
+<span class="gp">$ </span>wget<span class="w"> </span>-O<span class="w"> </span>-<span class="w"> </span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>https://api.github.com/repos/mbrubeck/agate/releases/latest<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"browser_download_url.*aarch64-unknown-linux-gnu.*.gz"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">'"'</span><span class="w"> </span>-f4<span class="k">)</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>gunzip<span class="w"> </span>&gt;<span class="w"> </span>agate-server.bin
+<span class="gp">$ </span>cat<span class="w"> </span>&gt;<span class="w"> </span>agate-server.sh<span class="w"> </span>&lt;&lt;EOL
 <span class="gp">#</span>!/bin/sh
 <span class="go">set -e</span>
 <span class="go">cd "\$(dirname "\$0")"</span>
@@ -52,8 +52,8 @@ linux</a> </p>
 <span class="go">DOM=\$(echo "\$INX" | xargs dirname | xargs | xargs basename)</span>
 <span class="go">./agate-server.bin --lang es-ES --certs ./certificate/ --content "./\$DOM/" --hostname "\$DOM"</span>
 <span class="go">EOL</span>
-<span class="gp">$ </span>chmod +x agate-server.bin agate-server.sh
-<span class="gp">$ </span>./agate-server.bin --version
+<span class="gp">$ </span>chmod<span class="w"> </span>+x<span class="w"> </span>agate-server.bin<span class="w"> </span>agate-server.sh
+<span class="gp">$ </span>./agate-server.bin<span class="w"> </span>--version
 <span class="go">agate 3.2.4</span>
 </code></pre></div>
 <p><strong>NOTA</strong>: el script <code>agate-server.sh</code> permite usar como dominio
@@ -61,7 +61,7 @@ el nombre del directorio que tiene el contenido, así si queremos
 cambiarlo basta con renombrar la carpeta y no hay que editar el
 servicio <code>agate.service</code> creado más adelante.</p>
 <h2>Crear servicio</h2>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat &gt; agate.service &lt;&lt;EOL
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat<span class="w"> </span>&gt;<span class="w"> </span>agate.service<span class="w"> </span>&lt;&lt;EOL
 <span class="go">[Unit]</span>
 <span class="go">Description=Agate gemini server</span>
 <span class="go">After=network.target</span>
@@ -80,10 +80,10 @@ servicio <code>agate.service</code> creado más adelante.</p>
 <span class="go">[Install]</span>
 <span class="go">WantedBy=multi-user.target</span>
 <span class="go">EOL</span>
-<span class="gp">$ </span>sudo mv agate.service /etc/systemd/system/agate.service
-<span class="gp">$ </span>sudo systemctl <span class="nb">enable</span> agate
-<span class="gp">$ </span>sudo systemctl start agate
-<span class="gp">$ </span>sudo systemctl status agate
+<span class="gp">$ </span>sudo<span class="w"> </span>mv<span class="w"> </span>agate.service<span class="w"> </span>/etc/systemd/system/agate.service
+<span class="gp">$ </span>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>agate
+<span class="gp">$ </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>agate
+<span class="gp">$ </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>agate
 <span class="go">● agate.service - Agate gemini server</span>
 <span class="go">   Loaded: loaded (/etc/systemd/system/agate.service; enabled; vendor preset: enabled)</span>
 <span class="go">   Active: active (running) since Sun 2023-02-26 11:22:24 CET; 4s ago</span>

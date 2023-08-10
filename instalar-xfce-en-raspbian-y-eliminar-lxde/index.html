@@ -31,13 +31,13 @@ xfce</a> </p>
 <article>
 <div class="entry-content">
 <p><strong>1-</strong> Instalar XFCE</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo apt-get install xfce4
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>xfce4
 </code></pre></div>
 <p><strong>2-</strong> Eliminar LXDE</p>
 <p>Primero listamos los paquetes de LXDE, luego desinstalamos todos los
 resultados y finalmente desintalamos los paquetes que han quedado
 huérfanos</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo dpkg --get-selections <span class="p">|</span> grep <span class="s2">"^lx"</span>
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>dpkg<span class="w"> </span>--get-selections<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"^lx"</span>
 <span class="go">lxappearance                                    install</span>
 <span class="go">lxde                                            install</span>
 <span class="go">lxde-common                                     install</span>
@@ -54,17 +54,17 @@ huérfanos</p>
 <span class="go">lxshortcut                                      install</span>
 <span class="go">lxtask                                          install</span>
 <span class="go">lxterminal                                      install</span>
-<span class="gp">pi@bot ~ $ </span>sudo apt-get remove lxappearance lxde lxde-* lxinput lxmenu-data lxmusic lxpanel lxpolkit lxrandr lxsession* lxsession lxshortcut lxtask lxterminal
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>remove<span class="w"> </span>lxappearance<span class="w"> </span>lxde<span class="w"> </span>lxde-*<span class="w"> </span>lxinput<span class="w"> </span>lxmenu-data<span class="w"> </span>lxmusic<span class="w"> </span>lxpanel<span class="w"> </span>lxpolkit<span class="w"> </span>lxrandr<span class="w"> </span>lxsession*<span class="w"> </span>lxsession<span class="w"> </span>lxshortcut<span class="w"> </span>lxtask<span class="w"> </span>lxterminal
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $ </span>sudo apt-get autoremove <span class="o">&amp;&amp;</span> sudo apt-get autoclean
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>autoremove<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>autoclean
 </code></pre></div>
 <p><strong>4-</strong> Instalar paquetes extra para el audio</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo apt-get install alsa-base alsa-utils gstreamer0.10-alsa gstreamer0.10-plugins-base xfce4-mixer
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>alsa-base<span class="w"> </span>alsa-utils<span class="w"> </span>gstreamer0.10-alsa<span class="w"> </span>gstreamer0.10-plugins-base<span class="w"> </span>xfce4-mixer
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $ </span>sudo apt-get install gstreamer0.10-plugins-good gstreamer0.10-plugins-bad gstreamer0.10-ffmpeg
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>gstreamer0.10-plugins-good<span class="w"> </span>gstreamer0.10-plugins-bad<span class="w"> </span>gstreamer0.10-ffmpeg
 </code></pre></div>
 <p><strong>5-</strong> Reiniciar y arrancar XFCE</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo reboot
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>reboot
 <span class="go">...</span>
 <span class="gp">pi@bot ~ $ </span>startx
 </code></pre></div>

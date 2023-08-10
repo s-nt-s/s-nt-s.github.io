@@ -34,36 +34,36 @@ transmission</a> </p>
 <article>
 <div class="entry-content">
 <p><strong>1-</strong> Crear carpetas donde se almacenaran las descargas</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span><span class="nb">cd</span> /
-<span class="gp">pi@bot / $ </span>sudo mkdir dwn
-<span class="gp">pi@bot / $ </span><span class="nb">cd</span> dwn
-<span class="gp">pi@bot /dwn $ </span>sudo mkdir cmp
-<span class="gp">pi@bot /dwn $ </span>sudo mkdir tmp
-<span class="gp">pi@bot /dwn $ </span>sudo chmod <span class="m">777</span> cmp
-<span class="gp">pi@bot /dwn $ </span>sudo chmod <span class="m">777</span> tmp
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span><span class="nb">cd</span><span class="w"> </span>/
+<span class="gp">pi@bot / $ </span>sudo<span class="w"> </span>mkdir<span class="w"> </span>dwn
+<span class="gp">pi@bot / $ </span><span class="nb">cd</span><span class="w"> </span>dwn
+<span class="gp">pi@bot /dwn $ </span>sudo<span class="w"> </span>mkdir<span class="w"> </span>cmp
+<span class="gp">pi@bot /dwn $ </span>sudo<span class="w"> </span>mkdir<span class="w"> </span>tmp
+<span class="gp">pi@bot /dwn $ </span>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">777</span><span class="w"> </span>cmp
+<span class="gp">pi@bot /dwn $ </span>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">777</span><span class="w"> </span>tmp
 </code></pre></div>
 <p><strong>2-</strong> Instalar transmission (para torrents)</p>
 <p>Nada más instalarlo pararemos el servicio (daemon) que nos crea.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo apt-get -y install transmission-daemon
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>transmission-daemon
 <span class="go">...</span>
 <span class="go">[ ok ] Starting bittorrent daemon: trasnsmision-daemon.</span>
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $ </span>sudo /etc/init.d/transmission-daemon stop
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>/etc/init.d/transmission-daemon<span class="w"> </span>stop
 <span class="go">[ ok ] Stopping bittorrent daemon: trasnsmision-daemon.</span>
 </code></pre></div>
 <p><strong>3-</strong> Configurar transmission</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo nano /var/lib/transmission-daemon/info/settings.json
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>nano<span class="w"> </span>/var/lib/transmission-daemon/info/settings.json
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="err">...</span>
-<span class="nt">"download-dir"</span><span class="p">:</span> <span class="s2">"/dwn/cmp"</span><span class="p">,</span>
-<span class="nt">"incomplete-dir-enabled"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-<span class="nt">"incomplete-dir"</span><span class="p">:</span> <span class="s2">"/dwn/tmp"</span><span class="p">,</span>
-<span class="nt">"rpc-enabled"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-<span class="nt">"rpc-bind-address"</span><span class="p">:</span> <span class="s2">"0.0.0.0"</span><span class="p">,</span>
-<span class="nt">"rpc-username"</span><span class="p">:</span> <span class="s2">"descargas"</span><span class="p">,</span>
-<span class="nt">"rpc-password"</span><span class="p">:</span> <span class="s2">"12345"</span><span class="p">,</span>
-<span class="nt">"rpc-whitelist-enabled"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+<span class="nt">"download-dir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/dwn/cmp"</span><span class="p">,</span>
+<span class="nt">"incomplete-dir-enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="nt">"incomplete-dir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/dwn/tmp"</span><span class="p">,</span>
+<span class="nt">"rpc-enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="nt">"rpc-bind-address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.0.0.0"</span><span class="p">,</span>
+<span class="nt">"rpc-username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"descargas"</span><span class="p">,</span>
+<span class="nt">"rpc-password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12345"</span><span class="p">,</span>
+<span class="nt">"rpc-whitelist-enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
 <span class="err">...</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -72,22 +72,22 @@ están completas y entonces pasan a /dwn/cmp, y también hacemos que
 podamos gestionar las descargas a traves de http://nuestra-ip:9091
 validándonos con el usuario 'descargas' y contraseña '12345'</p>
 <p><strong>4-</strong> Arrancamos transmission</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo /etc/init.d/transmission-daemon start
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>/etc/init.d/transmission-daemon<span class="w"> </span>start
 <span class="go">[ ok ] Starting bittorrent daemon: trasnsmision-daemon.</span>
 </code></pre></div>
 <p><strong>Bonus</strong>: <a href="http://apuntes.pusku.com/914" target="_blank">Notificaciones</a> cuando se
 finaliza una descarga</p>
 <p><strong>5-</strong> Instalar pyLoad (para descargas directas)</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo aptitude install liblept3
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>aptitude<span class="w"> </span>install<span class="w"> </span>liblept3
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $ </span>sudo aptitude install python python-crypto python-pycurl python-imaging python-openssl tesseract-ocr python-qt4 spidermonkey-bin zip unzip unrar-free
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>aptitude<span class="w"> </span>install<span class="w"> </span>python<span class="w"> </span>python-crypto<span class="w"> </span>python-pycurl<span class="w"> </span>python-imaging<span class="w"> </span>python-openssl<span class="w"> </span>tesseract-ocr<span class="w"> </span>python-qt4<span class="w"> </span>spidermonkey-bin<span class="w"> </span>zip<span class="w"> </span>unzip<span class="w"> </span>unrar-free
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $ </span>wget http://download.pyload.org/pyload-v0.4.9-all.deb
+<span class="gp">pi@bot ~ $ </span>wget<span class="w"> </span>http://download.pyload.org/pyload-v0.4.9-all.deb
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $ </span>sudo dpkg -i pyload-v0.4.9-all.deb
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>dpkg<span class="w"> </span>-i<span class="w"> </span>pyload-v0.4.9-all.deb
 </code></pre></div>
 <p><strong>6-</strong> Configurar pyLoad</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>pyLoadCore -s
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>pyLoadCore<span class="w"> </span>-s
 <span class="go">...</span>
 <span class="gp">#</span><span class="c1"># Revisión del sistema ##</span>
 <span class="go">Versión de Python: OK</span>
@@ -122,10 +122,10 @@ instalado y/o intentar instalarlos individualmente.</p>
 <span class="go">Puerto [8000]: 8000</span>
 </code></pre></div>
 <p><strong>7-</strong> Crear arranque automático</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>crontab -e
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>crontab<span class="w"> </span>-e
 </code></pre></div>
 <p>Añadir la siguiente linea</p>
-<div class="highlight"><pre><span></span><code><span class="err">@reboot pyLoadCore --daemon</span>
+<div class="highlight"><pre><span></span><code><span class="nv">@reboot</span><span class="w"> </span><span class="n">pyLoadCore</span><span class="w"> </span><span class="c1">--daemon</span>
 </code></pre></div>
 <p>Fuente:
 <a href="http://www.electroensaimada.com/torrent.html" target="_blank">electroensaimada.com</a>,

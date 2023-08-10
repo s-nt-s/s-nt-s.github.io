@@ -67,7 +67,7 @@ el sistema enteramente en el router, y usar el usb solo para almacenamiento de d
 </ul>
 <h3>Preparar entorno</h3>
 <p>Siguiendo <a href="https://openwrt.org/docs/guide-user/additional-software/imagebuilder" target="_blank">openwrt.org - imagebuilder</a></p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo apt-get install build-essential libncurses5-dev libncursesw5-dev zlib1g-dev gawk git gettext libssl-dev xsltproc wget unzip python
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>build-essential<span class="w"> </span>libncurses5-dev<span class="w"> </span>libncursesw5-dev<span class="w"> </span>zlib1g-dev<span class="w"> </span>gawk<span class="w"> </span>git<span class="w"> </span>gettext<span class="w"> </span>libssl-dev<span class="w"> </span>xsltproc<span class="w"> </span>wget<span class="w"> </span>unzip<span class="w"> </span>python
 </code></pre></div>
 <p>Navegando por openwrt.org:</p>
 <ul>
@@ -76,12 +76,12 @@ el sistema enteramente en el router, y usar el usb solo para almacenamiento de d
 <li><a href="http://downloads.openwrt.org/releases/19.07.0/targets/ramips/mt7620/" target="_blank">19.07.0 - Carpeta de ramips/mt7620</a></li>
 <li><a href="http://downloads.openwrt.org/releases/19.07.0/targets/ramips/mt7620/openwrt-imagebuilder-19.07.0-ramips-mt7620.Linux-x86_64.tar.xz" target="_blank">19.07.0 - imagebuilder</a></li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>wget <span class="s2">"http://downloads.openwrt.org/releases/19.07.0/targets/ramips/mt7620/openwrt-imagebuilder-19.07.0-ramips-mt7620.Linux-x86_64.tar.xz"</span>
-<span class="gp">$ </span>tar xf *.tar.xz
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>wget<span class="w"> </span><span class="s2">"http://downloads.openwrt.org/releases/19.07.0/targets/ramips/mt7620/openwrt-imagebuilder-19.07.0-ramips-mt7620.Linux-x86_64.tar.xz"</span>
+<span class="gp">$ </span>tar<span class="w"> </span>xf<span class="w"> </span>*.tar.xz
 </code></pre></div>
 <p>o lo que es lo mismo, pero automatizado, <a href="https://github.com/s-nt-s/OpenWrt-Nexx_WT3020F/raw/master/dwn_build.sh" target="_blank"><code>./dwn_build.sh</code></a></p>
 <p>Haciendo <code>make info</code> vemos que el <code>profile</code> que nos corresponde es <code>wt3020-8M</code></p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>make info
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>make<span class="w"> </span>info
 <span class="go">...</span>
 <span class="go">wt3020-8M:</span>
 <span class="go">    Nexx WT3020 (8MB)</span>
@@ -97,15 +97,15 @@ Sirva de ejemplo este extracto donde:</p>
 <li>se define <code>nano</code> como editor por defecto</li>
 <li>se añade la clave pública de la clave privada con la que queremos hacer <code>ssh</code> al rotuer:</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir files
-<span class="gp">$ </span><span class="nb">cd</span> openwrt*/
-<span class="gp">$ </span>ln -s ../files
-<span class="gp">$ </span><span class="nb">cd</span> ..
-<span class="gp">$ </span>mkdir -p files/etc/profile.d/
-<span class="gp">$ </span><span class="nb">echo</span> <span class="s1">'alias getip="wget -q ifconfig.me -O -"'</span> &gt; files/etc/profile.d/alias.sh
-<span class="gp">$ </span><span class="nb">echo</span> <span class="s1">'export EDITOR="nano"'</span> &gt; files/etc/profile.d/export.sh
-<span class="gp">$ </span>mkdir -p files/etc/dropbear/
-<span class="gp">$ </span>cp ~/.ssh/nexx.pub files/etc/dropbear/authorized_keys
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir<span class="w"> </span>files
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>openwrt*/
+<span class="gp">$ </span>ln<span class="w"> </span>-s<span class="w"> </span>../files
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>..
+<span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>files/etc/profile.d/
+<span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="s1">'alias getip="wget -q ifconfig.me -O -"'</span><span class="w"> </span>&gt;<span class="w"> </span>files/etc/profile.d/alias.sh
+<span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="s1">'export EDITOR="nano"'</span><span class="w"> </span>&gt;<span class="w"> </span>files/etc/profile.d/export.sh
+<span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>files/etc/dropbear/
+<span class="gp">$ </span>cp<span class="w"> </span>~/.ssh/nexx.pub<span class="w"> </span>files/etc/dropbear/authorized_keys
 </code></pre></div>
 <p>Y usando <a href="https://openwrt.org/docs/guide-developer/uci-defaults" target="_blank">UCI defaults</a>
 afinamos la configuración.<br/>
@@ -114,8 +114,8 @@ Sirva de ejemplo este extracto donde:</p>
 <li>se cambia la ip</li>
 <li>se elimina el <code>banner</code> que se muestra al logarse en el router</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir -p files/etc/uci-defaults/
-<span class="gp">$ </span>cat &lt;&lt; EOF_cat &gt; files/etc/uci-defaults/99_customizations.sh
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>files/etc/uci-defaults/
+<span class="gp">$ </span>cat<span class="w"> </span>&lt;&lt;<span class="w"> </span>EOF_cat<span class="w"> </span>&gt;<span class="w"> </span>files/etc/uci-defaults/99_customizations.sh
 <span class="gp">#</span><span class="c1">#!/bin/sh</span>
 <span class="gp">#</span><span class="c1"># Cambiar IP</span>
 <span class="go">sed 's/\b192\.168\.1\.1\b/192.168.8.1/g' -i /etc/config/network</span>
@@ -126,9 +126,9 @@ Sirva de ejemplo este extracto donde:</p>
 <p>Ver <a href="https://github.com/s-nt-s/OpenWrt-Nexx_WT3020F/raw/master/files/" target="_blank"><code>files</code> del repositorio</a> para observar el resultado final.</p>
 <h3>Creación de imagen</h3>
 <p>Ejemplo:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir bin
-<span class="gp">$ </span><span class="nb">cd</span> openwrt*/
-<span class="gp">$ </span>make image <span class="nv">PROFILE</span><span class="o">=</span><span class="s2">"wt3020-8M"</span> <span class="nv">PACKAGES</span><span class="o">=</span><span class="s2">"aircrack-ng airmon-ng kmod-usb-storage kmod-fs-ext4 kmod-usb-storage-extras block-mount kmod-scsi-core screen reaver nano uhttpd uhttpd-mod-ubus libiwinfo-lua luci-base luci-app-firewall luci-mod-admin-full luci-theme-bootstrap nodogsplash tcpdump luci-app-opkg luci-proto-ipv6 luci-proto-ppp luci rpcd-mod-rrdns luci shadow-chpasswd ipset"</span> <span class="nv">FILES</span><span class="o">=</span>files/ <span class="nv">BIN_DIR</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>realpath ..<span class="k">)</span><span class="s2">/bin"</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir<span class="w"> </span>bin
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>openwrt*/
+<span class="gp">$ </span>make<span class="w"> </span>image<span class="w"> </span><span class="nv">PROFILE</span><span class="o">=</span><span class="s2">"wt3020-8M"</span><span class="w"> </span><span class="nv">PACKAGES</span><span class="o">=</span><span class="s2">"aircrack-ng airmon-ng kmod-usb-storage kmod-fs-ext4 kmod-usb-storage-extras block-mount kmod-scsi-core screen reaver nano uhttpd uhttpd-mod-ubus libiwinfo-lua luci-base luci-app-firewall luci-mod-admin-full luci-theme-bootstrap nodogsplash tcpdump luci-app-opkg luci-proto-ipv6 luci-proto-ppp luci rpcd-mod-rrdns luci shadow-chpasswd ipset"</span><span class="w"> </span><span class="nv">FILES</span><span class="o">=</span>files/<span class="w"> </span><span class="nv">BIN_DIR</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>realpath<span class="w"> </span>..<span class="k">)</span><span class="s2">/bin"</span>
 </code></pre></div>
 <p>Para no tener que escribir esto cada vez, lo meto en el script <a href="https://github.com/s-nt-s/OpenWrt-Nexx_WT3020F/raw/master/build.sh" target="_blank"><code>build.sh</code></a> que
 además se encarga de crear los ficheros de configuración para definir las claves para <code>root</code> y la red inalámbrica principal (en caso de que exista el fichero <code>env.sh</code>).</p>

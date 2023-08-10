@@ -39,49 +39,49 @@ automatizar una notificación para que se nos avise cada vez que cambie
 la IP</p>
 <p><strong>A) IP fija en la red local</strong></p>
 <p><strong>1-</strong> Definimos la IP que queremos usar:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo nano /etc/network/interfaces
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/network/interfaces
 </code></pre></div>
 <p><code>interfaces</code> ANTES:</p>
-<div class="highlight"><pre><span></span><code><span class="n">auto</span> <span class="n">lo</span>
+<div class="highlight"><pre><span></span><code>auto lo
 
-<span class="n">iface</span> <span class="n">lo</span> <span class="n">inet</span> <span class="n">loopback</span>
-<span class="n">iface</span> <span class="n">eth0</span> <span class="n">inet</span> <span class="n">dhcp</span>
+iface lo inet loopback
+iface eth0 inet dhcp
 
-<span class="n">allow</span><span class="o">-</span><span class="n">hotplug</span> <span class="n">wlan0</span>
-<span class="n">iface</span> <span class="n">wlan0</span> <span class="n">inet</span> <span class="n">manual</span>
-<span class="n">wpa</span><span class="o">-</span><span class="n">roam</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">wpa_supplicant</span><span class="o">/</span><span class="n">wpa_supplicant</span><span class="p">.</span><span class="n">conf</span>
-<span class="n">iface</span> <span class="k">default</span> <span class="n">inet</span> <span class="n">dhcp</span>
+allow-hotplug wlan0
+iface wlan0 inet manual
+wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
+iface default inet dhcp
 </code></pre></div>
 <p>Comentamos la linea 4 para deshabilitar la IP dinámica y añadimos las
 lineas de la 6 a la 9 para configurar nuestra IP estática siendo
 192.168.1.69 el valor elegido.</p>
 <p><code>interfaces</code> DESPUES:</p>
-<div class="highlight"><pre><span></span><code><span class="n">auto</span> <span class="n">lo</span>
+<div class="highlight"><pre><span></span><code><span class="kt">auto</span><span class="w"> </span><span class="nx">lo</span>
 
-<span class="n">iface</span> <span class="n">lo</span> <span class="n">inet</span> <span class="n">loopback</span>
-<span class="o">#</span><span class="n">iface</span> <span class="n">eth0</span> <span class="n">inet</span> <span class="n">dhcp</span>
+<span class="nx">iface</span><span class="w"> </span><span class="nx">lo</span><span class="w"> </span><span class="nx">inet</span><span class="w"> </span><span class="nx">loopback</span>
+<span class="err">#</span><span class="nx">iface</span><span class="w"> </span><span class="nx">eth0</span><span class="w"> </span><span class="nx">inet</span><span class="w"> </span><span class="nx">dhcp</span>
 
-<span class="n">iface</span> <span class="n">eth0</span> <span class="n">inet</span> <span class="k">static</span>
- <span class="n">address</span> <span class="mi">192</span><span class="p">.</span><span class="mi">168</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="mi">69</span>
- <span class="n">netmask</span> <span class="mi">255</span><span class="p">.</span><span class="mi">255</span><span class="p">.</span><span class="mi">255</span><span class="p">.</span><span class="mi">0</span>
- <span class="n">gateway</span> <span class="mi">192</span><span class="p">.</span><span class="mi">168</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="mi">1</span>
+<span class="nx">iface</span><span class="w"> </span><span class="nx">eth0</span><span class="w"> </span><span class="nx">inet</span><span class="w"> </span><span class="nx">static</span>
+<span class="w"> </span><span class="nx">address</span><span class="w"> </span><span class="m m-Double">192.168.1.69</span>
+<span class="w"> </span><span class="nx">netmask</span><span class="w"> </span><span class="m m-Double">255.255.255.0</span>
+<span class="w"> </span><span class="nx">gateway</span><span class="w"> </span><span class="m m-Double">192.168.1.1</span>
 
-<span class="n">allow</span><span class="o">-</span><span class="n">hotplug</span> <span class="n">wlan0</span>
-<span class="n">iface</span> <span class="n">wlan0</span> <span class="n">inet</span> <span class="n">manual</span>
-<span class="n">wpa</span><span class="o">-</span><span class="n">roam</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">wpa_supplicant</span><span class="o">/</span><span class="n">wpa_supplicant</span><span class="p">.</span><span class="n">conf</span>
-<span class="n">iface</span> <span class="k">default</span> <span class="n">inet</span> <span class="n">dhcp</span>
+<span class="nx">allow</span><span class="o">-</span><span class="nx">hotplug</span><span class="w"> </span><span class="nx">wlan0</span>
+<span class="nx">iface</span><span class="w"> </span><span class="nx">wlan0</span><span class="w"> </span><span class="nx">inet</span><span class="w"> </span><span class="nx">manual</span>
+<span class="nx">wpa</span><span class="o">-</span><span class="nx">roam</span><span class="w"> </span><span class="o">/</span><span class="nx">etc</span><span class="o">/</span><span class="nx">wpa_supplicant</span><span class="o">/</span><span class="nx">wpa_supplicant</span><span class="p">.</span><span class="nx">conf</span>
+<span class="nx">iface</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nx">inet</span><span class="w"> </span><span class="nx">dhcp</span>
 </code></pre></div>
 <p><strong>2-</strong> Configuramos el servidor DNS</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo nano /etc/resolv.conf
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/resolv.conf
 </code></pre></div>
 <p>Si en él ya aparece un "nameserver" entonces no es necesario editarlo,
 en caso contrario hay que añadir un servidor DNS (el 8.8.8.8 de Google,
 la del router - "DNS Server Configuration" en <a href="http://192.168.1.1" target="_blank">http://192.168.1.1</a> - o
 la de tu ISP) para que quede, por ejemplo, así:</p>
-<div class="highlight"><pre><span></span><code><span class="err">domain Home</span>
-<span class="err">search Home</span>
-<span class="err">nameserver 87.216.1.65</span>
-<span class="err">nameserver 87.216.1.66</span>
+<div class="highlight"><pre><span></span><code>domain Home
+search Home
+nameserver 87.216.1.65
+nameserver 87.216.1.66
 </code></pre></div>
 <p><strong>B) IP fija en internet</strong></p>
 <p><strong>1-</strong> Registrar una cuenta en <a href="http://www.noip.com/" target="_blank">noip.com</a>y añadir
@@ -89,13 +89,13 @@ un Host a nuestra cuenta.</p>
 <p>Menú -&gt; Hosts/Redirects -&gt; Add a Host</p>
 <p><img alt="noip" src="/images/noip1.png"/></p>
 <p><strong>2-</strong> Instalar el paquete NO-IP en Raspberry Pi</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>wget http://www.no-ip.com/client/linux/noip-duc-linux.tar.gz
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>wget<span class="w"> </span>http://www.no-ip.com/client/linux/noip-duc-linux.tar.gz
 <span class="go">...</span>
-<span class="gp">pi@bot ~ $ </span>tar -zxf noip-duc-linux.tar.gz
-<span class="gp">pi@bot ~ $ </span><span class="nb">cd</span> noip-2.1.9-1/
+<span class="gp">pi@bot ~ $ </span>tar<span class="w"> </span>-zxf<span class="w"> </span>noip-duc-linux.tar.gz
+<span class="gp">pi@bot ~ $ </span><span class="nb">cd</span><span class="w"> </span>noip-2.1.9-1/
 <span class="gp">pi@bot ~/noip-2.1.9-1 $ </span>make
 <span class="go">...</span>
-<span class="gp">pi@bot ~/noip-2.1.9-1 $ </span>sudo make install
+<span class="gp">pi@bot ~/noip-2.1.9-1 $ </span>sudo<span class="w"> </span>make<span class="w"> </span>install
 <span class="go">...</span>
 <span class="go">Please enter the login/email string for no-ip.com nuestro_usuario_noip</span>
 <span class="go">Please enter the password for user 'nuestro_usuario_noip' ******</span>
@@ -103,13 +103,13 @@ un Host a nuestra cuenta.</p>
 <p>Una vez instalado, si necesitas repetir la configuración del paquete
 NO-IP (por ejemplo, porque has añadido nuevos dominios a tu cuenta)
 ejecuta:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo /usr/local/bin/noip2 -C
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>/usr/local/bin/noip2<span class="w"> </span>-C
 </code></pre></div>
 <p><strong>3-</strong> Configurar arranque automático de no-ip</p>
 <p>Creamos el archivo noip2 con el contenido detallado más abajo</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo touch /etc/init.d/noip2
-<span class="gp">pi@bot ~ $ </span>sudo chmod +x /etc/init.d/noip2
-<span class="gp">pi@bot ~ $ </span>sudo nano /etc/init.d/noip2
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>touch<span class="w"> </span>/etc/init.d/noip2
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>/etc/init.d/noip2
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/init.d/noip2
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="ch">#! /bin/bash</span>
 <span class="c1">### BEGIN INIT INFO</span>
@@ -122,12 +122,12 @@ ejecuta:</p>
 <span class="c1"># Description:</span>
 <span class="c1">#</span>
 <span class="c1">### END INIT INFO</span>
-sudo /usr/local/bin/noip2
+sudo<span class="w"> </span>/usr/local/bin/noip2
 </code></pre></div>
 <p>Le damos permisos de ejecución y lo ponemos en la cola de ejecución y
 reiniciamos</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo update-rc.d noip2 defaults
-<span class="gp">pi@bot ~ $ </span>sudo reboot
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>update-rc.d<span class="w"> </span>noip2<span class="w"> </span>defaults
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>reboot
 </code></pre></div>
 <p><strong>Nota</strong>: Algunos routers no permiten acceder a la red local desde ellos
 mismos pasando por internet (<a href="http://en.wikipedia.org/wiki/Network_address_translation#NAT_loopback" target="_blank">NAT
@@ -138,40 +138,40 @@ intentando acceder.</p>
 <p><strong>C) Notificar IP real cada vez que cambie<br/>
 </strong></p>
 <p><strong>1</strong>- Crear comando que nos devuelva nuestra ip</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo touch /usr/local/bin/getip
-<span class="gp">pi@bot ~ $ </span>sudo chmod <span class="m">777</span> /usr/local/bin/getip
-<span class="gp">pi@bot ~ $ </span>sudo nano /usr/local/bin/getip
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>touch<span class="w"> </span>/usr/local/bin/getip
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">777</span><span class="w"> </span>/usr/local/bin/getip
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>nano<span class="w"> </span>/usr/local/bin/getip
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
-<span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>curl -s icanhazip.com<span class="k">)</span>
-<span class="k">if</span> <span class="o">[</span> -z <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>curl -s ifconfig.me<span class="k">)</span>
+<span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>icanhazip.com<span class="k">)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>ifconfig.me<span class="k">)</span>
 <span class="k">fi</span>
-<span class="k">if</span> <span class="o">[</span> -z <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
 <span class="k">fi</span>
-<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span>
-<span class="nb">exit</span> <span class="m">0</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
 </code></pre></div>
 <p><strong>2</strong>- Crear script en /etc/network/if-up.d/</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo touch /etc/network/if-up.d/sendip
-<span class="gp">pi@bot ~ $ </span>sudo chmod +x /etc/network/if-up.d/sendip
-<span class="gp">pi@bot ~ $ </span>sudo nano /etc/network/if-up.d/sendip
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>touch<span class="w"> </span>/etc/network/if-up.d/sendip
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>/etc/network/if-up.d/sendip
+<span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/network/if-up.d/sendip
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 <span class="nv">IP</span><span class="o">=</span><span class="k">$(</span>getip<span class="k">)</span>
-<span class="k">if</span> <span class="o">[</span> -z <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
 <span class="k">fi</span>
-<span class="k">if</span> <span class="o">[</span> -f /tmp/lastip <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nv">LAST</span><span class="o">=</span><span class="k">$(</span>cat /tmp/lastip<span class="k">)</span>
-        <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$LAST</span><span class="s2">"</span> <span class="o">=</span> <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-                <span class="nb">exit</span> <span class="m">0</span>
-        <span class="k">fi</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span>/tmp/lastip<span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nv">LAST</span><span class="o">=</span><span class="k">$(</span>cat<span class="w"> </span>/tmp/lastip<span class="k">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">"</span><span class="nv">$LAST</span><span class="s2">"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                </span><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="k">fi</span>
 <span class="k">fi</span>
-<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span> &gt; /tmp/lastip
-say <span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span>
-<span class="nb">exit</span> <span class="m">0</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span><span class="w"> </span>&gt;<span class="w"> </span>/tmp/lastip
+say<span class="w"> </span><span class="s2">"</span><span class="nv">$IP</span><span class="s2">"</span>
+<span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
 </code></pre></div>
 <p><strong>Nota</strong>: El comando “say” es el implementado en “<a href="http://apuntes.pusku.com/914" target="_blank">Notificaciones xmmp
 desde linux</a>” y podría ser sustituido por

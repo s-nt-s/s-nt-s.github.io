@@ -37,13 +37,13 @@ porque han deshabilitado desde el servidor el acceso EWS</p>
 <p><strong>Solución</strong>: Para reducir las veces que nos vemos obligados a entrar a
 OWA construiremos un script que nos avise de cuando hay un correo nuevo</p>
 <p><strong>1-</strong> Crear el script que visitara OWA por nosotros</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span><span class="nb">cd</span> ~/.owa
-<span class="gp">pi@bot ~ $ </span>touch inbox.txt
-<span class="gp">pi@bot ~ $ </span>touch notif.awk
-<span class="gp">pi@bot ~ $ </span>touch notif.sh
-<span class="gp">pi@bot ~ $ </span>chmod +x notif.sh
-<span class="gp">pi@bot ~ $ </span>nano notif.sh
-<span class="gp">pi@bot ~ $ </span>nano notif.awk
+<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span><span class="nb">cd</span><span class="w"> </span>~/.owa
+<span class="gp">pi@bot ~ $ </span>touch<span class="w"> </span>inbox.txt
+<span class="gp">pi@bot ~ $ </span>touch<span class="w"> </span>notif.awk
+<span class="gp">pi@bot ~ $ </span>touch<span class="w"> </span>notif.sh
+<span class="gp">pi@bot ~ $ </span>chmod<span class="w"> </span>+x<span class="w"> </span>notif.sh
+<span class="gp">pi@bot ~ $ </span>nano<span class="w"> </span>notif.sh
+<span class="gp">pi@bot ~ $ </span>nano<span class="w"> </span>notif.awk
 </code></pre></div>
 <p><code>~/.owa/notif.sh</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
@@ -52,26 +52,26 @@ OWA construiremos un script que nos avise de cuando hay un correo nuevo</p>
 <span class="nv">pas1</span><span class="o">=</span>passorigen
 <span class="nv">url</span><span class="o">=</span>https://mail.ejemplo.com
 
-<span class="nv">out</span><span class="o">=</span><span class="k">$(</span>lynx -auth<span class="o">=</span><span class="nv">$usr1</span>:<span class="nv">$pas1</span> <span class="nv">$url</span> -dump -crawl<span class="k">)</span>
+<span class="nv">out</span><span class="o">=</span><span class="k">$(</span>lynx<span class="w"> </span>-auth<span class="o">=</span><span class="nv">$usr1</span>:<span class="nv">$pas1</span><span class="w"> </span><span class="nv">$url</span><span class="w"> </span>-dump<span class="w"> </span>-crawl<span class="k">)</span>
 
-<span class="k">if</span> <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span> <span class="p">|</span> grep -q <span class="s2">"THE_TITLE:Error"</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span>
-    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">if</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span><span class="s2">"THE_TITLE:Error"</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
 <span class="k">fi</span>
 
-<span class="nv">CWD</span><span class="o">=</span><span class="k">$(</span>dirname <span class="nv">$0</span><span class="k">)</span>
+<span class="nv">CWD</span><span class="o">=</span><span class="k">$(</span>dirname<span class="w"> </span><span class="nv">$0</span><span class="k">)</span>
 
-<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">"--show"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span> <span class="p">|</span> awk -f <span class="nv">$CWD</span>/notif.awk
-    <span class="nb">exit</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"--show"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-f<span class="w"> </span><span class="nv">$CWD</span>/notif.awk
+<span class="w">    </span><span class="nb">exit</span>
 <span class="k">fi</span>
 
-<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span> <span class="p">|</span> awk -f <span class="nv">$CWD</span>/notif.awk <span class="p">|</span> <span class="k">while</span> <span class="nb">read</span> ln<span class="p">;</span> <span class="k">do</span>
-    <span class="k">if</span> grep -q <span class="s2">"</span><span class="nv">$ln</span><span class="s2">"</span> <span class="nv">$CWD</span>/inbox.txt<span class="p">;</span> <span class="k">then</span>
-        <span class="k">continue</span>
-    <span class="k">fi</span>
-    <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$ln</span><span class="s2">"</span> &gt;&gt; <span class="nv">$CWD</span>/inbox.txt
-    sudo say <span class="s2">"</span><span class="nv">$ln</span><span class="s2">"</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$out</span><span class="s2">"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-f<span class="w"> </span><span class="nv">$CWD</span>/notif.awk<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>ln<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span><span class="s2">"</span><span class="nv">$ln</span><span class="s2">"</span><span class="w"> </span><span class="nv">$CWD</span>/inbox.txt<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="k">continue</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$ln</span><span class="s2">"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span><span class="nv">$CWD</span>/inbox.txt
+<span class="w">    </span>sudo<span class="w"> </span>say<span class="w"> </span><span class="s2">"</span><span class="nv">$ln</span><span class="s2">"</span>
 <span class="k">done</span>
 </code></pre></div>
 <p><strong>Nota</strong>: El comando <code>say</code> es el implementado en "<a href="http://apuntes.pusku.com/914" target="_blank">Notificaciones xmmp

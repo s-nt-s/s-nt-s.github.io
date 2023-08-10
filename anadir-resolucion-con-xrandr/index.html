@@ -52,12 +52,12 @@ linux</a> <span class="bubble tag tg_xrandr" title="No hay más entradas con est
 <span class="go">   800x600        60.3     56.2</span>
 <span class="go">   848x480        60.0</span>
 <span class="go">   640x480        59.9</span>
-<span class="gp">user@bot ~ $ </span>cvt <span class="m">1366</span> <span class="m">768</span>
-<span class="gp"># </span>1368x768 <span class="m">59</span>.88 Hz <span class="o">(</span>CVT<span class="o">)</span> hsync: <span class="m">47</span>.79 kHz<span class="p">;</span> pclk: <span class="m">85</span>.25 MHz
+<span class="gp">user@bot ~ $ </span>cvt<span class="w"> </span><span class="m">1366</span><span class="w"> </span><span class="m">768</span>
+<span class="gp"># </span>1368x768<span class="w"> </span><span class="m">59</span>.88<span class="w"> </span>Hz<span class="w"> </span><span class="o">(</span>CVT<span class="o">)</span><span class="w"> </span>hsync:<span class="w"> </span><span class="m">47</span>.79<span class="w"> </span>kHz<span class="p">;</span><span class="w"> </span>pclk:<span class="w"> </span><span class="m">85</span>.25<span class="w"> </span>MHz
 <span class="go">Modeline "1368x768_60.00"   85.25  1368 1440 1576 1784  768 771 781 798 -hsync +vsync</span>
-<span class="gp">user@bot ~ $ </span>xrandr --newmode 1368x768 <span class="m">85</span>.25  <span class="m">1368</span> <span class="m">1440</span> <span class="m">1576</span> <span class="m">1784</span>  <span class="m">768</span> <span class="m">771</span> <span class="m">781</span> <span class="m">798</span> -hsync +vsync
-<span class="gp">user@bot ~ $ </span>xrandr --addmode VGA1 1368x768
-<span class="gp">user@bot ~ $ </span>xrandr --output VGA1 --mode 1368x768
+<span class="gp">user@bot ~ $ </span>xrandr<span class="w"> </span>--newmode<span class="w"> </span>1368x768<span class="w"> </span><span class="m">85</span>.25<span class="w">  </span><span class="m">1368</span><span class="w"> </span><span class="m">1440</span><span class="w"> </span><span class="m">1576</span><span class="w"> </span><span class="m">1784</span><span class="w">  </span><span class="m">768</span><span class="w"> </span><span class="m">771</span><span class="w"> </span><span class="m">781</span><span class="w"> </span><span class="m">798</span><span class="w"> </span>-hsync<span class="w"> </span>+vsync
+<span class="gp">user@bot ~ $ </span>xrandr<span class="w"> </span>--addmode<span class="w"> </span>VGA1<span class="w"> </span>1368x768
+<span class="gp">user@bot ~ $ </span>xrandr<span class="w"> </span>--output<span class="w"> </span>VGA1<span class="w"> </span>--mode<span class="w"> </span>1368x768
 <span class="gp">user@bot ~ $ </span>xrandr
 <span class="go">Screen 0: minimum 320 x 200, current 2390 x 768, maximum 32767 x 32767</span>
 <span class="go">LVDS1 connected 1366x768+0+0 (normal left inverted right x axis y axis) 256mm x 144mm</span>
@@ -75,18 +75,18 @@ linux</a> <span class="bubble tag tg_xrandr" title="No hay más entradas con est
 </code></pre></div>
 <p><strong>Bonus</strong>: Hacer que el comando se repita cada vez que inicia el sistema
 para que no haya que hacerlo a mano cada vez</p>
-<div class="highlight"><pre><span></span><code><span class="gp">user@bot ~ $ </span>sudo gedit /etc/mdm/Init/Default
+<div class="highlight"><pre><span></span><code><span class="gp">user@bot ~ $ </span>sudo<span class="w"> </span>gedit<span class="w"> </span>/etc/mdm/Init/Default
 </code></pre></div>
 <p>Agregamos las nuevas lineas debajo de donde se define el path</p>
 <div class="highlight"><pre><span></span><code>...
 <span class="nv">PATH</span><span class="o">=</span>/usr/bin:<span class="nv">$PATH</span>
 <span class="nv">OLD_IFS</span><span class="o">=</span><span class="nv">$IFS</span>
 
-xrandr --newmode 1368x768 <span class="m">85</span>.25  <span class="m">1368</span> <span class="m">1440</span> <span class="m">1576</span> <span class="m">1784</span>  <span class="m">768</span> <span class="m">771</span> <span class="m">781</span> <span class="m">798</span> -hsync +vsync
-xrandr --addmode VGA1 1368x768
-xrandr --output VGA1 --mode 1368x768
+xrandr<span class="w"> </span>--newmode<span class="w"> </span>1368x768<span class="w"> </span><span class="m">85</span>.25<span class="w">  </span><span class="m">1368</span><span class="w"> </span><span class="m">1440</span><span class="w"> </span><span class="m">1576</span><span class="w"> </span><span class="m">1784</span><span class="w">  </span><span class="m">768</span><span class="w"> </span><span class="m">771</span><span class="w"> </span><span class="m">781</span><span class="w"> </span><span class="m">798</span><span class="w"> </span>-hsync<span class="w"> </span>+vsync
+xrandr<span class="w"> </span>--addmode<span class="w"> </span>VGA1<span class="w"> </span>1368x768
+xrandr<span class="w"> </span>--output<span class="w"> </span>VGA1<span class="w"> </span>--mode<span class="w"> </span>1368x768
 
-mdmwhich <span class="o">()</span> <span class="o">{</span>...
+mdmwhich<span class="w"> </span><span class="o">()</span><span class="w"> </span><span class="o">{</span>...
 </code></pre></div>
 </div><!-- /.entry-content -->
 </article>

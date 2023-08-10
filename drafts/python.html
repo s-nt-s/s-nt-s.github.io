@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Configurar Python para desarrollo</title>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<meta content="#da532c" name="msapplication-TileColor"/>
+<meta content="#ffffff" name="theme-color"/>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/drafts/python.html" rel="bookmark" title="Permalink to Configurar Python para desarrollo">Configurar Python para desarrollo</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2023-05-14T00:00:00+02:00" title="Publicado el 2023-05-14">2023-05-14</time>
+<a class="bubble category ct_programacion" href="/category/programacion.html" title="Hay 6 entradas más sobre Programación">
+Programación</a>
+<a class="bubble tag tg_python" href="/tag/python.html" title="Hay 5 entradas  más sobre python">
+python</a> <span class="bubble tag tg_vscode" title="No hay más entradas con esta etiqueta">vscode</span> </p>
+<p>
+<span class="bubble">57 lineas</span> <span class="bubble wc">191 palabras</span> <span class="bubble wc">1.720 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<h1>Instalación</h1>
+<ul>
+<li><a href="https://github.com/pyenv/pyenv#automatic-installer" target="_blank">pyenv</a></li>
+<li><a href="https://python-poetry.org/docs/#installing-with-the-official-installer" target="_blank">poetry</a></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>curl<span class="w"> </span>https://pyenv.run<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+<span class="gp">$ </span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://install.python-poetry.org<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-
+<span class="gp"># </span>Configurar<span class="w"> </span>que<span class="w"> </span>los<span class="w"> </span>entornos<span class="w"> </span>virutales<span class="w"> </span>se<span class="w"> </span>creen<span class="w"> </span>en<span class="w"> </span>el<span class="w"> </span>directorio<span class="w"> </span>del<span class="w"> </span>proyecto
+<span class="gp">$ </span>poetry<span class="w"> </span>config<span class="w"> </span>virtualenvs.in-project<span class="w"> </span><span class="nb">true</span>
+</code></pre></div>
+<h1>En un proyecto</h1>
+<div class="highlight"><pre><span></span><code># Desde cero
+$ poetry new sample-project
+$ cd sample-project
+# En uno ya creado
+$ cd sample-project
+$ poetry init
+# Ambos casos
+$ poetry add --group dev pytest autopep8 autoflake
+# Si estamos en vcode
+$ mkdir -p .vscode/
+$ cat &lt;&lt;EOT &gt;&gt; .vscode/settings.json
+{
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.formatting.provider": "autopep8",
+    "editor.formatOnSave": true,
+    "python.formatting.autopep8Args": [
+        "--aggressive",
+        "--aggressive"
+    ],
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pydocstyleEnabled": false,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": [
+        "tests"
+    ]
+}
+EOT
+</code></pre></div>
+<h1>pypi y testpypi</h1>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>poetry<span class="w"> </span>config<span class="w"> </span>http-basic.pypi<span class="w"> </span>prod-user<span class="w"> </span>prod-password
+$<span class="w"> </span>poetry<span class="w"> </span>config<span class="w"> </span>repositories.testpypi<span class="w"> </span>https://test.pypi.org/legacy/
+$<span class="w"> </span>poetry<span class="w"> </span>config<span class="w"> </span>http-basic.testpypi<span class="w"> </span>test-user<span class="w"> </span>test-password
+<span class="c1"># publicar en test</span>
+$<span class="w"> </span>poetry<span class="w"> </span>publish<span class="w"> </span>--build<span class="w"> </span>--skip-existing<span class="w"> </span>-r<span class="w"> </span>testpypi
+<span class="c1"># publicar en prod</span>
+$<span class="w"> </span>poetry<span class="w"> </span>publish<span class="w"> </span>--build<span class="w"> </span>--skip-existing
+<span class="c1"># Instalar desde test (solo mirando test)</span>
+$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-i<span class="w"> </span>https://test.pypi.org/simple/<span class="w"> </span>paquete
+<span class="c1"># Instarlar desde prod pero buscando cierto paquete en el index de test</span>
+<span class="c1"># pip install --extra-index-url https://test.pypi.org/simple/ paquete==X.Y.Z</span>
+</code></pre></div>
+<p><strong>Fuentes</strong>: <a href="https://testdriven.io/blog/python-environments/" target="_blank">testdriven.io/blog/python-environments</a>,
+<a href="https://testdriven.io/blog/modern-tdd/" target="_blank">testdriven.io/blog/modern-tdd</a>,
+<a href="https://stackoverflow.com/a/64434542/5204002" target="_blank">stackoverflow.com</a>,
+<a href="https://leanmind.es/es/blog/como-configurar-linter-y-formatter-de-python-en-vscode/" target="_blank">leanmind.es</a>,
+<a href="https://code.visualstudio.com/docs/python/testing" target="_blank">code.visualstudio.com/docs/python/testing</a>,
+<a href="https://towardsdatascience.com/packages-part-2-how-to-publish-test-your-package-on-pypi-with-poetry-9fc7295df1a5" target="_blank">towardsdatascience.com</a>,
+<a href="https://adamj.eu/tech/2019/03/11/pip-install-from-a-git-repository/" target="_blank">adamj.eu</a>,
+<a href="https://stackoverflow.com/a/64254868/5204002" target="_blank">stackoverflow.com</a></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/content/posts/2023-05-14_python.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/drafts/python.html" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>

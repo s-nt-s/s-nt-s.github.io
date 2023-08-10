@@ -118,11 +118,11 @@ variables de <code>pelicanconf.py</code> evitando tener que pasarlas por paráme
     <span class="k">return</span> <span class="n">delimiter</span><span class="p">,</span> <span class="n">replacements</span>
 
 <span class="k">def</span> <span class="nf">replacements_markdown_extension</span><span class="p">(</span><span class="n">pelicanobj</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">,</span> <span class="n">replacements</span><span class="p">):</span>
-    <span class="sd">"""Instantiates a customized Markdown extension"""</span>
+<span class="w">    </span><span class="sd">"""Instantiates a customized Markdown extension"""</span>
     <span class="n">pelicanobj</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">'MARKDOWN'</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">'extensions'</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ExReplace</span><span class="p">(</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">replacements</span><span class="p">))</span>
 
 <span class="k">def</span> <span class="nf">replacements_init</span><span class="p">(</span><span class="n">pelicanobj</span><span class="p">):</span>
-    <span class="sd">"""Loads settings and instantiates the Python Markdown extension"""</span>
+<span class="w">    </span><span class="sd">"""Loads settings and instantiates the Python Markdown extension"""</span>
     <span class="c1"># Process settings</span>
     <span class="n">delimiter</span><span class="p">,</span> <span class="n">replacements</span> <span class="o">=</span> <span class="n">process_settings</span><span class="p">(</span><span class="n">pelicanobj</span><span class="p">)</span>
 
@@ -130,7 +130,7 @@ variables de <code>pelicanconf.py</code> evitando tener que pasarlas por paráme
     <span class="n">replacements_markdown_extension</span><span class="p">(</span><span class="n">pelicanobj</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">register</span><span class="p">():</span>
-    <span class="sd">"""Plugin registration"""</span>
+<span class="w">    </span><span class="sd">"""Plugin registration"""</span>
     <span class="n">signals</span><span class="o">.</span><span class="n">initialized</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">replacements_init</span><span class="p">)</span>
 </code></pre></div>
 <ul>
@@ -142,21 +142,21 @@ variables de <code>pelicanconf.py</code> evitando tener que pasarlas por paráme
 <p>En <code>process_settings</code> vemos como nos es de ayuda tener el objeto <code>pelican</code> disponible,
 de manera que tenemos disponible <code>REPLACEMENTS_CONFIG</code> para encontrar el <code>yaml</code> de configuración (en <code>1</code>)
 y a su vez podemos usar otras variables (en <code>2</code>) de manera que si el <code>yaml</code> es:</p>
-<div class="highlight"><pre><span></span><code><span class="c">DELIMITER: '::'</span>
-<span class="c">PELICAN_SETTINGS: GITHUB_URL DEFAULT_PAGINATION</span>
-<span class="c">LOREM: Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</span>
+<div class="highlight"><pre><span></span><code>DELIMITER: '::'
+PELICAN_SETTINGS: GITHUB_URL DEFAULT_PAGINATION
+LOREM: Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...
 </code></pre></div>
 <p>y tenemos un <code>markdown</code> tal que así:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Este</span><span class="w"> </span><span class="n">blog</span><span class="w"> </span><span class="n">usa</span><span class="w"> </span><span class="n">una</span><span class="w"> </span><span class="n">imaginación</span><span class="w"> </span><span class="n">de</span><span class="w"> </span><span class="o">**::</span><span class="nl">DEFAULT_PAGINATION</span><span class="p">:</span><span class="err">:</span><span class="o">**</span><span class="w"> </span><span class="n">items</span><span class="w"> </span><span class="n">por</span><span class="w"> </span><span class="n">hoja</span><span class="w"> </span><span class="n">y</span><span class="w"></span>
-<span class="n">puedes</span><span class="w"> </span><span class="n">encontrar</span><span class="w"> </span><span class="n">el</span><span class="w"> </span><span class="n">código</span><span class="w"> </span><span class="n">en</span><span class="w"> </span><span class="o">[</span><span class="n">github</span><span class="o">]</span><span class="p">(</span><span class="o">::</span><span class="nl">GITHUB_URL</span><span class="p">:</span><span class="err">:</span><span class="p">)</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code>Este blog usa una imaginación de <span class="gs">**::DEFAULT_PAGINATION::**</span> items por hoja y
+puedes encontrar el código en [<span class="nt">github</span>](<span class="na">::GITHUB_URL::</span>)
 
-<span class="o">::</span><span class="nl">LOREN</span><span class="p">:</span><span class="err">:</span><span class="w"></span>
+::LOREN::
 </code></pre></div>
 <p>se transformara justo antes de ser pasado a <code>html</code> en:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Este</span><span class="w"> </span><span class="n">blog</span><span class="w"> </span><span class="n">usa</span><span class="w"> </span><span class="n">una</span><span class="w"> </span><span class="n">imaginación</span><span class="w"> </span><span class="n">de</span><span class="w"> </span><span class="o">**</span><span class="mi">10</span><span class="o">**</span><span class="w"> </span><span class="n">items</span><span class="w"> </span><span class="n">por</span><span class="w"> </span><span class="n">hoja</span><span class="w"> </span><span class="n">y</span><span class="w"></span>
-<span class="n">puedes</span><span class="w"> </span><span class="n">encontrar</span><span class="w"> </span><span class="n">el</span><span class="w"> </span><span class="n">código</span><span class="w"> </span><span class="n">en</span><span class="w"> </span><span class="o">[</span><span class="n">github</span><span class="o">]</span><span class="p">(</span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">s</span><span class="o">-</span><span class="n">nt</span><span class="o">-</span><span class="n">s</span><span class="o">/</span><span class="n">s</span><span class="o">-</span><span class="n">nt</span><span class="o">-</span><span class="n">s</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span><span class="p">)</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code>Este blog usa una imaginación de <span class="gs">**10**</span> items por hoja y
+puedes encontrar el código en [<span class="nt">github</span>](<span class="na">https://github.com/s-nt-s/s-nt-s.github.io</span>)
 
-<span class="n">Neque</span><span class="w"> </span><span class="n">porro</span><span class="w"> </span><span class="n">quisquam</span><span class="w"> </span><span class="n">est</span><span class="w"> </span><span class="n">qui</span><span class="w"> </span><span class="n">dolorem</span><span class="w"> </span><span class="n">ipsum</span><span class="w"> </span><span class="n">quia</span><span class="w"> </span><span class="n">dolor</span><span class="w"> </span><span class="n">sit</span><span class="w"> </span><span class="n">amet</span><span class="p">,</span><span class="w"> </span><span class="n">consectetur</span><span class="p">,</span><span class="w"> </span><span class="n">adipisci</span><span class="w"> </span><span class="n">velit</span><span class="p">...</span><span class="w"></span>
+Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...
 </code></pre></div>
 <p>y finalmente en el <code>html</code></p>
 <div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Este blog usa una imaginación de <span class="p">&lt;</span><span class="nt">b</span><span class="p">&gt;</span>10<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span> items por hoja y

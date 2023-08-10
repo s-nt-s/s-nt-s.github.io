@@ -54,33 +54,33 @@ al iniciar la imagen docker</li>
 <h2>Pasos</h2>
 <h3>Clave SSH</h3>
 <p>Para crear la clave ssh podemos hacer:</p>
-<div class="highlight"><pre><span></span><code>$ ssh-keygen -t rsa -f ~/.ssh/docker-vpnc -C <span class="s2">"docker-vpnc"</span>
-$ cp ~/.ssh/docker-vpnc.pub config/authorized_keys
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>rsa<span class="w"> </span>-f<span class="w"> </span>~/.ssh/docker-vpnc<span class="w"> </span>-C<span class="w"> </span><span class="s2">"docker-vpnc"</span>
+$<span class="w"> </span>cp<span class="w"> </span>~/.ssh/docker-vpnc.pub<span class="w"> </span>config/authorized_keys
 </code></pre></div>
 <h3>Instalar imagen y servicio</h3>
 <p>Para crear la imagen y arrancarla:</p>
-<div class="highlight"><pre><span></span><code><span class="o">$</span> <span class="n">sudo</span> <span class="o">./</span><span class="n">install</span><span class="o">.</span><span class="n">sh</span>
-<span class="o">$</span> <span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">daemon</span><span class="o">-</span><span class="n">reload</span>
-<span class="o">$</span> <span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">start</span> <span class="n">dvpnc</span><span class="o">.</span><span class="n">service</span>
+<div class="highlight"><pre><span></span><code><span class="o">$</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="o">./</span><span class="n">install</span><span class="o">.</span><span class="n">sh</span>
+<span class="o">$</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">daemon</span><span class="o">-</span><span class="n">reload</span>
+<span class="o">$</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">dvpnc</span><span class="o">.</span><span class="n">service</span>
 </code></pre></div>
 <h3>Ejemplo de uso (~/.ssh/config)</h3>
 <p>Como ejemplo, podemos configurar muestro <code>~/.ssh/config</code> de esta manera:</p>
-<div class="highlight"><pre><span></span><code><span class="k">Host</span> <span class="n">docker</span><span class="o">-</span><span class="n">vpnc</span>
-    <span class="n">HostName</span> <span class="n">localhost</span>
-    <span class="k">User</span> <span class="n">vpnc</span>
-    <span class="n">Port</span> <span class="mi">52022</span>
-    <span class="n">IdentityFile</span> <span class="o">~/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span><span class="n">docker</span><span class="o">-</span><span class="n">vpnc</span>
+<div class="highlight"><pre><span></span><code>Host docker-vpnc
+    HostName localhost
+    User vpnc
+    Port 52022
+    IdentityFile ~/.ssh/docker-vpnc
 
-<span class="k">Host</span> <span class="k">in</span>
-    <span class="n">HostName</span> <span class="mi">10</span><span class="p">.</span><span class="mi">2</span><span class="p">.</span><span class="mi">42</span><span class="p">.</span><span class="mi">162</span>
-    <span class="n">IdentityFile</span> <span class="o">~/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span><span class="k">in</span>
-    <span class="k">User</span> <span class="n">myuser</span>
-    <span class="n">ProxyJump</span> <span class="n">docker</span><span class="o">-</span><span class="n">vpnc</span>
+Host in
+    HostName 10.2.42.162
+    IdentityFile ~/.ssh/in
+    User myuser
+    ProxyJump docker-vpnc
 
-<span class="k">Host</span> <span class="k">out</span>
-    <span class="n">HostName</span> <span class="mi">10</span><span class="p">.</span><span class="mi">2</span><span class="p">.</span><span class="mi">42</span><span class="p">.</span><span class="mi">162</span>
-    <span class="n">IdentityFile</span> <span class="o">~/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span><span class="k">out</span>
-    <span class="k">User</span> <span class="n">myuser</span>
+Host out
+    HostName 10.2.42.162
+    IdentityFile ~/.ssh/out
+    User myuser
 </code></pre></div>
 <p>y cuando queramos entrar a la máquina <code>10.2.42.162</code> que es solo accesible a
 través de la VPN nos bastara con hacer <code>ssh in</code>, mientras que si queremos
