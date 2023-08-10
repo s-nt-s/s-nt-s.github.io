@@ -12,7 +12,7 @@ SOURCE: https://s-nt-s.github.io/meneame.dump/i3/index.html
     </p>
 <ul>
 <li><b>Respuestas</b>: Cada comentario de la persona entrevistada cuenta como 1 respuesta</li>
-<li><b>Preguntas</b>: Cada comentario de los los demás usuarios cuenta como 1 pregunta, excepto aquellos que se realizaron después de la última respuesta</li>
+<li><b>Preguntas</b>: Cada comentario de los demás usuarios cuenta como 1 pregunta, excepto aquellos que se realizaron después de la última respuesta</li>
 <li><b>Contestadas</b>: Porcentaje de preguntas contestadas (pon el ratón encima para ver el numero exacto de respuestas)</li>
 <li><b>Palabras</b>: Suma total de palabras usadas en las respuestas</li>
 <li><b>Karma</b>: Suma total del Karma de las respuestas</li>
