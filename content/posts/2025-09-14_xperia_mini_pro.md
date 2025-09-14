@@ -85,63 +85,6 @@ $ sudo umount /dev/mmcblk0
 
 Si más adelante falla, probar con fat32.
 
-### Preparar opengapps
-
-En el móvil no hay espacio ni siquiera para la versión `opengapps 7.1-pico`
-y además necesitamos remplazar el teclado por defecto
-`Android Keyboard (AOSP)` porque no funciona
-(ver [bug](https://android-review.googlesource.com/c/platform/packages/inputmethods/LatinIME/+/469478)
-y [stackoverflow](https://stackoverflow.com/a/45905581)), por lo tanto
-modificaremos `open_gapps-arm-7.1-pico-20220215.zip` de la siguiente manera:
-
-1. Descargamos `open_gapps-arm-7.1-pico-20220215.zip` de [opengapps](https://opengapps.org/)
-2. Descargamos `open_gapps-arm-7.1-stock-20220215.zip` de [opengapps](https://opengapps.org/)
-3. Descomprimimos ambos zips
-4. Copiamos `open_gapps-arm-7.1-stock-20220215/GApps/keyboardgoogle-arm.tar.lz` a `open_gapps-arm-7.1-pico-20220215/GApps/`
-5. En `open_gapps-arm-7.1-pico-20220215/app_densities.txt` añadimos la linea `GApps/keyboardgoogle-arm/nodpi/`
-6. En `open_gapps-arm-7.1-pico-20220215/app_sizes.txt` añadimos la linea `keyboardgoogle-arm    nodpi    61292`
-7. En `open_gapps-arm-7.1-pico-20220215/installer.sh` añadimos las siguientes lineas al inicio:
-
-```
-cat <<EOT >> /data/gapps-config.txt
-Include
-
-CalSync                 # Install Google Calendar Sync (if Google Calendar is being installed)
-DialerFramework         # Install Dialer Framework (Android 6.0+)
-PackageInstallerGoogle  # Install Package Installer (Android 6.0 only & Android 8.0+)
-KeyboardGoogle          # Necesario porque Android Keyboard (AOSP) no funciona
-
-(LegacyXperiaCenter)
-CMAccount               # Remove CM Account
-CMAudioFX               # Remove CM AudioFX
-CMMusic                 # Remove CM Music
-CMBugReport             # Remove CM Bug Report
-CMSetupWizard           # Remove CM Setup Wizard (see Notes for CMSetupWizard)
-CMUpdater               # Remove CM Updater
-CMWallpapers            # Remove CM Wallpapers
-CMWeatherProvider       # Remove CM Weather Underground
-DashClock               # Remove DashClock Widget (found in certain ROMs)
-Hexo                    # Remove Hexo Libre CM Theme
-LRecorder               # Remove LineageOS Recorder
-LSetupWizard            # Remove LineageOS Setup Wizard
-LUpdater                # Remove LineageOS Updater
-LiveWallpapers          # Remove Stock Live Wallpapers
-Studio                  # Remove Stock Movie Studio
-(Gello)                 # CM WebBrowser
-(BasicDreams)           # Basic Dreams Wallpaper
-(Galaxy)                # Galaxy (also known as BlackHole) Wallpaper
-(Hexo)                  # Hexo Libre Theme
-(HoloSpiral)            # Holo Spiral Wallpaper
-(NoiseField)            # Noise Field Wallpaper
-(Phasebeam)             # Phasebeam Wallpaper
-(PhotoPhase)            # Photo Phase Wallpaper
-(PhotoTable)            # Photo Table Wallpaper
-(LiveWallpapers)        # Stock Live Wallpapers
-EOT
-```
-
-y comprimimos el resultado en un nuevo zip.
-
 ## Desbloquear bootloader
 
 1. En el móvil:
@@ -235,53 +178,22 @@ para entrar en `Recovery mode` y seguir estos pasos:
 $ adb sideload lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip
 ```
 
-13. Repetir pasos 9 al 10 y desde el pc:
-
-```
-# Instalar opengapps (modificadas)
-$ adb sideload open_gapps-arm-7.1-pico-20220215.zip
-```
-
-14. Pulsar en `Reboot / Reiniciar` ignorando cualquier `warning`
+13. Pulsar en `Reboot / Reiniciar` ignorando cualquier `warning`
 
 ## Configuración inicial
 
 1. Seleccionar Español de España
 2. Empecemos
 3. Insertar SIM card: Saltar
-4. Configurar como nuevo
 5. Configurar wifi
-6. Iniciar sesión: tu cuenta gmail
-7. Aceptar términos del servicio
-8. Desmarcar:
-    * Usar copia de seguridad básica
-    * Liberar espacio
-    * Permitir que las apps detecten la ubicación
-    * Enviar datos de uso y diagnostico
 9. Aceptar
-10. Listo
-11. Reiniciar
-12. Ir a `Ajustes -> Información del teléfono`
-13. Pulsar 7 veces sobre `Número de compilación`
-14. Activar `Ajustes -> Opciones de desarrollo -> Depuración USB`
-15. Activar:
+10. Ir a `Ajustes -> Información del teléfono`
+11. Pulsar 7 veces sobre `Número de compilación`
+12. Activar `Ajustes -> Opciones de desarrollo -> Depuración USB`
+13. Activar:
     * Pantalla activa
     * Acceso administrativo: Aplicaciones y ADB
     * Depuración en android
-16. Desde el pc:
-
-```
-$ wget https://f-droid.org/repo/com.simplemobiletools.keyboard_24.apk
-$ adb install com.simplemobiletools.keyboard_24.apk
-Performing Streamed Install
-Success
-```
-
-17. Ir a `Ajustes -> Idiomas en introducción de texto -> Teclado actual`
-18. Activar `Teclado sencillo`
-19. Ir a `Ajustes -> Idiomas en introducción de texto -> Teclado virtual -> Administrar teclados`
-20. Asegurarse de que `Android Keyboard (AOSP)` esta desactivado
-21. Reiniciar
 
 ## Configuración
 
@@ -326,6 +238,19 @@ adb shell settings put system screen_off_timeout 120000
 # Quitar vibración y sonido al pulsar botones
 adb shell settings put system haptic_feedback_enabled 0
 adb shell settings put system sound_effects_enabled 0
+
+# Dejar solo un escritorio
+adb shell
+su
+sqlite3 /data/user/0/com.cyanogenmod.trebuchet/databases/launcher.db
+
+DELETE FROM favorites;
+DELETE FROM workspaceScreens WHERE _id != 0;
+VACUUM;
+.quit
+
+am force-stop com.cyanogenmod.trebuchet
+
 ```
 
 ## Instalar Aplicaciones básicas
@@ -338,7 +263,6 @@ fdroidcl install \
     com.google.zxing.client.android \
     de.stephanlindauer.criticalmaps \
     net.osmand.plus \
-    org.equeim.tremotesf:4057 \
     superfreeze.tool.android \
     com.nononsenseapps.feeder \
     eu.siacs.conversations \
@@ -346,119 +270,15 @@ fdroidcl install \
     org.connectbot \
     at.bitfire.davdroid
 
-# com.simplemobiletools.keyboard
 # https://github.com/AdAway/AdAway/releases/tag/v4.3.6
-wget https://github.com/AdAway/AdAway/releases/download/v4.3.6/AdAway-4.3.6-200726.apk
+wget -q https://github.com/AdAway/AdAway/releases/download/v4.3.6/AdAway-4.3.6-200726.apk
 adb install AdAway-4.3.6-200726.apk
+
+# https://github.com/equeim/tremotesf-android/releases/tag/2.10.2
+wget -q https://github.com/equeim/tremotesf-android/releases/download/2.10.2/app-fdroid-release.apk
+adb install app-fdroid-release.apk
+
+# https://github.com/spacecowboy/Feeder/releases/tag/2.10.2
+wget -q https://github.com/spacecowboy/Feeder/releases/download/2.10.2/app-fdroid-release.apk
+adb install app-fdroid-release.apk
 ```
-
-## Habilitar [Signature Spoofing](https://github.com/microg/GmsCore/wiki/Signature-Spoofing)
-
-```
-wget https://bitbucket.org/JesusFreke/smali/downloads/baksmali-2.5.2.jar
-wget https://bitbucket.org/JesusFreke/smali/downloads/smali-2.5.2.jar
-adb pull /system/framework framework
-cp -r framework framework-backup
-java -jar baksmali-2.5.2.jar x framework/oat/arm/services.odex -d framework/arm/ -d framework/ -o services-new
-java -jar smali-2.5.2.jar a services-new -o classes.dex
-zip -j framework/services.jar classes*.dex
-adb root
-adb shell
-mount -o remount,rw /system
-exit
-adb push framework/services.jar /system/framework
-adb shell
-chmod 0644 /system/framework/services.jar
-chown root:root /system/framework/services.jar
-mount -o remount,ro /system
-exit
-adb reboot
-wget https://downloads.nanolx.org/NanoDroid/Stable/NanoDroid-patcher-23.1.2.20210117.zip
-adb reboot recovery
-# Advanced > ADB Sideload.
-
-
-```
-
-Añadir [`microG F-Droid`](https://microg.org/download.html) a `~/.config/fdroidcl/config.json`: 
-
-```
-{
-    "repos": [
-        {
-            "id": "f-droid",
-            "url": "https://f-droid.org/repo",
-            "enabled": true
-        },
-        {
-            "id": "f-droid-archive",
-            "url": "https://f-droid.org/archive",
-            "enabled": false
-        },
-        {
-            "id": "microG F-Droid",
-            "url": "https://microg.org/fdroid/repo",
-            "enabled": true
-        }
-    ]
-}
-```
-
-Instalar microG y Aurora Store:
-
-```
-fdroidcl update
-fdroidcl install \
-    com.google.android.gms \
-    com.android.vending \
-    com.google.android.gsf \
-    com.aurora.store
-```
-
-https://github.com/mvdan/fdroidcl
-
-Via `wget` y `adb install`:
-
-* https://f-droid.org/F-Droid.apk
-
-Fuentes:
-https://www.youtube.com/watch?v=6t7zuIXvp6w
-https://github.com/Nanolx/NanoDroid/blob/master/doc/DeodexServices.md#odex
-https://forum.fairphone.com/t/fp2-install-opengapps-step-by-step-guide/17524
-https://tech-latest.com/error-70-while-installing-gapps-in-twrp/
-https://github.com/opengapps/opengapps/wiki/Advanced-Features-and-Options
-
-Probar a usar esto:
-https://github.com/opengapps/opengapps/wiki/Advanced-Features-and-Options#downsizing
-es decir,
-bajar el zip de stock y hacer un gapps-config.txt con:
-
-PicoGApps
-
-Include
-
-CalSync                 # Install Google Calendar Sync (if Google Calendar is being installed)
-DialerFramework         # Install Dialer Framework (Android 6.0+)
-KeyboardGoogle          # Necesario porque Android Keyboard (AOSP) no funciona
-
-# Anexo 1: Desbloquear bootlader
-
-Si el valor de [`Bootloader unlock allowed`](https://developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader/how-to-unlock-bootloader/) 
-es distinto de `Yes`:
-
-1. Instala omnius via [Omnius_for_SE.zip](https://omnius-server.com/Omnius/Omnius_for_SE.zip)
-2. Pide una licencia en [kaijousuru discord](https://kaijousuru.com/discord)
-3. Ve a la carpeta donde se ha instalado omnius he instala los drives que necesites
-4. Sigue los pasos del [tutorial 3 de htcmania](https://www.htcmania.com/showthread.php?t=323099)
-
-# Anexo 2: Rootear móvil
-
-Si no hemos podido flashear el móvil, podemos rootearlo como premio de consolación:
-
-1. [Descargar errot](https://www.eroot.net/) para pc
-2. Conectar móvil por usb
-3. Arrancar eroot con wine
-4. Pulsar root y esperar
-
-Cuando haya terminado el móvil tendrá una nueva aplicación
-llamada `Superusuario`
