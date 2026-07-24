@@ -294,8 +294,8 @@ adb shell am start -a android.intent.action.ATTACH_DATA -c android.intent.catego
 # Nombre dispositivo
 adb shell settings put global device_name sk17i
 
-# Usar solo un escritorio
-adb shell settings put secure user_rotation 1
+# Orientación escritorio
+adb shell settings put secure user_rotation 0
 
 # Quitar la notificación de depuración usb
 adb shell settings put global adb_notify 0
@@ -311,11 +311,11 @@ adb shell settings put system transition_animation_scale 0
 adb shell settings put system window_animation_scale 0
 
 # Rendimiento
-adb shell settings put global always_finish_activities 1
+adb shell settings put global always_finish_activities 0
 adb shell settings put global limit_background_processes 0
+adb shell settings put global heads_up_notifications_enabled 0
 adb shell settings put system screensaver_enabled 0
 adb shell settings put system screen_brightness_mode 0
-adb shell settings put global heads_up_notifications_enabled 0
 
 # Mantener encendido cuando esta enchufado
 adb shell settings put global stay_on_while_plugged_in 3
@@ -326,6 +326,15 @@ adb shell settings put system screen_off_timeout 120000
 # Quitar vibración y sonido al pulsar botones
 adb shell settings put system haptic_feedback_enabled 0
 adb shell settings put system sound_effects_enabled 0
+
+# Desactivar el escaneo Wi-Fi permanente
+adb shell settings put global wifi_scan_always_enabled 0
+
+# Desactivar el escaneo Bluetooth
+adb shell settings put global ble_scan_always_enabled 0
+
+# Reducir el registro (logcat)
+adb shell logcat -G 256K
 ```
 
 ## Instalar Aplicaciones básicas
@@ -335,21 +344,53 @@ sudo apt install fdroidcl
 fdroidcl update
 fdroidcl install \
     org.fdroid.fdroid \
-    com.google.zxing.client.android \
-    de.stephanlindauer.criticalmaps \
     net.osmand.plus \
-    org.equeim.tremotesf:4057 \
     superfreeze.tool.android \
     com.nononsenseapps.feeder \
     eu.siacs.conversations \
     org.schabi.newpipe \
     org.connectbot \
-    at.bitfire.davdroid
+    at.bitfire.davdroid \
+    com.cookiegames.smartcookie \
+    com.termoneplus \
+    fr.neamar.kiss
+
+#    de.stephanlindauer.criticalmaps \
+#    com.google.zxing.client.android \
 
 # com.simplemobiletools.keyboard
 # https://github.com/AdAway/AdAway/releases/tag/v4.3.6
 wget https://github.com/AdAway/AdAway/releases/download/v4.3.6/AdAway-4.3.6-200726.apk
 adb install AdAway-4.3.6-200726.apk
+
+# https://github.com/equeim/tremotesf-android/releases/tag/2.10.2
+wget https://github.com/equeim/tremotesf-android/releases/download/2.10.2/app-fdroid-release.apk
+adb install app-fdroid-release.apk
+```
+
+## Deshabilitar aplicaciones
+
+```
+adb shell pm uninstall --user 0 org.legacyxperia.center
+adb shell pm uninstall --user 0 org.lineageos.jelly
+adb shell pm uninstall --user 0 org.cyanogenmod.audiofx
+adb shell pm uninstall --user 0 org.cyanogenmod.cmaudio.service
+adb shell pm uninstall --user 0 com.android.dreams.basic
+adb shell pm uninstall --user 0 com.android.dreams.phototable
+adb shell pm uninstall --user 0 com.android.printspooler
+adb shell pm uninstall --user 0 com.android.printservice.recommendation
+adb shell pm uninstall --user 0 org.cyanogenmod.weatherservice
+adb shell pm uninstall --user 0 org.cyanogenmod.weather.provider
+adb shell pm uninstall --user 0 com.cyanogenmod.lockclock
+adb shell pm uninstall --user 0 com.cyanogenmod.setupwizard
+adb shell pm uninstall --user 0 com.android.cts.ctsshim
+adb shell pm uninstall --user 0 com.android.cts.priv.ctsshim
+adb shell pm uninstall --user 0 com.android.egg
+adb shell pm uninstall --user 0 com.android.bookmarkprovider
+adb shell pm uninstall --user 0 com.android.statementservice
+adb shell pm uninstall --user 0 com.android.htmlviewer
+adb shell pm uninstall --user 0 com.android.onetimeinitializer
+adb shell pm uninstall --user 0 com.cyanogenmod.trebuchet
 ```
 
 ## Habilitar [Signature Spoofing](https://github.com/microg/GmsCore/wiki/Signature-Spoofing)

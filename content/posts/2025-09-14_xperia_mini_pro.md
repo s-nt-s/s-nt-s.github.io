@@ -238,6 +238,8 @@ adb shell settings put system screen_off_timeout 120000
 # Quitar vibración y sonido al pulsar botones
 adb shell settings put system haptic_feedback_enabled 0
 adb shell settings put system sound_effects_enabled 0
+adb shell settings put secure vibrate_on 0
+adb shell settings put secure virtual_keyboard_vibrate 0
 
 # Dejar solo un escritorio
 adb shell
