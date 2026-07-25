@@ -360,11 +360,11 @@ fdroidcl install \
 
 # com.simplemobiletools.keyboard
 # https://github.com/AdAway/AdAway/releases/tag/v4.3.6
-wget https://github.com/AdAway/AdAway/releases/download/v4.3.6/AdAway-4.3.6-200726.apk
+wget -q https://github.com/AdAway/AdAway/releases/download/v4.3.6/AdAway-4.3.6-200726.apk
 adb install AdAway-4.3.6-200726.apk
 
 # https://github.com/equeim/tremotesf-android/releases/tag/2.10.2
-wget https://github.com/equeim/tremotesf-android/releases/download/2.10.2/app-fdroid-release.apk
+wget -q https://github.com/equeim/tremotesf-android/releases/download/2.10.2/app-fdroid-release.apk
 adb install app-fdroid-release.apk
 ```
 
@@ -387,7 +387,6 @@ adb shell pm uninstall --user 0 com.android.cts.ctsshim
 adb shell pm uninstall --user 0 com.android.cts.priv.ctsshim
 adb shell pm uninstall --user 0 com.android.egg
 adb shell pm uninstall --user 0 com.android.bookmarkprovider
-adb shell pm uninstall --user 0 com.android.statementservice
 adb shell pm uninstall --user 0 com.android.htmlviewer
 adb shell pm uninstall --user 0 com.android.onetimeinitializer
 adb shell pm uninstall --user 0 com.cyanogenmod.trebuchet
