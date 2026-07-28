@@ -278,7 +278,11 @@ fdroidcl install \
     at.bitfire.davdroid \
     com.cookiegames.smartcookie \
     com.termoneplus \
-    fr.neamar.kiss
+    fr.neamar.kiss \
+    ws.xsoh.etar \
+    com.fsck.k9 \
+    net.gsantner.markor \
+    org.koreader.launcher.fdroid
 
 # https://github.com/AdAway/AdAway/releases/tag/v4.3.6
 wget -q https://github.com/AdAway/AdAway/releases/download/v4.3.6/AdAway-4.3.6-200726.apk
@@ -297,7 +301,6 @@ adb install app-fdroid-release.apk
 
 ```
 adb shell pm uninstall --user 0 org.legacyxperia.center
-adb shell pm uninstall --user 0 org.lineageos.jelly
 adb shell pm uninstall --user 0 org.cyanogenmod.audiofx
 adb shell pm uninstall --user 0 org.cyanogenmod.cmaudio.service
 adb shell pm uninstall --user 0 com.android.dreams.basic
@@ -315,5 +318,10 @@ adb shell pm uninstall --user 0 com.android.bookmarkprovider
 adb shell pm uninstall --user 0 com.android.htmlviewer
 adb shell pm uninstall --user 0 com.android.onetimeinitializer
 adb shell pm uninstall --user 0 com.cyanogenmod.trebuchet
+adb shell pm uninstall --user 0 com.android.calendar
+adb shell pm uninstall --user 0 com.android.email
+# Finalmente no se elimina porque para conseguir
+# autorización oauth funciona mejor que Smart Cookie Web
+#adb shell pm uninstall --user 0 org.lineageos.jelly
 ```
 

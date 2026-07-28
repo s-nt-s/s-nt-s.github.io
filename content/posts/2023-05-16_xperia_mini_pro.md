@@ -353,7 +353,8 @@ fdroidcl install \
     at.bitfire.davdroid \
     com.cookiegames.smartcookie \
     com.termoneplus \
-    fr.neamar.kiss
+    fr.neamar.kiss \
+    ws.xsoh.etar
 
 #    de.stephanlindauer.criticalmaps \
 #    com.google.zxing.client.android \
@@ -390,6 +391,7 @@ adb shell pm uninstall --user 0 com.android.bookmarkprovider
 adb shell pm uninstall --user 0 com.android.htmlviewer
 adb shell pm uninstall --user 0 com.android.onetimeinitializer
 adb shell pm uninstall --user 0 com.cyanogenmod.trebuchet
+adb shell pm uninstall --user 0 com.android.calendar
 ```
 
 ## Habilitar [Signature Spoofing](https://github.com/microg/GmsCore/wiki/Signature-Spoofing)
