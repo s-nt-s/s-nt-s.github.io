@@ -13,20 +13,12 @@ Status: draft
 * Número de compilación: 4.1.B.0.587
 * [Número de etiqueta tras la batería](https://android.scenebeta.com/archivos/android/Captura3TutorialDesbloquearBootloaderXperiaX8X10MiniX10MiniPro.png): 11W44
 
-(\*) [Para saber si el bootlader es desbloqueable](https://developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader/how-to-unlock-bootloader/) hacer:
-
-1. Marcar `*#*#7378423#*#*`
-2. Ir a `Service info" -> Configuration -> Rooting Status`
-2. Si, y solo si, el campo `Bootloader unlock allowed` es `Yes` entonces es desbloqueable
-
 ## Recursos necesarios
 
 * Tarjeta SD (utilizo una SDGC Philips A1 V10 de 32GB)
 * Imagen lineage-14.1:
     * [lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip](https://mega.nz/folder/bt0VzQDA#6OD6YFjCKYUkX6GRhNOBDg/file/CsEQwSzT) via [mega.nz](https://mega.nz/folder/bt0VzQDA#6OD6YFjCKYUkX6GRhNOBDg/folder/mlcgQD7I)
     * ~~[archive.org -> lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip](https://archive.org/download/LegacyXperia_SEMC_2011/lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip) via [archive.org](https://archive.org/details/LegacyXperia_SEMC_2011)~~ (no funciona según [xda-developers.com](https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-85851293))
-* [eroot](https://www.eroot.net/) [mega.nz](https://mega.nz/file/DgYwWC7K#mYnRH70Lu_PzwIWwvEXc0gykubTbCkgMgDl3MD9Z9Vk)
-* [opengapps](https://opengapps.org/) para `ARM` (aquí se ha usado la versión `7.1-pico`)
 * `adb` y `fastboot` (antes `android-tools-adb` y `android-tools-fastboot` según [xda-developers.com](https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-80979763))
 
 ## Prerrequisitos
@@ -69,8 +61,8 @@ $ fastboot devices
 BX902QUGBW&ZLP    fastboot
 ```
 
-Si no funciona el paso 3 y además el paso 2 dice que el
-bootlader no es desbloqueable no hay nada que hacer. Mala suerte.
+Si no funciona el paso 3, el paso 2 dice que el bootlader no es desbloqueable
+y no ha habido suerte con *el anexo 1* entonces no hay nada que hacer. Aborta misión.
 
 En caso contrario continuar.
 
@@ -85,14 +77,14 @@ $ sudo umount /dev/mmcblk0
 
 Si más adelante falla, probar con fat32.
 
-## Desbloquear bootloader
+## 1. Desbloquear bootloader
 
 1. En el móvil:
     * Marcar `*#*#7378423#*#*`
     * Ir a `Service info" -> Configuration`
     * Anotar el código `IMEI`, ej 358212341608576
 2. Ir a [developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader](https://developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader#unlock-code)
-3. Seleccionar Xperia mini pro
+3. Seleccionar Xperia Mini Pro
 4. Rellenar el campo `IMEI` y pulsar `submit`
 5. Copiar el código de desbloqueo, ej: 056B1123J8211D12
 6. Conectar el móvil por usb
@@ -104,7 +96,7 @@ $ adb devices && adb reboot bootloader && sleep 10 && fastboot devices
 
 # Desbloquear el bootloader (hay que poner 0x seguido del código copiado en el paso 5)
 $ fastboot oem unlock 0x056B1123J8211D12
-                                                   (bootloader) Unlock phone requested
+(bootloader) Unlock phone requested
 (bootloader) Erasing block 0x00002200
 (bootloader) Erasing block 0x00005400
 (bootloader) Erasing block 0x00007600
@@ -122,7 +114,7 @@ OKAY [  3.982s]
 Finished. Total time: 3.982s
 ```
 
-## Flashear el móvil
+## 2. Flashear el móvil
 
 ```console
 # Descomprimir lineage-*.zip (en el pc, no en la sd)
@@ -140,9 +132,9 @@ $ adb devices && adb reboot bootloader && sleep 10 && fastboot devices
 
 # Flashear boot.img
 $ fastboot flash boot boot.img
-Sending 'boot' (7424 KB)                           (bootloader) USB download speed was 3801088kB/s
+Sending 'boot' (7424 KB) (bootloader) USB download speed was 3801088kB/s
 OKAY [  0.838s]
-Writing 'boot'                                     (bootloader) Download buffer format: boot IMG
+Writing 'boot'           (bootloader) Download buffer format: boot IMG
 (bootloader) Flash of partition 'boot' requested
 (bootloader) S1 partID 0x00000003, block 0x00000280-0x000002e3
 (bootloader) Erase operation complete, 0 bad blocks encountered
@@ -180,7 +172,7 @@ $ adb sideload lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip
 
 13. Pulsar en `Reboot / Reiniciar` ignorando cualquier `warning`
 
-## Configuración inicial
+## 3. Configuración inicial
 
 1. Seleccionar Español de España
 2. Empecemos
@@ -195,7 +187,7 @@ $ adb sideload lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip
     * Acceso administrativo: Aplicaciones y ADB
     * Depuración en android
 
-## Configuración
+## 4. Configuración
 
 ```
 # Poner un fondo de pantalla negro
@@ -222,7 +214,7 @@ adb shell settings put global animator_duration_scale 0
 adb shell settings put system transition_animation_scale 0
 adb shell settings put system window_animation_scale 0
 
-# Rendimiento
+# Mejorar rendimiento
 adb shell settings put global always_finish_activities 0
 adb shell settings put global limit_background_processes 0
 adb shell settings put global heads_up_notifications_enabled 0
@@ -263,18 +255,15 @@ VACUUM;
 am force-stop com.cyanogenmod.trebuchet
 ```
 
-## Instalar Aplicaciones básicas
+## 5. Instalar Aplicaciones básicas
 
 ```
 sudo apt install fdroidcl
 fdroidcl update
 fdroidcl install \
-    org.fdroid.fdroid \
     net.osmand.plus \
-    superfreeze.tool.android \
     eu.siacs.conversations \
     org.schabi.newpipe \
-    org.connectbot \
     at.bitfire.davdroid \
     com.cookiegames.smartcookie \
     com.termoneplus \
@@ -282,7 +271,9 @@ fdroidcl install \
     ws.xsoh.etar \
     com.fsck.k9 \
     net.gsantner.markor \
-    org.koreader.launcher.fdroid
+    org.koreader.launcher.fdroid \
+    de.markusfisch.android.binaryeye \
+    com.kunzisoft.keepass.libre
 
 # https://github.com/AdAway/AdAway/releases/tag/v4.3.6
 wget -q https://github.com/AdAway/AdAway/releases/download/v4.3.6/AdAway-4.3.6-200726.apk
@@ -295,9 +286,13 @@ adb install app-fdroid-release.apk
 # https://github.com/spacecowboy/Feeder/releases/tag/2.10.2
 wget -q https://github.com/spacecowboy/Feeder/releases/download/2.10.2/app-fdroid-release.apk
 adb install app-fdroid-release.apk
+
+# https://github.com/s-nt-s/vx-connectbot/releases/tag/1.8.0-30
+wget -q "https://github.com/s-nt-s/vx-connectbot/releases/download/1.8.0-30/VX-ConnectBot-1.8.0.apk"
+adb install VX-ConnectBot-1.8.0.apk
 ```
 
-## Deshabilitar aplicaciones
+## 6. Deshabilitar aplicaciones
 
 ```
 adb shell pm uninstall --user 0 org.legacyxperia.center
@@ -320,8 +315,101 @@ adb shell pm uninstall --user 0 com.android.onetimeinitializer
 adb shell pm uninstall --user 0 com.cyanogenmod.trebuchet
 adb shell pm uninstall --user 0 com.android.calendar
 adb shell pm uninstall --user 0 com.android.email
+
 # Finalmente no se elimina porque para conseguir
 # autorización oauth funciona mejor que Smart Cookie Web
-#adb shell pm uninstall --user 0 org.lineageos.jelly
+# adb shell pm uninstall --user 0 org.lineageos.jelly
 ```
 
+## Anexos
+
+### Anexo 1: ¿Qué hacer si el bootloader no es desbloqueable?
+
+Si el valor de [`Bootloader unlock allowed`](https://developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader/how-to-unlock-bootloader/) 
+es distinto de `Yes`:
+
+1. Instala omnius via [Omnius_for_SE.zip](https://omnius-server.com/Omnius/Omnius_for_SE.zip)
+2. Pide una licencia en [kaijousuru discord](https://kaijousuru.com/discord)
+3. Ve a la carpeta donde se ha instalado omnius he instala los drives que necesites
+4. Sigue los pasos del [tutorial 3 de htcmania](https://www.htcmania.com/showthread.php?t=323099)
+
+### Anexo 2: Rootear móvil
+
+Si no hemos podido flashear el móvil, podemos rootearlo como premio de consolación:
+
+1. [Descargar errot](https://www.eroot.net/) para pc
+2. Conectar móvil por usb
+3. Arrancar eroot con wine
+4. Pulsar root y esperar
+
+Cuando haya terminado el móvil tendrá una nueva aplicación
+llamada `Superusuario`
+
+### Anexo 3: ¿Y las GApps?
+
+El mero hecho de instalar los servicios de Google minimos provoca
+tal consumo de recursos que convierte el telefono en practicamente
+inusable. No recomiendo en absoluto hacerlo.
+
+Aún así, si quieres hacerlo tienes que tener en cuenta que el móvil
+no tiene espacio ni siquiera para la versión `opengapps 7.1-pico`
+y además necesitaras remplazar el teclado por defecto `Android Keyboard (AOSP)` porque no funciona correctamente
+(ver [bug](https://android-review.googlesource.com/c/platform/packages/inputmethods/LatinIME/+/469478) y [stackoverflow](https://stackoverflow.com/a/45905581)), por lo tanto
+tendras que modificar `open_gapps-arm-7.1-pico-20220215.zip` de la siguiente manera:
+
+1. Descarga `open_gapps-arm-7.1-pico-20220215.zip` de [opengapps](https://opengapps.org/)
+2. Descarga `open_gapps-arm-7.1-stock-20220215.zip` de [opengapps](https://opengapps.org/)
+3. Descomprime ambos zips
+4. Copia `open_gapps-arm-7.1-stock-20220215/GApps/keyboardgoogle-arm.tar.lz` a `open_gapps-arm-7.1-pico-20220215/GApps/`
+5. En `open_gapps-arm-7.1-pico-20220215/app_densities.txt` añade la linea `GApps/keyboardgoogle-arm/nodpi/`
+6. En `open_gapps-arm-7.1-pico-20220215/app_sizes.txt` añade la linea `keyboardgoogle-arm    nodpi    61292`
+7. En `open_gapps-arm-7.1-pico-20220215/installer.sh` añade las siguientes lineas al inicio:
+
+```
+cat <<EOT >> /data/gapps-config.txt
+Include
+
+CalSync                 # Install Google Calendar Sync (if Google Calendar is being installed)
+DialerFramework         # Install Dialer Framework (Android 6.0+)
+PackageInstallerGoogle  # Install Package Installer (Android 6.0 only & Android 8.0+)
+KeyboardGoogle          # Necesario porque Android Keyboard (AOSP) no funciona
+
+(LegacyXperiaCenter)
+CMAccount               # Remove CM Account
+CMAudioFX               # Remove CM AudioFX
+CMMusic                 # Remove CM Music
+CMBugReport             # Remove CM Bug Report
+CMSetupWizard           # Remove CM Setup Wizard (see Notes for CMSetupWizard)
+CMUpdater               # Remove CM Updater
+CMWallpapers            # Remove CM Wallpapers
+CMWeatherProvider       # Remove CM Weather Underground
+DashClock               # Remove DashClock Widget (found in certain ROMs)
+Hexo                    # Remove Hexo Libre CM Theme
+LRecorder               # Remove LineageOS Recorder
+LSetupWizard            # Remove LineageOS Setup Wizard
+LUpdater                # Remove LineageOS Updater
+LiveWallpapers          # Remove Stock Live Wallpapers
+Studio                  # Remove Stock Movie Studio
+(Gello)                 # CM WebBrowser
+(BasicDreams)           # Basic Dreams Wallpaper
+(Galaxy)                # Galaxy (also known as BlackHole) Wallpaper
+(Hexo)                  # Hexo Libre Theme
+(HoloSpiral)            # Holo Spiral Wallpaper
+(NoiseField)            # Noise Field Wallpaper
+(Phasebeam)             # Phasebeam Wallpaper
+(PhotoPhase)            # Photo Phase Wallpaper
+(PhotoTable)            # Photo Table Wallpaper
+(LiveWallpapers)        # Stock Live Wallpapers
+EOT
+```
+
+y comprime el resultado en un nuevo zip.
+
+Luego en el paso *2. Flashear el móvil" antes de pulsar en `Reboot / Reiniciar`
+tienes que volver a `Advanced / Avanzado -> ADB Sideload / Carga archivo por ADB`
+y hacer:
+
+```
+# Instalar opengapps (modificadas)
+$ adb sideload open_gapps-arm-7.1-pico-20220215.zip
+```
