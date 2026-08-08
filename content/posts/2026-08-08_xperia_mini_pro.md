@@ -171,7 +171,7 @@ $ adb sideload lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip
 
 Finalmente pulsar en `Reboot / Reiniciar` ignorando cualquier `warning`.
 
-## 3. Configuración inicial
+## 3. Primer arranque
 
 1. Seleccionar Español de España
 2. Empecemos
@@ -287,7 +287,7 @@ wget -q https://github.com/spacecowboy/Feeder/releases/download/2.10.2/app-fdroi
 adb install app-fdroid-release.apk
 
 # https://github.com/s-nt-s/vx-connectbot/releases/tag/1.8.0-30
-wget -q "https://github.com/s-nt-s/vx-connectbot/releases/download/1.8.0-30/VX-ConnectBot-1.8.0.apk"
+wget -q https://github.com/s-nt-s/vx-connectbot/releases/download/1.8.0-30/VX-ConnectBot-1.8.0.apk
 adb install VX-ConnectBot-1.8.0.apk
 ```
 
