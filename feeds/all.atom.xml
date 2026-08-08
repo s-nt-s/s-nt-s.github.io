@@ -1,5 +1,399 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Apuntes</title><link href="https://s-nt-s.github.io/" rel="alternate"></link><link href="https://s-nt-s.github.io/feeds/all.atom.xml" rel="self"></link><id>https://s-nt-s.github.io/</id><updated>2023-02-26T00:00:00+01:00</updated><subtitle>(mejor aquí que en un txt perdido)</subtitle><entry><title>Servidor Gemini en Raspberry</title><link href="https://s-nt-s.github.io/gemini/" rel="alternate"></link><published>2023-02-26T00:00:00+01:00</published><updated>2023-02-26T00:00:00+01:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2023-02-26:/gemini/</id><summary type="html">&lt;p&gt;Este método ha sido probado en una Raspberry Pi 3&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Apuntes</title><link href="https://s-nt-s.github.io/" rel="alternate"></link><link href="https://s-nt-s.github.io/feeds/all.atom.xml" rel="self"></link><id>https://s-nt-s.github.io/</id><updated>2026-08-08T00:00:00+02:00</updated><subtitle>(mejor aquí que en un txt perdido)</subtitle><entry><title>Actualizar Sony Ericsson Xperia Mini Pro</title><link href="https://s-nt-s.github.io/xperia_mini_pro/" rel="alternate"></link><published>2026-08-08T00:00:00+02:00</published><updated>2026-08-08T00:00:00+02:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2026-08-08:/xperia_mini_pro/</id><summary type="html">&lt;h2&gt;Estado inicial&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;PC: Linux mint 21.3 xfce&lt;/li&gt;
+&lt;li&gt;Movil: Sony Ericsson Xperia Mini Pro&lt;/li&gt;
+&lt;li&gt;Número de modelo: SK17i&lt;/li&gt;
+&lt;li&gt;Version de Android: 4.0.4&lt;/li&gt;
+&lt;li&gt;Versión de Kernel: 2.6.32.9-perf BuildUser@BuildHost #1&lt;/li&gt;
+&lt;li&gt;Número de compilación: 4.1.B.0.587&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://android.scenebeta.com/archivos/android/Captura3TutorialDesbloquearBootloaderXperiaX8X10MiniX10MiniPro.png"&gt;Número de etiqueta tras la batería&lt;/a&gt;: 11W44&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Recursos …&lt;/h2&gt;</summary><content type="html">&lt;h2&gt;Estado inicial&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;PC: Linux mint 21.3 xfce&lt;/li&gt;
+&lt;li&gt;Movil: Sony Ericsson Xperia Mini Pro&lt;/li&gt;
+&lt;li&gt;Número de modelo: SK17i&lt;/li&gt;
+&lt;li&gt;Version de Android: 4.0.4&lt;/li&gt;
+&lt;li&gt;Versión de Kernel: 2.6.32.9-perf BuildUser@BuildHost #1&lt;/li&gt;
+&lt;li&gt;Número de compilación: 4.1.B.0.587&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://android.scenebeta.com/archivos/android/Captura3TutorialDesbloquearBootloaderXperiaX8X10MiniX10MiniPro.png"&gt;Número de etiqueta tras la batería&lt;/a&gt;: 11W44&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Recursos necesarios&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Tarjeta SD (utilizo una SDGC Philips A1 V10 de 32GB)&lt;/li&gt;
+&lt;li&gt;Imagen lineage-14.1:&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://mega.nz/folder/bt0VzQDA#6OD6YFjCKYUkX6GRhNOBDg/file/CsEQwSzT"&gt;lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip&lt;/a&gt; via &lt;a href="https://mega.nz/folder/bt0VzQDA#6OD6YFjCKYUkX6GRhNOBDg/folder/mlcgQD7I"&gt;mega.nz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;~~&lt;a href="https://archive.org/download/LegacyXperia_SEMC_2011/lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip"&gt;archive.org -&amp;gt; lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip&lt;/a&gt; via &lt;a href="https://archive.org/details/LegacyXperia_SEMC_2011"&gt;archive.org&lt;/a&gt;~~ (no funciona según &lt;a href="https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-85851293"&gt;xda-developers.com&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;adb&lt;/code&gt; y &lt;code&gt;fastboot&lt;/code&gt; (antes &lt;code&gt;android-tools-adb&lt;/code&gt; y &lt;code&gt;android-tools-fastboot&lt;/code&gt; según &lt;a href="https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-80979763"&gt;xda-developers.com&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Prerrequisitos&lt;/h2&gt;
+&lt;h3&gt;Instalar adb y fastboot&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;adb&lt;span class="w"&gt; &lt;/span&gt;fastboot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Determinar si va a ser posible todo esto&lt;/h3&gt;
+&lt;p&gt;En el móvil:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Activar las opciones de desarrollo:&lt;ul&gt;
+&lt;li&gt;en android 2.3 &lt;code&gt;Ajustes -&amp;gt; Aplicaciones -&amp;gt; Desarrollo -&amp;gt; Depuración USB&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;en android 4 o superior:&lt;ul&gt;
+&lt;li&gt;Ir a &lt;code&gt;Ajustes -&amp;gt; Acerca del teléfono&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Pulsar 7 veces sobre &lt;code&gt;Número de compilación&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Activar &lt;code&gt;Ajustes -&amp;gt; Opciones de desarrollo -&amp;gt; Depuración USB&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader/how-to-unlock-bootloader/"&gt;Verificar que se puede desbloquear el bootloader&lt;/a&gt;:&lt;ul&gt;
+&lt;li&gt;Marcar &lt;code&gt;*#*#7378423#*#*&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Ir a &lt;code&gt;Service info" -&amp;gt; Configuration -&amp;gt; Rooting Status&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;En &lt;code&gt;Bootloader unlock allowed&lt;/code&gt; debe poner &lt;code&gt;Yes&lt;/code&gt; (si no, ver el &lt;em&gt;anexo 1&lt;/em&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Acceder al bootloader:&lt;ul&gt;
+&lt;li&gt;Encender el móvil&lt;/li&gt;
+&lt;li&gt;Conectarlo al ordenador via usb&lt;/li&gt;
+&lt;li&gt;Ejecutar los siguientes comandos&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;adb&lt;span class="w"&gt; &lt;/span&gt;devices
+&lt;span class="go"&gt;* daemon not running; starting now at tcp:5037&lt;/span&gt;
+&lt;span class="go"&gt;* daemon started successfully&lt;/span&gt;
+&lt;span class="go"&gt;List of devices attached&lt;/span&gt;
+&lt;span class="go"&gt;BX902QUGBW    device&lt;/span&gt;
+
+&lt;span class="gp"&gt;$ &lt;/span&gt;adb&lt;span class="w"&gt; &lt;/span&gt;reboot&lt;span class="w"&gt; &lt;/span&gt;bootloader
+
+&lt;span class="gp"&gt;$ &lt;/span&gt;fastboot&lt;span class="w"&gt; &lt;/span&gt;devices
+&lt;span class="go"&gt;BX902QUGBW&amp;amp;ZLP    fastboot&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Si no funciona el paso 3, el paso 2 dice que el bootlader no es desbloqueable
+y no ha habido suerte con &lt;em&gt;el anexo 1&lt;/em&gt; entonces no hay nada que hacer. Aborta misión.&lt;/p&gt;
+&lt;p&gt;En caso contrario continuar.&lt;/p&gt;
+&lt;h3&gt;Formatear SD&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;Formatear&lt;span class="w"&gt; &lt;/span&gt;SD&lt;span class="w"&gt; &lt;/span&gt;con&lt;span class="w"&gt; &lt;/span&gt;una&lt;span class="w"&gt; &lt;/span&gt;única&lt;span class="w"&gt; &lt;/span&gt;partición&lt;span class="w"&gt; &lt;/span&gt;en&lt;span class="w"&gt; &lt;/span&gt;formato&lt;span class="w"&gt; &lt;/span&gt;ext4
+&lt;span class="gp"&gt;$ &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;umount&lt;span class="w"&gt; &lt;/span&gt;/dev/mmcblk0*
+&lt;span class="gp"&gt;$ &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;mkfs&lt;span class="w"&gt; &lt;/span&gt;-t&lt;span class="w"&gt; &lt;/span&gt;fat&lt;span class="w"&gt; &lt;/span&gt;-n&lt;span class="w"&gt; &lt;/span&gt;SK17I&lt;span class="w"&gt; &lt;/span&gt;/dev/mmcblk0
+&lt;span class="gp"&gt;$ &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;umount&lt;span class="w"&gt; &lt;/span&gt;/dev/mmcblk0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Si más adelante falla, probar con fat32.&lt;/p&gt;
+&lt;h2&gt;1. Desbloquear bootloader&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;En el móvil:&lt;ul&gt;
+&lt;li&gt;Marcar &lt;code&gt;*#*#7378423#*#*&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Ir a &lt;code&gt;Service info" -&amp;gt; Configuration&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Anotar el código &lt;code&gt;IMEI&lt;/code&gt;, ej 358212341608576&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Ir a &lt;a href="https://developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader#unlock-code"&gt;developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Seleccionar Xperia Mini Pro&lt;/li&gt;
+&lt;li&gt;Rellenar el campo &lt;code&gt;IMEI&lt;/code&gt; y pulsar &lt;code&gt;submit&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Copiar el código de desbloqueo, ej: 056B1123J8211D12&lt;/li&gt;
+&lt;li&gt;Conectar el móvil por usb&lt;/li&gt;
+&lt;li&gt;Desde el pc:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;Resetear&lt;span class="w"&gt; &lt;/span&gt;el&lt;span class="w"&gt; &lt;/span&gt;móvil&lt;span class="w"&gt; &lt;/span&gt;en&lt;span class="w"&gt; &lt;/span&gt;modo&lt;span class="w"&gt; &lt;/span&gt;bootloader
+&lt;span class="gp"&gt;$ &lt;/span&gt;adb&lt;span class="w"&gt; &lt;/span&gt;devices&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;adb&lt;span class="w"&gt; &lt;/span&gt;reboot&lt;span class="w"&gt; &lt;/span&gt;bootloader&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sleep&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fastboot&lt;span class="w"&gt; &lt;/span&gt;devices
+
+&lt;span class="gp"&gt;# &lt;/span&gt;Desbloquear&lt;span class="w"&gt; &lt;/span&gt;el&lt;span class="w"&gt; &lt;/span&gt;bootloader&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;hay&lt;span class="w"&gt; &lt;/span&gt;que&lt;span class="w"&gt; &lt;/span&gt;poner&lt;span class="w"&gt; &lt;/span&gt;0x&lt;span class="w"&gt; &lt;/span&gt;seguido&lt;span class="w"&gt; &lt;/span&gt;del&lt;span class="w"&gt; &lt;/span&gt;código&lt;span class="w"&gt; &lt;/span&gt;copiado&lt;span class="w"&gt; &lt;/span&gt;en&lt;span class="w"&gt; &lt;/span&gt;el&lt;span class="w"&gt; &lt;/span&gt;paso&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;5&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="gp"&gt;$ &lt;/span&gt;fastboot&lt;span class="w"&gt; &lt;/span&gt;oem&lt;span class="w"&gt; &lt;/span&gt;unlock&lt;span class="w"&gt; &lt;/span&gt;0x056B1123J8211D12
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Unlock phone requested&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erasing block 0x00002200&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erasing block 0x00005400&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erasing block 0x00007600&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erasing block 0x00002300&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erasing block 0x00004300&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erasing block 0x00002300&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erasing block 0x00007800&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erasing block 0x00002300&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erasing block 0x00003400&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erasing block 0x00005400&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erasing block 0x00006400&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erasing block 0x00007600&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erasing block 0x00008600&lt;/span&gt;
+&lt;span class="go"&gt;OKAY [  3.982s]&lt;/span&gt;
+&lt;span class="go"&gt;Finished. Total time: 3.982s&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;2. Flashear el móvil&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;# &lt;/span&gt;Descomprimir&lt;span class="w"&gt; &lt;/span&gt;lineage-*.zip&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;en&lt;span class="w"&gt; &lt;/span&gt;el&lt;span class="w"&gt; &lt;/span&gt;pc,&lt;span class="w"&gt; &lt;/span&gt;no&lt;span class="w"&gt; &lt;/span&gt;en&lt;span class="w"&gt; &lt;/span&gt;la&lt;span class="w"&gt; &lt;/span&gt;sd&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="gp"&gt;$ &lt;/span&gt;unzip&lt;span class="w"&gt; &lt;/span&gt;lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip
+&lt;span class="gp"&gt;$ &lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango
+
+&lt;span class="gp"&gt;# &lt;/span&gt;Conectar&lt;span class="w"&gt; &lt;/span&gt;el&lt;span class="w"&gt; &lt;/span&gt;móvil&lt;span class="w"&gt; &lt;/span&gt;por&lt;span class="w"&gt; &lt;/span&gt;usb&lt;span class="w"&gt; &lt;/span&gt;y&lt;span class="w"&gt; &lt;/span&gt;resetearlo&lt;span class="w"&gt; &lt;/span&gt;en&lt;span class="w"&gt; &lt;/span&gt;modo&lt;span class="w"&gt; &lt;/span&gt;bootloader&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;se&lt;span class="w"&gt; &lt;/span&gt;pondrá&lt;span class="w"&gt; &lt;/span&gt;el&lt;span class="w"&gt; &lt;/span&gt;led&lt;span class="w"&gt; &lt;/span&gt;en&lt;span class="w"&gt; &lt;/span&gt;azul&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="gp"&gt;$ &lt;/span&gt;adb&lt;span class="w"&gt; &lt;/span&gt;devices&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;adb&lt;span class="w"&gt; &lt;/span&gt;reboot&lt;span class="w"&gt; &lt;/span&gt;bootloader&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sleep&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fastboot&lt;span class="w"&gt; &lt;/span&gt;devices
+
+&lt;span class="gp"&gt;# &lt;/span&gt;Alternativa:
+&lt;span class="gp"&gt;# &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;.&lt;span class="w"&gt; &lt;/span&gt;apagar&lt;span class="w"&gt; &lt;/span&gt;totalmente&lt;span class="w"&gt; &lt;/span&gt;el&lt;span class="w"&gt; &lt;/span&gt;móvil
+&lt;span class="gp"&gt;# &lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;.&lt;span class="w"&gt; &lt;/span&gt;Conectar&lt;span class="w"&gt; &lt;/span&gt;el&lt;span class="w"&gt; &lt;/span&gt;cable&lt;span class="w"&gt; &lt;/span&gt;usb&lt;span class="w"&gt; &lt;/span&gt;al&lt;span class="w"&gt; &lt;/span&gt;móvil
+&lt;span class="gp"&gt;# &lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;.&lt;span class="w"&gt; &lt;/span&gt;Mantener&lt;span class="w"&gt; &lt;/span&gt;pulsado&lt;span class="w"&gt; &lt;/span&gt;el&lt;span class="w"&gt; &lt;/span&gt;botón&lt;span class="w"&gt; &lt;/span&gt;de&lt;span class="w"&gt; &lt;/span&gt;subir&lt;span class="w"&gt; &lt;/span&gt;volumen
+&lt;span class="gp"&gt;# &lt;/span&gt;&lt;span class="m"&gt;4&lt;/span&gt;.&lt;span class="w"&gt; &lt;/span&gt;Conectar&lt;span class="w"&gt; &lt;/span&gt;el&lt;span class="w"&gt; &lt;/span&gt;cable&lt;span class="w"&gt; &lt;/span&gt;usb&lt;span class="w"&gt; &lt;/span&gt;al&lt;span class="w"&gt; &lt;/span&gt;pc
+
+&lt;span class="gp"&gt;# &lt;/span&gt;Flashear&lt;span class="w"&gt; &lt;/span&gt;boot.img
+&lt;span class="gp"&gt;$ &lt;/span&gt;fastboot&lt;span class="w"&gt; &lt;/span&gt;flash&lt;span class="w"&gt; &lt;/span&gt;boot&lt;span class="w"&gt; &lt;/span&gt;boot.img
+&lt;span class="go"&gt;Sending 'boot' (7424 KB) (bootloader) USB download speed was 3801088kB/s&lt;/span&gt;
+&lt;span class="go"&gt;OKAY [  0.838s]&lt;/span&gt;
+&lt;span class="go"&gt;Writing 'boot'           (bootloader) Download buffer format: boot IMG&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Flash of partition 'boot' requested&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;S1 partID 0x00000003, block 0x00000280-0x000002e3&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Erase operation complete, 0 bad blocks encountered&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Flashing...&lt;/span&gt;
+&lt;span class="gp gp-VirtualEnv"&gt;(bootloader)&lt;/span&gt; &lt;span class="go"&gt;Flash operation complete&lt;/span&gt;
+&lt;span class="go"&gt;OKAY [  1.447s]&lt;/span&gt;
+&lt;span class="go"&gt;Finished. Total time: 2.302s&lt;/span&gt;
+
+&lt;span class="gp"&gt;# &lt;/span&gt;Reiniciar&lt;span class="w"&gt; &lt;/span&gt;el&lt;span class="w"&gt; &lt;/span&gt;móvil
+&lt;span class="gp"&gt;$ &lt;/span&gt;fastboot&lt;span class="w"&gt; &lt;/span&gt;reboot
+&lt;span class="go"&gt;Rebooting                                          OKAY [  0.001s]&lt;/span&gt;
+&lt;span class="go"&gt;Finished. Total time: 0.051s&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Cuando aparezca el logo de &lt;code&gt;Sony Xperia&lt;/code&gt; pulsar la tecla de bajar volumen
+para entrar en &lt;code&gt;Recovery mode&lt;/code&gt; y seguir estos pasos:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Seleccionar &lt;code&gt;Wipe / Limpiar&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Pulsar en &lt;code&gt;Format Data&lt;/code&gt; y responder &lt;code&gt;yes&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Volver a la pantalla anterior&lt;/li&gt;
+&lt;li&gt;Deslizar para accionar&lt;/li&gt;
+&lt;li&gt;Volver atrás y entrar en &lt;code&gt;Advance Wipe / Limpieza avanzada&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Seleccionar &lt;code&gt;System / Sistema&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Deslizar para accionar&lt;/li&gt;
+&lt;li&gt;Conectar por usb&lt;/li&gt;
+&lt;li&gt;Volver a la pantalla inicial&lt;/li&gt;
+&lt;li&gt;Entrar en &lt;code&gt;Advanced / Avanzado -&amp;gt; ADB Sideload / Carga archivo por ADB&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Deslizar para accionar&lt;/li&gt;
+&lt;li&gt;Desde el pc:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Instalar la rom&lt;/span&gt;
+&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;sideload&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lineage&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;14.1&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;20170514&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;UNOFFICIAL&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;LegacyXperia&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;mango&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zip&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;Pulsar en &lt;code&gt;Reboot / Reiniciar&lt;/code&gt; ignorando cualquier &lt;code&gt;warning&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;3. Configuración inicial&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Seleccionar Español de España&lt;/li&gt;
+&lt;li&gt;Empecemos&lt;/li&gt;
+&lt;li&gt;Insertar SIM card: Saltar&lt;/li&gt;
+&lt;li&gt;Configurar wifi&lt;/li&gt;
+&lt;li&gt;Aceptar&lt;/li&gt;
+&lt;li&gt;Ir a &lt;code&gt;Ajustes -&amp;gt; Información del teléfono&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Pulsar 7 veces sobre &lt;code&gt;Número de compilación&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Activar &lt;code&gt;Ajustes -&amp;gt; Opciones de desarrollo -&amp;gt; Depuración USB&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Activar:&lt;ul&gt;
+&lt;li&gt;Pantalla activa&lt;/li&gt;
+&lt;li&gt;Acceso administrativo: Aplicaciones y ADB&lt;/li&gt;
+&lt;li&gt;Depuración en android&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;4. Configuración&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Poner un fondo de pantalla negro&lt;/span&gt;
+&lt;span class="nb"&gt;convert&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;x1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;xc&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;black&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;black_pixel&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;png&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;push&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;black_pixel&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;png&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sdcard&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;am&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;android&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;intent&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;action&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ATTACH_DATA&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;android&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;intent&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;category&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DEFAULT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"file:///sdcard/black_pixel.png"&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"image/*"&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mimeType&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"image/*"&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Nombre dispositivo&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;global&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;device_name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;sk17i&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Orientación escritorio&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;secure&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;user_rotation&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Quitar la notificación de depuración usb&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;global&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;adb_notify&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Permitir orígenes desconocidos para instalar apps&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;secure&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;install_non_market_apps&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Quitar animaciones&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;global&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;window_animation_scale&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;global&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;transition_animation_scale&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;global&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;animator_duration_scale&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;system&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;transition_animation_scale&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;system&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;window_animation_scale&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Mejorar rendimiento&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;global&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;always_finish_activities&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;global&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;limit_background_processes&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;global&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;heads_up_notifications_enabled&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;system&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;screensaver_enabled&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;system&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;screen_brightness_mode&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Mantener encendido cuando esta enchufado&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;global&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;stay_on_while_plugged_in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Tiempo hasta apagar pantalla&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;system&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;screen_off_timeout&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;120000&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Quitar vibración y sonido al pulsar botones&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;system&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;haptic_feedback_enabled&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;system&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;sound_effects_enabled&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;secure&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;vibrate_on&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;secure&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;virtual_keyboard_vibrate&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Desactivar el escaneo Wi-Fi permanente&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;global&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;wifi_scan_always_enabled&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Desactivar el escaneo Bluetooth&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;global&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ble_scan_always_enabled&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Reducir el registro (logcat)&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;logcat&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;G&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;256&lt;/span&gt;&lt;span class="n"&gt;K&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Dejar solo un escritorio&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;
+&lt;span class="n"&gt;su&lt;/span&gt;
+&lt;span class="n"&gt;sqlite3&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cyanogenmod&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;trebuchet&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;databases&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;launcher&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;
+
+&lt;span class="n"&gt;DELETE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;favorites&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;DELETE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;workspaceScreens&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;_id&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;!=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;VACUUM&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;quit&lt;/span&gt;
+
+&lt;span class="n"&gt;am&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;force&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;stop&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cyanogenmod&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;trebuchet&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;5. Instalar Aplicaciones básicas&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;sudo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;apt&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;fdroidcl&lt;/span&gt;
+&lt;span class="n"&gt;fdroidcl&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;update&lt;/span&gt;
+&lt;span class="n"&gt;fdroidcl&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;net&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;osmand&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plus&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;eu&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;siacs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conversations&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;schabi&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;newpipe&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;at&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bitfire&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;davdroid&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cookiegames&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;smartcookie&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;termoneplus&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;fr&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;neamar&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kiss&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;ws&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xsoh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;etar&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fsck&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;k9&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;net&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gsantner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;markor&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;koreader&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;launcher&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fdroid&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;de&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;markusfisch&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;android&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;binaryeye&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;\
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kunzisoft&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;keepass&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;libre&lt;/span&gt;
+
+&lt;span class="c1"&gt;# https://github.com/AdAway/AdAway/releases/tag/v4.3.6&lt;/span&gt;
+&lt;span class="n"&gt;wget&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;q&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;AdAway&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;AdAway&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;releases&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;download&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;v4&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;3.6&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;AdAway&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;4.3&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;200726.&lt;/span&gt;&lt;span class="n"&gt;apk&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;AdAway&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;4.3&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;200726.&lt;/span&gt;&lt;span class="n"&gt;apk&lt;/span&gt;
+
+&lt;span class="c1"&gt;# https://github.com/equeim/tremotesf-android/releases/tag/2.10.2&lt;/span&gt;
+&lt;span class="n"&gt;wget&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;q&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;equeim&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tremotesf&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;android&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;releases&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;download&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mf"&gt;2.10&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;fdroid&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;release&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apk&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;fdroid&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;release&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apk&lt;/span&gt;
+
+&lt;span class="c1"&gt;# https://github.com/spacecowboy/Feeder/releases/tag/2.10.2&lt;/span&gt;
+&lt;span class="n"&gt;wget&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;q&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;spacecowboy&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Feeder&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;releases&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;download&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mf"&gt;2.10&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;fdroid&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;release&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apk&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;fdroid&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;release&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apk&lt;/span&gt;
+
+&lt;span class="c1"&gt;# https://github.com/s-nt-s/vx-connectbot/releases/tag/1.8.0-30&lt;/span&gt;
+&lt;span class="n"&gt;wget&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;q&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"https://github.com/s-nt-s/vx-connectbot/releases/download/1.8.0-30/VX-ConnectBot-1.8.0.apk"&lt;/span&gt;
+&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;VX&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ConnectBot&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.8&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="n"&gt;apk&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;6. Deshabilitar aplicaciones&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;adb shell pm uninstall --user 0 org.legacyxperia.center
+adb shell pm uninstall --user 0 org.cyanogenmod.audiofx
+adb shell pm uninstall --user 0 org.cyanogenmod.cmaudio.service
+adb shell pm uninstall --user 0 com.android.dreams.basic
+adb shell pm uninstall --user 0 com.android.dreams.phototable
+adb shell pm uninstall --user 0 com.android.printspooler
+adb shell pm uninstall --user 0 com.android.printservice.recommendation
+adb shell pm uninstall --user 0 org.cyanogenmod.weatherservice
+adb shell pm uninstall --user 0 org.cyanogenmod.weather.provider
+adb shell pm uninstall --user 0 com.cyanogenmod.lockclock
+adb shell pm uninstall --user 0 com.cyanogenmod.setupwizard
+adb shell pm uninstall --user 0 com.android.cts.ctsshim
+adb shell pm uninstall --user 0 com.android.cts.priv.ctsshim
+adb shell pm uninstall --user 0 com.android.egg
+adb shell pm uninstall --user 0 com.android.bookmarkprovider
+adb shell pm uninstall --user 0 com.android.htmlviewer
+adb shell pm uninstall --user 0 com.android.onetimeinitializer
+adb shell pm uninstall --user 0 com.cyanogenmod.trebuchet
+adb shell pm uninstall --user 0 com.android.calendar
+adb shell pm uninstall --user 0 com.android.email
+
+# Finalmente no se elimina porque para conseguir
+# autorización oauth funciona mejor que Smart Cookie Web
+# adb shell pm uninstall --user 0 org.lineageos.jelly
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Anexos&lt;/h2&gt;
+&lt;h3&gt;Anexo 1: ¿Qué hacer si el bootloader no es desbloqueable?&lt;/h3&gt;
+&lt;p&gt;Si el valor de &lt;a href="https://developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader/how-to-unlock-bootloader/"&gt;&lt;code&gt;Bootloader unlock allowed&lt;/code&gt;&lt;/a&gt; 
+es distinto de &lt;code&gt;Yes&lt;/code&gt;:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Instala omnius via &lt;a href="https://omnius-server.com/Omnius/Omnius_for_SE.zip"&gt;Omnius_for_SE.zip&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Pide una licencia en &lt;a href="https://kaijousuru.com/discord"&gt;kaijousuru discord&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Ve a la carpeta donde se ha instalado omnius he instala los drives que necesites&lt;/li&gt;
+&lt;li&gt;Sigue los pasos del &lt;a href="https://www.htcmania.com/showthread.php?t=323099"&gt;tutorial 3 de htcmania&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Anexo 2: Rootear móvil&lt;/h3&gt;
+&lt;p&gt;Si no hemos podido flashear el móvil, podemos rootearlo como premio de consolación:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://www.eroot.net/"&gt;Descargar errot&lt;/a&gt; para pc&lt;/li&gt;
+&lt;li&gt;Conectar móvil por usb&lt;/li&gt;
+&lt;li&gt;Arrancar eroot con wine&lt;/li&gt;
+&lt;li&gt;Pulsar root y esperar&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Cuando haya terminado el móvil tendrá una nueva aplicación
+llamada &lt;code&gt;Superusuario&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Anexo 3: ¿Y las GApps?&lt;/h3&gt;
+&lt;p&gt;El mero hecho de instalar los servicios de Google minimos provoca
+tal consumo de recursos que convierte el telefono en practicamente
+inusable. No recomiendo en absoluto hacerlo.&lt;/p&gt;
+&lt;p&gt;Aún así, si quieres hacerlo tienes que tener en cuenta que el móvil
+no tiene espacio ni siquiera para la versión &lt;code&gt;opengapps 7.1-pico&lt;/code&gt;
+y además necesitaras remplazar el teclado por defecto &lt;code&gt;Android Keyboard (AOSP)&lt;/code&gt; porque no funciona correctamente
+(ver &lt;a href="https://android-review.googlesource.com/c/platform/packages/inputmethods/LatinIME/+/469478"&gt;bug&lt;/a&gt; y &lt;a href="https://stackoverflow.com/a/45905581"&gt;stackoverflow&lt;/a&gt;), por lo tanto
+tendras que modificar &lt;code&gt;open_gapps-arm-7.1-pico-20220215.zip&lt;/code&gt; de la siguiente manera:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Descarga &lt;code&gt;open_gapps-arm-7.1-pico-20220215.zip&lt;/code&gt; de &lt;a href="https://opengapps.org/"&gt;opengapps&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Descarga &lt;code&gt;open_gapps-arm-7.1-stock-20220215.zip&lt;/code&gt; de &lt;a href="https://opengapps.org/"&gt;opengapps&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Descomprime ambos zips&lt;/li&gt;
+&lt;li&gt;Copia &lt;code&gt;open_gapps-arm-7.1-stock-20220215/GApps/keyboardgoogle-arm.tar.lz&lt;/code&gt; a &lt;code&gt;open_gapps-arm-7.1-pico-20220215/GApps/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;En &lt;code&gt;open_gapps-arm-7.1-pico-20220215/app_densities.txt&lt;/code&gt; añade la linea &lt;code&gt;GApps/keyboardgoogle-arm/nodpi/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;En &lt;code&gt;open_gapps-arm-7.1-pico-20220215/app_sizes.txt&lt;/code&gt; añade la linea &lt;code&gt;keyboardgoogle-arm    nodpi    61292&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;En &lt;code&gt;open_gapps-arm-7.1-pico-20220215/installer.sh&lt;/code&gt; añade las siguientes lineas al inicio:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;cat&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="nv"&gt;EOT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;data&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;gapps&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;config&lt;/span&gt;.&lt;span class="nv"&gt;txt&lt;/span&gt;
+&lt;span class="k"&gt;Include&lt;/span&gt;
+
+&lt;span class="nv"&gt;CalSync&lt;/span&gt;&lt;span class="w"&gt;                 &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Google&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Calendar&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Sync&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Google&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Calendar&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;is&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;being&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;installed&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;DialerFramework&lt;/span&gt;&lt;span class="w"&gt;         &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Dialer&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Framework&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;Android&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;.&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;PackageInstallerGoogle&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Package&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Installer&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;Android&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;.&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;only&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Android&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;.&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;KeyboardGoogle&lt;/span&gt;&lt;span class="w"&gt;          &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Necesario&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;porque&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Android&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Keyboard&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;AOSP&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;no&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;funciona&lt;/span&gt;
+
+&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;LegacyXperiaCenter&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;CMAccount&lt;/span&gt;&lt;span class="w"&gt;               &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;CM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Account&lt;/span&gt;
+&lt;span class="nv"&gt;CMAudioFX&lt;/span&gt;&lt;span class="w"&gt;               &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;CM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;AudioFX&lt;/span&gt;
+&lt;span class="nv"&gt;CMMusic&lt;/span&gt;&lt;span class="w"&gt;                 &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;CM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Music&lt;/span&gt;
+&lt;span class="nv"&gt;CMBugReport&lt;/span&gt;&lt;span class="w"&gt;             &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;CM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Bug&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Report&lt;/span&gt;
+&lt;span class="nv"&gt;CMSetupWizard&lt;/span&gt;&lt;span class="w"&gt;           &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;CM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Setup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Wizard&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;see&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Notes&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;CMSetupWizard&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;CMUpdater&lt;/span&gt;&lt;span class="w"&gt;               &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;CM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Updater&lt;/span&gt;
+&lt;span class="nv"&gt;CMWallpapers&lt;/span&gt;&lt;span class="w"&gt;            &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;CM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Wallpapers&lt;/span&gt;
+&lt;span class="nv"&gt;CMWeatherProvider&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;CM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Weather&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Underground&lt;/span&gt;
+&lt;span class="nv"&gt;DashClock&lt;/span&gt;&lt;span class="w"&gt;               &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;DashClock&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Widget&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;found&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;certain&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ROMs&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;Hexo&lt;/span&gt;&lt;span class="w"&gt;                    &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Hexo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Libre&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;CM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Theme&lt;/span&gt;
+&lt;span class="nv"&gt;LRecorder&lt;/span&gt;&lt;span class="w"&gt;               &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;LineageOS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Recorder&lt;/span&gt;
+&lt;span class="nv"&gt;LSetupWizard&lt;/span&gt;&lt;span class="w"&gt;            &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;LineageOS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Setup&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Wizard&lt;/span&gt;
+&lt;span class="nv"&gt;LUpdater&lt;/span&gt;&lt;span class="w"&gt;                &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;LineageOS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Updater&lt;/span&gt;
+&lt;span class="nv"&gt;LiveWallpapers&lt;/span&gt;&lt;span class="w"&gt;          &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Stock&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Live&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Wallpapers&lt;/span&gt;
+&lt;span class="nv"&gt;Studio&lt;/span&gt;&lt;span class="w"&gt;                  &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Remove&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Stock&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Movie&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Studio&lt;/span&gt;
+&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;Gello&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt;                 &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;CM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;WebBrowser&lt;/span&gt;
+&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;BasicDreams&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt;           &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Basic&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Dreams&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Wallpaper&lt;/span&gt;
+&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;Galaxy&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt;                &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Galaxy&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;also&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;known&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;BlackHole&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Wallpaper&lt;/span&gt;
+&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;Hexo&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt;                  &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Hexo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Libre&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Theme&lt;/span&gt;
+&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;HoloSpiral&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt;            &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Holo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Spiral&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Wallpaper&lt;/span&gt;
+&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;NoiseField&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt;            &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Noise&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Field&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Wallpaper&lt;/span&gt;
+&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;Phasebeam&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt;             &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Phasebeam&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Wallpaper&lt;/span&gt;
+&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;PhotoPhase&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt;            &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Photo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Phase&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Wallpaper&lt;/span&gt;
+&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;PhotoTable&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt;            &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Photo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Table&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Wallpaper&lt;/span&gt;
+&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;LiveWallpapers&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt;        &lt;/span&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Stock&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Live&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Wallpapers&lt;/span&gt;
+&lt;span class="nv"&gt;EOT&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;y comprime el resultado en un nuevo zip.&lt;/p&gt;
+&lt;p&gt;Luego en el paso *2. Flashear el móvil" antes de pulsar en &lt;code&gt;Reboot / Reiniciar&lt;/code&gt;
+tienes que volver a &lt;code&gt;Advanced / Avanzado -&amp;gt; ADB Sideload / Carga archivo por ADB&lt;/code&gt;
+y hacer:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Instalar opengapps (modificadas)&lt;/span&gt;
+&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;sideload&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;open_gapps&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;arm&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;7.1&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pico&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;20220215.&lt;/span&gt;&lt;span class="n"&gt;zip&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Sistemas"></category><category term="android"></category><category term="linux"></category><category term="mint"></category><category term="xfce"></category></entry><entry><title>Servidor Gemini en Raspberry</title><link href="https://s-nt-s.github.io/gemini/" rel="alternate"></link><published>2023-02-26T00:00:00+01:00</published><updated>2023-02-26T00:00:00+01:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2023-02-26:/gemini/</id><summary type="html">&lt;p&gt;Este método ha sido probado en una Raspberry Pi 3&lt;/p&gt;
 &lt;h2&gt;Estructura de carpetas&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;&lt;span class="nv"&gt;GEMINI_DOMAIN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;replace.by.your.domain.com
 &lt;span class="gp"&gt;$ &lt;/span&gt;mkdir&lt;span class="w"&gt; &lt;/span&gt;-p&lt;span class="w"&gt; &lt;/span&gt;~/gemini/&lt;span class="nv"&gt;$GEMINI_DOMAIN&lt;/span&gt;

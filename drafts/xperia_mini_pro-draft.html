@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Actualizar Sony Ericsson Xperia Mini Pro</title>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<meta content="#da532c" name="msapplication-TileColor"/>
+<meta content="#ffffff" name="theme-color"/>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/drafts/xperia_mini_pro-draft.html" rel="bookmark" title="Permalink to Actualizar Sony Ericsson Xperia Mini Pro">Actualizar Sony Ericsson Xperia Mini Pro</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2023-05-16T00:00:00+02:00" title="Publicado el 2023-05-16">2023-05-16</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 18 entradas más sobre Sistemas">
+Sistemas</a>
+<span class="bubble tag tg_android" title="No hay más entradas con esta etiqueta">android</span> <a class="bubble tag tg_linux" href="/tag/linux.html" title="Hay 20 entradas  más sobre linux">
+linux</a> <a class="bubble tag tg_mint" href="/tag/mint.html" title="Hay 3 entradas  más sobre mint">
+mint</a> <a class="bubble tag tg_xfce" href="/tag/xfce.html" title="Hay 2 entradas  más sobre xfce">
+xfce</a> </p>
+<p>
+<span class="bubble">381 lineas</span> <span class="bubble wc">1.882 palabras</span> <span class="bubble wc">15.558 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<h2>Estado inicial</h2>
+<ul>
+<li>PC: Linux mint 21.3 xfce</li>
+<li>Movil: Sony Ericsson Xperia Mini Pro</li>
+<li>Número de modelo: SK17i</li>
+<li>Version de Android: 4.0.4</li>
+<li>Versión de Kernel: 2.6.32.9-perf BuildUser@BuildHost #1</li>
+<li>Número de compilación: 4.1.B.0.587</li>
+<li><a href="https://android.scenebeta.com/archivos/android/Captura3TutorialDesbloquearBootloaderXperiaX8X10MiniX10MiniPro.png" target="_blank">Número de etiqueta tras la batería</a>: 11W44</li>
+</ul>
+<p>(*) <a href="https://developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader/how-to-unlock-bootloader/" target="_blank">Para saber si el bootlader es desbloqueable</a> hacer:</p>
+<ol>
+<li>Marcar <code>*#*#7378423#*#*</code></li>
+<li>Ir a <code>Service info" -&gt; Configuration -&gt; Rooting Status</code></li>
+<li>Si, y solo si, el campo <code>Bootloader unlock allowed</code> es <code>Yes</code> entonces es desbloqueable</li>
+</ol>
+<h2>Recursos necesarios</h2>
+<ul>
+<li>Tarjeta SD (utilizo una SDGC Philips A1 V10 de 32GB)</li>
+<li>Imagen lineage-14.1:<ul>
+<li><a href="https://mega.nz/folder/bt0VzQDA#6OD6YFjCKYUkX6GRhNOBDg/file/CsEQwSzT" target="_blank">lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip</a> via <a href="https://mega.nz/folder/bt0VzQDA#6OD6YFjCKYUkX6GRhNOBDg/folder/mlcgQD7I" target="_blank">mega.nz</a></li>
+<li>~~<a href="https://archive.org/download/LegacyXperia_SEMC_2011/lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip" target="_blank">archive.org -&gt; lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip</a> via <a href="https://archive.org/details/LegacyXperia_SEMC_2011" target="_blank">archive.org</a>~~ (no funciona según <a href="https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-85851293" target="_blank">xda-developers.com</a>)</li>
+</ul>
+</li>
+<li><a href="https://www.eroot.net/" target="_blank">eroot</a> <a href="https://mega.nz/file/DgYwWC7K#mYnRH70Lu_PzwIWwvEXc0gykubTbCkgMgDl3MD9Z9Vk" target="_blank">mega.nz</a></li>
+<li><a href="https://opengapps.org/" target="_blank">opengapps</a> para <code>ARM</code> (aquí se ha usado la versión <code>7.1-pico</code>)</li>
+<li><code>adb</code> y <code>fastboot</code> (antes <code>android-tools-adb</code> y <code>android-tools-fastboot</code> según <a href="https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-80979763" target="_blank">xda-developers.com</a>)</li>
+</ul>
+<h2>Prerrequisitos</h2>
+<h3>Instalar adb y fastboot</h3>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>adb<span class="w"> </span>fastboot
+</code></pre></div>
+<h3>Determinar si va a ser posible todo esto</h3>
+<p>En el móvil:</p>
+<ol>
+<li>Activar las opciones de desarrollo:<ul>
+<li>en android 2.3 <code>Ajustes -&gt; Aplicaciones -&gt; Desarrollo -&gt; Depuración USB</code></li>
+<li>en android 4 o superior:<ul>
+<li>Ir a <code>Ajustes -&gt; Acerca del teléfono</code></li>
+<li>Pulsar 7 veces sobre <code>Número de compilación</code></li>
+<li>Activar <code>Ajustes -&gt; Opciones de desarrollo -&gt; Depuración USB</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader/how-to-unlock-bootloader/" target="_blank">Verificar que se puede desbloquear el bootloader</a>:<ul>
+<li>Marcar <code>*#*#7378423#*#*</code></li>
+<li>Ir a <code>Service info" -&gt; Configuration -&gt; Rooting Status</code></li>
+<li>En <code>Bootloader unlock allowed</code> debe poner <code>Yes</code> (si no, ver el <em>anexo 1</em>)</li>
+</ul>
+</li>
+<li>Acceder al bootloader:<ul>
+<li>Encender el móvil</li>
+<li>Conectarlo al ordenador via usb</li>
+<li>Ejecutar los siguientes comandos</li>
+</ul>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>adb<span class="w"> </span>devices
+<span class="go">* daemon not running; starting now at tcp:5037</span>
+<span class="go">* daemon started successfully</span>
+<span class="go">List of devices attached</span>
+<span class="go">BX902QUGBW    device</span>
+
+<span class="gp">$ </span>adb<span class="w"> </span>reboot<span class="w"> </span>bootloader
+
+<span class="gp">$ </span>fastboot<span class="w"> </span>devices
+<span class="go">BX902QUGBW&amp;ZLP    fastboot</span>
+</code></pre></div>
+<p>Si no funciona el paso 3 y además el paso 2 dice que el
+bootlader no es desbloqueable no hay nada que hacer. Mala suerte.</p>
+<p>En caso contrario continuar.</p>
+<h3>Formatear SD</h3>
+<div class="highlight"><pre><span></span><code><span class="gp"># </span>Formatear<span class="w"> </span>SD<span class="w"> </span>con<span class="w"> </span>una<span class="w"> </span>única<span class="w"> </span>partición<span class="w"> </span>en<span class="w"> </span>formato<span class="w"> </span>ext4
+<span class="gp">$ </span>sudo<span class="w"> </span>umount<span class="w"> </span>/dev/mmcblk0*
+<span class="gp">$ </span>sudo<span class="w"> </span>mkfs<span class="w"> </span>-t<span class="w"> </span>fat<span class="w"> </span>-n<span class="w"> </span>SK17I<span class="w"> </span>/dev/mmcblk0
+<span class="gp">$ </span>sudo<span class="w"> </span>umount<span class="w"> </span>/dev/mmcblk0
+</code></pre></div>
+<p>Si más adelante falla, probar con fat32.</p>
+<h3>Preparar opengapps</h3>
+<p>En el móvil no hay espacio ni siquiera para la versión <code>opengapps 7.1-pico</code>
+y además necesitamos remplazar el teclado por defecto
+<code>Android Keyboard (AOSP)</code> porque no funciona
+(ver <a href="https://android-review.googlesource.com/c/platform/packages/inputmethods/LatinIME/+/469478" target="_blank">bug</a>
+y <a href="https://stackoverflow.com/a/45905581" target="_blank">stackoverflow</a>), por lo tanto
+modificaremos <code>open_gapps-arm-7.1-pico-20220215.zip</code> de la siguiente manera:</p>
+<ol>
+<li>Descargamos <code>open_gapps-arm-7.1-pico-20220215.zip</code> de <a href="https://opengapps.org/" target="_blank">opengapps</a></li>
+<li>Descargamos <code>open_gapps-arm-7.1-stock-20220215.zip</code> de <a href="https://opengapps.org/" target="_blank">opengapps</a></li>
+<li>Descomprimimos ambos zips</li>
+<li>Copiamos <code>open_gapps-arm-7.1-stock-20220215/GApps/keyboardgoogle-arm.tar.lz</code> a <code>open_gapps-arm-7.1-pico-20220215/GApps/</code></li>
+<li>En <code>open_gapps-arm-7.1-pico-20220215/app_densities.txt</code> añadimos la linea <code>GApps/keyboardgoogle-arm/nodpi/</code></li>
+<li>En <code>open_gapps-arm-7.1-pico-20220215/app_sizes.txt</code> añadimos la linea <code>keyboardgoogle-arm    nodpi    61292</code></li>
+<li>En <code>open_gapps-arm-7.1-pico-20220215/installer.sh</code> añadimos las siguientes lineas al inicio:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nv">cat</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="nv">EOT</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">/</span><span class="nv">data</span><span class="o">/</span><span class="nv">gapps</span><span class="o">-</span><span class="nv">config</span>.<span class="nv">txt</span>
+<span class="k">Include</span>
+
+<span class="nv">CalSync</span><span class="w">                 </span>#<span class="w"> </span><span class="nv">Install</span><span class="w"> </span><span class="nv">Google</span><span class="w"> </span><span class="nv">Calendar</span><span class="w"> </span><span class="nv">Sync</span><span class="w"> </span><span class="ss">(</span><span class="k">if</span><span class="w"> </span><span class="nv">Google</span><span class="w"> </span><span class="nv">Calendar</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">being</span><span class="w"> </span><span class="nv">installed</span><span class="ss">)</span>
+<span class="nv">DialerFramework</span><span class="w">         </span>#<span class="w"> </span><span class="nv">Install</span><span class="w"> </span><span class="nv">Dialer</span><span class="w"> </span><span class="nv">Framework</span><span class="w"> </span><span class="ss">(</span><span class="nv">Android</span><span class="w"> </span><span class="mi">6</span>.<span class="mi">0</span><span class="o">+</span><span class="ss">)</span>
+<span class="nv">PackageInstallerGoogle</span><span class="w">  </span>#<span class="w"> </span><span class="nv">Install</span><span class="w"> </span><span class="nv">Package</span><span class="w"> </span><span class="nv">Installer</span><span class="w"> </span><span class="ss">(</span><span class="nv">Android</span><span class="w"> </span><span class="mi">6</span>.<span class="mi">0</span><span class="w"> </span><span class="nv">only</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">Android</span><span class="w"> </span><span class="mi">8</span>.<span class="mi">0</span><span class="o">+</span><span class="ss">)</span>
+<span class="nv">KeyboardGoogle</span><span class="w">          </span>#<span class="w"> </span><span class="nv">Necesario</span><span class="w"> </span><span class="nv">porque</span><span class="w"> </span><span class="nv">Android</span><span class="w"> </span><span class="nv">Keyboard</span><span class="w"> </span><span class="ss">(</span><span class="nv">AOSP</span><span class="ss">)</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">funciona</span>
+
+<span class="ss">(</span><span class="nv">LegacyXperiaCenter</span><span class="ss">)</span>
+<span class="nv">CMAccount</span><span class="w">               </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">CM</span><span class="w"> </span><span class="nv">Account</span>
+<span class="nv">CMAudioFX</span><span class="w">               </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">CM</span><span class="w"> </span><span class="nv">AudioFX</span>
+<span class="nv">CMMusic</span><span class="w">                 </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">CM</span><span class="w"> </span><span class="nv">Music</span>
+<span class="nv">CMBugReport</span><span class="w">             </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">CM</span><span class="w"> </span><span class="nv">Bug</span><span class="w"> </span><span class="nv">Report</span>
+<span class="nv">CMSetupWizard</span><span class="w">           </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">CM</span><span class="w"> </span><span class="nv">Setup</span><span class="w"> </span><span class="nv">Wizard</span><span class="w"> </span><span class="ss">(</span><span class="nv">see</span><span class="w"> </span><span class="nv">Notes</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">CMSetupWizard</span><span class="ss">)</span>
+<span class="nv">CMUpdater</span><span class="w">               </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">CM</span><span class="w"> </span><span class="nv">Updater</span>
+<span class="nv">CMWallpapers</span><span class="w">            </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">CM</span><span class="w"> </span><span class="nv">Wallpapers</span>
+<span class="nv">CMWeatherProvider</span><span class="w">       </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">CM</span><span class="w"> </span><span class="nv">Weather</span><span class="w"> </span><span class="nv">Underground</span>
+<span class="nv">DashClock</span><span class="w">               </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">DashClock</span><span class="w"> </span><span class="nv">Widget</span><span class="w"> </span><span class="ss">(</span><span class="nv">found</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">certain</span><span class="w"> </span><span class="nv">ROMs</span><span class="ss">)</span>
+<span class="nv">Hexo</span><span class="w">                    </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">Hexo</span><span class="w"> </span><span class="nv">Libre</span><span class="w"> </span><span class="nv">CM</span><span class="w"> </span><span class="nv">Theme</span>
+<span class="nv">LRecorder</span><span class="w">               </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">LineageOS</span><span class="w"> </span><span class="nv">Recorder</span>
+<span class="nv">LSetupWizard</span><span class="w">            </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">LineageOS</span><span class="w"> </span><span class="nv">Setup</span><span class="w"> </span><span class="nv">Wizard</span>
+<span class="nv">LUpdater</span><span class="w">                </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">LineageOS</span><span class="w"> </span><span class="nv">Updater</span>
+<span class="nv">LiveWallpapers</span><span class="w">          </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">Stock</span><span class="w"> </span><span class="nv">Live</span><span class="w"> </span><span class="nv">Wallpapers</span>
+<span class="nv">Studio</span><span class="w">                  </span>#<span class="w"> </span><span class="nv">Remove</span><span class="w"> </span><span class="nv">Stock</span><span class="w"> </span><span class="nv">Movie</span><span class="w"> </span><span class="nv">Studio</span>
+<span class="ss">(</span><span class="nv">Gello</span><span class="ss">)</span><span class="w">                 </span>#<span class="w"> </span><span class="nv">CM</span><span class="w"> </span><span class="nv">WebBrowser</span>
+<span class="ss">(</span><span class="nv">BasicDreams</span><span class="ss">)</span><span class="w">           </span>#<span class="w"> </span><span class="nv">Basic</span><span class="w"> </span><span class="nv">Dreams</span><span class="w"> </span><span class="nv">Wallpaper</span>
+<span class="ss">(</span><span class="nv">Galaxy</span><span class="ss">)</span><span class="w">                </span>#<span class="w"> </span><span class="nv">Galaxy</span><span class="w"> </span><span class="ss">(</span><span class="nv">also</span><span class="w"> </span><span class="nv">known</span><span class="w"> </span><span class="nv">as</span><span class="w"> </span><span class="nv">BlackHole</span><span class="ss">)</span><span class="w"> </span><span class="nv">Wallpaper</span>
+<span class="ss">(</span><span class="nv">Hexo</span><span class="ss">)</span><span class="w">                  </span>#<span class="w"> </span><span class="nv">Hexo</span><span class="w"> </span><span class="nv">Libre</span><span class="w"> </span><span class="nv">Theme</span>
+<span class="ss">(</span><span class="nv">HoloSpiral</span><span class="ss">)</span><span class="w">            </span>#<span class="w"> </span><span class="nv">Holo</span><span class="w"> </span><span class="nv">Spiral</span><span class="w"> </span><span class="nv">Wallpaper</span>
+<span class="ss">(</span><span class="nv">NoiseField</span><span class="ss">)</span><span class="w">            </span>#<span class="w"> </span><span class="nv">Noise</span><span class="w"> </span><span class="nv">Field</span><span class="w"> </span><span class="nv">Wallpaper</span>
+<span class="ss">(</span><span class="nv">Phasebeam</span><span class="ss">)</span><span class="w">             </span>#<span class="w"> </span><span class="nv">Phasebeam</span><span class="w"> </span><span class="nv">Wallpaper</span>
+<span class="ss">(</span><span class="nv">PhotoPhase</span><span class="ss">)</span><span class="w">            </span>#<span class="w"> </span><span class="nv">Photo</span><span class="w"> </span><span class="nv">Phase</span><span class="w"> </span><span class="nv">Wallpaper</span>
+<span class="ss">(</span><span class="nv">PhotoTable</span><span class="ss">)</span><span class="w">            </span>#<span class="w"> </span><span class="nv">Photo</span><span class="w"> </span><span class="nv">Table</span><span class="w"> </span><span class="nv">Wallpaper</span>
+<span class="ss">(</span><span class="nv">LiveWallpapers</span><span class="ss">)</span><span class="w">        </span>#<span class="w"> </span><span class="nv">Stock</span><span class="w"> </span><span class="nv">Live</span><span class="w"> </span><span class="nv">Wallpapers</span>
+<span class="nv">EOT</span>
+</code></pre></div>
+<p>y comprimimos el resultado en un nuevo zip.</p>
+<h2>Desbloquear bootloader</h2>
+<ol>
+<li>En el móvil:<ul>
+<li>Marcar <code>*#*#7378423#*#*</code></li>
+<li>Ir a <code>Service info" -&gt; Configuration</code></li>
+<li>Anotar el código <code>IMEI</code>, ej 358212341608576</li>
+</ul>
+</li>
+<li>Ir a <a href="https://developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader#unlock-code" target="_blank">developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader</a></li>
+<li>Seleccionar Xperia mini pro</li>
+<li>Rellenar el campo <code>IMEI</code> y pulsar <code>submit</code></li>
+<li>Copiar el código de desbloqueo, ej: 056B1123J8211D12</li>
+<li>Conectar el móvil por usb</li>
+<li>Desde el pc:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="gp"># </span>Resetear<span class="w"> </span>el<span class="w"> </span>móvil<span class="w"> </span>en<span class="w"> </span>modo<span class="w"> </span>bootloader
+<span class="gp">$ </span>adb<span class="w"> </span>devices<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>adb<span class="w"> </span>reboot<span class="w"> </span>bootloader<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>fastboot<span class="w"> </span>devices
+
+<span class="gp"># </span>Desbloquear<span class="w"> </span>el<span class="w"> </span>bootloader<span class="w"> </span><span class="o">(</span>hay<span class="w"> </span>que<span class="w"> </span>poner<span class="w"> </span>0x<span class="w"> </span>seguido<span class="w"> </span>del<span class="w"> </span>código<span class="w"> </span>copiado<span class="w"> </span>en<span class="w"> </span>el<span class="w"> </span>paso<span class="w"> </span><span class="m">5</span><span class="o">)</span>
+<span class="gp">$ </span>fastboot<span class="w"> </span>oem<span class="w"> </span>unlock<span class="w"> </span>0x056B1123J8211D12
+<span class="go">                                                   (bootloader) Unlock phone requested</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00002200</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00005400</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00007600</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00002300</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00004300</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00002300</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00007800</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00002300</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00003400</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00005400</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00006400</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00007600</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00008600</span>
+<span class="go">OKAY [  3.982s]</span>
+<span class="go">Finished. Total time: 3.982s</span>
+</code></pre></div>
+<h2>Flashear el móvil</h2>
+<div class="highlight"><pre><span></span><code><span class="gp"># </span>Descomprimir<span class="w"> </span>lineage-*.zip<span class="w"> </span><span class="o">(</span>en<span class="w"> </span>el<span class="w"> </span>pc,<span class="w"> </span>no<span class="w"> </span>en<span class="w"> </span>la<span class="w"> </span>sd<span class="o">)</span>
+<span class="gp">$ </span>unzip<span class="w"> </span>lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango
+
+<span class="gp"># </span>Conectar<span class="w"> </span>el<span class="w"> </span>móvil<span class="w"> </span>por<span class="w"> </span>usb<span class="w"> </span>y<span class="w"> </span>resetearlo<span class="w"> </span>en<span class="w"> </span>modo<span class="w"> </span>bootloader<span class="w"> </span><span class="o">(</span>se<span class="w"> </span>pondrá<span class="w"> </span>el<span class="w"> </span>led<span class="w"> </span>en<span class="w"> </span>azul<span class="o">)</span>
+<span class="gp">$ </span>adb<span class="w"> </span>devices<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>adb<span class="w"> </span>reboot<span class="w"> </span>bootloader<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>fastboot<span class="w"> </span>devices
+
+<span class="gp"># </span>Alternativa:
+<span class="gp"># </span><span class="m">1</span>.<span class="w"> </span>apagar<span class="w"> </span>totalmente<span class="w"> </span>el<span class="w"> </span>móvil
+<span class="gp"># </span><span class="m">2</span>.<span class="w"> </span>Conectar<span class="w"> </span>el<span class="w"> </span>cable<span class="w"> </span>usb<span class="w"> </span>al<span class="w"> </span>móvil
+<span class="gp"># </span><span class="m">3</span>.<span class="w"> </span>Mantener<span class="w"> </span>pulsado<span class="w"> </span>el<span class="w"> </span>botón<span class="w"> </span>de<span class="w"> </span>subir<span class="w"> </span>volumen
+<span class="gp"># </span><span class="m">4</span>.<span class="w"> </span>Conectar<span class="w"> </span>el<span class="w"> </span>cable<span class="w"> </span>usb<span class="w"> </span>al<span class="w"> </span>pc
+
+<span class="gp"># </span>Flashear<span class="w"> </span>boot.img
+<span class="gp">$ </span>fastboot<span class="w"> </span>flash<span class="w"> </span>boot<span class="w"> </span>boot.img
+<span class="go">Sending 'boot' (7424 KB)                           (bootloader) USB download speed was 3801088kB/s</span>
+<span class="go">OKAY [  0.838s]</span>
+<span class="go">Writing 'boot'                                     (bootloader) Download buffer format: boot IMG</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Flash of partition 'boot' requested</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">S1 partID 0x00000003, block 0x00000280-0x000002e3</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erase operation complete, 0 bad blocks encountered</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Flashing...</span>
+<span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Flash operation complete</span>
+<span class="go">OKAY [  1.447s]</span>
+<span class="go">Finished. Total time: 2.302s</span>
+
+<span class="gp"># </span>Reiniciar<span class="w"> </span>el<span class="w"> </span>móvil
+<span class="gp">$ </span>fastboot<span class="w"> </span>reboot
+<span class="go">Rebooting                                          OKAY [  0.001s]</span>
+<span class="go">Finished. Total time: 0.051s</span>
+</code></pre></div>
+<p>Cuando aparezca el logo de <code>Sony Xperia</code> pulsar la tecla de bajar volumen
+para entrar en <code>Recovery mode</code> y seguir estos pasos:</p>
+<ol>
+<li>Seleccionar <code>Wipe / Limpiar</code></li>
+<li>Pulsar en <code>Format Data</code> y responder <code>yes</code></li>
+<li>Volver a la pantalla anterior</li>
+<li>Deslizar para accionar</li>
+<li>Volver atrás y entrar en <code>Advance Wipe / Limpieza avanzada</code></li>
+<li>Seleccionar <code>System / Sistema</code></li>
+<li>Deslizar para accionar</li>
+<li>Conectar por usb</li>
+<li>Volver a la pantalla inicial</li>
+<li>Entrar en <code>Advanced / Avanzado -&gt; ADB Sideload / Carga archivo por ADB</code></li>
+<li>Deslizar para accionar</li>
+<li>Desde el pc:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># Instalar la rom</span>
+<span class="o">$</span><span class="w"> </span><span class="n">adb</span><span class="w"> </span><span class="n">sideload</span><span class="w"> </span><span class="n">lineage</span><span class="o">-</span><span class="mf">14.1</span><span class="o">-</span><span class="mi">20170514</span><span class="o">-</span><span class="n">UNOFFICIAL</span><span class="o">-</span><span class="n">LegacyXperia</span><span class="o">-</span><span class="n">mango</span><span class="o">.</span><span class="n">zip</span>
+</code></pre></div>
+<ol>
+<li>Repetir pasos 9 al 10 y desde el pc:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># Instalar opengapps (modificadas)</span>
+<span class="o">$</span><span class="w"> </span><span class="n">adb</span><span class="w"> </span><span class="n">sideload</span><span class="w"> </span><span class="n">open_gapps</span><span class="o">-</span><span class="n">arm</span><span class="o">-</span><span class="mf">7.1</span><span class="o">-</span><span class="n">pico</span><span class="o">-</span><span class="mf">20220215.</span><span class="n">zip</span>
+</code></pre></div>
+<ol>
+<li>Pulsar en <code>Reboot / Reiniciar</code> ignorando cualquier <code>warning</code></li>
+</ol>
+<h2>Configuración inicial</h2>
+<ol>
+<li>Seleccionar Español de España</li>
+<li>Empecemos</li>
+<li>Insertar SIM card: Saltar</li>
+<li>Configurar como nuevo</li>
+<li>Configurar wifi</li>
+<li>Iniciar sesión: tu cuenta gmail</li>
+<li>Aceptar términos del servicio</li>
+<li>Desmarcar:<ul>
+<li>Usar copia de seguridad básica</li>
+<li>Liberar espacio</li>
+<li>Permitir que las apps detecten la ubicación</li>
+<li>Enviar datos de uso y diagnostico</li>
+</ul>
+</li>
+<li>Aceptar</li>
+<li>Listo</li>
+<li>Reiniciar</li>
+<li>Ir a <code>Ajustes -&gt; Información del teléfono</code></li>
+<li>Pulsar 7 veces sobre <code>Número de compilación</code></li>
+<li>Activar <code>Ajustes -&gt; Opciones de desarrollo -&gt; Depuración USB</code></li>
+<li>Activar:<ul>
+<li>Pantalla activa</li>
+<li>Acceso administrativo: Aplicaciones y ADB</li>
+<li>Depuración en android</li>
+</ul>
+</li>
+<li>Desde el pc:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>wget<span class="w"> </span>https://f-droid.org/repo/com.simplemobiletools.keyboard_24.apk
+$<span class="w"> </span>adb<span class="w"> </span>install<span class="w"> </span>com.simplemobiletools.keyboard_24.apk
+Performing<span class="w"> </span>Streamed<span class="w"> </span>Install
+Success
+</code></pre></div>
+<ol>
+<li>Ir a <code>Ajustes -&gt; Idiomas en introducción de texto -&gt; Teclado actual</code></li>
+<li>Activar <code>Teclado sencillo</code></li>
+<li>Ir a <code>Ajustes -&gt; Idiomas en introducción de texto -&gt; Teclado virtual -&gt; Administrar teclados</code></li>
+<li>Asegurarse de que <code>Android Keyboard (AOSP)</code> esta desactivado</li>
+<li>Reiniciar</li>
+</ol>
+<h2>Configuración</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Poner un fondo de pantalla negro</span>
+<span class="nb">convert</span><span class="w"> </span><span class="o">-</span><span class="n">size</span><span class="w"> </span><span class="mi">1</span><span class="n">x1</span><span class="w"> </span><span class="n">xc</span><span class="p">:</span><span class="n">black</span><span class="w"> </span><span class="n">black_pixel</span><span class="o">.</span><span class="n">png</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">push</span><span class="w"> </span><span class="n">black_pixel</span><span class="o">.</span><span class="n">png</span><span class="w"> </span><span class="o">/</span><span class="n">sdcard</span><span class="o">/</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">am</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">-</span><span class="n">a</span><span class="w"> </span><span class="n">android</span><span class="o">.</span><span class="n">intent</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">ATTACH_DATA</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">android</span><span class="o">.</span><span class="n">intent</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">DEFAULT</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s2">"file:///sdcard/black_pixel.png"</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="s2">"image/*"</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">mimeType</span><span class="w"> </span><span class="s2">"image/*"</span>
+
+<span class="c1"># Nombre dispositivo</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">device_name</span><span class="w"> </span><span class="n">sk17i</span>
+
+<span class="c1"># Orientación escritorio</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">secure</span><span class="w"> </span><span class="n">user_rotation</span><span class="w"> </span><span class="mi">0</span>
+
+<span class="c1"># Quitar la notificación de depuración usb</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">adb_notify</span><span class="w"> </span><span class="mi">0</span>
+
+<span class="c1"># Permitir orígenes desconocidos para instalar apps</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">secure</span><span class="w"> </span><span class="n">install_non_market_apps</span><span class="w"> </span><span class="mi">1</span>
+
+<span class="c1"># Quitar animaciones</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">window_animation_scale</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">transition_animation_scale</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">animator_duration_scale</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">transition_animation_scale</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">window_animation_scale</span><span class="w"> </span><span class="mi">0</span>
+
+<span class="c1"># Rendimiento</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">always_finish_activities</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">limit_background_processes</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">heads_up_notifications_enabled</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">screensaver_enabled</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">screen_brightness_mode</span><span class="w"> </span><span class="mi">0</span>
+
+<span class="c1"># Mantener encendido cuando esta enchufado</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">stay_on_while_plugged_in</span><span class="w"> </span><span class="mi">3</span>
+
+<span class="c1"># Tiempo hasta apagar pantalla</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">screen_off_timeout</span><span class="w"> </span><span class="mi">120000</span>
+
+<span class="c1"># Quitar vibración y sonido al pulsar botones</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">haptic_feedback_enabled</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">sound_effects_enabled</span><span class="w"> </span><span class="mi">0</span>
+
+<span class="c1"># Desactivar el escaneo Wi-Fi permanente</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">wifi_scan_always_enabled</span><span class="w"> </span><span class="mi">0</span>
+
+<span class="c1"># Desactivar el escaneo Bluetooth</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">settings</span><span class="w"> </span><span class="n">put</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">ble_scan_always_enabled</span><span class="w"> </span><span class="mi">0</span>
+
+<span class="c1"># Reducir el registro (logcat)</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">logcat</span><span class="w"> </span><span class="o">-</span><span class="n">G</span><span class="w"> </span><span class="mi">256</span><span class="n">K</span>
+</code></pre></div>
+<h2>Instalar Aplicaciones básicas</h2>
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">fdroidcl</span>
+<span class="n">fdroidcl</span><span class="w"> </span><span class="n">update</span>
+<span class="n">fdroidcl</span><span class="w"> </span><span class="n">install</span><span class="w"> </span>\
+<span class="w">    </span><span class="n">org</span><span class="o">.</span><span class="n">fdroid</span><span class="o">.</span><span class="n">fdroid</span><span class="w"> </span>\
+<span class="w">    </span><span class="n">net</span><span class="o">.</span><span class="n">osmand</span><span class="o">.</span><span class="n">plus</span><span class="w"> </span>\
+<span class="w">    </span><span class="n">superfreeze</span><span class="o">.</span><span class="k">tool</span><span class="o">.</span><span class="n">android</span><span class="w"> </span>\
+<span class="w">    </span><span class="n">com</span><span class="o">.</span><span class="n">nononsenseapps</span><span class="o">.</span><span class="n">feeder</span><span class="w"> </span>\
+<span class="w">    </span><span class="n">eu</span><span class="o">.</span><span class="n">siacs</span><span class="o">.</span><span class="n">conversations</span><span class="w"> </span>\
+<span class="w">    </span><span class="n">org</span><span class="o">.</span><span class="n">schabi</span><span class="o">.</span><span class="n">newpipe</span><span class="w"> </span>\
+<span class="w">    </span><span class="n">org</span><span class="o">.</span><span class="n">connectbot</span><span class="w"> </span>\
+<span class="w">    </span><span class="n">at</span><span class="o">.</span><span class="n">bitfire</span><span class="o">.</span><span class="n">davdroid</span><span class="w"> </span>\
+<span class="w">    </span><span class="n">com</span><span class="o">.</span><span class="n">cookiegames</span><span class="o">.</span><span class="n">smartcookie</span><span class="w"> </span>\
+<span class="w">    </span><span class="n">com</span><span class="o">.</span><span class="n">termoneplus</span><span class="w"> </span>\
+<span class="w">    </span><span class="n">fr</span><span class="o">.</span><span class="n">neamar</span><span class="o">.</span><span class="n">kiss</span><span class="w"> </span>\
+<span class="w">    </span><span class="n">ws</span><span class="o">.</span><span class="n">xsoh</span><span class="o">.</span><span class="n">etar</span>
+
+<span class="c1">#    de.stephanlindauer.criticalmaps \</span>
+<span class="c1">#    com.google.zxing.client.android \</span>
+
+<span class="c1"># com.simplemobiletools.keyboard</span>
+<span class="c1"># https://github.com/AdAway/AdAway/releases/tag/v4.3.6</span>
+<span class="n">wget</span><span class="w"> </span><span class="o">-</span><span class="n">q</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">AdAway</span><span class="o">/</span><span class="n">AdAway</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">v4</span><span class="o">.</span><span class="mf">3.6</span><span class="o">/</span><span class="n">AdAway</span><span class="o">-</span><span class="mf">4.3</span><span class="o">.</span><span class="mi">6</span><span class="o">-</span><span class="mf">200726.</span><span class="n">apk</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">AdAway</span><span class="o">-</span><span class="mf">4.3</span><span class="o">.</span><span class="mi">6</span><span class="o">-</span><span class="mf">200726.</span><span class="n">apk</span>
+
+<span class="c1"># https://github.com/equeim/tremotesf-android/releases/tag/2.10.2</span>
+<span class="n">wget</span><span class="w"> </span><span class="o">-</span><span class="n">q</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">equeim</span><span class="o">/</span><span class="n">tremotesf</span><span class="o">-</span><span class="n">android</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="mf">2.10</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">app</span><span class="o">-</span><span class="n">fdroid</span><span class="o">-</span><span class="n">release</span><span class="o">.</span><span class="n">apk</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">app</span><span class="o">-</span><span class="n">fdroid</span><span class="o">-</span><span class="n">release</span><span class="o">.</span><span class="n">apk</span>
+</code></pre></div>
+<h2>Deshabilitar aplicaciones</h2>
+<div class="highlight"><pre><span></span><code>adb shell pm uninstall --user 0 org.legacyxperia.center
+adb shell pm uninstall --user 0 org.lineageos.jelly
+adb shell pm uninstall --user 0 org.cyanogenmod.audiofx
+adb shell pm uninstall --user 0 org.cyanogenmod.cmaudio.service
+adb shell pm uninstall --user 0 com.android.dreams.basic
+adb shell pm uninstall --user 0 com.android.dreams.phototable
+adb shell pm uninstall --user 0 com.android.printspooler
+adb shell pm uninstall --user 0 com.android.printservice.recommendation
+adb shell pm uninstall --user 0 org.cyanogenmod.weatherservice
+adb shell pm uninstall --user 0 org.cyanogenmod.weather.provider
+adb shell pm uninstall --user 0 com.cyanogenmod.lockclock
+adb shell pm uninstall --user 0 com.cyanogenmod.setupwizard
+adb shell pm uninstall --user 0 com.android.cts.ctsshim
+adb shell pm uninstall --user 0 com.android.cts.priv.ctsshim
+adb shell pm uninstall --user 0 com.android.egg
+adb shell pm uninstall --user 0 com.android.bookmarkprovider
+adb shell pm uninstall --user 0 com.android.htmlviewer
+adb shell pm uninstall --user 0 com.android.onetimeinitializer
+adb shell pm uninstall --user 0 com.cyanogenmod.trebuchet
+adb shell pm uninstall --user 0 com.android.calendar
+</code></pre></div>
+<h2>Habilitar <a href="https://github.com/microg/GmsCore/wiki/Signature-Spoofing" target="_blank">Signature Spoofing</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">wget</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">bitbucket</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">JesusFreke</span><span class="o">/</span><span class="n">smali</span><span class="o">/</span><span class="n">downloads</span><span class="o">/</span><span class="n">baksmali</span><span class="o">-</span><span class="mf">2.5</span><span class="o">.</span><span class="mf">2.j</span><span class="n">ar</span>
+<span class="n">wget</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">bitbucket</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">JesusFreke</span><span class="o">/</span><span class="n">smali</span><span class="o">/</span><span class="n">downloads</span><span class="o">/</span><span class="n">smali</span><span class="o">-</span><span class="mf">2.5</span><span class="o">.</span><span class="mf">2.j</span><span class="n">ar</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">pull</span><span class="w"> </span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">framework</span><span class="w"> </span><span class="n">framework</span>
+<span class="n">cp</span><span class="w"> </span><span class="o">-</span><span class="n">r</span><span class="w"> </span><span class="n">framework</span><span class="w"> </span><span class="n">framework</span><span class="o">-</span><span class="n">backup</span>
+<span class="n">java</span><span class="w"> </span><span class="o">-</span><span class="n">jar</span><span class="w"> </span><span class="n">baksmali</span><span class="o">-</span><span class="mf">2.5</span><span class="o">.</span><span class="mf">2.j</span><span class="n">ar</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">framework</span><span class="o">/</span><span class="n">oat</span><span class="o">/</span><span class="n">arm</span><span class="o">/</span><span class="n">services</span><span class="o">.</span><span class="n">odex</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">framework</span><span class="o">/</span><span class="n">arm</span><span class="o">/</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">framework</span><span class="o">/</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="n">services</span><span class="o">-</span><span class="n">new</span>
+<span class="n">java</span><span class="w"> </span><span class="o">-</span><span class="n">jar</span><span class="w"> </span><span class="n">smali</span><span class="o">-</span><span class="mf">2.5</span><span class="o">.</span><span class="mf">2.j</span><span class="n">ar</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">services</span><span class="o">-</span><span class="n">new</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="n">classes</span><span class="o">.</span><span class="n">dex</span>
+<span class="n">zip</span><span class="w"> </span><span class="o">-</span><span class="n">j</span><span class="w"> </span><span class="n">framework</span><span class="o">/</span><span class="n">services</span><span class="o">.</span><span class="n">jar</span><span class="w"> </span><span class="n">classes</span><span class="o">*.</span><span class="n">dex</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">root</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span>
+<span class="n">mount</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="n">remount</span><span class="p">,</span><span class="n">rw</span><span class="w"> </span><span class="o">/</span><span class="n">system</span>
+<span class="n">exit</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">push</span><span class="w"> </span><span class="n">framework</span><span class="o">/</span><span class="n">services</span><span class="o">.</span><span class="n">jar</span><span class="w"> </span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">framework</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">shell</span>
+<span class="n">chmod</span><span class="w"> </span><span class="mi">0644</span><span class="w"> </span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">framework</span><span class="o">/</span><span class="n">services</span><span class="o">.</span><span class="n">jar</span>
+<span class="n">chown</span><span class="w"> </span><span class="n">root</span><span class="p">:</span><span class="n">root</span><span class="w"> </span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">framework</span><span class="o">/</span><span class="n">services</span><span class="o">.</span><span class="n">jar</span>
+<span class="n">mount</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="n">remount</span><span class="p">,</span><span class="n">ro</span><span class="w"> </span><span class="o">/</span><span class="n">system</span>
+<span class="n">exit</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">reboot</span>
+<span class="n">wget</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">downloads</span><span class="o">.</span><span class="n">nanolx</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">NanoDroid</span><span class="o">/</span><span class="n">Stable</span><span class="o">/</span><span class="n">NanoDroid</span><span class="o">-</span><span class="n">patcher</span><span class="o">-</span><span class="mf">23.1</span><span class="o">.</span><span class="mf">2.20210117</span><span class="o">.</span><span class="n">zip</span>
+<span class="n">adb</span><span class="w"> </span><span class="n">reboot</span><span class="w"> </span><span class="n">recovery</span>
+<span class="c1"># Advanced &gt; ADB Sideload.</span>
+</code></pre></div>
+<p>Añadir <a href="https://microg.org/download.html" target="_blank"><code>microG F-Droid</code></a> a <code>~/.config/fdroidcl/config.json</code>: </p>
+<div class="highlight"><pre><span></span><code>{
+    "repos": [
+        {
+            "id": "f-droid",
+            "url": "https://f-droid.org/repo",
+            "enabled": true
+        },
+        {
+            "id": "f-droid-archive",
+            "url": "https://f-droid.org/archive",
+            "enabled": false
+        },
+        {
+            "id": "microG F-Droid",
+            "url": "https://microg.org/fdroid/repo",
+            "enabled": true
+        }
+    ]
+}
+</code></pre></div>
+<p>Instalar microG y Aurora Store:</p>
+<div class="highlight"><pre><span></span><code>fdroidcl update
+fdroidcl install \
+    com.google.android.gms \
+    com.android.vending \
+    com.google.android.gsf \
+    com.aurora.store
+</code></pre></div>
+<p>https://github.com/mvdan/fdroidcl</p>
+<p>Via <code>wget</code> y <code>adb install</code>:</p>
+<ul>
+<li>https://f-droid.org/F-Droid.apk</li>
+</ul>
+<p>Fuentes:
+https://www.youtube.com/watch?v=6t7zuIXvp6w
+https://github.com/Nanolx/NanoDroid/blob/master/doc/DeodexServices.md#odex
+https://forum.fairphone.com/t/fp2-install-opengapps-step-by-step-guide/17524
+https://tech-latest.com/error-70-while-installing-gapps-in-twrp/
+https://github.com/opengapps/opengapps/wiki/Advanced-Features-and-Options</p>
+<p>Probar a usar esto:
+https://github.com/opengapps/opengapps/wiki/Advanced-Features-and-Options#downsizing
+es decir,
+bajar el zip de stock y hacer un gapps-config.txt con:</p>
+<p>PicoGApps</p>
+<p>Include</p>
+<p>CalSync                 # Install Google Calendar Sync (if Google Calendar is being installed)
+DialerFramework         # Install Dialer Framework (Android 6.0+)
+KeyboardGoogle          # Necesario porque Android Keyboard (AOSP) no funciona</p>
+<h1>Anexo 1: Desbloquear bootlader</h1>
+<p>Si el valor de <a href="https://developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader/how-to-unlock-bootloader/" target="_blank"><code>Bootloader unlock allowed</code></a> 
+es distinto de <code>Yes</code>:</p>
+<ol>
+<li>Instala omnius via <a href="https://omnius-server.com/Omnius/Omnius_for_SE.zip" target="_blank">Omnius_for_SE.zip</a></li>
+<li>Pide una licencia en <a href="https://kaijousuru.com/discord" target="_blank">kaijousuru discord</a></li>
+<li>Ve a la carpeta donde se ha instalado omnius he instala los drives que necesites</li>
+<li>Sigue los pasos del <a href="https://www.htcmania.com/showthread.php?t=323099" target="_blank">tutorial 3 de htcmania</a></li>
+</ol>
+<h1>Anexo 2: Rootear móvil</h1>
+<p>Si no hemos podido flashear el móvil, podemos rootearlo como premio de consolación:</p>
+<ol>
+<li><a href="https://www.eroot.net/" target="_blank">Descargar errot</a> para pc</li>
+<li>Conectar móvil por usb</li>
+<li>Arrancar eroot con wine</li>
+<li>Pulsar root y esperar</li>
+</ol>
+<p>Cuando haya terminado el móvil tendrá una nueva aplicación
+llamada <code>Superusuario</code></p>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/content/posts/2023-05-16_xperia_mini_pro-draft.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/drafts/xperia_mini_pro-draft.html" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>
