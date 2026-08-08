@@ -1,7 +1,6 @@
 Title: Actualizar Sony Ericsson Xperia Mini Pro
 Category: Sistemas 
 Tags: Android
-Status: draft
 
 ## Estado inicial
 
