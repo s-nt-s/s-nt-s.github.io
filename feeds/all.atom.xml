@@ -24,7 +24,7 @@
 &lt;li&gt;Tarjeta SD (utilizo una SDGC Philips A1 V10 de 32GB)&lt;/li&gt;
 &lt;li&gt;Imagen lineage-14.1:&lt;ul&gt;
 &lt;li&gt;&lt;a href="https://mega.nz/folder/bt0VzQDA#6OD6YFjCKYUkX6GRhNOBDg/file/CsEQwSzT"&gt;lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip&lt;/a&gt; via &lt;a href="https://mega.nz/folder/bt0VzQDA#6OD6YFjCKYUkX6GRhNOBDg/folder/mlcgQD7I"&gt;mega.nz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;~~&lt;a href="https://archive.org/download/LegacyXperia_SEMC_2011/lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip"&gt;archive.org -&amp;gt; lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip&lt;/a&gt; via &lt;a href="https://archive.org/details/LegacyXperia_SEMC_2011"&gt;archive.org&lt;/a&gt;~~ (no funciona según &lt;a href="https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-85851293"&gt;xda-developers.com&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;del&gt;&lt;a href="https://archive.org/download/LegacyXperia_SEMC_2011/lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip"&gt;archive.org -&amp;gt; lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip&lt;/a&gt; via &lt;a href="https://archive.org/details/LegacyXperia_SEMC_2011"&gt;archive.org&lt;/a&gt;&lt;/del&gt; (no funciona según &lt;a href="https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-85851293"&gt;xda-developers.com&lt;/a&gt;)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;code&gt;adb&lt;/code&gt; y &lt;code&gt;fastboot&lt;/code&gt; (antes &lt;code&gt;android-tools-adb&lt;/code&gt; y &lt;code&gt;android-tools-fastboot&lt;/code&gt; según &lt;a href="https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-80979763"&gt;xda-developers.com&lt;/a&gt;)&lt;/li&gt;
@@ -168,9 +168,7 @@ para entrar en &lt;code&gt;Recovery mode&lt;/code&gt; y seguir estos pasos:&lt;/
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Instalar la rom&lt;/span&gt;
 &lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;adb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;sideload&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lineage&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;14.1&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;20170514&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;UNOFFICIAL&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;LegacyXperia&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;mango&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zip&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;ol&gt;
-&lt;li&gt;Pulsar en &lt;code&gt;Reboot / Reiniciar&lt;/code&gt; ignorando cualquier &lt;code&gt;warning&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;Finalmente pulsar en &lt;code&gt;Reboot / Reiniciar&lt;/code&gt; ignorando cualquier &lt;code&gt;warning&lt;/code&gt;.&lt;/p&gt;
 &lt;h2&gt;3. Configuración inicial&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;Seleccionar Español de España&lt;/li&gt;
@@ -388,7 +386,7 @@ tendras que modificar &lt;code&gt;open_gapps-arm-7.1-pico-20220215.zip&lt;/code&
 &lt;span class="nv"&gt;EOT&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;y comprime el resultado en un nuevo zip.&lt;/p&gt;
-&lt;p&gt;Luego en el paso *2. Flashear el móvil" antes de pulsar en &lt;code&gt;Reboot / Reiniciar&lt;/code&gt;
+&lt;p&gt;Luego en el paso &lt;em&gt;2. Flashear el móvil&lt;/em&gt; antes de pulsar en &lt;code&gt;Reboot / Reiniciar&lt;/code&gt;
 tienes que volver a &lt;code&gt;Advanced / Avanzado -&amp;gt; ADB Sideload / Carga archivo por ADB&lt;/code&gt;
 y hacer:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Instalar opengapps (modificadas)&lt;/span&gt;
