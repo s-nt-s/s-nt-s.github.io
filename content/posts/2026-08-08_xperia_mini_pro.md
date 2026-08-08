@@ -17,7 +17,7 @@ Tags: Android
 * Tarjeta SD (utilizo una SDGC Philips A1 V10 de 32GB)
 * Imagen lineage-14.1:
     * [lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip](https://mega.nz/folder/bt0VzQDA#6OD6YFjCKYUkX6GRhNOBDg/file/CsEQwSzT) via [mega.nz](https://mega.nz/folder/bt0VzQDA#6OD6YFjCKYUkX6GRhNOBDg/folder/mlcgQD7I)
-    * ~~[archive.org -> lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip](https://archive.org/download/LegacyXperia_SEMC_2011/lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip) via [archive.org](https://archive.org/details/LegacyXperia_SEMC_2011)~~ (no funciona según [xda-developers.com](https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-85851293))
+    * <del>[archive.org -> lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip](https://archive.org/download/LegacyXperia_SEMC_2011/lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip) via [archive.org](https://archive.org/details/LegacyXperia_SEMC_2011)</del> (no funciona según [xda-developers.com](https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-85851293))
 * `adb` y `fastboot` (antes `android-tools-adb` y `android-tools-fastboot` según [xda-developers.com](https://forum.xda-developers.com/t/installing-lineage-os-14-on-xperia-mini-pro.3559424/post-80979763))
 
 ## Prerrequisitos
@@ -169,7 +169,7 @@ para entrar en `Recovery mode` y seguir estos pasos:
 $ adb sideload lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip
 ```
 
-13. Pulsar en `Reboot / Reiniciar` ignorando cualquier `warning`
+Finalmente pulsar en `Reboot / Reiniciar` ignorando cualquier `warning`.
 
 ## 3. Configuración inicial
 
@@ -404,7 +404,7 @@ EOT
 
 y comprime el resultado en un nuevo zip.
 
-Luego en el paso *2. Flashear el móvil" antes de pulsar en `Reboot / Reiniciar`
+Luego en el paso *2. Flashear el móvil* antes de pulsar en `Reboot / Reiniciar`
 tienes que volver a `Advanced / Avanzado -> ADB Sideload / Carga archivo por ADB`
 y hacer:
 
