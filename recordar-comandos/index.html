@@ -37,15 +37,15 @@ mirar en el histórico de comandos usados</p>
 <p><strong>Solución 2</strong>: Hacer un script que analice el histórico y nos saque la
 información más relevante</p>
 <p><strong>1-</strong> Configurar histórico (<code>~/.bashrc</code>)</p>
-<div class="highlight"><pre><span></span><code>...
+<div class="highlight"><pre><span></span>...
 #No guardar en el histórico duplicados consecutivos
 HISTCONTROL=ignoredups
 #No guardar en el histórico comandos sencillos de uso habitual
 HISTIGNORE="pwd:ls:ls -lah:date:cd"
 ...
-</code></pre></div>
+</pre></div>
 <p><strong>2-</strong> Crear script (<code>/usr/local/bin/uso</code>)</p>
-<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/perl -w</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/perl -w</span>
 <span class="k">use</span><span class="w"> </span><span class="nn">Cwd</span><span class="w"> </span><span class="s">'abs_path'</span><span class="p">;</span>
 
 <span class="k">my</span><span class="w"> </span><span class="p">(</span><span class="nv">$hst</span><span class="p">,</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">$icm</span><span class="p">,</span><span class="nv">$filter</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="nb">undef</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
@@ -129,7 +129,7 @@ HISTIGNORE="pwd:ls:ls -lah:date:cd"
 
 <span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">keys</span><span class="p">(</span><span class="nv">%files</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="n">report_top</span><span class="p">(</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">%files</span><span class="p">);}</span>
 <span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">keys</span><span class="p">(</span><span class="nv">%cmds</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="n">report_top</span><span class="p">(</span><span class="nv">$tp</span><span class="p">,</span><span class="nv">%cmds</span><span class="p">);}</span>
-</code></pre></div>
+</pre></div>
 <p><strong>3-</strong> Parámetros</p>
 <ul>
 <li>por defecto muestra los ficheros más usados</li>
@@ -143,7 +143,7 @@ HISTIGNORE="pwd:ls:ls -lah:date:cd"
     caso contrario</li>
 </ul>
 <p><strong>4-</strong> Ejemplos de uso (nunca mejor dicho, jeje)</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>uso
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $ </span>uso
 <span class="go">/var/log/prosody/prosody.log</span>
 <span class="go">/usr/local/bin/hf</span>
 <span class="go">/usr/local/bin/cmd</span>
@@ -176,13 +176,13 @@ HISTIGNORE="pwd:ls:ls -lah:date:cd"
 <span class="go">/var/log/prosody/prosody.not</span>
 <span class="gp">pi@bot ~ $ </span>sudo<span class="w"> </span>uso<span class="w"> </span>/home/bot/.bash_history<span class="w"> </span>-c<span class="w"> </span>lua<span class="w"> </span><span class="m">1</span>
 <span class="go">lua riddim/init.lua</span>
-</code></pre></div>
+</pre></div>
 <p><strong>4-</strong> Apéndice</p>
 <p><code>.bash_history</code> no se actualiza en tiempo real así que si necesitamos que
 nuestro script analice hasta el últimisimo comando ejecutado debemos
 forzar antes una actualización mediante el comando:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span><span class="nb">history</span><span class="w"> </span>-a
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $ </span><span class="nb">history</span><span class="w"> </span>-a
+</pre></div>
 <p>No integramos la llamada a "history -a" dentro de nuestro script porque
 necesita ser ejecutado directamente por el usuario para garantizar que
 se actualice su <code>.bash_history</code></p>

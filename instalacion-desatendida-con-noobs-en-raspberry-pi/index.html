@@ -31,10 +31,10 @@ Raspberry Pi</a> </p>
 <div class="entry-content">
 <p><strong>1-</strong> Formatear tarjeta</p>
 <p>Para ello podemos instalar gparted</p>
-<div class="highlight"><pre><span></span><code><span class="gp">user@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>gparted
+<div class="highlight"><pre><span></span><span class="gp">user@bot ~ $ </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>gparted
 <span class="go">...</span>
 <span class="gp">user@bot ~ $ </span>sudo<span class="w"> </span>gparted
-</code></pre></div>
+</pre></div>
 <p>a.  Elegir en el desplegable de la esquina superior derecha nuestra
     tarjeta
 b.  Dispositivo -&gt; Crear tabla de particiones
@@ -48,7 +48,7 @@ interesa (por ejemplo "Raspbian").</p>
 <p>Entramos en la carpeta que hemos dejado y si hay un fichero llamado
 <code>flavours.json</code> lo editamos de manera que en él solo quede una opción.</p>
 <p><code>flavours.json</code> ANTES:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">  </span><span class="nt">"flavours"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Raspbian - Boot to Scratch"</span><span class="p">,</span>
@@ -60,9 +60,9 @@ interesa (por ejemplo "Raspbian").</p>
 <span class="w">    </span><span class="p">}</span><span class="w">  </span>
 <span class="w">  </span><span class="p">]</span>
 <span class="p">}</span>
-</code></pre></div>
+</pre></div>
 <p><code>flavours.json</code> DESPUES:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">  </span><span class="nt">"flavours"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Raspbian"</span><span class="p">,</span>
@@ -70,7 +70,7 @@ interesa (por ejemplo "Raspbian").</p>
 <span class="w">    </span><span class="p">}</span><span class="w">  </span>
 <span class="w">  </span><span class="p">]</span>
 <span class="p">}</span>
-</code></pre></div>
+</pre></div>
 <p><strong>3-</strong> Arrancamos la Rasberry Pi con la tarjeta</p>
 <p>La instalación se hará del tirón sin necesidad de nuestra
 interactuación.</p>

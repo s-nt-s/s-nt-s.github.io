@@ -47,7 +47,7 @@ queremos pagarlo ni queremos dar acceso a nuestra cuenta sin encriptar</p>
 intermedia + nuestra cuenta final</p>
 <p><strong>1-</strong> Crear directorio para el script e instalar las herramientas
 necesarias</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>mkdir<span class="w"> </span>.owa
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $ </span>mkdir<span class="w"> </span>.owa
 <span class="gp">pi@bot ~ $ </span><span class="nb">cd</span><span class="w"> </span>.owa
 <span class="gp">pi@bot ~/.owa $ </span>wget<span class="w"> </span>http://downloads.sourceforge.net/project/davmail/davmail/4.4.0/davmail-4.4.0-2198.zip
 <span class="gp">pi@bot ~/.owa $ </span>unzip<span class="w"> </span>davmail-*.zip
@@ -61,10 +61,10 @@ necesarias</p>
 <span class="gp">pi@bot ~/.owa $ </span>rm<span class="w"> </span>-R<span class="w"> </span>pop2imap*
 <span class="gp">pi@bot ~/.owa $ </span>touch<span class="w"> </span>owa.sh
 <span class="gp">pi@bot ~/.owa $ </span>chmod<span class="w"> </span>+x<span class="w"> </span>owa.sh
-</code></pre></div>
+</pre></div>
 <p><strong>2-</strong> Configurar DavMail</p>
 <p><code>davmail.properties</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="na">...</span>
+<div class="highlight"><pre><span></span><span class="na">...</span>
 <span class="c1"># Modo servidor</span>
 <span class="na">davmail.server</span><span class="o">=</span><span class="s">true</span>
 <span class="c1"># Exchange OWA o EWS url</span>
@@ -81,10 +81,10 @@ necesarias</p>
 <span class="c1"># Lo dejamos vacio para que escriba el log en la misma carpeta del script</span>
 <span class="na">davmail.logFilePath</span><span class="o">=</span>
 <span class="na">...</span>
-</code></pre></div>
+</pre></div>
 <p><strong>3-</strong> Crear script de ejecución</p>
 <p><code>owa.sh</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
 
 <span class="c1">#Editar con nuestros datos</span>
 <span class="nv">usr1</span><span class="o">=</span>origen@outloock.com
@@ -145,20 +145,20 @@ log<span class="w"> </span><span class="s2">"</span><span class="nv">$msg</span>
 <span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$mig</span><span class="w"> </span>-gt<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
 <span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$dat</span><span class="s2"> - </span><span class="nv">$msg</span><span class="s2">"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>summary.log
 <span class="k">fi</span>
-</code></pre></div>
+</pre></div>
 <p><strong>4-</strong> Crear tarea programada</p>
-<div class="highlight"><pre><span></span><code><span class="gp">pi@bot ~ $ </span>crontab<span class="w"> </span>-e
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="gp">pi@bot ~ $ </span>crontab<span class="w"> </span>-e
+</pre></div>
 <p>Añadir las siguientes lineas para que el script se ejecute
 periódicamente</p>
-<div class="highlight"><pre><span></span><code><span class="gh">#</span> Cada hora en horario laboral
+<div class="highlight"><pre><span></span><span class="gh">#</span> Cada hora en horario laboral
 0 7-20 <span class="gs">* *</span> 1,2,3,4  /bin/bash ~/.owa/owa.sh
 0 7-18 <span class="gs">* *</span> 5  /bin/bash ~/.owa/owa.sh
 <span class="gh">#</span> Cada 4 horas fuera de horario laboral y entre semana
 0 23,3 <span class="gs">* *</span> 1,2,3,4  /bin/bash ~/.owa/owa.sh
 <span class="gh">#</span> Cada 8 horas en fin de semana
 0 <span class="gs">*/8 *</span> 6,7 /bin/bash ~/.owa/owa.sh
-</code></pre></div>
+</pre></div>
 <p><strong>5-</strong> Configurar nuestra cuenta final</p>
 <p>Ahora nuestra cuenta final puede leer vía pop de la cuenta intermedia
 (que funciona como espejo del owa) sin problemas.</p>

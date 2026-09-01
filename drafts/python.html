@@ -34,13 +34,13 @@ python</a> <span class="bubble tag tg_vscode" title="No hay más entradas con es
 <li><a href="https://github.com/pyenv/pyenv#automatic-installer" target="_blank">pyenv</a></li>
 <li><a href="https://python-poetry.org/docs/#installing-with-the-official-installer" target="_blank">poetry</a></li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>curl<span class="w"> </span>https://pyenv.run<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+<div class="highlight"><pre><span></span><span class="gp">$ </span>curl<span class="w"> </span>https://pyenv.run<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
 <span class="gp">$ </span>curl<span class="w"> </span>-sSL<span class="w"> </span>https://install.python-poetry.org<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-
 <span class="gp"># </span>Configurar<span class="w"> </span>que<span class="w"> </span>los<span class="w"> </span>entornos<span class="w"> </span>virutales<span class="w"> </span>se<span class="w"> </span>creen<span class="w"> </span>en<span class="w"> </span>el<span class="w"> </span>directorio<span class="w"> </span>del<span class="w"> </span>proyecto
 <span class="gp">$ </span>poetry<span class="w"> </span>config<span class="w"> </span>virtualenvs.in-project<span class="w"> </span><span class="nb">true</span>
-</code></pre></div>
+</pre></div>
 <h1>En un proyecto</h1>
-<div class="highlight"><pre><span></span><code># Desde cero
+<div class="highlight"><pre><span></span># Desde cero
 $ poetry new sample-project
 $ cd sample-project
 # En uno ya creado
@@ -69,9 +69,9 @@ $ cat &lt;&lt;EOT &gt;&gt; .vscode/settings.json
     ]
 }
 EOT
-</code></pre></div>
+</pre></div>
 <h1>pypi y testpypi</h1>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>poetry<span class="w"> </span>config<span class="w"> </span>http-basic.pypi<span class="w"> </span>prod-user<span class="w"> </span>prod-password
+<div class="highlight"><pre><span></span>$<span class="w"> </span>poetry<span class="w"> </span>config<span class="w"> </span>http-basic.pypi<span class="w"> </span>prod-user<span class="w"> </span>prod-password
 $<span class="w"> </span>poetry<span class="w"> </span>config<span class="w"> </span>repositories.testpypi<span class="w"> </span>https://test.pypi.org/legacy/
 $<span class="w"> </span>poetry<span class="w"> </span>config<span class="w"> </span>http-basic.testpypi<span class="w"> </span>test-user<span class="w"> </span>test-password
 <span class="c1"># publicar en test</span>
@@ -82,7 +82,7 @@ $<span class="w"> </span>poetry<span class="w"> </span>publish<span class="w"> <
 $<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-i<span class="w"> </span>https://test.pypi.org/simple/<span class="w"> </span>paquete
 <span class="c1"># Instarlar desde prod pero buscando cierto paquete en el index de test</span>
 <span class="c1"># pip install --extra-index-url https://test.pypi.org/simple/ paquete==X.Y.Z</span>
-</code></pre></div>
+</pre></div>
 <p><strong>Fuentes</strong>: <a href="https://testdriven.io/blog/python-environments/" target="_blank">testdriven.io/blog/python-environments</a>,
 <a href="https://testdriven.io/blog/modern-tdd/" target="_blank">testdriven.io/blog/modern-tdd</a>,
 <a href="https://stackoverflow.com/a/64434542/5204002" target="_blank">stackoverflow.com</a>,

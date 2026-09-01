@@ -32,12 +32,12 @@ linux</a> </p>
 <div class="entry-content">
 <p>Este método ha sido probado en una Raspberry Pi 3</p>
 <h2>Estructura de carpetas</h2>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nv">GEMINI_DOMAIN</span><span class="o">=</span>replace.by.your.domain.com
+<div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">GEMINI_DOMAIN</span><span class="o">=</span>replace.by.your.domain.com
 <span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/gemini/<span class="nv">$GEMINI_DOMAIN</span>
 <span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"Hola mundo"</span><span class="w"> </span>&gt;<span class="w"> </span>~/gemini/<span class="nv">$GEMINI_DOMAIN</span>/index.gmi
-</code></pre></div>
+</pre></div>
 <h2>Descargar <code>agate</code> y crear script de arranque</h2>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>~/gemini
+<div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>~/gemini
 <span class="gp">$ </span>wget<span class="w"> </span>-O<span class="w"> </span>-<span class="w"> </span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>https://api.github.com/repos/mbrubeck/agate/releases/latest<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"browser_download_url.*aarch64-unknown-linux-gnu.*.gz"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">'"'</span><span class="w"> </span>-f4<span class="k">)</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>gunzip<span class="w"> </span>&gt;<span class="w"> </span>agate-server.bin
 <span class="gp">$ </span>cat<span class="w"> </span>&gt;<span class="w"> </span>agate-server.sh<span class="w"> </span>&lt;&lt;EOL
 <span class="gp">#</span>!/bin/sh
@@ -55,13 +55,13 @@ linux</a> </p>
 <span class="gp">$ </span>chmod<span class="w"> </span>+x<span class="w"> </span>agate-server.bin<span class="w"> </span>agate-server.sh
 <span class="gp">$ </span>./agate-server.bin<span class="w"> </span>--version
 <span class="go">agate 3.2.4</span>
-</code></pre></div>
+</pre></div>
 <p><strong>NOTA</strong>: el script <code>agate-server.sh</code> permite usar como dominio
 el nombre del directorio que tiene el contenido, así si queremos
 cambiarlo basta con renombrar la carpeta y no hay que editar el
 servicio <code>agate.service</code> creado más adelante.</p>
 <h2>Crear servicio</h2>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat<span class="w"> </span>&gt;<span class="w"> </span>agate.service<span class="w"> </span>&lt;&lt;EOL
+<div class="highlight"><pre><span></span><span class="gp">$ </span>cat<span class="w"> </span>&gt;<span class="w"> </span>agate.service<span class="w"> </span>&lt;&lt;EOL
 <span class="go">[Unit]</span>
 <span class="go">Description=Agate gemini server</span>
 <span class="go">After=network.target</span>
@@ -99,7 +99,7 @@ servicio <code>agate.service</code> creado más adelante.</p>
 <span class="go">feb 26 11:22:24 bot gemini[9914]: [2023-02-26T10:22:24Z INFO  agate] The certificate directory "./certificate/" does not exist, creating it.</span>
 <span class="go">feb 26 11:22:24 bot gemini[9914]: [2023-02-26T10:22:24Z INFO  agate] No certificate or key found for "replace.by.your.domain.com", generating them.</span>
 <span class="go">feb 26 11:22:24 bot gemini[9914]: [2023-02-26T10:22:24Z INFO  agate] Started listener on [::]:1965</span>
-</code></pre></div>
+</pre></div>
 <h2>Clientes</h2>
 <p>Ver <a href="https://gemini.circumlunar.space/clients.html" target="_blank">gemini.circumlunar.space/clients.html</a></p>
 <p><strong>Fuentes</strong>: <a href="https://github.com/mbrubeck/agate" target="_blank">github/mbrubeck</a>, <a href="https://www.ochobitshacenunbyte.com/2021/11/15/como-crear-una-capsula-gemini-en-linux/" target="_blank">ochobitshacenunbyte.com</a></p>

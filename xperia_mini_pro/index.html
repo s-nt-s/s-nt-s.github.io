@@ -53,8 +53,8 @@ xfce</a> </p>
 </ul>
 <h2>Prerrequisitos</h2>
 <h3>Instalar adb y fastboot</h3>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>adb<span class="w"> </span>fastboot
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="gp">$ </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>adb<span class="w"> </span>fastboot
+</pre></div>
 <h3>Determinar si va a ser posible todo esto</h3>
 <p>En el móvil:</p>
 <ol>
@@ -81,7 +81,7 @@ xfce</a> </p>
 </ul>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>adb<span class="w"> </span>devices
+<div class="highlight"><pre><span></span><span class="gp">$ </span>adb<span class="w"> </span>devices
 <span class="go">* daemon not running; starting now at tcp:5037</span>
 <span class="go">* daemon started successfully</span>
 <span class="go">List of devices attached</span>
@@ -91,16 +91,16 @@ xfce</a> </p>
 
 <span class="gp">$ </span>fastboot<span class="w"> </span>devices
 <span class="go">BX902QUGBW&amp;ZLP    fastboot</span>
-</code></pre></div>
+</pre></div>
 <p>Si no funciona el paso 3, el paso 2 dice que el bootlader no es desbloqueable
 y no ha habido suerte con <em>el anexo 1</em> entonces no hay nada que hacer. Aborta misión.</p>
 <p>En caso contrario continuar.</p>
 <h3>Formatear SD</h3>
-<div class="highlight"><pre><span></span><code><span class="gp"># </span>Formatear<span class="w"> </span>SD<span class="w"> </span>con<span class="w"> </span>una<span class="w"> </span>única<span class="w"> </span>partición<span class="w"> </span>en<span class="w"> </span>formato<span class="w"> </span>ext4
+<div class="highlight"><pre><span></span><span class="gp"># </span>Formatear<span class="w"> </span>SD<span class="w"> </span>con<span class="w"> </span>una<span class="w"> </span>única<span class="w"> </span>partición<span class="w"> </span>en<span class="w"> </span>formato<span class="w"> </span>ext4
 <span class="gp">$ </span>sudo<span class="w"> </span>umount<span class="w"> </span>/dev/mmcblk0*
 <span class="gp">$ </span>sudo<span class="w"> </span>mkfs<span class="w"> </span>-t<span class="w"> </span>fat<span class="w"> </span>-n<span class="w"> </span>SK17I<span class="w"> </span>/dev/mmcblk0
 <span class="gp">$ </span>sudo<span class="w"> </span>umount<span class="w"> </span>/dev/mmcblk0
-</code></pre></div>
+</pre></div>
 <p>Si más adelante falla, probar con fat32.</p>
 <h2>1. Desbloquear bootloader</h2>
 <ol>
@@ -117,7 +117,7 @@ y no ha habido suerte con <em>el anexo 1</em> entonces no hay nada que hacer. Ab
 <li>Conectar el móvil por usb</li>
 <li>Desde el pc:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="gp"># </span>Resetear<span class="w"> </span>el<span class="w"> </span>móvil<span class="w"> </span>en<span class="w"> </span>modo<span class="w"> </span>bootloader
+<div class="highlight"><pre><span></span><span class="gp"># </span>Resetear<span class="w"> </span>el<span class="w"> </span>móvil<span class="w"> </span>en<span class="w"> </span>modo<span class="w"> </span>bootloader
 <span class="gp">$ </span>adb<span class="w"> </span>devices<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>adb<span class="w"> </span>reboot<span class="w"> </span>bootloader<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>fastboot<span class="w"> </span>devices
 
 <span class="gp"># </span>Desbloquear<span class="w"> </span>el<span class="w"> </span>bootloader<span class="w"> </span><span class="o">(</span>hay<span class="w"> </span>que<span class="w"> </span>poner<span class="w"> </span>0x<span class="w"> </span>seguido<span class="w"> </span>del<span class="w"> </span>código<span class="w"> </span>copiado<span class="w"> </span>en<span class="w"> </span>el<span class="w"> </span>paso<span class="w"> </span><span class="m">5</span><span class="o">)</span>
@@ -138,9 +138,9 @@ y no ha habido suerte con <em>el anexo 1</em> entonces no hay nada que hacer. Ab
 <span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00008600</span>
 <span class="go">OKAY [  3.982s]</span>
 <span class="go">Finished. Total time: 3.982s</span>
-</code></pre></div>
+</pre></div>
 <h2>2. Flashear el móvil</h2>
-<div class="highlight"><pre><span></span><code><span class="gp"># </span>Descomprimir<span class="w"> </span>lineage-*.zip<span class="w"> </span><span class="o">(</span>en<span class="w"> </span>el<span class="w"> </span>pc,<span class="w"> </span>no<span class="w"> </span>en<span class="w"> </span>la<span class="w"> </span>sd<span class="o">)</span>
+<div class="highlight"><pre><span></span><span class="gp"># </span>Descomprimir<span class="w"> </span>lineage-*.zip<span class="w"> </span><span class="o">(</span>en<span class="w"> </span>el<span class="w"> </span>pc,<span class="w"> </span>no<span class="w"> </span>en<span class="w"> </span>la<span class="w"> </span>sd<span class="o">)</span>
 <span class="gp">$ </span>unzip<span class="w"> </span>lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip
 <span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango
 
@@ -170,7 +170,7 @@ y no ha habido suerte con <em>el anexo 1</em> entonces no hay nada que hacer. Ab
 <span class="gp">$ </span>fastboot<span class="w"> </span>reboot
 <span class="go">Rebooting                                          OKAY [  0.001s]</span>
 <span class="go">Finished. Total time: 0.051s</span>
-</code></pre></div>
+</pre></div>
 <p>Cuando aparezca el logo de <code>Sony Xperia</code> pulsar la tecla de bajar volumen
 para entrar en <code>Recovery mode</code> y seguir estos pasos:</p>
 <ol>
@@ -187,9 +187,9 @@ para entrar en <code>Recovery mode</code> y seguir estos pasos:</p>
 <li>Deslizar para accionar</li>
 <li>Desde el pc:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="c1"># Instalar la rom</span>
+<div class="highlight"><pre><span></span><span class="c1"># Instalar la rom</span>
 <span class="o">$</span><span class="w"> </span><span class="n">adb</span><span class="w"> </span><span class="n">sideload</span><span class="w"> </span><span class="n">lineage</span><span class="o">-</span><span class="mf">14.1</span><span class="o">-</span><span class="mi">20170514</span><span class="o">-</span><span class="n">UNOFFICIAL</span><span class="o">-</span><span class="n">LegacyXperia</span><span class="o">-</span><span class="n">mango</span><span class="o">.</span><span class="n">zip</span>
-</code></pre></div>
+</pre></div>
 <p>Finalmente pulsar en <code>Reboot / Reiniciar</code> ignorando cualquier <code>warning</code>.</p>
 <h2>3. Primer arranque</h2>
 <ol>
@@ -209,7 +209,7 @@ para entrar en <code>Recovery mode</code> y seguir estos pasos:</p>
 </li>
 </ol>
 <h2>4. Configuración</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Poner un fondo de pantalla negro</span>
+<div class="highlight"><pre><span></span><span class="c1"># Poner un fondo de pantalla negro</span>
 <span class="nb">convert</span><span class="w"> </span><span class="o">-</span><span class="n">size</span><span class="w"> </span><span class="mi">1</span><span class="n">x1</span><span class="w"> </span><span class="n">xc</span><span class="p">:</span><span class="n">black</span><span class="w"> </span><span class="n">black_pixel</span><span class="o">.</span><span class="n">png</span>
 <span class="n">adb</span><span class="w"> </span><span class="n">push</span><span class="w"> </span><span class="n">black_pixel</span><span class="o">.</span><span class="n">png</span><span class="w"> </span><span class="o">/</span><span class="n">sdcard</span><span class="o">/</span>
 <span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">am</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">-</span><span class="n">a</span><span class="w"> </span><span class="n">android</span><span class="o">.</span><span class="n">intent</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">ATTACH_DATA</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">android</span><span class="o">.</span><span class="n">intent</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">DEFAULT</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s2">"file:///sdcard/black_pixel.png"</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="s2">"image/*"</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">mimeType</span><span class="w"> </span><span class="s2">"image/*"</span>
@@ -272,9 +272,9 @@ para entrar en <code>Recovery mode</code> y seguir estos pasos:</p>
 <span class="o">.</span><span class="n">quit</span>
 
 <span class="n">am</span><span class="w"> </span><span class="n">force</span><span class="o">-</span><span class="n">stop</span><span class="w"> </span><span class="n">com</span><span class="o">.</span><span class="n">cyanogenmod</span><span class="o">.</span><span class="n">trebuchet</span>
-</code></pre></div>
+</pre></div>
 <h2>5. Instalar Aplicaciones básicas</h2>
-<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">fdroidcl</span>
+<div class="highlight"><pre><span></span><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">fdroidcl</span>
 <span class="n">fdroidcl</span><span class="w"> </span><span class="n">update</span>
 <span class="n">fdroidcl</span><span class="w"> </span><span class="n">install</span><span class="w"> </span>\
 <span class="w">    </span><span class="n">net</span><span class="o">.</span><span class="n">osmand</span><span class="o">.</span><span class="n">plus</span><span class="w"> </span>\
@@ -306,9 +306,9 @@ para entrar en <code>Recovery mode</code> y seguir estos pasos:</p>
 <span class="c1"># https://github.com/s-nt-s/vx-connectbot/releases/tag/1.8.0-30</span>
 <span class="n">wget</span><span class="w"> </span><span class="o">-</span><span class="n">q</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">s</span><span class="o">-</span><span class="n">nt</span><span class="o">-</span><span class="n">s</span><span class="o">/</span><span class="n">vx</span><span class="o">-</span><span class="n">connectbot</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">30</span><span class="o">/</span><span class="n">VX</span><span class="o">-</span><span class="n">ConnectBot</span><span class="o">-</span><span class="mf">1.8</span><span class="o">.</span><span class="mf">0.</span><span class="n">apk</span>
 <span class="n">adb</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">VX</span><span class="o">-</span><span class="n">ConnectBot</span><span class="o">-</span><span class="mf">1.8</span><span class="o">.</span><span class="mf">0.</span><span class="n">apk</span>
-</code></pre></div>
+</pre></div>
 <h2>6. Deshabilitar aplicaciones</h2>
-<div class="highlight"><pre><span></span><code>adb shell pm uninstall --user 0 org.legacyxperia.center
+<div class="highlight"><pre><span></span>adb shell pm uninstall --user 0 org.legacyxperia.center
 adb shell pm uninstall --user 0 org.cyanogenmod.audiofx
 adb shell pm uninstall --user 0 org.cyanogenmod.cmaudio.service
 adb shell pm uninstall --user 0 com.android.dreams.basic
@@ -332,7 +332,7 @@ adb shell pm uninstall --user 0 com.android.email
 # Finalmente no se elimina porque para conseguir
 # autorización oauth funciona mejor que Smart Cookie Web
 # adb shell pm uninstall --user 0 org.lineageos.jelly
-</code></pre></div>
+</pre></div>
 <h2>Anexos</h2>
 <h3>Anexo 1: ¿Qué hacer si el bootloader no es desbloqueable?</h3>
 <p>Si el valor de <a href="https://developer.sony.com/open-source/aosp-on-xperia-open-devices/get-started/unlock-bootloader/how-to-unlock-bootloader/" target="_blank"><code>Bootloader unlock allowed</code></a> 
@@ -371,7 +371,7 @@ tendras que modificar <code>open_gapps-arm-7.1-pico-20220215.zip</code> de la si
 <li>En <code>open_gapps-arm-7.1-pico-20220215/app_sizes.txt</code> añade la linea <code>keyboardgoogle-arm    nodpi    61292</code></li>
 <li>En <code>open_gapps-arm-7.1-pico-20220215/installer.sh</code> añade las siguientes lineas al inicio:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="nv">cat</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="nv">EOT</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">/</span><span class="nv">data</span><span class="o">/</span><span class="nv">gapps</span><span class="o">-</span><span class="nv">config</span>.<span class="nv">txt</span>
+<div class="highlight"><pre><span></span><span class="nv">cat</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="nv">EOT</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">/</span><span class="nv">data</span><span class="o">/</span><span class="nv">gapps</span><span class="o">-</span><span class="nv">config</span>.<span class="nv">txt</span>
 <span class="k">Include</span>
 
 <span class="nv">CalSync</span><span class="w">                 </span>#<span class="w"> </span><span class="nv">Install</span><span class="w"> </span><span class="nv">Google</span><span class="w"> </span><span class="nv">Calendar</span><span class="w"> </span><span class="nv">Sync</span><span class="w"> </span><span class="ss">(</span><span class="k">if</span><span class="w"> </span><span class="nv">Google</span><span class="w"> </span><span class="nv">Calendar</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">being</span><span class="w"> </span><span class="nv">installed</span><span class="ss">)</span>
@@ -406,14 +406,14 @@ tendras que modificar <code>open_gapps-arm-7.1-pico-20220215.zip</code> de la si
 <span class="ss">(</span><span class="nv">PhotoTable</span><span class="ss">)</span><span class="w">            </span>#<span class="w"> </span><span class="nv">Photo</span><span class="w"> </span><span class="nv">Table</span><span class="w"> </span><span class="nv">Wallpaper</span>
 <span class="ss">(</span><span class="nv">LiveWallpapers</span><span class="ss">)</span><span class="w">        </span>#<span class="w"> </span><span class="nv">Stock</span><span class="w"> </span><span class="nv">Live</span><span class="w"> </span><span class="nv">Wallpapers</span>
 <span class="nv">EOT</span>
-</code></pre></div>
+</pre></div>
 <p>y comprime el resultado en un nuevo zip.</p>
 <p>Luego en el paso <em>2. Flashear el móvil</em> antes de pulsar en <code>Reboot / Reiniciar</code>
 tienes que volver a <code>Advanced / Avanzado -&gt; ADB Sideload / Carga archivo por ADB</code>
 y hacer:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Instalar opengapps (modificadas)</span>
+<div class="highlight"><pre><span></span><span class="c1"># Instalar opengapps (modificadas)</span>
 <span class="o">$</span><span class="w"> </span><span class="n">adb</span><span class="w"> </span><span class="n">sideload</span><span class="w"> </span><span class="n">open_gapps</span><span class="o">-</span><span class="n">arm</span><span class="o">-</span><span class="mf">7.1</span><span class="o">-</span><span class="n">pico</span><span class="o">-</span><span class="mf">20220215.</span><span class="n">zip</span>
-</code></pre></div>
+</pre></div>
 </div><!-- /.entry-content -->
 </article>
 </section>

@@ -39,7 +39,7 @@ linux</a> <span class="bubble tag tg_xrandr" title="No hay más entradas con est
 <li>Poner el monitor en dicha resolución</li>
 </ol>
 <p>Ejemplo: Añadir la resolución 1368x768 al monitor VGA1</p>
-<div class="highlight"><pre><span></span><code><span class="gp">user@bot ~ $ </span>xrandr
+<div class="highlight"><pre><span></span><span class="gp">user@bot ~ $ </span>xrandr
 <span class="go">Screen 0: minimum 320 x 200, current 2390 x 768, maximum 32767 x 32767</span>
 <span class="go">LVDS1 connected 1366x768+0+0 (normal left inverted right x axis y axis) 256mm x 144mm</span>
 <span class="go">   1366x768       60.1*+</span>
@@ -72,13 +72,13 @@ linux</a> <span class="bubble tag tg_xrandr" title="No hay más entradas con est
 <span class="go">   848x480        60.0</span>
 <span class="go">   640x480        59.9</span>
 <span class="go">   1368x768       59.9*</span>
-</code></pre></div>
+</pre></div>
 <p><strong>Bonus</strong>: Hacer que el comando se repita cada vez que inicia el sistema
 para que no haya que hacerlo a mano cada vez</p>
-<div class="highlight"><pre><span></span><code><span class="gp">user@bot ~ $ </span>sudo<span class="w"> </span>gedit<span class="w"> </span>/etc/mdm/Init/Default
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="gp">user@bot ~ $ </span>sudo<span class="w"> </span>gedit<span class="w"> </span>/etc/mdm/Init/Default
+</pre></div>
 <p>Agregamos las nuevas lineas debajo de donde se define el path</p>
-<div class="highlight"><pre><span></span><code>...
+<div class="highlight"><pre><span></span>...
 <span class="nv">PATH</span><span class="o">=</span>/usr/bin:<span class="nv">$PATH</span>
 <span class="nv">OLD_IFS</span><span class="o">=</span><span class="nv">$IFS</span>
 
@@ -87,7 +87,7 @@ xrandr<span class="w"> </span>--addmode<span class="w"> </span>VGA1<span class="
 xrandr<span class="w"> </span>--output<span class="w"> </span>VGA1<span class="w"> </span>--mode<span class="w"> </span>1368x768
 
 mdmwhich<span class="w"> </span><span class="o">()</span><span class="w"> </span><span class="o">{</span>...
-</code></pre></div>
+</pre></div>
 </div><!-- /.entry-content -->
 </article>
 </section>

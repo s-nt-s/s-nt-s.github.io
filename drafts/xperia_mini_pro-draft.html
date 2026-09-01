@@ -61,8 +61,8 @@ xfce</a> </p>
 </ul>
 <h2>Prerrequisitos</h2>
 <h3>Instalar adb y fastboot</h3>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>adb<span class="w"> </span>fastboot
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="gp">$ </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>adb<span class="w"> </span>fastboot
+</pre></div>
 <h3>Determinar si va a ser posible todo esto</h3>
 <p>En el móvil:</p>
 <ol>
@@ -89,7 +89,7 @@ xfce</a> </p>
 </ul>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>adb<span class="w"> </span>devices
+<div class="highlight"><pre><span></span><span class="gp">$ </span>adb<span class="w"> </span>devices
 <span class="go">* daemon not running; starting now at tcp:5037</span>
 <span class="go">* daemon started successfully</span>
 <span class="go">List of devices attached</span>
@@ -99,16 +99,16 @@ xfce</a> </p>
 
 <span class="gp">$ </span>fastboot<span class="w"> </span>devices
 <span class="go">BX902QUGBW&amp;ZLP    fastboot</span>
-</code></pre></div>
+</pre></div>
 <p>Si no funciona el paso 3 y además el paso 2 dice que el
 bootlader no es desbloqueable no hay nada que hacer. Mala suerte.</p>
 <p>En caso contrario continuar.</p>
 <h3>Formatear SD</h3>
-<div class="highlight"><pre><span></span><code><span class="gp"># </span>Formatear<span class="w"> </span>SD<span class="w"> </span>con<span class="w"> </span>una<span class="w"> </span>única<span class="w"> </span>partición<span class="w"> </span>en<span class="w"> </span>formato<span class="w"> </span>ext4
+<div class="highlight"><pre><span></span><span class="gp"># </span>Formatear<span class="w"> </span>SD<span class="w"> </span>con<span class="w"> </span>una<span class="w"> </span>única<span class="w"> </span>partición<span class="w"> </span>en<span class="w"> </span>formato<span class="w"> </span>ext4
 <span class="gp">$ </span>sudo<span class="w"> </span>umount<span class="w"> </span>/dev/mmcblk0*
 <span class="gp">$ </span>sudo<span class="w"> </span>mkfs<span class="w"> </span>-t<span class="w"> </span>fat<span class="w"> </span>-n<span class="w"> </span>SK17I<span class="w"> </span>/dev/mmcblk0
 <span class="gp">$ </span>sudo<span class="w"> </span>umount<span class="w"> </span>/dev/mmcblk0
-</code></pre></div>
+</pre></div>
 <p>Si más adelante falla, probar con fat32.</p>
 <h3>Preparar opengapps</h3>
 <p>En el móvil no hay espacio ni siquiera para la versión <code>opengapps 7.1-pico</code>
@@ -126,7 +126,7 @@ modificaremos <code>open_gapps-arm-7.1-pico-20220215.zip</code> de la siguiente 
 <li>En <code>open_gapps-arm-7.1-pico-20220215/app_sizes.txt</code> añadimos la linea <code>keyboardgoogle-arm    nodpi    61292</code></li>
 <li>En <code>open_gapps-arm-7.1-pico-20220215/installer.sh</code> añadimos las siguientes lineas al inicio:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="nv">cat</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="nv">EOT</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">/</span><span class="nv">data</span><span class="o">/</span><span class="nv">gapps</span><span class="o">-</span><span class="nv">config</span>.<span class="nv">txt</span>
+<div class="highlight"><pre><span></span><span class="nv">cat</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="nv">EOT</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">/</span><span class="nv">data</span><span class="o">/</span><span class="nv">gapps</span><span class="o">-</span><span class="nv">config</span>.<span class="nv">txt</span>
 <span class="k">Include</span>
 
 <span class="nv">CalSync</span><span class="w">                 </span>#<span class="w"> </span><span class="nv">Install</span><span class="w"> </span><span class="nv">Google</span><span class="w"> </span><span class="nv">Calendar</span><span class="w"> </span><span class="nv">Sync</span><span class="w"> </span><span class="ss">(</span><span class="k">if</span><span class="w"> </span><span class="nv">Google</span><span class="w"> </span><span class="nv">Calendar</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">being</span><span class="w"> </span><span class="nv">installed</span><span class="ss">)</span>
@@ -161,7 +161,7 @@ modificaremos <code>open_gapps-arm-7.1-pico-20220215.zip</code> de la siguiente 
 <span class="ss">(</span><span class="nv">PhotoTable</span><span class="ss">)</span><span class="w">            </span>#<span class="w"> </span><span class="nv">Photo</span><span class="w"> </span><span class="nv">Table</span><span class="w"> </span><span class="nv">Wallpaper</span>
 <span class="ss">(</span><span class="nv">LiveWallpapers</span><span class="ss">)</span><span class="w">        </span>#<span class="w"> </span><span class="nv">Stock</span><span class="w"> </span><span class="nv">Live</span><span class="w"> </span><span class="nv">Wallpapers</span>
 <span class="nv">EOT</span>
-</code></pre></div>
+</pre></div>
 <p>y comprimimos el resultado en un nuevo zip.</p>
 <h2>Desbloquear bootloader</h2>
 <ol>
@@ -178,7 +178,7 @@ modificaremos <code>open_gapps-arm-7.1-pico-20220215.zip</code> de la siguiente 
 <li>Conectar el móvil por usb</li>
 <li>Desde el pc:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="gp"># </span>Resetear<span class="w"> </span>el<span class="w"> </span>móvil<span class="w"> </span>en<span class="w"> </span>modo<span class="w"> </span>bootloader
+<div class="highlight"><pre><span></span><span class="gp"># </span>Resetear<span class="w"> </span>el<span class="w"> </span>móvil<span class="w"> </span>en<span class="w"> </span>modo<span class="w"> </span>bootloader
 <span class="gp">$ </span>adb<span class="w"> </span>devices<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>adb<span class="w"> </span>reboot<span class="w"> </span>bootloader<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>fastboot<span class="w"> </span>devices
 
 <span class="gp"># </span>Desbloquear<span class="w"> </span>el<span class="w"> </span>bootloader<span class="w"> </span><span class="o">(</span>hay<span class="w"> </span>que<span class="w"> </span>poner<span class="w"> </span>0x<span class="w"> </span>seguido<span class="w"> </span>del<span class="w"> </span>código<span class="w"> </span>copiado<span class="w"> </span>en<span class="w"> </span>el<span class="w"> </span>paso<span class="w"> </span><span class="m">5</span><span class="o">)</span>
@@ -199,9 +199,9 @@ modificaremos <code>open_gapps-arm-7.1-pico-20220215.zip</code> de la siguiente 
 <span class="gp gp-VirtualEnv">(bootloader)</span> <span class="go">Erasing block 0x00008600</span>
 <span class="go">OKAY [  3.982s]</span>
 <span class="go">Finished. Total time: 3.982s</span>
-</code></pre></div>
+</pre></div>
 <h2>Flashear el móvil</h2>
-<div class="highlight"><pre><span></span><code><span class="gp"># </span>Descomprimir<span class="w"> </span>lineage-*.zip<span class="w"> </span><span class="o">(</span>en<span class="w"> </span>el<span class="w"> </span>pc,<span class="w"> </span>no<span class="w"> </span>en<span class="w"> </span>la<span class="w"> </span>sd<span class="o">)</span>
+<div class="highlight"><pre><span></span><span class="gp"># </span>Descomprimir<span class="w"> </span>lineage-*.zip<span class="w"> </span><span class="o">(</span>en<span class="w"> </span>el<span class="w"> </span>pc,<span class="w"> </span>no<span class="w"> </span>en<span class="w"> </span>la<span class="w"> </span>sd<span class="o">)</span>
 <span class="gp">$ </span>unzip<span class="w"> </span>lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango.zip
 <span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>lineage-14.1-20170514-UNOFFICIAL-LegacyXperia-mango
 
@@ -231,7 +231,7 @@ modificaremos <code>open_gapps-arm-7.1-pico-20220215.zip</code> de la siguiente 
 <span class="gp">$ </span>fastboot<span class="w"> </span>reboot
 <span class="go">Rebooting                                          OKAY [  0.001s]</span>
 <span class="go">Finished. Total time: 0.051s</span>
-</code></pre></div>
+</pre></div>
 <p>Cuando aparezca el logo de <code>Sony Xperia</code> pulsar la tecla de bajar volumen
 para entrar en <code>Recovery mode</code> y seguir estos pasos:</p>
 <ol>
@@ -248,15 +248,15 @@ para entrar en <code>Recovery mode</code> y seguir estos pasos:</p>
 <li>Deslizar para accionar</li>
 <li>Desde el pc:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="c1"># Instalar la rom</span>
+<div class="highlight"><pre><span></span><span class="c1"># Instalar la rom</span>
 <span class="o">$</span><span class="w"> </span><span class="n">adb</span><span class="w"> </span><span class="n">sideload</span><span class="w"> </span><span class="n">lineage</span><span class="o">-</span><span class="mf">14.1</span><span class="o">-</span><span class="mi">20170514</span><span class="o">-</span><span class="n">UNOFFICIAL</span><span class="o">-</span><span class="n">LegacyXperia</span><span class="o">-</span><span class="n">mango</span><span class="o">.</span><span class="n">zip</span>
-</code></pre></div>
+</pre></div>
 <ol>
 <li>Repetir pasos 9 al 10 y desde el pc:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="c1"># Instalar opengapps (modificadas)</span>
+<div class="highlight"><pre><span></span><span class="c1"># Instalar opengapps (modificadas)</span>
 <span class="o">$</span><span class="w"> </span><span class="n">adb</span><span class="w"> </span><span class="n">sideload</span><span class="w"> </span><span class="n">open_gapps</span><span class="o">-</span><span class="n">arm</span><span class="o">-</span><span class="mf">7.1</span><span class="o">-</span><span class="n">pico</span><span class="o">-</span><span class="mf">20220215.</span><span class="n">zip</span>
-</code></pre></div>
+</pre></div>
 <ol>
 <li>Pulsar en <code>Reboot / Reiniciar</code> ignorando cualquier <code>warning</code></li>
 </ol>
@@ -290,11 +290,11 @@ para entrar en <code>Recovery mode</code> y seguir estos pasos:</p>
 </li>
 <li>Desde el pc:</li>
 </ol>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>wget<span class="w"> </span>https://f-droid.org/repo/com.simplemobiletools.keyboard_24.apk
+<div class="highlight"><pre><span></span>$<span class="w"> </span>wget<span class="w"> </span>https://f-droid.org/repo/com.simplemobiletools.keyboard_24.apk
 $<span class="w"> </span>adb<span class="w"> </span>install<span class="w"> </span>com.simplemobiletools.keyboard_24.apk
 Performing<span class="w"> </span>Streamed<span class="w"> </span>Install
 Success
-</code></pre></div>
+</pre></div>
 <ol>
 <li>Ir a <code>Ajustes -&gt; Idiomas en introducción de texto -&gt; Teclado actual</code></li>
 <li>Activar <code>Teclado sencillo</code></li>
@@ -303,7 +303,7 @@ Success
 <li>Reiniciar</li>
 </ol>
 <h2>Configuración</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Poner un fondo de pantalla negro</span>
+<div class="highlight"><pre><span></span><span class="c1"># Poner un fondo de pantalla negro</span>
 <span class="nb">convert</span><span class="w"> </span><span class="o">-</span><span class="n">size</span><span class="w"> </span><span class="mi">1</span><span class="n">x1</span><span class="w"> </span><span class="n">xc</span><span class="p">:</span><span class="n">black</span><span class="w"> </span><span class="n">black_pixel</span><span class="o">.</span><span class="n">png</span>
 <span class="n">adb</span><span class="w"> </span><span class="n">push</span><span class="w"> </span><span class="n">black_pixel</span><span class="o">.</span><span class="n">png</span><span class="w"> </span><span class="o">/</span><span class="n">sdcard</span><span class="o">/</span>
 <span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">am</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">-</span><span class="n">a</span><span class="w"> </span><span class="n">android</span><span class="o">.</span><span class="n">intent</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">ATTACH_DATA</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">android</span><span class="o">.</span><span class="n">intent</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">DEFAULT</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s2">"file:///sdcard/black_pixel.png"</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="s2">"image/*"</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">mimeType</span><span class="w"> </span><span class="s2">"image/*"</span>
@@ -352,9 +352,9 @@ Success
 
 <span class="c1"># Reducir el registro (logcat)</span>
 <span class="n">adb</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">logcat</span><span class="w"> </span><span class="o">-</span><span class="n">G</span><span class="w"> </span><span class="mi">256</span><span class="n">K</span>
-</code></pre></div>
+</pre></div>
 <h2>Instalar Aplicaciones básicas</h2>
-<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">fdroidcl</span>
+<div class="highlight"><pre><span></span><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">fdroidcl</span>
 <span class="n">fdroidcl</span><span class="w"> </span><span class="n">update</span>
 <span class="n">fdroidcl</span><span class="w"> </span><span class="n">install</span><span class="w"> </span>\
 <span class="w">    </span><span class="n">org</span><span class="o">.</span><span class="n">fdroid</span><span class="o">.</span><span class="n">fdroid</span><span class="w"> </span>\
@@ -381,9 +381,9 @@ Success
 <span class="c1"># https://github.com/equeim/tremotesf-android/releases/tag/2.10.2</span>
 <span class="n">wget</span><span class="w"> </span><span class="o">-</span><span class="n">q</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">equeim</span><span class="o">/</span><span class="n">tremotesf</span><span class="o">-</span><span class="n">android</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="mf">2.10</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">app</span><span class="o">-</span><span class="n">fdroid</span><span class="o">-</span><span class="n">release</span><span class="o">.</span><span class="n">apk</span>
 <span class="n">adb</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">app</span><span class="o">-</span><span class="n">fdroid</span><span class="o">-</span><span class="n">release</span><span class="o">.</span><span class="n">apk</span>
-</code></pre></div>
+</pre></div>
 <h2>Deshabilitar aplicaciones</h2>
-<div class="highlight"><pre><span></span><code>adb shell pm uninstall --user 0 org.legacyxperia.center
+<div class="highlight"><pre><span></span>adb shell pm uninstall --user 0 org.legacyxperia.center
 adb shell pm uninstall --user 0 org.lineageos.jelly
 adb shell pm uninstall --user 0 org.cyanogenmod.audiofx
 adb shell pm uninstall --user 0 org.cyanogenmod.cmaudio.service
@@ -403,9 +403,9 @@ adb shell pm uninstall --user 0 com.android.htmlviewer
 adb shell pm uninstall --user 0 com.android.onetimeinitializer
 adb shell pm uninstall --user 0 com.cyanogenmod.trebuchet
 adb shell pm uninstall --user 0 com.android.calendar
-</code></pre></div>
+</pre></div>
 <h2>Habilitar <a href="https://github.com/microg/GmsCore/wiki/Signature-Spoofing" target="_blank">Signature Spoofing</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">wget</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">bitbucket</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">JesusFreke</span><span class="o">/</span><span class="n">smali</span><span class="o">/</span><span class="n">downloads</span><span class="o">/</span><span class="n">baksmali</span><span class="o">-</span><span class="mf">2.5</span><span class="o">.</span><span class="mf">2.j</span><span class="n">ar</span>
+<div class="highlight"><pre><span></span><span class="n">wget</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">bitbucket</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">JesusFreke</span><span class="o">/</span><span class="n">smali</span><span class="o">/</span><span class="n">downloads</span><span class="o">/</span><span class="n">baksmali</span><span class="o">-</span><span class="mf">2.5</span><span class="o">.</span><span class="mf">2.j</span><span class="n">ar</span>
 <span class="n">wget</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">bitbucket</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">JesusFreke</span><span class="o">/</span><span class="n">smali</span><span class="o">/</span><span class="n">downloads</span><span class="o">/</span><span class="n">smali</span><span class="o">-</span><span class="mf">2.5</span><span class="o">.</span><span class="mf">2.j</span><span class="n">ar</span>
 <span class="n">adb</span><span class="w"> </span><span class="n">pull</span><span class="w"> </span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">framework</span><span class="w"> </span><span class="n">framework</span>
 <span class="n">cp</span><span class="w"> </span><span class="o">-</span><span class="n">r</span><span class="w"> </span><span class="n">framework</span><span class="w"> </span><span class="n">framework</span><span class="o">-</span><span class="n">backup</span>
@@ -426,9 +426,9 @@ adb shell pm uninstall --user 0 com.android.calendar
 <span class="n">wget</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">downloads</span><span class="o">.</span><span class="n">nanolx</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">NanoDroid</span><span class="o">/</span><span class="n">Stable</span><span class="o">/</span><span class="n">NanoDroid</span><span class="o">-</span><span class="n">patcher</span><span class="o">-</span><span class="mf">23.1</span><span class="o">.</span><span class="mf">2.20210117</span><span class="o">.</span><span class="n">zip</span>
 <span class="n">adb</span><span class="w"> </span><span class="n">reboot</span><span class="w"> </span><span class="n">recovery</span>
 <span class="c1"># Advanced &gt; ADB Sideload.</span>
-</code></pre></div>
+</pre></div>
 <p>Añadir <a href="https://microg.org/download.html" target="_blank"><code>microG F-Droid</code></a> a <code>~/.config/fdroidcl/config.json</code>: </p>
-<div class="highlight"><pre><span></span><code>{
+<div class="highlight"><pre><span></span>{
     "repos": [
         {
             "id": "f-droid",
@@ -447,15 +447,15 @@ adb shell pm uninstall --user 0 com.android.calendar
         }
     ]
 }
-</code></pre></div>
+</pre></div>
 <p>Instalar microG y Aurora Store:</p>
-<div class="highlight"><pre><span></span><code>fdroidcl update
+<div class="highlight"><pre><span></span>fdroidcl update
 fdroidcl install \
     com.google.android.gms \
     com.android.vending \
     com.google.android.gsf \
     com.aurora.store
-</code></pre></div>
+</pre></div>
 <p>https://github.com/mvdan/fdroidcl</p>
 <p>Via <code>wget</code> y <code>adb install</code>:</p>
 <ul>
