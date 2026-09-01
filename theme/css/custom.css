@@ -69,3 +69,7 @@ article q:before {
 article q:after {
   content: close-quote;
 }
+
+div.entry-content > p:first-child {
+  margin-top: 0px;
+}
