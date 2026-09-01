@@ -24,9 +24,12 @@ class ExReplace(Extension):
         self.delimiter = delimiter
         super(ExReplace, self).__init__(**config)
 
-    def extendMarkdown(self, md, md_globals):
-        md.preprocessors.add('replacements', MkReplace(
-            self.delimiter, self.replacements), ">html_block")
+    def extendMarkdown(self, md):
+        md.preprocessors.register(
+            MkReplace(self.delimiter, self.replacements),
+            'replacements',
+            19
+        )
 
 
 def process_settings(pelican_object):

@@ -4,7 +4,6 @@ import re
 import bs4
 from pelican import signals
 from pelican.readers import MarkdownReader as MarkReader
-from pelican.utils import pelican_open
 
 re_tags = tuple(
     (t, re.compile(r"\b" + t + r"\b", re.IGNORECASE)) for t in
