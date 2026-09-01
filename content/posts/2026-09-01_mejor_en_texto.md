@@ -25,7 +25,7 @@ No una foto de un cartel con el horario.
 * Si te preguntan por un evento, escribe su información, no envies simplemente un cartel.
 * Si te preguntan por un libro, escribe sus datos (titulo, autor...), no envies una foto.
 * Si te preguntan por algo que esta en una web manda el enlace o copia el texto, no le hagas una foto al monitor mostrando la web.
-* Si te pregunta que traza de error te da, copia y pega el texto de la traza, no le hagas una captura de pantalla.
+* Si te preguntan que traza de error te da, copia y pega el texto de la traza, no le hagas una captura de pantalla.
 * etc
 
 **Una imagen tiene sentido cuando lo que quieres transmitir es algo visual. Una captura/foto de texto no.**
