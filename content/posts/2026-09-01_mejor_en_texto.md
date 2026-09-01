@@ -8,7 +8,7 @@ El texto está hecho para ser leído, seleccionado, copiado, buscado, traducido,
 
 Una imagen de ese mismo texto no ofrece necesariamente ninguna de esas posibilidades.
 
-Esto no es solo una cuestión de comodidad. **Cuando mandas una captura de pantalla en lugar de escribir el contenido, puedes estar creando una barrera de acceso para personas que utilizan lectores de pantalla u otras tecnologías de asistencia.**
+Esto no es solo una cuestión de comodidad. **Cuando mandas una imagen en lugar de escribir el contenido, puedes estar creando una barrera de acceso para personas que utilizan lectores de pantalla u otras tecnologías de asistencia.**
 
 Y tampoco hace falta hablar de discapacidad para entender el problema: una imagen puede ser difícil de leer, tener un tamaño insuficiente, mala resolución o un contraste deficiente. El texto puede adaptarse mucho mejor a las necesidades de quien lo recibe.
 
