@@ -74,7 +74,7 @@ dejarlo a tu gusto&lt;/p&gt;
 &lt;span class="n"&gt;exit&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;h2&gt;Eliminar tienda kobo y otras configuraciones&lt;/h2&gt;
-&lt;p&gt;Editar "/media/$USER/KOBOeReader/.kobo/Kobo/Kobo eReader.conf" y añadir:&lt;/p&gt;
+&lt;p&gt;Editar &lt;code&gt;"/media/$USER/KOBOeReader/.kobo/Kobo/Kobo eReader.conf"&lt;/code&gt; y añadir:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[ApplicationPreferences]&lt;/span&gt;
 &lt;span class="na"&gt;SideloadedMode&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;true&lt;/span&gt;
 &lt;span class="na"&gt;AIRPLANE_MODE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;true&lt;/span&gt;
