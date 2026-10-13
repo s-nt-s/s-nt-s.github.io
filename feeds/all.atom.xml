@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Apuntes</title><link href="https://s-nt-s.github.io/" rel="alternate"></link><link href="https://s-nt-s.github.io/feeds/all.atom.xml" rel="self"></link><id>https://s-nt-s.github.io/</id><updated>2026-10-13T00:00:00+02:00</updated><subtitle>(mejor aquí que en un txt perdido)</subtitle><entry><title>Kobo +</title><link href="https://s-nt-s.github.io/kobo/" rel="alternate"></link><published>2026-10-13T00:00:00+02:00</published><updated>2026-10-13T00:00:00+02:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2026-10-13:/kobo/</id><summary type="html">&lt;h2&gt;Configuración normal&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Apuntes</title><link href="https://s-nt-s.github.io/" rel="alternate"></link><link href="https://s-nt-s.github.io/feeds/all.atom.xml" rel="self"></link><id>https://s-nt-s.github.io/</id><updated>2026-10-13T00:00:00+02:00</updated><subtitle>(mejor aquí que en un txt perdido)</subtitle><entry><title>Kobo + NickelMenu + SSH</title><link href="https://s-nt-s.github.io/kobo/" rel="alternate"></link><published>2026-10-13T00:00:00+02:00</published><updated>2026-10-13T00:00:00+02:00</updated><author><name>s-nt-s</name></author><id>tag:s-nt-s.github.io,2026-10-13:/kobo/</id><summary type="html">&lt;h2&gt;Configuración normal&lt;/h2&gt;
 &lt;p&gt;Simplemente sigue el wizard de inicio y luego ve a &lt;code&gt;Más -&amp;gt; Configuración&lt;/code&gt; para
 dejarlo a tu gusto&lt;/p&gt;
 &lt;h2&gt;Instalar NickelMenu&lt;/h2&gt;
@@ -85,7 +85,6 @@ dejarlo a tu gusto&lt;/p&gt;
 &lt;span class="k"&gt;[FeatureSettings]&lt;/span&gt;
 &lt;span class="na"&gt;MyWords&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;true&lt;/span&gt;
 &lt;span class="na"&gt;ExcludeSyncFolders&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;(\\.(?!kobo|adobe).+|([^.][^/]*/)+\\..+)&lt;/span&gt;
-
 
 &lt;span class="k"&gt;[ReadingLife]&lt;/span&gt;
 &lt;span class="na"&gt;LastActivityNavItem&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;0&lt;/span&gt;
