@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Kobo +</title>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<meta content="#da532c" name="msapplication-TileColor"/>
+<meta content="#ffffff" name="theme-color"/>
+<link href="/theme/css/main.css" rel="stylesheet"/>
+<link href="/feeds/all.atom.xml" rel="alternate" title="Apuntes Atom Feed" type="application/atom+xml"/>
+</head>
+<body class="home" id="index">
+<header class="body" id="banner">
+<h1 class="entry-title"><a href="/kobo" rel="bookmark" title="Permalink to Kobo +">Kobo +</a></h1><div class="post-info">
+<p>
+<time class="published" datetime="2026-10-13T00:00:00+02:00" title="Publicado el 2026-10-13">2026-10-13</time>
+<a class="bubble category ct_sistemas" href="/category/sistemas.html" title="Hay 19 entradas más sobre Sistemas">
+Sistemas</a>
+<span class="bubble tag tg_ebook" title="No hay más entradas con esta etiqueta">ebook</span> <a class="bubble tag tg_epub" href="/tag/epub.html" title="Hay 1 entrada  más sobre epub">
+epub</a> <a class="bubble tag tg_redes" href="/tag/redes.html" title="Hay 10 entradas  más sobre redes">
+redes</a> </p>
+<p>
+<span class="bubble">79 lineas</span> <span class="bubble wc">234 palabras</span> <span class="bubble wc">2.855 letras</span>
+</p>
+</div><!-- /.post-info --> </header><!-- /#banner -->
+<section class="body" id="content">
+<article>
+<div class="entry-content">
+<h2>Configuración normal</h2>
+<p>Simplemente sigue el wizard de inicio y luego ve a <code>Más -&gt; Configuración</code> para
+dejarlo a tu gusto</p>
+<h2>Instalar NickelMenu</h2>
+<p>Conectar Kobo por usb.</p>
+<div class="highlight"><pre><span></span><span class="o">$</span><span class="w"> </span><span class="n">wget</span><span class="w"> </span><span class="o">-</span><span class="n">q</span><span class="w"> </span><span class="o">-</span><span class="n">O</span><span class="w"> </span><span class="s2">"/media/$USER/KOBOeReader/.kobo/KoboRoot.tgz"</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">pgaskin</span><span class="o">/</span><span class="n">NickelMenu</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">KoboRoot</span><span class="o">.</span><span class="n">tgz</span>
+<span class="o">$</span><span class="w"> </span><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="s2">"/media/$USER/KOBOeReader/.adds/"</span><span class="w"> </span><span class="s2">"/media/$USER/KOBOeReader/.adds/nm/"</span>
+<span class="o">$</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">/</span><span class="n">media</span><span class="o">/$</span><span class="n">USER</span><span class="o">/</span><span class="n">KOBOeReader</span><span class="o">/.</span><span class="n">adds</span><span class="o">/</span><span class="n">nm</span><span class="o">/</span><span class="n">config</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="s1">'EOF'</span>
+<span class="n">experimental</span><span class="p">:</span><span class="n">menu_main_15505_label</span><span class="p">:</span><span class="n">Atajos</span>
+
+<span class="n">menu_item</span><span class="p">:</span><span class="n">main</span><span class="p">:</span><span class="n">Instapaper</span><span class="p">:</span><span class="n">nickel_open</span><span class="p">:</span><span class="n">library</span><span class="p">:</span><span class="n">instapaper</span>
+<span class="n">menu_item</span><span class="p">:</span><span class="n">main</span><span class="p">:</span><span class="n">KOReader</span><span class="p">:</span><span class="n">cmd_spawn</span><span class="p">:</span><span class="n">quiet</span><span class="p">:</span><span class="n">exec</span><span class="w"> </span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">onboard</span><span class="o">/.</span><span class="n">adds</span><span class="o">/</span><span class="n">koreader</span><span class="o">/</span><span class="n">koreader</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">menu_item</span><span class="p">:</span><span class="n">main</span><span class="p">:</span><span class="n">Refrescar</span><span class="w"> </span><span class="n">Biblioteca</span><span class="p">:</span><span class="n">nickel_misc</span><span class="p">:</span><span class="n">rescan_books_full</span>
+<span class="n">menu_item</span><span class="p">:</span><span class="n">main</span><span class="p">:</span><span class="n">Modo</span><span class="w"> </span><span class="n">USB</span><span class="p">:</span><span class="n">nickel_misc</span><span class="p">:</span><span class="n">force_usb_connection</span>
+
+<span class="n">menu_item</span><span class="w"> </span><span class="p">:</span><span class="n">main</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">SSH</span><span class="w"> </span><span class="p">(</span><span class="n">toggle</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="n">cmd_output</span><span class="w"> </span><span class="p">:</span><span class="mi">1000</span><span class="p">:</span><span class="n">sh</span><span class="w"> </span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">onboard</span><span class="o">/.</span><span class="n">adds</span><span class="o">/</span><span class="n">koreader</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">mydropbear</span><span class="o">.</span><span class="n">sh</span><span class="w"> </span><span class="mi">22</span>
+
+<span class="n">menu_item</span><span class="p">:</span><span class="n">main</span><span class="p">:</span><span class="n">Reiniciar</span><span class="p">:</span><span class="n">nickel_misc</span><span class="p">:</span><span class="n">home</span>
+<span class="w">  </span><span class="n">chain_success</span><span class="p">:</span><span class="n">power</span><span class="p">:</span><span class="n">reboot</span>
+
+<span class="n">menu_item</span><span class="p">:</span><span class="n">selection_search</span><span class="p">:</span><span class="n">Buscar</span><span class="w"> </span><span class="n">en</span><span class="w"> </span><span class="n">DuckDuckGo</span><span class="w"> </span><span class="p">:</span><span class="n">nickel_browser</span><span class="w"> </span><span class="p">:</span><span class="n">modal</span><span class="p">:</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">duckduckgo</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="err">?</span><span class="n">q</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="o">|</span><span class="n">S</span><span class="o">|%</span><span class="p">}</span>
+
+<span class="n">menu_item</span><span class="p">:</span><span class="n">reader</span><span class="p">:</span><span class="n">Modo</span><span class="w"> </span><span class="n">oscuro</span><span class="p">:</span><span class="n">nickel_setting</span><span class="p">:</span><span class="n">toggle</span><span class="p">:</span><span class="n">dark_mode</span>
+<span class="n">menu_item</span><span class="p">:</span><span class="n">reader</span><span class="p">:</span><span class="n">Apagar</span><span class="w"> </span><span class="n">WiFi</span><span class="p">:</span><span class="n">nickel_wifi</span><span class="p">:</span><span class="n">disable</span>
+<span class="n">EOF</span>
+</pre></div>
+<p>Reiniciar</p>
+<h2>Instalar KoReader</h2>
+<div class="highlight"><pre><span></span><span class="o">$</span><span class="w"> </span><span class="n">wget</span><span class="w"> </span><span class="o">-</span><span class="n">qO</span><span class="o">-</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">koreader</span><span class="o">/</span><span class="n">koreader</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">v2026</span><span class="o">.</span><span class="mf">07.1</span><span class="o">/</span><span class="n">koreader</span><span class="o">-</span><span class="n">kobo</span><span class="o">-</span><span class="n">v2026</span><span class="o">.</span><span class="mf">07.1</span><span class="o">.</span><span class="n">zip</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">bsdtar</span><span class="w"> </span><span class="o">-</span><span class="n">xf</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">-</span><span class="n">C</span><span class="w"> </span><span class="s2">"/media/$USER/KOBOeReader/.adds/"</span>
+<span class="o">$</span><span class="w"> </span><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="s2">"/media/$USER/KOBOeReader/.adds/koreader/scripts/"</span>
+<span class="o">$</span><span class="w"> </span><span class="n">nano</span><span class="w"> </span><span class="s2">"/media/$USER/KOBOeReader/.adds/koreader/scripts/mydropbear.sh"</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="n">TMP_PID</span><span class="o">=</span><span class="s2">"/tmp/dropbear_koreader.pid"</span>
+<span class="n">PORT</span><span class="o">=</span><span class="s2">"$1"</span>
+
+<span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="n">f</span> <span class="s2">"$TMP_PID"</span> <span class="p">];</span> <span class="n">then</span>
+   <span class="n">cat</span> <span class="s2">"$TMP_PID"</span> <span class="o">|</span> <span class="n">xargs</span> <span class="n">kill</span>
+   <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="s2">"$TMP_ID"</span>
+   <span class="n">echo</span> <span class="s2">"SSH parado"</span>
+   <span class="n">exit</span> <span class="mi">0</span>
+<span class="n">fi</span>
+<span class="n">IP</span><span class="o">=</span><span class="err">$</span><span class="p">(</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">ifconfig</span> <span class="o">|</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">awk</span> <span class="s1">'/inet addr/{print substr($2,6)}'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="n">z</span> <span class="s2">"$IP"</span> <span class="p">];</span> <span class="n">then</span>
+   <span class="n">IP</span><span class="o">=</span><span class="s2">"127.0.0.1"</span>
+<span class="n">fi</span>
+
+<span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">devpts</span> <span class="o">|</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">grep</span> <span class="o">-</span><span class="n">q</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pts</span> <span class="o">||</span> <span class="p">{</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pts</span> <span class="o">&amp;&amp;</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">devpts</span> <span class="n">devpts</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pts</span><span class="p">;</span> <span class="p">}</span>
+<span class="k">if</span> <span class="p">[</span> <span class="err">!</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pts</span> <span class="p">];</span> <span class="n">then</span>
+   <span class="n">echo</span> <span class="s2">"Error al crear /dev/pts"</span>
+   <span class="n">exit</span> <span class="mi">1</span>
+<span class="n">fi</span>
+
+<span class="n">export</span> <span class="n">PATH</span><span class="o">=</span><span class="err">$</span><span class="n">PATH</span><span class="p">:</span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">onboard</span><span class="o">/.</span><span class="n">adds</span><span class="o">/</span><span class="n">koreader</span><span class="o">/</span><span class="n">scripts</span>
+<span class="n">export</span> <span class="n">LD_LIBRARY_PATH</span><span class="o">=</span><span class="err">$</span><span class="n">LD_LIBRARY_PATH</span><span class="p">:</span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">onboard</span><span class="o">/.</span><span class="n">adds</span><span class="o">/</span><span class="n">koreader</span><span class="o">/</span><span class="n">libs</span>
+<span class="n">export</span> <span class="n">HOME</span><span class="o">=/</span><span class="n">mnt</span><span class="o">/</span><span class="n">onboard</span><span class="o">/.</span><span class="n">adds</span><span class="o">/</span><span class="n">koreader</span><span class="o">/</span>
+<span class="n">cd</span> <span class="err">$</span><span class="n">HOME</span>
+<span class="o">./</span><span class="n">dropbear</span> <span class="o">-</span><span class="n">E</span> <span class="o">-</span><span class="n">R</span> <span class="o">-</span><span class="n">p</span> <span class="s2">"$PORT"</span> <span class="o">-</span><span class="n">P</span> <span class="s2">"$TMP_PID"</span>
+
+<span class="k">if</span> <span class="p">[</span> <span class="err">$?</span> <span class="o">-</span><span class="n">ne</span> <span class="mi">0</span> <span class="p">];</span> <span class="n">then</span>
+   <span class="n">echo</span> <span class="s2">"Error al inciar SSH en $IP:$PORT"</span>
+   <span class="n">exit</span> <span class="mi">1</span>
+<span class="n">fi</span>
+
+<span class="n">echo</span> <span class="s2">"SSH $IP:$PORT iniciado"</span>
+<span class="n">exit</span> <span class="mi">0</span>
+</pre></div>
+<h2>Eliminar tienda kobo y otras configuraciones</h2>
+<p>Editar "/media/$USER/KOBOeReader/.kobo/Kobo/Kobo eReader.conf" y añadir:</p>
+<div class="highlight"><pre><span></span><span class="k">[ApplicationPreferences]</span>
+<span class="na">SideloadedMode</span><span class="o">=</span><span class="s">true</span>
+<span class="na">AIRPLANE_MODE</span><span class="o">=</span><span class="s">true</span>
+
+<span class="k">[BluetoothSettings]</span>
+<span class="na">Alias</span><span class="o">=</span><span class="s">eLibro</span>
+
+<span class="k">[FeatureSettings]</span>
+<span class="na">MyWords</span><span class="o">=</span><span class="s">true</span>
+<span class="na">ExcludeSyncFolders</span><span class="o">=</span><span class="s">(\\.(?!kobo|adobe).+|([^.][^/]*/)+\\..+)</span>
+
+
+<span class="k">[ReadingLife]</span>
+<span class="na">LastActivityNavItem</span><span class="o">=</span><span class="s">0</span>
+
+<span class="k">[PowerOptions]</span>
+<span class="na">AutoColorEnabled</span><span class="o">=</span><span class="s">true</span>
+<span class="na">AutoOffMinutes</span><span class="o">=</span><span class="s">30</span>
+<span class="na">AutoSleepMinutes</span><span class="o">=</span><span class="s">15</span>
+<span class="na">FrontLightLevel</span><span class="o">=</span><span class="s">0</span>
+<span class="na">IndicatorCharging</span><span class="o">=</span><span class="s">false</span>
+<span class="na">RecentlyViewedEnabled</span><span class="o">=</span><span class="s">false</span>
+<span class="na">ShowBookCover</span><span class="o">=</span><span class="s">false</span>
+
+<span class="k">[Reading]</span>
+<span class="na">numPartialUpdatePageTurns</span><span class="o">=</span><span class="s">10</span>
+<span class="na">readingAdobeShowPageNumbers</span><span class="o">=</span><span class="s">false</span>
+<span class="na">showProgressBar</span><span class="o">=</span><span class="s">false</span>
+<span class="na">swipeBrightness</span><span class="o">=</span><span class="s">false</span>
+</pre></div>
+</div><!-- /.entry-content -->
+</article>
+</section>
+<footer class="body" id="extras">
+<div class="menu">
+<h2>Menú</h2>
+<nav>
+<ul>
+<li>
+<strong><a href="/">INICIO</a></strong>
+</li>
+<li><a href="/p/about">About</a></li>
+<li><a href="/mapa">Mapa</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main" target="_blank">Ver Github</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/themes/notmyidea-custom/templates/article.html" target="_blank">Ver Template</a></li>
+<li><a href="https://github.com/s-nt-s/s-nt-s.github.io/tree/main/content/posts/2026-10-13_kobo.md" target="_blank">Ver Markdown</a></li>
+</ul>
+<ul>
+<li><a href="https://validator.w3.org/check?charset=(detect+automatically)&amp;doctype=Inline&amp;group=1&amp;uri=https://s-nt-s.github.io/kobo" target="_blank">Validar HTML</a></li>
+</ul>
+</nav>
+</div><!-- /.menu -->
+<div class="social">
+<h2>Social</h2>
+<ul>
+<li><a href="/feeds/all.atom.xml" rel="alternate" type="application/atom+xml">atom feed</a></li>
+<li><a href="https://github.com/s-nt-s/" target="_blank">@s-nt-s</a></li>
+<li><a href="xmpp:git@suchat.org">git@suchat.org</a></li>
+</ul>
+</div><!-- /.social -->
+<div class="license">
+<p><a class="logo" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank"><img alt="Licencia Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a> Esta obra está bajo una <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.</p>
+</div>
+</footer><!-- /#extras -->
+</body>
+</html>
